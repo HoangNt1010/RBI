@@ -1,0 +1,198 @@
+{% extends 'BaseUI/BaseFacility/baseRiskSummary.html' %}
+
+{% load staticfiles %}
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactor' proposalID %}{% endblock %}
+{% block fcof%}{% url 'fullyConsequence' proposalID %}{% endblock %}
+{% block acof%}{% url 'areaBasedCoF' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrix' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChart' proposalID %}{% endblock %}
+{% block corri %}{% url 'corrision' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'damgeFactor' proposalID%}{% endblock %}
+
+{% block data-content %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+      .card {
+          background: #ffffff;
+      }
+
+    .scheduler-border {
+        border: none;
+        padding: 0 1.4em 1.4em 1.4em;
+        margin: 0 0 1.5em 0;
+        font-size: 1.1em ;
+        text-align: left ;
+        text-decoration-color: #444444;
+    }
+    .row{
+        text-align: left;
+    }
+    .arrow-down {
+        margin-left: 50%;
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-top: 2px solid;
+        border-right: 2px solid;
+        transform: rotate(135deg);
+      }
+    </style>
+    <!--suppress ALL -->
+    <form id="inspectionplan" method="post" class="card" >
+    {% csrf_token %}
+       <div style=" text-align: center"><caption><b style="font-size: 20px; color: #444444;">High Temperature Hydrogen Attack Damage Factor</b></caption></div>
+
+                <!-----------BlOCK FULLY QUANTITIVE FCOF AND CATEGORY--------->
+        <fieldset class="scheduler-border">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Assessment General Information</b></legend>
+                    <div class="row">
+                        <div class="col-md-4">Equipment Number</div>
+                        <div class="col-md-6"><form><input  type="text" size="50px" value="{{ a.EquipmentNumber }}"></form></div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Component Number</div>
+                        <div class="col-md-6"><form><input  type="text" size="50px" value="{{ a.ComponentNumber }}"> </form></div>
+                    </div>
+                    <div class="row">
+                         <div class="col-md-4">Assessment Name</div>
+                        <div class="col-md-6"><form><input  type="text" size="50px" value="{{ a.Assessment }}"> </form></div>
+                    </div>
+                </fieldset>
+
+
+        <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Assessment Data Input</b></legend>
+            <div>
+           <a class="arrow-down" data-toggle="collapse" href="#a" aria-expanded="false" >
+              </a></div>
+               <div class="collapse" id="a">
+                    <div class="row">
+                        <div class="col-md-3">Max. Operating Temperature</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.MAX_OP_TEMP }}"> </form></div>
+                        <div class="col-md-3">Operating Hydrogen Partial Pressure</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.Hydrogen }}"> </form></div>
+                    </div>
+                   <div class="row">
+                        <div class="col-md-3">HTHA Damage Observed</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.HTHADamageObserved }}"> </form></div>
+                    </div>
+                   <div class="row">
+                        <div class="col-md-3">HTHA Material</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.HTHA_MATERIAL }}"> </form></div>
+                    </div>
+               </div>
+            </fieldset>
+            <!-------Khối Intermediate Results------>
+            <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Intermediate Results </b></legend>
+              <div>  <a class="arrow-down" data-toggle="collapse" href="#b" aria-expanded="false" >
+              </a></div>
+               <div class="collapse" id="b">
+
+                    <div class="row">
+                        <div class="col-md-4">Delta T(Distance from Nelson Curve) <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal1">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                        <div class="col-md-6"><form><input  type="text" size="10px" value="{{ a.deltaT }}"> </form></div>
+                    </div>
+                   <br>
+                    <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-1"><form><input  type="text" style="background-color: #0C5BED; color: white" size="53px"  value="0 months                    36 months                   72 months"> </form></div>
+                    </div>
+                    <div class="row">
+                            <div class="col-md-4">Susceptibility <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.Susceptibility1 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.Susceptibility2 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.Susceptibility3 }}"> </form></div>
+                    </div>
+
+               </div>
+            </fieldset>
+            <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Damage Factor </b></legend>
+                <div>
+                <a class="arrow-down" data-toggle="collapse" href="#c" aria-expanded="false" >
+              </a></div>
+               <div class="collapse" id="c">
+                    <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-1"><form><input  type="text" style="background-color: #0C5BED; color: #FFFFFF" size="53px"  value="0 months                    36 months                   72 months"> </form></div>
+                    </div>
+                    <div class="row">
+                            <div class="col-md-6">High Temperature Hydrogen Attack Damage Factor <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal3">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.HTHA1 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.HTHA1}}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.HTHA1 }}"> </form></div>
+                    </div>
+               </div>
+                 <div id="myModal1" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+                          <p>ΔT can be canculated from T and PH2</p>
+                          <p>Meanwhile: </p>
+                          <p>T is the operating temperature, °C [°F] <br>
+                              PH2 is the hydrogen partial pressure, MPa [psia]</p>
+                          <br>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                 <div id="myModal2" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+                          <p>Susceptibility to HTHA as outlined below:</p>
+                          <p>1) For Carbon and C-½ Mo Alloy Steels:<br>
+                                a) If the exposure temperature is > 177°C (350°F) and the exposure hydrogen partial pressure is >
+                                0.345 MPa (50 psia), assign a High susceptibility to HTHA. <br>
+                                b) If exposure temperature is < 177°C (350°F) and the exposure hydrogen partial pressure is < 0.345
+                                MPa (50 psia), assign HTHA susceptibility to None.<br>
+                                2) For all other Cr-Mo Low Alloy Steels<br>
+                                a) If the exposure temperature is >177°C (> 350°F) and exposure hydrogen partial pressure is >0.345
+                                MPa (> 50 psia) calculate ΔT proximity to the API 941 curve using T and PH2.
+                          </p>
+                          <p style="font-weight: bold; font-size: 15px; text-align: center">Example of HTHA Susceptibility Rankings for Cr-Mo Low Alloy Steels</p>
+                          <img src="{% static 'image/proposal/attack_susceptibility.JPG' %}" style="width: 100%">
+                          <br>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                 <div id="myModal3" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body"><p><img src="{% static 'image/proposal/attack_DF.JPG' %}"> is the Damage Factor for High Temperaure Hydrogen Attack using the table below:</p>
+                          <p style="font-weight: bold; font-size: 15px; text-align: center">Damage Factor - HTHA</p>
+                          <img src="{% static 'image/proposal/attack_Df_table.JPG' %}" style="width: 100%">
+                          <br>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </fieldset>
+        </fieldset>
+    </form>
+
+{% endblock %}

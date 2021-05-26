@@ -1,0 +1,110 @@
+{% extends 'BaseUI/BaseFacility/baseRiskSummary.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block library %}
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>-->
+    <link rel='stylesheet' href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <!--<meta http-equiv="refresh" content="10">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">-->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>-->
+    <!--<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">-->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+{% endblock %}
+
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactor' proposalID %}{% endblock %}
+{% block fcof%}{% url 'fullyConsequence' proposalID %}{% endblock %}
+{% block acof%}{% url 'areaBasedCoF' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrix' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChart' proposalID %}{% endblock %}
+{% block chartv2 %}{% url 'riskChartv2' proposalID %}{% endblock %}
+{% block corrcontrol %}{% url 'corrosionCotrol' proposalID %}{% endblock %}
+{% block corri %}{% url 'corrision' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'proposalDisplay' componentID %}{% endblock %}
+<!---------------END BLOCK--------------->
+
+{% block data-content %}
+<form method="post">
+    {% csrf_token %}
+         <div class="container">
+          <canvas id="examChart"></canvas>
+        </div>
+        <script>
+            var ctx = document.getElementById("examChart").getContext("2d");
+            var myChart = new Chart(ctx, {
+              type: 'line',
+              data: {
+                labels: [{% for a in dataLabel %}new Date("{{a}}"),{% endfor %}],
+                datasets: [
+                {
+                  label: 'Present Risk',
+                  data: [{% for a in dataPresent %}{t: new Date("{{a.x}}"),y: {{a.y}}},{% endfor %}],
+                  backgroundColor: "#0000BB",
+                  borderColor: "#0000BB",
+                  fill: false,
+                  lineTension:0
+                },
+                {
+                label: 'Risk Target',
+                backgroundColor: "#CC0000",
+                borderColor: "#CC0000",
+                data: [{% for a in Target %}{t: new Date("{{a.x}}"),y: {{a.y}}},{% endfor %}],
+                fill: false}]
+              },
+              options: {
+                        responsive: true,
+                        title: {
+                            display: true,
+                            text: 'Risk of Proposal: {{ proposalname }}'
+                        },
+                        scales: {
+                            xAxes: [{
+                                display: true,
+                                type: 'time',
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Years'
+                                }
+                            }],
+                            yAxes: [{
+                                display: true,
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Risk ($/year)'
+                                }
+                            }]
+                        }
+                    }
+            });
+        </script>
+</form>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Time</th>
+          <th scope="col">Period (month)</th>
+          <th scope="col">Total DM</th>
+          <th scope="col">PoF</th>
+          <th scope="col">FC Risk</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for i in listTime %}
+        <tr>
+          <th scope="row" id="index">{{ i.index }}</th>
+          <td>{{ i.x }}</td>
+          <td>{{ i.period }}</td>
+          <td>{{ i.dm }}</td>
+          <td>{{ i.pof }}</td>
+          <td>{{ i.y }}</td>
+
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+{% endblock %}

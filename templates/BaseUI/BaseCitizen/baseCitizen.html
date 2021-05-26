@@ -1,0 +1,98 @@
+{% extends 'BaseUI/BaseWeb/base.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block library %}
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Citizen{% endblock %}
+<script type="text/javascript">
+    $('[data-toggle="tooltip"]').tooltip();
+</script>
+
+{% block navbar %}
+    <a class="a-logout" href="{% url 'logout' %}" data-toggle="tooltip" data-placement="bottom" title="Sign Out"><i class="fa fa-sign-out"></i></a>
+    <a class="a-normal" href="" data-toggle="modal" data-target="#myModal" data-placement="bottom" title="Profile"><i class="fa fa-user"></i></a>
+    <a class="a-normal" href="{% url 'help' %}" data-toggle="tooltip" data-placement="bottom" title="Help"><i class="fa fa-question"></i></a>
+    <a class="a-normal" href="" data-toggle="modal" data-target="#notiModal"  data-placement="bottom" title="Notification" onclick="hidenoti()" style="position: relative"><i class="fa fa-bell">{% if countnoti %}<span id="countnoti" class="forum-notification">{{ countnoti }}</span>{% endif %}</i></a>
+    <a class="a-normal" href="{% url 'messagesInbox' %}" data-toggle="tooltip" data-placement="bottom" title="Messages"><i class="fa fa-wechat">{% if count %}<span class="badge red" style="color: red">{{ count }}</span>{% endif %}</i></a>
+    <a class="a-normal" href="{% url 'forum' %}" data-toggle="tooltip" data-placement="bottom" title="Forum"><i class="fa fa-dedent"></i></a>
+    <a class="a-normal active" href="{% url 'citizenHome' %}" data-toggle="tooltip" data-placement="bottom" title="Home"><i class="fa fa-home"></i></a>
+{% endblock %}
+{% block content %}
+    <div class="business-normal">
+        <div class="sidenav">
+            {% block vertical %}{% endblock %}
+        </div>
+        <div class="main">
+            {% block data-content %}{% endblock %}
+        </div>
+    </div>
+
+<!-- Modal notification-->
+  <div class="modal" id="notiModal">
+      <div class="modal-content" style="margin-left: 60%;margin-top:60px;width: 40%;border-radius: 0px; font-size: 14px;">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><a href=""><i class="fa fa-user"></i></a>Notification</h4>
+        </div>
+        <div class="modal-body">
+            {% for noti in noti %}
+            <div class="noti{{ noti.state }}" style="border-bottom: 1px solid #e3e3e3;border-top: 1px solid #e3e3e3;width: 100%;text-align: left;padding-left: 15px;padding-top: 15px;padding-bottom: 10px; font-family: Arial">
+            <a href="{% url 'posts' noti.link %}">
+                <span style="color: #204d74">{{ noti.subject }}</span><span style="color: black"> {{ noti.content }} </span><span style="color: #204d74">{{ noti.object }}</span>
+            </a>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" style="color: white;background-color: #4575B7;" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+  </div>
+
+      <!-- Modal -->
+  <div class="modal" id="myModal">
+      <div class="modal-content" style="margin-left: 60%;margin-top:60px;width: 40%;border-radius: 0px">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title"><a href=""><i class="fa fa-user"></i></a> Profile</h4>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col-md-5"><span style="font-weight: bold; width: 40%">Name:</span></div>
+                  <div class="col-md-7">{{ info.name }}</div>
+              </div>
+              <hr>
+              <div class="row">
+                  <div class="col-md-5"><span style="font-weight: bold; width: 40%">Email:</span></div>
+                  <div class="col-md-7">{{ info.email }}</div>
+              </div>
+              <hr>
+              <div class="row">
+                  <div class="col-md-5"><span style="font-weight: bold; width: 40%">Phone number:</span></div>
+                  <div class="col-md-7">{{ info.phone }}</div>
+              </div>
+              <hr>
+              <div class="row">
+                  <div class="col-md-5"><span style="font-weight: bold; width: 40%">Address:</span></div>
+                  <div class="col-md-7">{{ info.address }}</div>
+              </div>
+              <hr>
+              <div class="row">
+                  <div class="col-md-5"><span style="font-weight: bold; width: 40%">Account:</span></div>
+                  <div class="col-md-7">{{ info.kind }}</div>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn" style="color: white;background-color: #4575B7;" data-dismiss="modal">Close</button>
+          </div>
+      </div>
+  </div>
+
+
+{% endblock %}
+
+
+

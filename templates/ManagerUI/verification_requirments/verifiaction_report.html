@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!--  This file has been downloaded from bootdey.com    @bootdey on twitter -->
+    <!--  All snippets are MIT license http://bootdey.com/license -->
+    <title>Select Proposal to Report</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+    	body{
+background:#eee;
+}
+.panel-order .row {
+	border-bottom: 1px solid #ccc;
+}
+.panel-order .row:last-child {
+	border: 0px;
+}
+.panel-order .row .col-md-1  {
+	text-align: center;
+	padding-top: 15px;
+}
+.panel-order .row .col-md-1 img {
+	width: 50px;
+	max-height: 50px;
+}
+.panel-order .row .row {
+	border-bottom: 0;
+}
+.panel-order .row .col-md-11 {
+	border-left: 1px solid #ccc;
+}
+.panel-order .row .row .col-md-12 {
+	padding-top: 7px;
+	padding-bottom: 7px;
+}
+.panel-order .row .row .col-md-12:last-child {
+	font-size: 11px;
+	color: #555;
+	background: #efefef;
+}
+.panel-order .btn-group {
+	margin: 0px;
+	padding: 0px;
+}
+.panel-order .panel-body {
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+.panel-order .panel-deading {
+	margin-bottom: 0;
+}
+    </style>
+</head>
+<body>
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
+<form method="post" style="padding-top: 90px;padding-bottom: 90px">
+    {% csrf_token %}
+    <div class="container bootdey">
+        <div class="panel panel-default panel-order">
+            <div class="panel-heading">
+                <strong>List Proposal in Facility {{ faciname }}</strong>
+                <div class="btn-group pull-right">
+                    <div class="btn-group">
+    {#                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">Filter history <i class="fa fa-filter"></i></button>#}
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a href="#">View Detail</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% for a in data %}
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-1"><img src="https://bootdey.com/img/Content/user_3.jpg" class="media-object img-thumbnail" /></div>
+                    <div class="col-md-11">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="pull-right"><label class="label label-success">Online</label></div>
+                                <span><strong> Proposal Name: &ensp; {{ a.Name }}</strong></span> <br />
+                                PoF Catgory: {{ a.pof1 }} <br />
+                                CoF Catgory: {{ a.cof }} <br />
+                                <a data-placement="top" href="{% url 'damgeFactor' a.ID %}" title="View" target="_blank">View Detail</a>
+                                <a name="_select" data-placement="top" data-toggle="modal" data-target="#{{a.ID}}" aria-hidden="true" class="btn btn-outline-info" title="Select"> Select to Report</a>
+                                <div class="modal" id="{{a.ID}}" style="margin-top: 5%; font-size:14px;">
+                                     <div class="modal-dialog modal-lg">
+                                         <div class="modal-content" style="width: 100%; margin: auto">
+                                            <!-- Modal Header -->
+                                             <div class="modal-header" style="text-align:center">
+                                              <span aria-hidden="true" style="font-size: 24px;font-weight: bold;color: #444444;font-family: Calibri;font-weight: bold;">The Report</span>
+                                              <button type="button" class="close" data-dismiss="modal" style="color: white">&times;</button>
+                                             </div>
+                                             <!-- Modal body -->
+                                             <div class="modal-body" style="width: 90%;margin: auto">
+                                                 <p style="margin-left:70%"><b>DATE:</b>&ensp;{{a.datecreate}}</p>
+                                                 <p><b>FROM: Facility{{faciname}}</b></p>
+                                                 <!--<p style="margin-left:10px"></p>-->
+                                                 <p><b>TO: Manager{{thereport.manager}}</b></p>
+                                                 <!--<p style="margin-left:10px"></p>-->
+                                                 <b><u>RBI Assessment</u></b></p>
+                                                 <p style="padding-left:10px;"><b>Damage Mechanism :</b>{{a.content}}</p>
+                                                 <p style="padding-left:10px;"><b>POF Overall</b>&emsp;&emsp;{{a.pof1}}&ensp;({{a.pof1value}})</p>
+                                                 <p style="padding-left:10px;"><b>COF Overall</b>&emsp;&emsp;{{a.cof}}&ensp;({{a.cofvalue}})</p>
+                                                 <p style="padding-left:10px;"><b>Risk Ranking</b>&emsp;&ensp;{{a.risk}}&ensp;({{a.riskvalue}})</p>
+                                                 <b><u>Inspection Planting</u></b></p>
+                                                 <p style="padding-left:10px;"><b>Last Insp.Date:</b>&emsp;{{a.lastinsp|date:'d-m-Y'}}<b style="padding-left:40%">Next Insp.Date:</b>&emsp;{{a.duedate|date:'d-m-Y'}}</p>
+                                                 <!--<p style="padding-left:10px;"><b>Next Insp.Date</b>&emsp;&emsp;{{a.lastinsp}}</p>-->
+                                             </div>
+                                             <!-- Modal footer -->
+                                             <div class="modal-footer" style="margin: auto; width: 90%">
+                                                 <button name="_send" style="background-color: #0062cc;"  class="btn btn-primary" type="submit" value="{{ a.ID }}"><i class="fa fa-pencil">Send to manager</i></button>
+                                                 <button type="button" class="btn btn-success"  style="background-color: #4575B7; border: 1px solid #204d74" data-dismiss="modal">Close</button>
+                                             </div>
+                                         </div>
+                                     </div>
+                                </div>
+                                {#<a data-placement="top" class="btn btn-info btn-xs glyphicon glyphicon-usd" href="#" title="Danger"></a>#}
+                            </div>
+                         {# <div class="col-md-12">order made on: 05/31/2014 by Jane Doe </div>#}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <div class="panel-footer">Put here some note for example: bootdey si a gallery of free bootstrap snippets bootdeys</div>
+        </div>
+    </div>
+
+
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+
+
+</script>
+</form>
+</body>
+</html>

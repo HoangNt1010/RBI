@@ -1,0 +1,145 @@
+{% extends 'BaseUI/BaseFacility/baseEquipment.html' %}
+
+<!--------------- BLOCK MENU ------------->
+{% block listeq %}{% url 'equipmentDisplay' facilityID %}{% endblock %}
+{% block neweq %}{% url 'equipmentNew' facilityID %}{% endblock %}
+{% block backfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+<!--------------- END BLOCK -------------->
+
+{% block data-content %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="input-data">
+            <div class="title-verifitcation" >
+                <h1>New Equipment</h1>
+            </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div>
+                            <div class="color-white">
+                                Equipment Number:<span style="color: red">*</span>
+                            </div>
+                            <input type="text" class="form-control" name="equipmentNumber" placeholder="Input equipment number here!" value="{{ data.equipmentnumber }}" required>
+                        </div>
+                        {% if error.existNumber %}
+                            <div class="row">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-8"><span style="color: red; font-size: 16px">{{ error.existNumber }}</span></div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <div>
+                            <div class="color-white">
+                                Equipment Name:<span style="color: red">*</span>
+                            </div>
+                            <input type="text" name="equipmentName" class="form-control" value="{{ data.equipmentname }}" placeholder="Input equipment name here!" required>
+                        </div>
+                        {% if error.existName %}
+                            <div class="row">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-8"><span style="color: red; font-size: 16px">{{ error.existName }}</span></div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="color-white">
+                            Equipment Type:<span style="color: red">*</span>
+                        </div>
+                        <select class="form-control" name="equipmentType" required>
+                            <option value="" disabled selected>Please select equipment type..</option>
+                            {% for a in equipmenttype %}
+                                {% if a.equipmenttypename ==  data.equipmenttype %}
+                                <option selected>{{ a.equipmenttypename }}</option>
+                                {% else %}
+                                <option>{{ a.equipmenttypename }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="color-white">
+                            Design Code:<span style="color: red">*</span>
+                        </div>
+                        <select class="form-control" name="designCode" required>
+                            <option value="" disabled selected>Please select your design code..</option>
+                            {% for a in designcode %}
+                                {% if a.designcode == data.designcode %}
+                                <option selected>{{ a.designcode }}</option>
+                                {% else %}
+                                <option>{{ a.designcode }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="color-white">
+                            Manufacturer:<span style="color: red">*</span>
+                        </div>
+                        <div>
+                            <select class="form-control" name="manufacture" required>
+                                <option value="" disabled selected>Please select one manufacture..</option>
+                                {% for a in manufacture %}
+                                    {% if a.manufacturername == data.manufacture %}
+                                    <option selected>{{ a.manufacturername }}</option>
+                                    {% else %}
+                                    <option>{{ a.manufacturername }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="color-white">
+                            Commission Date:<span style="color: red">*</span>
+                        </div>
+                        <input type="text" name="CommissionDate" class="form-control" id="commissiondate" value="{{ data.commissiondate }}" placeholder="yyyy-mm-dd" required>
+                    </div>
+                    <script>
+                        $( "#commissiondate" ).datepicker({
+                            dateFormat: 'yy-mm-dd'
+                        });
+                        $("#commissiondate").datepicker('setDate', new Date());
+                    </script>
+                    <div class="col-md-8">
+                        <div class="color-white">PDF No:</div>
+                        <input type="text"  name="PDFNo" class="form-control" placeholder="Input PDF number here!">
+                    </div>
+                    
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 class-inline-custom">
+                        <div class="color-white" style="width: 190px;">
+                            Process Description:
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <textarea type="text" class="form-control" name="processDescription" placeholder="Write process desciprtion here!"></textarea>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 class-inline-custom">
+                        <div class="color-white" style="width: 190px;">
+                            Description:
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <textarea type="text"  class="form-control"  name="decription" placeholder="Write equipment description here!"></textarea>
+                    </div>
+                </div>
+            <div  style="text-align:center;margin-top: calc(100vh - 610px);">
+                <button type="submit" class="btn btn-primary mr-16">Submit</button>
+                <a class="btn btn-default" href="{% url 'equipmentDisplay' facilityID %}">Cancel</a>
+            </div>
+        </div>
+    </form>
+{% endblock %}

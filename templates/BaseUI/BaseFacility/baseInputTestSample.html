@@ -1,0 +1,57 @@
+{% extends 'BaseUI/BaseFacility/baseBusiness.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block title %}Test Sample{% endblock %}
+{% block vertical %}
+    {#    <img style="width: 100%%;height: 25%;text-align: center" src="{% static 'image/logo/logoAPI.png' %}">#}
+    {#<a class="vertical">Facility<br>Management</a>#}
+    <!-- <a class="active"><span>Test Sample</span></a> -->
+    <a href="{% block homedetail %}{% endblock %}" class="{% if page == 'managerHomeDetail' %}activeLink{% endif %}"><i class="fa fa-home"></i><span>Home</span></a>
+
+    <a href="{% block listfaci %}{% endblock %}" class="{% if page == 'listFacility' %}activeLink{% endif %}"><i class="fa fa-list"></i><span>Factories</span></a>
+
+    <a class="dropdown-btn"><i class="fa fa-caret-right"></i> <span style="margin-left: 5px;">Proposal</span></a>
+    <div class="dropdown-container">
+        <a class="a-normal" href="{% block uploadPlant %}{% endblock %}" class="{% if page == 'uploadPlan' %}activeLink{% endif %}" data-toggle="tooltip" data-placement="bottom" style="margin-left: 25px;"><i class="fa fa-file-excel-o"></i><span>Import Plan</span></a>
+        <a class="a-normal" href="{% block uploadInsp %}{% endblock %}" class="{% if page == 'uploadHistory' %}activeLink{% endif %}" data-toggle="tooltip" data-placement="bottom"style="margin-left: 25px;"><i class="fa fa-file"></i><span>Upload History</span></a>
+        <a class="a-normal" href="{% block manageFile %}{% endblock %}" class="{% if page == 'manageFile' %}activeLink{% endif %}" data-toggle="tooltip" data-placement="bottom" style="margin-left: 25px;"><i class="fa fa-file-code-o" aria-hidden="true"></i><span>File Manager</span></a>
+        <!--<a class="a-normal" href="{% block registeraccount %}{% endblock %}" class="{% if page == 'registerAccount' %}activeLink{% endif %}"data-toggle="tooltip" data-placement="bottom" title="Register Account"><i class="fa fa-plus-square">Register Account</i></a>-->
+    </div>
+{#    <a href="{% block uploadScada %}{% endblock %}" class="{% if page == 'uploadScada' %}activeLink{% endif %}"><i class="fa fa-file-archive-o"><span>DCS/SCADA</span></i></a>#}
+    <a href="{% block inspecPlan %}{% endblock %}" class="{% if page == 'inspectionPlan' %}activeLink{% endif %}"><i class="fa fa-pencil-square-o"></i><span>Inpsection Plan</span></a>
+    {% if siteID == 44 %}
+        <a href="{% block thingsboard %}{% endblock %}" class="{% if page == 'thingsboard' %}activeLink{% endif %}"><i class="fa fa-list-alt"></i><span>Thingsboard</span></a>
+    {% endif %}
+    <!--<a href="{% block mitigationSite %}{% endblock %}" class="{% if page == 'mitigation' %}activeLink{% endif %}"><i class="fa fa-sort-amount-asc"></i><span>Mitigation</span></a>-->
+    {% if siteID == 4 %}
+    <!-- <a href="{% block rbitracking %}{% endblock %}" class="{% if page == 'rbitracking' %}activeLink{% endif %}"><i class="fa fa-users"><span>RBI Tracking</span></i></a> -->
+    {% endif %}
+    <a href="{% block testSample %}{% endblock %}" class="{% if page == 'testsample' %}activeLink{% elif page == 'inputdataTestSample'%}activeLink{% elif page == 'riskTestSample'%}activeLink{% endif %}"><i class="fa fa-list-alt"></i><span>Test Sample</span></a>
+     <a href="{% block forum %}{% endblock %}" class="{% if page == 'forum' %} activeLink{% endif %}"><i class="fa fa-dedent"></i><span>Forum</span></a>
+    <a class="dropdown-btn"><i class="fa fa-caret-right"></i> <span>Setting</span></a>
+    <div class="dropdown-container">
+        <a class="a-normal" href="{% block settingAccount %}{% endblock %}" class="{% if page == 'settingaccount' %}activeLink{% endif %}" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-wrench" style="padding-left: 20px;"></i><span>Account</span></a>
+        <a class="a-normal" href="{% block settingNotification %}{% endblock %}" class="{% if page == 'settingNotification' %}activeLink{% endif %}" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-bell" style="padding-left: 20px;"></i><span>Notification</span></a>
+ {#        <a class="a-normal" href="{% block Re-verificationSite %}{% endblock %}" class="{% if page == 'Re-verificationSite' %}activeLink{% endif %}" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-cogs" style="padding-left: 20px;"></i><span>Auto Re-verification Setup</span></a>  #}
+    </div>
+
+    <a href="{% block HelpSite %}{% endblock %}" class="{% if page == 'help' %} activeLink{% endif %}"><i class="fa fa-question-circle"></i><span>Help</span></a>
+    <a class="a-logout" href="/logout" data-toggle="tooltip" data-placement="bottom" title="Sign Out"><i class="fa fa-sign-out"></i><span>Log out</span></a>
+    <script>
+        /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+        var dropdown = document.getElementsByClassName("dropdown-btn");
+        var i;
+        for (i = 0; i < dropdown.length; i++) {
+          dropdown[i].addEventListener("click", function() {
+          this.classList.toggle("active");
+          var dropdownContent = this.nextElementSibling;
+          if (dropdownContent.style.display === "block") {
+          dropdownContent.style.display = "none";
+          } else {
+          dropdownContent.style.display = "block";
+          }
+          });
+        }
+    </script>
+{% endblock %}

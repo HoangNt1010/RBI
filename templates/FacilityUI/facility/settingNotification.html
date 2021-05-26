@@ -1,0 +1,172 @@
+{% extends 'BaseUI/BaseFacility/baseFacility.html' %}
+{% load staticfiles %}
+{% load static %}
+
+<!-------------- BLOCK MENU ---------------->
+{% block listfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+{% block newfaci %}{% url 'facilitiesNew' siteID %}{% endblock %}
+{% block design %}{% url 'designcodeDisplay' siteID %}{% endblock %}
+{% block manu %}{% url 'manufactureDisplay' siteID %}{% endblock %}
+{% block uploadInsp %}{% url 'upload' siteID %}{% endblock %}
+{% block uploadPlant %}{% url 'uploadPlan' siteID %}{% endblock %}
+{% block manageFile %}{% url 'manageFile' siteID %}{% endblock %}
+{#{% block uploadScada %}{% url 'uploadScada' siteID %}{% endblock %}#}
+{% block inspecPlan %}{% url 'inspectionPlan' siteID %}{% endblock %}
+{% block rbitracking %}{% url 'rbitracking' %}{% endblock %}
+{% block mitigationSite %}{% url 'mitigationSite' siteID%}{% endblock %}
+{% block HelpSite %}{% url 'help' %}{% endblock %}
+{% block forum %}{% url 'forum' %}{% endblock %}
+{% block testSample %}{% url 'testsample' siteID%}{% endblock %}
+{% block homedetail %}{% url 'homefacility' siteID%}{% endblock %}
+{% block settingAccount %}{% url 'settingAccount' siteID %}{% endblock %}
+{% block settingNotification %}{% url 'settingNotification' siteID %}{% endblock %}
+{% block Re-verificationSite %}{% url 'Re-verificationSite' siteID %}{% endblock %}
+<!----------------- END BLOCK----------------->
+{% block data-content %}
+<style>
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  border-radius: 50px;
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  border-radius: 50%;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 2px;
+  bottom: 3px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+#myModal1 .btn {
+  padding: 5px 15px;
+  border-radius: 5px;
+  width: auto;
+}
+</style>
+    <form method="post" >
+        {% csrf_token %}
+        <div class="title-verifitcation" >
+          <h1>Set up automatic sending of notifications</h1>
+        </div>
+        <div class="input-data">
+          <div class="row">
+            <div class="col-md-4" style="color: #fff;">Turn on automatic notification sending<span style="color: red">*</span></div>
+            <div class="col-md-8">
+                <label class="switch">
+                  <input type="checkbox" name="mode" id="mode" onclick="return openModal()">
+                  <span class="slider"></span>
+                </label>
+                <script>
+                    if({{ oldMode }})
+                        $("#mode").attr('checked', 'checked');
+                </script>
+            </div>
+        </div>
+        <div class="modal fade" id="myModal1" role="dialog">
+          <div class="modal-dialog modal-sm">
+          
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-body">
+                <div style="color: #f0ad4e;font-size: 18px;">
+                  Warning!
+                </div>
+                <div>
+                  Are you sure you want to change mode automatic auditing?
+                </div>
+              </div>
+              <div class="modal-footer" style="text-align: right;">
+                <button type="button" class="btn btn-primary" onclick="changeStatus()">Ok</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        <script>
+          function changeStatus () {
+            const tempChecked = $("#mode").is(":checked")
+            $("#mode").prop('checked', !tempChecked)
+            $("#myModal").modal("hide");
+          };
+          function openModal () {
+            $("#myModal1").modal("show");
+            return false
+          };
+            var timepicker = new TimePicker('time', {
+              lang: 'en',
+              theme: 'dark'
+            });
+            timepicker.on('change', function(evt) {
+
+              var value = (evt.hour || '00') + ':' + (evt.minute || '00')+ ':' + (evt.second || '00');
+              evt.element.value = value;
+
+            });
+            $(document).ready(function () {
+                var check = $("#mode").is(':checked');
+                if(check){
+                    $("#time").attr('disabled', false);
+                }
+                else {
+                    $("#time").prop('selectedIndex',0);
+                    $("#time").attr('disabled', true);
+                }
+                $("#mode").click(function () {
+                    if($("#mode").prop('checked') == true){
+                        $("#time").attr('disabled', false);
+                    }
+                    else {
+                        $("#time").prop('selectedIndex',0);
+                        $("#time").attr('disabled', true);
+                    }
+                })
+            })
+        </script>
+            <br>
+            <div class="row">
+                <div class="col-md-12" style="text-align: right"><button type="submit" onclick="return confirm('Are you sure you want to save this set up?');" name ="_save" class="btn btn-primary">Save</button></div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

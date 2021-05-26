@@ -1,0 +1,44 @@
+{% extends 'BaseUI/BaseCitizen/baseCitizen.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block library %}
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Facility Management{% endblock %}
+
+{% block vertical %}
+    <a class="active"><h3> &emsp;List Facility </h3></a>
+        <a href="{% url 'facilityCitizen' site.siteid %}" class="{% if page == 'inforCompany' %}activeLink{% endif %}"><i class="fa fa-print" >&emsp;Information &emsp;Company</i></a>
+        {% for faci in faci %}
+            <a href="{% url 'ListProposalCitizen' faci.facilityid faci.siteid_id %}" class="{% if page == 'listProposal' %}activeLink{% endif %}"><i class="fa fa-print" >&emsp;{{ faci.facilityname }}</i></a>
+        {% endfor %}
+    <a href="{% url 'citizenHome' %}"><i class="fa fa-print" >&emsp;Back</i></a>
+{% endblock %}
+
+{% block data-content %}
+{#    <h1 style="text-align: center">Name Company : {{ site.sitename }}</h1>#}
+{#    <div style="padding-left:50px; width: 1050px">#}
+{#        <h3>{{ si.compainfor }}</h3>#}
+{#        <table>#}
+{#            <tr>#}
+{#                <td><h4>Director</h4></td>#}
+{#                <td>{{ name.name }}</td>#}
+{#            </tr>#}
+{#            <tr>#}
+{#                <td style="width: 100px"><h4>Phone</h4></td>#}
+{#                <td style="width: 700px">{{ name.phone }}</td>#}
+{#            </tr>#}
+{#            <tr>#}
+{#                <td><h4>Email</h4></td>#}
+{#                <td><a>{{ name.email }}</a></td>#}
+{#            </tr>#}
+{#            <tr>#}
+{#                <td><h4>Website : </h4></td>#}
+{#                <td><a href="http://hust.edu.vn">hust.edu.vn</a></td>#}
+{#            </tr>#}
+{#        </table>#}
+{#    </div>#}
+{% endblock %}
+

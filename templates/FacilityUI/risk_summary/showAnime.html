@@ -1,0 +1,387 @@
+{% extends 'BaseUI/BaseFacility/baseRiskSummary.html' %}
+
+{% load staticfiles %}
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactor' proposalID %}{% endblock %}
+{% block fcof%}{% url 'fullyConsequence' proposalID %}{% endblock %}
+{% block acof%}{% url 'areaBasedCoF' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrix' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChart' proposalID %}{% endblock %}
+{% block corri %}{% url 'corrision' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'damgeFactor' proposalID%}{% endblock %}
+
+{% block data-content %}
+    <style>
+      .card {
+          background: #ffffff;
+      }
+
+    .scheduler-border {
+        border: none;
+        padding: 0 1.4em 1.4em 1.4em;
+        margin: 0 0 1.5em 0;
+        font-size: 1.1em ;
+        text-align: left ;
+        text-decoration-color: #444444;
+    }
+    .row{
+        text-align: left;
+    }
+    .arrow-down {
+        margin-left: 50%;
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-top: 2px solid;
+        border-right: 2px solid;
+        transform: rotate(135deg);
+      }
+    </style>
+    <!--suppress ALL -->
+    <form id="inspectionplan" method="post" class="card" >
+    {% csrf_token %}
+       <div style=" text-align: center"><caption><b style="font-size: 20px; color: #444444;">Anime Stress Corrosion Cracking Damage Factor</b></caption></div>
+   <div class="modal fade" id="susceptibility" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Susceptibility to Anime Cracking</h4>
+        </div>
+        <div class="modal-body">
+            <p>Susceptibility to Anime can be calculated from the figure below:</p>
+            <img  src="{% static '/image/proposal/susceptibilityAnime.PNG' %}">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+   <div class="modal fade" id="svi" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Severity Index, SVI</h4>
+        </div>
+        <div class="modal-body">
+            <p>Severity Index to Anime can be calculated from the table below:</p>
+            <img src="{% static '/image/proposal/acscc_severityindex.JPG' %}" style="width: 100%">
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+ <div class="modal fade" id="year" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Years Since Last Inspection, age</h4>
+        </div>
+        <div class="modal-body">
+            <p>Age is the component in-service time since the last cracking inspection or service start date.</p>
+
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+    <div class="modal fade" id="damageFactor" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Anime Stress Cracking Damage Factor</h4>
+        </div>
+        <div class="modal-body">
+             <img  src="{% static '/image/proposal/baseDMAnime.PNG' %}">
+
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+    <div class="modal fade" id="base" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Base Value of Damage Factor</h4>
+        </div>
+        <div class="modal-body">
+             <img src="{% static 'image/proposal/ssc_base_table_DF.JPG' %}" style="width: 100%">
+
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+                <!-----------BlOCK FULLY QUANTITIVE FCOF AND CATEGORY--------->
+        <fieldset class="scheduler-border">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Assessment General Information</b></legend>
+                    <div class="row">
+                        <div class="col-md-4">Equipment Number</div>
+                        <div class="col-md-6"><input  type="text" size="50px" value="{{ a.EquipmentName }}"></div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Component Number</div>
+                        <div class="col-md-6"><input  type="text" size="50px" value="{{ a.ComponentNumber }}"> </div>
+                    </div>
+                    <div class="row">
+                         <div class="col-md-4">Assessment Name</div>
+                        <div class="col-md-6"><input  type="text" size="50px" value="{{ a.Assessment }}"> </div>
+                    </div>
+                </fieldset>
+
+
+        <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Assessment Data Input</b></legend>
+            <div>
+           <a class="arrow-down" data-toggle="collapse" href="#a" aria-expanded="false" >
+              </a></div>
+               <div class="collapse" id="a">
+                    <div class="row">
+                        <div class="col-md-3">Assessment Date</div>
+                        <div class="col-md-3"><input type="text" name="assessmentdate"  id="assessmentdate" placeholder="yyyy-mm-dd" value="{{ a.assessmentDate }}">
+                        <script>
+                            $( "#assessmentdate" ).datepicker({
+                            dateFormat: 'yy-mm-dd'
+                        });
+
+                        </script>
+                        </div>
+                        <div class="col-md-3">Commission Date</div>
+
+                        <div class="col-md-3"><input  type="text" value="{{ a.CommissionDate }}"> </div>
+
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">Risk Analysis Period</div>
+                        <div class="col-md-3"><input  type="text" value="36 months"> </div>
+                        <div class="col-md-3">Last Inspection Date</div>
+                        <div class="col-md-3"><input  type="text" name="lastInspection"  id="lastInspection" placeholder="yyyy-mm-dd" value="{{ a.CommissionDate }}">
+                        <script>
+                            $( "#lastInspection" ).datepicker({
+                            dateFormat: 'yy-mm-dd'
+                        });
+
+                        </script>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">Highest Inspection Effectiveness</div>
+                        <div class="col-md-3"><input  type="text" value="{{ a.AMINE_INSP_EFF }}"> </div>
+                        <div class="col-md-3">Number of Inspections</div>
+                        <div class="col-md-3"><input  type="text" value="{{ a.AMINE_INSP_NUM }}"> </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-3">Maximum Operating Temperature, &deg;C</div>
+                        {% if const %}
+                            <div class="col-md-3"><input data-toggle="tooltipMAX_OP_TEMP" title="{{ a.MAX_OP_TEMP }}" type="text" style="background-color: green; color: white; " value="{{b.MAX_OP_TEMP }} "> </div>
+
+                        {% else %}
+                            <div class="col-md-3"><input  type="text" value="{{a.MAX_OP_TEMP }}"> </div>
+                        {% endif %}
+
+                        <div class="col-md-3">Presence of Cracks</div>
+                        <div class="col-md-3"><input  type="text" value="{{ a.CRACK_PRESENT }}"> </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">PWHT</div>
+                        <div class="col-md-3"><input  type="text" value="{{ a.PWHT }}"> </div>
+                        <div class="col-md-3">Heat Traced</div>
+                        {% if const %}
+                            <div class="col-md-3"><input  data-toggle="tooltipHEAT_TRACE" title="{{ a.HEAT_TRACE }}"type="text"style="background-color: green; color: white;" value="{{ b.HEAT_TRACE }}"></div>
+                        {% else %}
+                            <div class="col-md-3"><input  type="text" value="{{ a.HEAT_TRACE }}"> </div>
+                        {% endif %}
+                    </div>
+                           <script>
+                                $(document).ready(function(){
+                                    $('[data-toggle="tooltipMAX_OP_TEMP]').tooltip();
+                                    $('[data-toggle="tooltipHEAT_TRACE"]').tooltip();
+                                    $('[data-toggle="tooltipSTEAM_OUT]').tooltip();
+                                    $('[data-toggle="tooltipSusceptibility]').tooltip();
+                                    $('[data-toggle="tooltipSeverity]').tooltip();
+                                    $('[data-toggle="tooltipbase1]').tooltip();
+                                    $('[data-toggle="tooltipbase2]').tooltip();
+                                    $('[data-toggle="tooltipbase3]').tooltip();
+                                    $('[data-toggle="tooltiamine1]').tooltip();
+                                    $('[data-toggle="tooltiamine2]').tooltip();
+                                    $('[data-toggle="tooltiamine3]').tooltip();
+                                });
+                            </script>
+                    <div class="row">
+                            <div class="col-md-3">Steamed Out Prior to Water Flushing</div>
+                            {% if const %}
+                                <div class="col-md-3"><input data-toggle="tooltipSTEAM_OUT" title="{{ a.STEAM_OUT }}" type="text"style="background-color: green; color: white;" value="{{ b.STEAM_OUT }}"> </div>
+                            {% else %}
+                                <div class="col-md-3"><input  type="text" value="{{ a.STEAM_OUT }}"> </div>
+                            {% endif %}
+
+                    </div>
+                    <div class="row">
+                         <div class="col-md-3">Anime Solution Composition</div>
+                        <div class="col-md-6"><input  type="text" size="70px" value="{{ a.AMINE_SOLUTION }}"> </div>
+                    </div>
+                    <div class="row">
+                         <div class="col-md-3">Exposure to Anime</div>
+                        <div class="col-md-6"><input  type="text" size="70px" value="{{ a.AMINE_EXPOSED }}"> </div>
+                    </div>
+               </div>
+            </fieldset>
+            <!-------Khối Intermediate Results------>
+        {% if const %}
+            <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Intermediate Results </b></legend>
+              <div>  <a class="arrow-down" data-toggle="collapse" href="#b" aria-expanded="false" >
+              </a></div>
+               <div class="collapse" id="b">
+
+                    <div class="row">
+                        <div class="col-md-6">Susceptibility to Anime Cracking <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#susceptibility">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                        <div class="col-md-3"><input data-toggle="tooltipSusceptibility" title="{{ a.Susceptibility }}" type="text"style="background-color: green;color: white;" size="10px" value="{{ b.Susceptibility }}"> </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">Severity Index, SVI <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#svi">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                        <div class="col-md-3"><input  data-toggle="tooltipSeverity" title="{{ a.Severity }}" type="text"style="background-color: green;color: white;" size="10px" value="{{ b.Severity }}"> </form></div>
+                    </div>
+
+                    <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-1"><input  type="text" style="background-color: #0C5BED; color: white" size="54px"  value="0 months                   36 months                   72 months"></div>
+                    </div>
+                    <div class="row">
+                            <div class="col-md-6">Years Since Last Inspection, age <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#year">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><input  type="text" size="10px" value="{{ b.age1}}"></div>
+                            <div class="col-md-2"><input  type="text" size="10px" value="{{ b.age2 }}"></div>
+                            <div class="col-md-2"><input  type="text" size="10px" value="{{ b.age3 }}"></div>
+                    </div>
+                    <div class="row">
+                            <div class="col-md-6">Base Value of Damage Factor <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#base">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><input  data-toggle="tooltipbase1" title="{{ a.base1 }}" type="text"style="background-color: green;color: white;" size="10px" value="{{ b.base1 }}"></div>
+                            <div class="col-md-2"><input data-toggle="tooltipbase2" title="{{ a.base2 }}" type="text"style="background-color: green;color: white;" size="10px" value="{{ b.base2 }}"></div>
+                            <div class="col-md-2"><input data-toggle="tooltipbase3" title="{{ a.base3 }}" type="text"style="background-color: green;color: white;" size="10px" value="{{ b.base3 }}"></div>
+                    </div>
+
+               </div>
+            </fieldset>
+            <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Damage Factor </b></legend>
+                <div>
+                <a class="arrow-down" data-toggle="collapse" href="#c" aria-expanded="false" >
+              </a></div>
+               <div class="collapse" id="c">
+                    <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-1"><input  type="text" style="background-color: #0C5BED; color: #FFFFFF" size="54px"  value="0 months                   36 months                   72 months"></div>
+                    </div>
+                    <div class="row">
+                            <div class="col-md-6">Anime Stress Cracking Damage Factor <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#damageFactor">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><input data-toggle="tooltiamine1" title="{{ a.amine1 }}" type="text" style="background-color: green;color: white;"size="10px" value="{{ b.amine1 }}"> </div>
+                            <div class="col-md-2"><input data-toggle="tooltiamine2" title="{{ a.amine2 }}" type="text"style="background-color: green;color: white;" size="10px" value="{{ b.amine2 }}"></div>
+                            <div class="col-md-2"><input data-toggle="tooltiamine3" title="{{ a.amine3 }}" type="text"style="background-color: green;color: white;" size="10px" value="{{ b.amine3 }}"></div>
+                    </div>
+               </div>
+            </fieldset>
+        </fieldset>
+        {% else %}
+             <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Intermediate Results </b></legend>
+              <div>  <a class="arrow-down" data-toggle="collapse" href="#b" aria-expanded="false" >
+              </a></div>
+               <div class="collapse" id="b">
+
+                    <div class="row">
+                        <div class="col-md-6">Susceptibility to Anime Cracking <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#susceptibility">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                        <div class="col-md-3"><input  type="text" size="10px" value="{{ a.Susceptibility }}"> </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">Severity Index, SVI <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#svi">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                        <div class="col-md-3"><input  type="text" size="10px" value="{{ a.Severity }}"> </div>
+                    </div>
+
+                    <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-1"><input  type="text" style="background-color: #0C5BED; color: white" size="54px"  value="0 months                   36 months                   72 months"> </form></div>
+                    </div>
+                    <div class="row">
+                            <div class="col-md-6">Years Since Last Inspection, age <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#year">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><input  type="text" size="10px" value="{{ a.age1}}"></div>
+                            <div class="col-md-2"><input  type="text" size="10px" value="{{ a.age2 }}"> </div>
+                            <div class="col-md-2"><input  type="text" size="10px" value="{{ a.age3 }}"> </div>
+                    </div>
+                    <div class="row">
+                            <div class="col-md-6">Base Value of Damage Factor <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#base">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><input  type="text" size="10px" value="{{ a.base1 }}"></div>
+                            <div class="col-md-2"><input  type="text" size="10px" value="{{ a.base2 }}"></div>
+                            <div class="col-md-2"><input  type="text" size="10px" value="{{ a.base3 }}"></div>
+                    </div>
+
+               </div>
+            </fieldset>
+            <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Damage Factor </b></legend>
+                <div>
+                <a class="arrow-down" data-toggle="collapse" href="#c" aria-expanded="false" >
+              </a></div>
+               <div class="collapse" id="c">
+                    <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-1"><input  type="text" style="background-color: #0C5BED; color: #FFFFFF" size="54px"  value="0 months                   36 months                   72 months"> </form></div>
+                    </div>
+                    <div class="row">
+                            <div class="col-md-6">Anime Stress Cracking Damage Factor <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#damageFactor">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><input  type="text" size="10px" value="{{ a.amine1 }}"> </div>
+                            <div class="col-md-2"><input  type="text" size="10px" value="{{ a.amine2 }}"> </div>
+                            <div class="col-md-2"><input  type="text" size="10px" value="{{ a.amine3 }}"></div>
+                    </div>
+               </div>
+            </fieldset>
+            <input type="submit" name="expertHelp" style="background: blue; float: right;color: white; border:black 2px solid;margin-right:1px;" value="EXPERT HELP">
+        </fieldset>
+        {% endif %}
+
+    </form>
+
+{% endblock %}

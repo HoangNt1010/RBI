@@ -1,0 +1,11 @@
+{
+  "TOKEN": "Xl3AXEbRsuAvctwHLzFA",
+  "Value": {
+    "humidity": 50,
+    "luminance": 42,
+    "temperature": 15,
+    "NorminalDiameter": 16.12,
+    "NorminalThickness": 92,
+    "CurrentThickness": 18.3
+  }
+}

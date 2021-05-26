@@ -1,0 +1,264 @@
+{#{% extends 'BaseUI/BaseManager/ManagerHome.html' %}#}
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!--  This file has been downloaded from bootdey.com    @bootdey on twitter -->
+    <!--  All snippets are MIT license http://bootdey.com/license -->
+    <title>Verification Requests List </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+    	body{
+    background: #f6f9fc;
+    margin-top:20px;}
+/* booking */
+
+.bg-light-blue {
+    background-color: #e9f7fe !important;
+    color: #3184ae;
+    padding: 7px 18px;
+    border-radius: 4px;
+}
+
+.bg-light-green {
+    background-color: rgba(40, 167, 69, 0.2) !important;
+    padding: 7px 18px;
+    border-radius: 4px;
+    color: #28a745 !important;
+}
+.bg-light-red {
+    background-color: #FFCC99 !important;
+    padding: 7px 18px;
+    border-radius: 4px;
+    color: #FF0000 !important;
+}
+.buttons-to-right {
+    position: absolute;
+    right: 0;
+    top: 40%;
+}
+
+.btn-gray {
+    color: #666;
+    background-color: #eee;
+    padding: 7px 18px;
+    border-radius: 4px;
+}
+
+.booking:hover .buttons-to-right .btn-gray {
+    opacity: 1;
+    transition: .3s;
+}
+
+.buttons-to-right .btn-gray {
+    opacity: 0;
+    transition: .3s;
+}
+
+.btn-gray:hover {
+    background-color: #36a3f5;
+    color: #fff;
+}
+
+.booking {
+    margin-bottom: 30px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 30px;
+}
+
+.booking:last-child {
+    margin-bottom: 0px;
+    border-bottom: none;
+    padding-bottom: 0px;
+}
+
+@media screen and (max-width: 575px) {
+    .buttons-to-right {
+        top: 10%;
+    }
+    .buttons-to-right a {
+        display: block;
+        margin-bottom: 20px;
+    }
+    .buttons-to-right a:last-child {
+        margin-bottom: 0px;
+    }
+    .bg-light-blue,
+    .bg-light-green,
+    .btn-gray {
+        padding: 7px;
+    }
+}
+
+.card {
+    margin-bottom: 20px;
+    background-color: #fff;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+    box-shadow: none;
+    border: none;
+    padding: 25px;
+}
+{#.card a {#}
+{#    margin-bottom: 20px;#}
+{#    background-color: #FFCC99;#}
+{#    borfer-radius: 4px;#}
+{#    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.05);#}
+{#    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);#}
+{#    border-radius: 4px;#}
+{#    box-shadow: none;#}
+{#    border: none;#}
+{#    padding: 25px;#}
+{#}#}
+.mb-5, .my-5 {
+    margin-bottom: 3rem!important;
+}
+.msg-img {
+    margin-right: 20px;
+}
+.msg-img img {
+    width: 60px;
+    border-radius: 50%;
+}
+img {
+    max-width: 100%;
+    height: auto;
+}
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-white mb-5">
+            <div class="card-heading clearfix border-bottom mb-4">
+                <h4 class="card-title">Verification Requests</h4>
+            </div>
+            {% for veri in veri %}
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="position-relative booking">
+                        <div class="media">
+                            <!--<div class="msg-img">-->
+                                <!--<img src='/static/image/logo/default-avatar.png' alt="">-->
+                            <!--</div>-->
+                            <div class="media-body">
+                                <h5 id="{{veri.id}}" class="mb-4">{{ veri.manager }} <span class="badge badge-success ml-3">{% if veri.is_active %}Approved{% endif %}</span></h5>
+                                <div class="mb-3">
+                                    <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Request Send Date:</span>
+                                    <span class="bg-light-blue">{{ veri.date }}</span>
+                                </div>
+                                <div class="mb-3">
+                                    <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Facility:</span>
+                                    <span class="bg-light-blue">{{ veri.namefacility }}</span>
+                                </div>
+                                <div class="mb-3">
+                                    <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Equipment:</span>
+                                    <span class="bg-light-blue">{{ veri.equipment }}</span>
+                                </div>
+                                <div class="mb-3">
+                                    <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Component:</span>
+                                    <span class="bg-light-blue">{{ veri.component }}</span>
+                                </div>
+                                <div class="mb-3">
+
+                                    <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">View the report:<a name="view" data-placement="top" data-toggle="modal" data-target="{% if veri.datesendreport %}#k{{veri.id}}{% else %}#watting {% endif %}" class="btn btn-outline-info" title="Click to view" aria-hidden="true" style="margin-left:4px;padding-left: 1px;padding-right: 1px;padding-top: 1px;padding-bottom: 1px;">📝</a></span>
+
+                                    <div class="modal" id="k{{veri.id}}" style="margin-top: 5%; font-size:14px;">
+                                     <div class="modal-dialog modal-lg">
+                                         <div class="modal-content" style="width: 100%; margin: auto">
+                                            <!-- Modal Header -->
+                                             <div class="modal-header" style="text-align:center">
+                                              <span aria-hidden="true" style="font-size: 24px;font-weight: bold;color: #444444;font-family: Calibri;font-weight: bold;margin-left: 40%">The Report</span>
+                                              <button type="button" class="close" data-dismiss="modal" style="color: white">&times;</button>
+                                             </div>
+                                             <!-- Modal body -->
+                                             <div class="modal-body" style="width: 90%;margin: auto">
+                                                 <p style="margin-left:65%"><b>DATE:</b>&ensp;{{veri.datesendreport}}</p>
+                                                 <p><b>FROM: Facility {{veri.namefacility}}</b></p>
+                                                 <!--<p style="margin-left:10px"></p>-->
+                                                 <p><b>TO: Manager {{veri.manager}}</b></p>
+                                                 <!--<p style="margin-left:10px"></p>-->
+                                                 <b><u>RBI Assessment</u></b></p>
+                                                 <p style="padding-left:10px;"><b>Damage Mechanism :</b>{{veri.damage}}</p>
+                                                 <p style="padding-left:10px;"><b>POF Overall</b>&emsp;&emsp;{{veri.pof}}</p>
+                                                 <p style="padding-left:10px;"><b>COF Overall</b>&emsp;&emsp;{{veri.cof}}</p>
+                                                 <p style="padding-left:10px;"><b>Risk Ranking</b>&emsp;&ensp;{{veri.risk}}</p>
+                                                 <b><u>Inspection Planting</u></b></p>
+                                                 <p style="padding-left:10px;"><b>Last Insp.Date:</b>&emsp;{{veri.lastdudate|date:'d-m-Y'}}<b style="padding-left:40%">Next Insp.Date:</b>&emsp;{{veri.inspdudate|date:'d-m-Y'}}</p>
+                                                 <!--<p style="padding-left:10px;"><b>Next Insp.Date</b>&emsp;&emsp;{{a.lastinsp}}</p>-->
+                                             </div>
+                                             <!-- Modal footer -->
+                                             <div class="modal-footer" style="margin: auto; width: 90%">
+                                                 <button type="button" class="btn btn-success"  style="background-color: #4575B7; border: 1px solid #204d74" data-dismiss="modal">Close</button>
+                                             </div>
+                                         </div>
+                                     </div>
+                                    </div>
+
+                                    <div class="modal" id="watting" style="margin-top: 5%; font-size:14px;">
+                                     <div class="modal-dialog modal-lg" style="width:200px;">
+                                         <div class="modal-content" style="margin: auto;background-color:#ffc107">
+                                            <!-- Modal Header -->
+                                             <!-- Modal body -->
+                                             <div class="modal-body" style="margin: auto">
+                                               STATUS:Watting
+                                             </div>
+                                             <!-- Modal footer -->
+                                             <div class="modal-footer" style="margin: auto;">
+                                                 <button type="button" class="btn btn-success"  style="background-color: #007bff; border: 1px solid #204d74" data-dismiss="modal">Close</button>
+                                             </div>
+                                         </div>
+                                     </div>
+                                    </div>
+
+
+                                    <!--<span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Request Details:</span>-->
+                                    <!--{% for b in vericontent %}-->
+                                        <!--{% if b.veriID == veri.id %}-->
+                                            <!--<span class="bg-light-blue" style="margin-bottom: 3px; display: inline-block;">{{ b.content }}</span>-->
+                                        <!--{% endif %}-->
+                                    <!--{% endfor %}-->
+
+                                </div>
+                                <div class="mb-5">
+                                    <span class="mr-2 d-block d-sm-inline-block mb-1 mb-sm-0">User Facility:</span>
+                                    <span class="border-right pr-2 mr-2">{{ veri.sitename }}</span>
+                                    <span class="border-right pr-2 mr-2">{{ veri.mail }}</span>
+                                    <span class="border-right pr-2 mr-2">{{ veri.phone }}</span>
+                                </div>
+                                <div class="mb-3">
+                                    <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Respone:</span>
+                                    {% if veri.is_active %}
+                                        <span class="bg-light-green"> Done </span> <br />
+                                        <span><a href="{% url 'damgeFactor' veri.link %}" target="_blank"> Link Detail</a></span>
+                                    {% else %}
+                                        <span class="bg-light-red">Waiting</span>
+                                    {% endif %}
+                                </div>
+
+                                <a href="{% url 'messagesInbox' %}" data-toggle="tooltip" data-placement="bottom" title="Messages" class="btn-gray" target="_blank">Send Message</a>
+{#                                <a href="#" class="btn-gray mr-2"><i class="far fa-times-circle mr-2"></i> Reject</a>#}
+{#                                <a href="#" class="btn-gray"><i class="far fa-check-circle mr-2"></i> Approve</a>#}
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+</div>
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+----------------------------------------------------------
+---                  PLEASE READ ME                    ---
+----------------------------------------------------------
+
+**************************************************************
+****Thư mục File****:
+ - chứa các xử lý về nhập xuất file Excel.
+ - phần nhập File chú ý 2 hàm:
+        + importPlanProcess: đây là hàm nhập vào file kết quả đo đạc được của lần inspection (sử dụng cho mục đích tính toán).
+        + importInspectionPlan: đây là hàm nhập vào các giá trị đánh giá trong quá khứ, mục đích để xác định số lần inspection.
+ - phần xuất File chú ý hàm sau:
+        + excelExport(idx, status): đây là xuất file excel theo id (idx) của thành phần muốn xuất file và status: tên của thành phần muốn xuất.
+        vd: muốn xuất toàn bộ kết quả phân tích của thiết bị có id = 4, ta gọi hàm sau: excelExport(4, 'Equipment')
+
+ **************************************************************
+ *** Thư mục RBI (đây là thư mục đặc biệt quan trọng)******:
+ - Chứa các hàm tính toán và xử lý tiêu chuẩn RBI:
+        + Postgresql.py: đây là file chứa các hàm lấy ra các giá trị của chuẩn RBI trong database.
+        + pofConvert.py: không cần quan tâm (:v vì nó chỉ có tác dụng ép các giá trị pof > 1 về 1)
+        + CA_CAL.py : đây là file chứa các hàm tính toán các giá trị thiệt hại.
+        + DM_CAL.py : đây là file chứa các hàm tính toán các giá trị Damage Factor.
+        + fastCalculate.py : file chứa các hàm tính toán Risk từ các tham số đã lưu trong DB.
+ **Chú ý: tất cả tính toán và tổng hợp kết quả sẽ được thực hiện trong fastCalculate.py
+
+***************************************************************************
+*** Thư mục WebUI ************************:
+- Thư mục này chỉ chứa những file xử lý các kết quả làm tròn trên form hoặc các giá trị quy đổi trong giao diện( không quá quan trọng).
+*****************************************************************************
+
+*chú ý Trường hợp lining: nên có thêm 1 biến xác định chu kỳ kiểm tra vỏ cho vỏ là hữu cơ.
+
+*********************************************************************************

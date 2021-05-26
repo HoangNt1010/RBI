@@ -1,0 +1,52 @@
+{% extends 'BaseUI/BaseFacility/baseRiskSummary.html' %}
+{% load staticfiles %}
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactor' proposalID %}{% endblock %}
+{% block fcof%}{% url 'fullyConsequence' proposalID %}{% endblock %}
+{% block acof%}{% url 'areaBasedCoF' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrix' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChart' proposalID %}{% endblock %}
+{% block corri %}{% url 'corrision' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'damgeFactor' proposalID%}{% endblock %}
+{% block data-content %}
+    <style>
+    .card{
+        background: #ffffff;
+    }
+    .bang{
+        width: 420px;
+        height: 150px;
+        background-color: #305680;
+        margin: auto;
+
+    }
+    button{
+        width: 150px;
+        height: 100px;
+        margin-top: 20px;
+        margin-left: 5px;
+        background-color: #FFFFFF;
+    }
+    </style>
+
+    <form id="inspectionplan" method="post" class="card" >
+    {% csrf_token %}
+       <div style=" text-align: center"><caption><b style="font-size: 20px; color: #444444;">Governing Thining Damange Factor</b></caption></div>
+        <br>
+    <fieldset class="bang">
+        <script>
+            var i=0;
+            if (i!== 0){
+                document.getElementById('myelement').style.display='block'
+            }
+        </script>
+        <div class="row" id="myelement">
+            <div class="col-md-6"><button type="submit" style="color: black;font-family: Arial" name="_thin" value="">Thining Damage Factor</button></div>
+            <div class="col-md-6"><button type="submit" style="color: black;font-family: Arial; font-size:medium" name="_lining" value="">Component Lining Damage Factor</button></div>
+
+        </div>
+        </fieldset>
+    </form>
+    <img style=" margin: 3% 25%" src="{% static '/image/help/chooseThinning.PNG' %}" >
+
+{% endblock %}

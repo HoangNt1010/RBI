@@ -1,0 +1,1168 @@
+{% extends 'BaseUI/BaseFacility/baseMitigation.html' %}
+{% load staticfiles %}
+{% load static %}
+<!-------------- BLOCK MENU ---------------->
+
+{% block listfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+{% block newfaci %}{% url 'facilitiesNew' siteID %}{% endblock %}
+{% block design %}{% url 'designcodeDisplay' siteID %}{% endblock %}
+{% block manu %}{% url 'manufactureDisplay' siteID %}{% endblock %}
+{% block uploadInsp %}{% url 'upload' siteID %}{% endblock %}
+{% block uploadPlant %}{% url 'uploadPlan' siteID %}{% endblock %}
+{% block manageFile %}{% url 'manageFile' siteID %}{% endblock %}
+{#{% block uploadScada %}{% url 'uploadScada' siteID %}{% endblock %}#}
+{% block inspecPlan %}{% url 'inspectionPlan' siteID %}{% endblock %}
+{% block rbitracking %}{% url 'rbitracking' %}{% endblock %}
+{% block mitigationSite %}{% url 'mitigationSite' siteID%}{% endblock %}
+{% block HelpSite %}{% url 'help' %}{% endblock %}
+{% block forum %}{% url 'forum' %}{% endblock %}
+{% block testSample %}{% url 'testsample' siteID%}{% endblock %}
+{% block settingAccount %}{% url 'settingAccount' siteID %}{% endblock %}
+{% block settingNotification %}{% url 'settingNotification' siteID %}{% endblock %}
+{% block homedetail %}{% url 'homefacility' siteID%}{% endblock %}
+<!----------------- END BLOCK----------------->
+{% block data-content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<style>
+.riskmatrix {
+    width: 530px;
+    height: 580px;
+    background: #fff;
+    float:left;
+}
+.showtable{
+    width: 600px;
+
+    float: right;
+
+}
+.table-responsive
+{
+    margin-top: 7%;
+
+}
+.table-custom-mitigation {
+    height: 550px;
+    overflow: auto;
+}
+.table-custom-mitigation::-webkit-scrollbar {
+  background-color: #fff;
+  height: 10px;
+  width: 10px;
+}
+.table-custom-mitigation::-webkit-scrollbar-thumb {
+    background-color: rgb(177, 173, 173);
+    border-radius: 10px;
+}
+.table-custom-mitigation table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+div.a {
+  white-space: nowrap;
+  /* width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis; */
+}
+div.a:hover {
+  overflow: visible;
+}
+#searchs{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+.city{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+#search3{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+#proposal
+{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+#search2{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+#searchs td,#searchs th {
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+.city td {
+    padding: 3px 5px;
+    font-size: 12px;
+    text-align: center;
+}
+.city th{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #1c67b2;
+    color: #fff;
+    font-size: 13px;
+}
+#search2 th,#search2 td{
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+#search3 th,#search3 td{
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+#proposal th,#proposal td{
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+#searchs tr:nth-child(even){background-color: #f2f2f2;}
+.city tr:nth-child(even){background-color: white;}
+#search2 tr:nth-child(even){background-color: #f2f2f2;}
+#search3 tr:nth-child(even){background-color: #f2f2f2;}
+#proposal tr:nth-child(even){background-color: #f2f2f2;}
+#searchs tr:hover {background-color: #f2f2f2;}
+.city tr:hover {background-color: #f2f2f2;}
+#search2 tr:hover {background-color: #f2f2f2;}
+#search3 tr:hover {background-color: #f2f2f2;}
+#proposal tr:hover {background-color: #f2f2f2;}
+
+#searchs th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #fff;
+  color: white;
+}
+#search2 th{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #305680;
+  color: white;
+}
+#search3 th{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color :#305680;
+  color: white;
+}
+#proposal th{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #305680;
+  color: white;
+}
+</style>
+<form id="function" method="post" >
+    {% csrf_token %}
+    <div>
+        <div class="title-verifitcation" >
+            <h1>Mitigation</h1>
+          </div>
+
+        <div class="search-table-group-custom">
+            <input type="text" class="search-field" id="myInput" onkeyup="myFunction()" placeholder="Search Facility..." value="" name='searchComponent'>
+            <button type="submit" name="_search" id="search" class="btn btn-primary" style="padding: 5px 10px; font-size: 15px;"><i class="fa fa-search" aria-hidden="true"></i>
+            </button>
+        </div>
+        <ul class="nav nav-pills" style="margin-bottom: 20px; margin-top: 25px;">
+            <li class="btn btn-primary active" style="border-radius: 10px 0 0 0; height: 42px; font-size: 20px;" data-toggle="pill" href="#menu0" type="button">
+              Process Plan
+            </li>
+            <li style="border-radius: 0 10px 0 0; height: 42px;font-size: 20px;margin: 0; padding: 6px 45px;" data-toggle="pill" href="#menu1" type="button" class="btn btn-primary">
+              Tank
+            </li>
+          </ul>
+
+        <div class="tab-content vertical-chart">
+            <!---------------- Process Plant------------------>
+            <div id="menu0" class="tab-pane fade in active" >
+
+                <div  class="riskmatrix" style="margin-right: 10px">
+                    <canvas id="myCanvas" width="550" height="580"></canvas>
+                    <script>
+                        //Lấy đối tượng Canvas
+                        var canvas = document.getElementById('myCanvas');
+                        // Chọn đối tượng vẽ 2D
+                        var ctx = canvas.getContext('2d');
+                        var i = 100;
+                        // Tiến hành vẽ
+                        ctx.strokeStyle = 'black';
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(0+i, 80, 80, 80);
+                        ctx.strokeRect(0+i, 80, 80, 80);
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(80+i ,80,80,80);
+                        ctx.strokeRect(80+i,80,80,80)
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(160+i,80,80,80);
+                        ctx.strokeRect(160+i,80,80,80)
+                        ctx.fillStyle = 'red';
+                        ctx.fillRect(240+i,80,80,80);
+                        ctx.strokeRect(240+i,80,80,80)
+                        ctx.fillStyle = 'red';
+                        ctx.fillRect(320+i,80,80,80);
+                        ctx.strokeRect(320+i,80,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(0+i,160,80,80);
+                        ctx.strokeRect(0+i,160,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(80+i,160,80,80);
+                        ctx.strokeRect(80+i,160,80,80)
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(160+i,160,80,80);
+                        ctx.strokeRect(160+i,160,80,80);
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(240+i,160,80,80);
+                        ctx.strokeRect(240+i,160,80,80)
+                        ctx.fillStyle = 'red';
+                        ctx.fillRect(320+i,160,80,80);
+                        ctx.strokeRect(320+i,160,80,80)
+                        ctx.fillStyle = 'green';
+                        ctx.fillRect(0+i,240,80,80);
+                        ctx.strokeRect(0+i,240,80,80)
+                        ctx.fillStyle = 'green';
+                        ctx.fillRect(80+i,240,80,80);
+                        ctx.strokeRect(80+i,160,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(160+i,240,80,80);
+                        ctx.strokeRect(160+i,240,80,80)
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(240+i,240,80,80);
+                        ctx.strokeRect(240+i,240,80,80)
+                        ctx.fillStyle = 'red';
+                        ctx.fillRect(320+i,240,80,80);
+                        ctx.strokeRect(320+i,240,80,80)
+                        ctx.fillStyle = 'green';
+                        ctx.fillRect(0+i,320,80,80);
+                        ctx.strokeRect(0+i,320,80,80)
+                        ctx.fillStyle = 'green';
+                        ctx.fillRect(80+i,320,80,80);
+                        ctx.strokeRect(80+i,320,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(160+i,320,80,80);
+                        ctx.strokeRect(160+i,320,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(240+i,320,80,80);
+                        ctx.strokeRect(240+i,320,80,80);
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(320+i,320,80,80);
+                        ctx.strokeRect(320+i,320,80,80)
+                        ctx.fillStyle = 'green';
+                        ctx.fillRect(0+i,400,80,80);
+                        ctx.strokeRect(0+i,400,80,80)
+                        ctx.fillStyle = 'green';
+                        ctx.fillRect(80+i,400,80,80);
+                        ctx.strokeRect(80+i,400,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(160+i,400,80,80);
+                        ctx.strokeRect(160+i,400,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(240+i,400,80,80);
+                        ctx.strokeRect(240+i,400,80,80)
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(320+i,400,80,80);
+                        ctx.strokeRect(320+i,400,80,80);
+
+{#                        {% for a in APINormal %}#}
+{#                            ctx.beginPath();#}
+{#                            ctx.fillStyle="Blue";#}
+{#                            ctx.fillRect({{ a.API2.x }}-15,{{ a.API2.y }}-15,30,30);#}
+{##}
+{#                            ctx.beginPath();#}
+{#                            ctx.arc({{ a.API1.x }},{{ a.API1.y }},15,0,2 * Math.PI, true);#}
+{#                            ctx.fillStyle="LightGray";#}
+{#                            ctx.fill();#}
+{##}
+{#                            ctx.beginPath();#}
+{#                            ctx.fillStyle="Purple";#}
+{#                            ctx.fillRect({{ a.API3.x }}-15,{{ a.API3.y }}-10,30,20);#}
+{#                        {% endfor %}#}
+
+                        ctx.beginPath();
+                        ctx.arc(120,35,15,0,2 * Math.PI, true);
+                        ctx.fillStyle="LightGray";
+                        ctx.fill();
+                        ctx.beginPath();
+                        ctx.fillStyle="Blue";
+                        ctx.fillRect(250,20,30,30);
+                        ctx.font = "15px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText(": API1", 150, 45);
+                        ctx.fillText(": API2", 300, 45);
+
+                        ctx.beginPath();
+                        ctx.fillStyle="Purple";
+                        ctx.fillRect(400,30,30,20);
+                        ctx.font = "15px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText(": API3", 450, 45);
+
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("A", 30+i, 520);
+
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("B", 110+i, 520);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("C", 190+i, 520);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("D", 270+i, 520);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("E", 350+i, 520);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("1", 60, 445);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("2", 60, 365);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("3", 60, 285);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("4", 60, 205);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("5", 60, 125);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("Consequense", 250, 550);
+
+                        ctx.font = '20px Georgia';
+                        ctx.save();
+                        ctx.translate(35,330);
+                        ctx.rotate(-0.5*Math.PI);
+
+                        var rText = 'Probability';
+                        ctx.fillText(rText , 0, 0);
+                        ctx.restore();
+
+                        var rWidth = ctx.measureText(rText).width;
+                    </script>
+                </div>
+                <div class="city" class="showtable">
+                    <div>
+                        <table width=100% id="tableNomal">
+                            <thead>
+                            <!-- <tr>
+                                <th style="background-color:#387BF9;font-size: 15px;font-family: 'Spartan', sans-serif; color:White" colspan="17"><input type = "button" name = "-" id="portests1" style="color:black;" value = "Proposal"></th>
+                                <th style="font-size: 15px;font-family: 'Spartan', sans-serif" colspan="17">Recommended Proposal</th>
+                            </tr> -->
+                            <tr>
+                                <!------- Proposal-------->
+                                <th></th>
+                                <th>Number</th>
+                                <th>Site</th>
+                                <th>Facility</th>
+                                <th >Equipment Number</th>
+                                <th>Conponent Number</th>
+                                <th>AP1</th>
+                                <th>AP2</th>
+                                <th>AP3</th>
+                                <th >RLI9(months)</th>
+                                <th>Assessment Name</th>
+                                <th>Assessment Date</th>
+                                <th>Commission Date</th>
+                                <th style="overflow: auto; white-space: nowrap;">Risk Analysis Period</th>
+                                <th>Equipment Type</th>
+                                <th >Component Type</th>
+                                <th style="overflow: auto;white-space: nowrap;">Inspection Due Date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for a in APINormal %}
+                                <tr>
+                                    <td style="text-align: center"><div class="radio"><input type="checkbox" name="{{ a.ID }}" id="checkbox" class="checkboxClassNormal"></div></td>
+                                    <td><div class="a">{{a.Count}}</div></td>
+                                    <td><div class="a">{{a.Site}}</div></td>
+                                    <td><div class="a">{{a.Facility}}</div></td>
+                                    <td><div class="a">{{a.EquipmentNumber}}</div></td>
+                                    <td><div class="a" title="Click to see risk summary" style="font-weight: bold;"><a href="{% url 'damgeFactor' a.ID%}" target="_blank">{{a.ComponentNumber}}</a></div></td>
+                                    <td><div class="a">{{a.POFAPI1}}</div></td>
+                                    <td><div class="a">{{a.POFAPI2}}</div></td>
+                                    <td><div class="a">{{a.POFAPI3}}</div></td>
+                                    <td><div class="a">{{a.RLI}}</div></td>
+                                    <td><div class="a">{{a.AssessmentName}}</div></td>
+                                    <td><div class="a">{{a.AssessmentDate}}</div></td>
+                                    <td><div class="a">{{a.CommissionDate}}</div></td>
+                                    <td><div class="a">{{a.RiskAnalysisPeriod}}</div></td>
+                                    <td><div class="a">{{a.EquipmentType}}</div></td>
+                                    <td><div class="a">{{a.ComponentType}}</div></td>
+                                    <td><div class="a">{{a.InspectionDueDate}}</div></td>
+                                </tr>
+                            {% endfor %}
+                                 <script type="text/javascript">
+                                  // in the handler, 'this' refers to the box clicked on
+
+                                  $("input:checkbox").click( function() {
+                                       var canvas = document.getElementById('myCanvas');
+                                    // Chọn đối tượng vẽ 2D
+                                        var ctx = canvas.getContext('2d');
+                                        ctx.clearRect(69,69,446,426);
+
+                                        var i = 100;
+                                        // Tiến hành vẽ
+                                        ctx.strokeStyle = 'black';
+                                        ctx.fillStyle = 'orange';
+                                        ctx.fillRect(0+i, 80, 80, 80);
+                                        ctx.strokeRect(0+i, 80, 80, 80);
+                                        ctx.fillStyle = 'orange';
+                                        ctx.fillRect(80+i ,80,80,80);
+                                        ctx.strokeRect(80+i,80,80,80)
+                                        ctx.fillStyle = 'orange';
+                                        ctx.fillRect(160+i,80,80,80);
+                                        ctx.strokeRect(160+i,80,80,80)
+                                        ctx.fillStyle = 'red';
+                                        ctx.fillRect(240+i,80,80,80);
+                                        ctx.strokeRect(240+i,80,80,80)
+                                        ctx.fillStyle = 'red';
+                                        ctx.fillRect(320+i,80,80,80);
+                                        ctx.strokeRect(320+i,80,80,80)
+                                        ctx.fillStyle = 'yellow';
+                                        ctx.fillRect(0+i,160,80,80);
+                                        ctx.strokeRect(0+i,160,80,80)
+                                        ctx.fillStyle = 'yellow';
+                                        ctx.fillRect(80+i,160,80,80);
+                                        ctx.strokeRect(80+i,160,80,80)
+                                        ctx.fillStyle = 'orange';
+                                        ctx.fillRect(160+i,160,80,80);
+                                        ctx.strokeRect(160+i,160,80,80);
+                                        ctx.fillStyle = 'orange';
+                                        ctx.fillRect(240+i,160,80,80);
+                                        ctx.strokeRect(240+i,160,80,80)
+                                        ctx.fillStyle = 'red';
+                                        ctx.fillRect(320+i,160,80,80);
+                                        ctx.strokeRect(320+i,160,80,80)
+                                        ctx.fillStyle = 'green';
+                                        ctx.fillRect(0+i,240,80,80);
+                                        ctx.strokeRect(0+i,240,80,80)
+                                        ctx.fillStyle = 'green';
+                                        ctx.fillRect(80+i,240,80,80);
+                                        ctx.strokeRect(80+i,160,80,80)
+                                        ctx.fillStyle = 'yellow';
+                                        ctx.fillRect(160+i,240,80,80);
+                                        ctx.strokeRect(160+i,240,80,80)
+                                        ctx.fillStyle = 'orange';
+                                        ctx.fillRect(240+i,240,80,80);
+                                        ctx.strokeRect(240+i,240,80,80)
+                                        ctx.fillStyle = 'red';
+                                        ctx.fillRect(320+i,240,80,80);
+                                        ctx.strokeRect(320+i,240,80,80)
+                                        ctx.fillStyle = 'green';
+                                        ctx.fillRect(0+i,320,80,80);
+                                        ctx.strokeRect(0+i,320,80,80)
+                                        ctx.fillStyle = 'green';
+                                        ctx.fillRect(80+i,320,80,80);
+                                        ctx.strokeRect(80+i,320,80,80)
+                                        ctx.fillStyle = 'yellow';
+                                        ctx.fillRect(160+i,320,80,80);
+                                        ctx.strokeRect(160+i,320,80,80)
+                                        ctx.fillStyle = 'yellow';
+                                        ctx.fillRect(240+i,320,80,80);
+                                        ctx.strokeRect(240+i,320,80,80);
+                                        ctx.fillStyle = 'orange';
+                                        ctx.fillRect(320+i,320,80,80);
+                                        ctx.strokeRect(320+i,320,80,80)
+                                        ctx.fillStyle = 'green';
+                                        ctx.fillRect(0+i,400,80,80);
+                                        ctx.strokeRect(0+i,400,80,80)
+                                        ctx.fillStyle = 'green';
+                                        ctx.fillRect(80+i,400,80,80);
+                                        ctx.strokeRect(80+i,400,80,80)
+                                        ctx.fillStyle = 'yellow';
+                                        ctx.fillRect(160+i,400,80,80);
+                                        ctx.strokeRect(160+i,400,80,80)
+                                        ctx.fillStyle = 'yellow';
+                                        ctx.fillRect(240+i,400,80,80);
+                                        ctx.strokeRect(240+i,400,80,80)
+                                        ctx.fillStyle = 'orange';
+                                        ctx.fillRect(320+i,400,80,80);
+                                        ctx.strokeRect(320+i,400,80,80);
+
+                                        var $box = $(this );
+
+                                        var j=this.parentElement.parentElement.parentElement.rowIndex-2;
+
+
+                                        if ($box.is(":checked")) {
+
+                                        var group = "input:checkbox";
+
+                                        $(group).prop("checked", false);
+                                        $box.prop("checked", true);
+                                        } else {
+                                            $box.prop("checked", false);
+                                        }
+                                        ctx.beginPath();
+                                        ctx.fillStyle="Blue";
+                                      var XdataNomalJS=[];
+                                      var YdataNomalJS=[];
+
+                                      {% for a in APINormal %}
+                                        XdataNomalJS.push({{ a.API2.x }});
+                                        YdataNomalJS.push({{ a.API2.y }});
+                                        {% endfor %}
+                                        var cuong = document.getElementById("checkbox").checked;
+                                        if ($box.is(":checked")) {
+                                            ctx.fillStyle="Blue";
+                                            ctx.fillRect(XdataNomalJS[j+1]-15,YdataNomalJS[j+1]-15,30,30);
+
+
+                                            ctx.beginPath();
+                                            ctx.arc(XdataNomalJS[j+1],YdataNomalJS[j+1],15,0,2 * Math.PI, true);
+                                            ctx.fillStyle="LightGray";
+                                            ctx.fill();
+
+                                            ctx.beginPath();
+                                            ctx.fillStyle="Purple";
+                                            ctx.fillRect(XdataNomalJS[j+1]-15,YdataNomalJS[j+1]-10,30,20);
+                                            ctx.strokeStyle = 'black';
+                                            ctx.fillStyle = 'orange';
+                                        }
+                                });
+
+                                </script>
+                            </tbody>
+                        </table>
+
+                        <div style="position: absolute; top: -45px">
+                            <button type="submit" name="_refresh" style="text-align:right" class="btn btn-primary"><i class="fa fa-spinner">&emsp;Refresh</i></button>
+                            <!--<button type="submit" name="_detail" id="detail"style="text-align:left" class="btn btn-primary" disabled><i class="fa fa-info-circle">&emsp;Risk Summary</i></button>-->
+                            <button type="submit" name="_mitigation" id="mitigation"style="text-align:left" class="btn btn-primary" onclick="AnalysicClick()" disabled><i class="fa fa-sort-amount-asc">&emsp;Mitigation Planning</i></button>
+                        </div>
+                        <script>
+                            $( document ).ready(function() {
+                                    setTimeout(() => {
+                                    var isDisabledBtn = 0;
+                                    $(".checkboxClassNormal").each(function(){
+                                        if(this.checked) {
+                                        isDisabledBtn = 1;
+                                        }
+                                    })
+                                    console.log(isDisabledBtn);
+                                    if(isDisabledBtn == 1){ 
+                                        $("#detail").attr("disabled", false);
+                                        $("#mitigation").attr("disabled", false);
+                                    }
+                                    }, 10);
+                                });
+                            $("input[id='checkbox']").change(function (e) {
+                            var isChecked = $(this).prop("checked");
+                            if (isChecked == false) {
+                                $("#detail").attr("disabled", true);
+                                $("#mitigation").attr("disabled", true);
+                            }
+                            else {
+                                $("#detail").attr("disabled", false);
+                                $("#mitigation").attr("disabled", false);
+                                }
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <!---------------- Tank------------------>
+            <div id="menu1" class="tab-pane fade">
+            <div class="city" style="font-size: 15px; color: #444444">
+                    <div  class="riskmatrix">
+                    <canvas id="myCanvas1" width="550" height="580"></canvas>
+                    <script>
+                        //Lấy đối tượng Canvas
+                        var canvas = document.getElementById('myCanvas1');
+                        // Chọn đối tượng vẽ 2D
+                        var ctx = canvas.getContext('2d');
+                        var i = 100;
+                        // Tiến hành vẽ
+                        ctx.strokeStyle = 'black';
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(0+i, 80, 80, 80);
+                        ctx.strokeRect(0+i, 80, 80, 80);
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(80+i ,80,80,80);
+                        ctx.strokeRect(80+i,80,80,80)
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(160+i,80,80,80);
+                        ctx.strokeRect(160+i,80,80,80)
+                        ctx.fillStyle = 'red';
+                        ctx.fillRect(240+i,80,80,80);
+                        ctx.strokeRect(240+i,80,80,80)
+                        ctx.fillStyle = 'red';
+                        ctx.fillRect(320+i,80,80,80);
+                        ctx.strokeRect(320+i,80,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(0+i,160,80,80);
+                        ctx.strokeRect(0+i,160,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(80+i,160,80,80);
+                        ctx.strokeRect(80+i,160,80,80)
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(160+i,160,80,80);
+                        ctx.strokeRect(160+i,160,80,80);
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(240+i,160,80,80);
+                        ctx.strokeRect(240+i,160,80,80)
+                        ctx.fillStyle = 'red';
+                        ctx.fillRect(320+i,160,80,80);
+                        ctx.strokeRect(320+i,160,80,80)
+                        ctx.fillStyle = 'green';
+                        ctx.fillRect(0+i,240,80,80);
+                        ctx.strokeRect(0+i,240,80,80)
+                        ctx.fillStyle = 'green';
+                        ctx.fillRect(80+i,240,80,80);
+                        ctx.strokeRect(80+i,160,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(160+i,240,80,80);
+                        ctx.strokeRect(160+i,240,80,80)
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(240+i,240,80,80);
+                        ctx.strokeRect(240+i,240,80,80)
+                        ctx.fillStyle = 'red';
+                        ctx.fillRect(320+i,240,80,80);
+                        ctx.strokeRect(320+i,240,80,80)
+                        ctx.fillStyle = 'green';
+                        ctx.fillRect(0+i,320,80,80);
+                        ctx.strokeRect(0+i,320,80,80)
+                        ctx.fillStyle = 'green';
+                        ctx.fillRect(80+i,320,80,80);
+                        ctx.strokeRect(80+i,320,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(160+i,320,80,80);
+                        ctx.strokeRect(160+i,320,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(240+i,320,80,80);
+                        ctx.strokeRect(240+i,320,80,80);
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(320+i,320,80,80);
+                        ctx.strokeRect(320+i,320,80,80)
+                        ctx.fillStyle = 'green';
+                        ctx.fillRect(0+i,400,80,80);
+                        ctx.strokeRect(0+i,400,80,80)
+                        ctx.fillStyle = 'green';
+                        ctx.fillRect(80+i,400,80,80);
+                        ctx.strokeRect(80+i,400,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(160+i,400,80,80);
+                        ctx.strokeRect(160+i,400,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(240+i,400,80,80);
+                        ctx.strokeRect(240+i,400,80,80)
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(320+i,400,80,80);
+                        ctx.strokeRect(320+i,400,80,80);
+
+
+                        ctx.beginPath();
+                        ctx.arc(120,35,15,0,2 * Math.PI, true);
+                        ctx.fillStyle="LightGray";
+                        ctx.fill();
+                        ctx.beginPath();
+                        ctx.fillStyle="Blue";
+                        ctx.fillRect(250,20,30,30);
+                        ctx.font = "15px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText(": API1", 150, 45);
+                        ctx.fillText(": API2", 300, 45);
+
+                        ctx.beginPath();
+                        ctx.fillStyle="Purple";
+                        ctx.fillRect(400,30,30,20);
+                        ctx.font = "15px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText(": API3", 450, 45);
+
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("A", 30+i, 520);
+
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("B", 110+i, 520);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("C", 190+i, 520);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("D", 270+i, 520);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("E", 350+i, 520);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("1", 60, 445);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("2", 60, 365);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("3", 60, 285);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("4", 60, 205);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("5", 60, 125);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("Consequense", 250, 550);
+
+                        ctx.font = '20px Georgia';
+                        ctx.save();
+                        ctx.translate(35,330);
+                        ctx.rotate(-0.5*Math.PI);
+
+                        var rText = 'Probability';
+                        ctx.fillText(rText , 0, 0);
+                        ctx.restore();
+
+                        var rWidth = ctx.measureText(rText).width;
+                    </script>
+                    </div>
+                    <div class="city" style="font-size: 13px; color: #444444" class="showtable">
+                        <div>
+                            <table width=100% class="testing" id="tableTank">
+                                <thead>
+                                <!-- <tr>
+                                    <th style="background-color:#387BF9;font-size: 15px;font-family: 'Spartan', sans-serif; color:White" colspan="17"><input type = "button" name = "-" id="portests1" style="color:black;" value = "Proposal"></th>
+                                    <th style="background-color:#305680;font-size: 15px;font-family: 'Spartan', sans-serif; color:White" colspan="17"> Recommended Proposal</th>
+                                </tr> -->
+                                <tr>
+                                    <!------- Proposal-------->
+                                    <th></th>
+                                    <th>Number</th>
+                                    <th>Site</th>
+                                    <th>Facility</th>
+                                    <th >Equipment Number</th>
+                                    <th>Conponent Number</th>
+                                    <th>AP1</th>
+                                    <th>AP2</th>
+                                    <th>AP3</th>
+                                    <th >RLI9(months)</th>
+                                    <th>Assessment Name</th>
+                                    <th>Assessment Date</th>
+                                    <th>Commission Date</th>
+                                    <th style="overflow: auto; white-space: nowrap;">Risk Analysis<br> Period</th>
+                                    <th>Equipment Type</th>
+                                    <th >Component Type</th>
+                                    <th style="overflow: auto;white-space: nowrap;">Inspection Due<br>Date</th>
+                                    <th>Design Code</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for a in APITank %}
+                                    <tr>
+                                        <td><div class="radio"><input type="checkbox" name="{{ a.ID }}" id="checkboxT" class="checkboxClassTank"></div></td>
+                                        <td><div class="a">{{a.Count}}</div></td>
+                                        <td><div class="a">{{a.Site}}</div></td>
+                                        <td><div class="a">{{a.Facility}}</div></td>
+                                        <td><div class="a">{{a.EquipmentNumber}}</div></td>
+                                        <td><div class="a" title="Click to see risk summary" style="font-weight: bold;"><a href="{% url 'damgeFactor' a.ID%}" target="_blank">{{a.ComponentNumber}}</a></div></td>
+                                        <td><div class="a">{{a.POFAPI1}}</div></td>
+                                        <td><div class="a">{{a.POFAPI2}}</div></td>
+                                        <td><div class="a">{{a.POFAPI3}}</div></td>
+                                        <td><div class="a">{{a.RLI}}</div></td>
+                                        <td><div class="a">{{a.AssessmentName}}</div></td>
+                                        <td><div class="a">{{a.AssessmentDate}}</div></td>
+                                        <td><div class="a">{{a.CommissionDate}}</div></td>
+                                        <td><div class="a">{{a.RiskAnalysisPeriod}}</div></td>
+                                        <td><div class="a">{{a.EquipmentType}}</div></td>
+                                        <td><div class="a">{{a.ComponentType}}</div></td>
+                                        <td><div class="a">{{a.InspectionDueDate}}</div></td>
+                                        <td><div class="a">{{a.DesignCode}}</div></td>
+                                    </tr>
+                                {% endfor %}
+                                <script type="text/javascript">
+
+                                  // in the handler, 'this' refers to the box clicked on
+
+                                  $("input:checkbox").click( function() {
+                                       var canvas = document.getElementById('myCanvas1');
+                                    // Chọn đối tượng vẽ 2D
+                                        var ctx = canvas.getContext('2d');
+                                        ctx.clearRect(69,69,446,426);
+
+                                        var i = 100;
+                                        // Tiến hành vẽ
+                                        ctx.strokeStyle = 'black';
+                                        ctx.fillStyle = 'orange';
+                                        ctx.fillRect(0+i, 80, 80, 80);
+                                        ctx.strokeRect(0+i, 80, 80, 80);
+                                        ctx.fillStyle = 'orange';
+                                        ctx.fillRect(80+i ,80,80,80);
+                                        ctx.strokeRect(80+i,80,80,80)
+                                        ctx.fillStyle = 'orange';
+                                        ctx.fillRect(160+i,80,80,80);
+                                        ctx.strokeRect(160+i,80,80,80)
+                                        ctx.fillStyle = 'red';
+                                        ctx.fillRect(240+i,80,80,80);
+                                        ctx.strokeRect(240+i,80,80,80)
+                                        ctx.fillStyle = 'red';
+                                        ctx.fillRect(320+i,80,80,80);
+                                        ctx.strokeRect(320+i,80,80,80)
+                                        ctx.fillStyle = 'yellow';
+                                        ctx.fillRect(0+i,160,80,80);
+                                        ctx.strokeRect(0+i,160,80,80)
+                                        ctx.fillStyle = 'yellow';
+                                        ctx.fillRect(80+i,160,80,80);
+                                        ctx.strokeRect(80+i,160,80,80)
+                                        ctx.fillStyle = 'orange';
+                                        ctx.fillRect(160+i,160,80,80);
+                                        ctx.strokeRect(160+i,160,80,80);
+                                        ctx.fillStyle = 'orange';
+                                        ctx.fillRect(240+i,160,80,80);
+                                        ctx.strokeRect(240+i,160,80,80)
+                                        ctx.fillStyle = 'red';
+                                        ctx.fillRect(320+i,160,80,80);
+                                        ctx.strokeRect(320+i,160,80,80)
+                                        ctx.fillStyle = 'green';
+                                        ctx.fillRect(0+i,240,80,80);
+                                        ctx.strokeRect(0+i,240,80,80)
+                                        ctx.fillStyle = 'green';
+                                        ctx.fillRect(80+i,240,80,80);
+                                        ctx.strokeRect(80+i,160,80,80)
+                                        ctx.fillStyle = 'yellow';
+                                        ctx.fillRect(160+i,240,80,80);
+                                        ctx.strokeRect(160+i,240,80,80)
+                                        ctx.fillStyle = 'orange';
+                                        ctx.fillRect(240+i,240,80,80);
+                                        ctx.strokeRect(240+i,240,80,80)
+                                        ctx.fillStyle = 'red';
+                                        ctx.fillRect(320+i,240,80,80);
+                                        ctx.strokeRect(320+i,240,80,80)
+                                        ctx.fillStyle = 'green';
+                                        ctx.fillRect(0+i,320,80,80);
+                                        ctx.strokeRect(0+i,320,80,80)
+                                        ctx.fillStyle = 'green';
+                                        ctx.fillRect(80+i,320,80,80);
+                                        ctx.strokeRect(80+i,320,80,80)
+                                        ctx.fillStyle = 'yellow';
+                                        ctx.fillRect(160+i,320,80,80);
+                                        ctx.strokeRect(160+i,320,80,80)
+                                        ctx.fillStyle = 'yellow';
+                                        ctx.fillRect(240+i,320,80,80);
+                                        ctx.strokeRect(240+i,320,80,80);
+                                        ctx.fillStyle = 'orange';
+                                        ctx.fillRect(320+i,320,80,80);
+                                        ctx.strokeRect(320+i,320,80,80)
+                                        ctx.fillStyle = 'green';
+                                        ctx.fillRect(0+i,400,80,80);
+                                        ctx.strokeRect(0+i,400,80,80)
+                                        ctx.fillStyle = 'green';
+                                        ctx.fillRect(80+i,400,80,80);
+                                        ctx.strokeRect(80+i,400,80,80)
+                                        ctx.fillStyle = 'yellow';
+                                        ctx.fillRect(160+i,400,80,80);
+                                        ctx.strokeRect(160+i,400,80,80)
+                                        ctx.fillStyle = 'yellow';
+                                        ctx.fillRect(240+i,400,80,80);
+                                        ctx.strokeRect(240+i,400,80,80)
+                                        ctx.fillStyle = 'orange';
+                                        ctx.fillRect(320+i,400,80,80);
+                                        ctx.strokeRect(320+i,400,80,80);
+
+                                        var $box = $(this );
+
+                                        var j=this.parentElement.parentElement.parentElement.rowIndex-2;
+
+
+                                        if ($box.is(":checked")) {
+
+                                        var group = "input:checkbox";
+
+                                        $(group).prop("checked", false);
+                                        $box.prop("checked", true);
+                                        } else {
+                                            $box.prop("checked", false);
+                                        }
+                                        ctx.beginPath();
+                                        ctx.fillStyle="Blue";
+                                      var XdataNomalJS=[];
+                                      var YdataNomalJS=[];
+
+                                      {% for a in APITank %}
+                                        XdataNomalJS.push({{ a.API2.x }});
+                                        YdataNomalJS.push({{ a.API2.y }});
+                                    {% endfor %}
+                                        if ($box.is(":checked")) {
+                                            ctx.beginPath();
+                                            ctx.fillStyle="Blue";
+                                            ctx.fillRect(XdataNomalJS[j+1]-15,YdataNomalJS[j+1]-15,30,30);
+
+
+                                            ctx.beginPath();
+                                            ctx.arc(XdataNomalJS[j+1],YdataNomalJS[j+1],15,0,2 * Math.PI, true);
+                                            ctx.fillStyle="LightGray";
+                                            ctx.fill();
+
+                                            ctx.beginPath();
+                                            ctx.fillStyle="Purple";
+                                            ctx.fillRect(XdataNomalJS[j+1]-15,YdataNomalJS[j+1]-10,30,20);
+                                            ctx.strokeStyle = 'black';
+                                            ctx.fillStyle = 'orange';
+                                        }
+                                });
+
+                                </script>
+{#                                <script type="text/javascript">#}
+{##}
+{#                                  // in the handler, 'this' refers to the box clicked on#}
+{##}
+{#                                  $("input:checkbox").click( function() {#}
+{#                                     var canvas = document.getElementById('myCanvas');#}
+{#                                    // Chọn đối tượng vẽ 2D#}
+{#                                        var ctx = canvas.getContext('2d');#}
+{#                                        ctx.clearRect(69,69,446,426);#}
+{##}
+{#                                        var i = 100;#}
+{#                                        // Tiến hành vẽ#}
+{#                                        ctx.strokeStyle = 'black';#}
+{#                                        ctx.fillStyle = 'orange';#}
+{#                                        ctx.fillRect(0+i, 80, 80, 80);#}
+{#                                        ctx.strokeRect(0+i, 80, 80, 80);#}
+{#                                        ctx.fillStyle = 'orange';#}
+{#                                        ctx.fillRect(80+i ,80,80,80);#}
+{#                                        ctx.strokeRect(80+i,80,80,80)#}
+{#                                        ctx.fillStyle = 'orange';#}
+{#                                        ctx.fillRect(160+i,80,80,80);#}
+{#                                        ctx.strokeRect(160+i,80,80,80)#}
+{#                                        ctx.fillStyle = 'red';#}
+{#                                        ctx.fillRect(240+i,80,80,80);#}
+{#                                        ctx.strokeRect(240+i,80,80,80)#}
+{#                                        ctx.fillStyle = 'red';#}
+{#                                        ctx.fillRect(320+i,80,80,80);#}
+{#                                        ctx.strokeRect(320+i,80,80,80)#}
+{#                                        ctx.fillStyle = 'yellow';#}
+{#                                        ctx.fillRect(0+i,160,80,80);#}
+{#                                        ctx.strokeRect(0+i,160,80,80)#}
+{#                                        ctx.fillStyle = 'yellow';#}
+{#                                        ctx.fillRect(80+i,160,80,80);#}
+{#                                        ctx.strokeRect(80+i,160,80,80)#}
+{#                                        ctx.fillStyle = 'orange';#}
+{#                                        ctx.fillRect(160+i,160,80,80);#}
+{#                                        ctx.strokeRect(160+i,160,80,80);#}
+{#                                        ctx.fillStyle = 'orange';#}
+{#                                        ctx.fillRect(240+i,160,80,80);#}
+{#                                        ctx.strokeRect(240+i,160,80,80)#}
+{#                                        ctx.fillStyle = 'red';#}
+{#                                        ctx.fillRect(320+i,160,80,80);#}
+{#                                        ctx.strokeRect(320+i,160,80,80)#}
+{#                                        ctx.fillStyle = 'green';#}
+{#                                        ctx.fillRect(0+i,240,80,80);#}
+{#                                        ctx.strokeRect(0+i,240,80,80)#}
+{#                                        ctx.fillStyle = 'green';#}
+{#                                        ctx.fillRect(80+i,240,80,80);#}
+{#                                        ctx.strokeRect(80+i,160,80,80)#}
+{#                                        ctx.fillStyle = 'yellow';#}
+{#                                        ctx.fillRect(160+i,240,80,80);#}
+{#                                        ctx.strokeRect(160+i,240,80,80)#}
+{#                                        ctx.fillStyle = 'orange';#}
+{#                                        ctx.fillRect(240+i,240,80,80);#}
+{#                                        ctx.strokeRect(240+i,240,80,80)#}
+{#                                        ctx.fillStyle = 'red';#}
+{#                                        ctx.fillRect(320+i,240,80,80);#}
+{#                                        ctx.strokeRect(320+i,240,80,80)#}
+{#                                        ctx.fillStyle = 'green';#}
+{#                                        ctx.fillRect(0+i,320,80,80);#}
+{#                                        ctx.strokeRect(0+i,320,80,80)#}
+{#                                        ctx.fillStyle = 'green';#}
+{#                                        ctx.fillRect(80+i,320,80,80);#}
+{#                                        ctx.strokeRect(80+i,320,80,80)#}
+{#                                        ctx.fillStyle = 'yellow';#}
+{#                                        ctx.fillRect(160+i,320,80,80);#}
+{#                                        ctx.strokeRect(160+i,320,80,80)#}
+{#                                        ctx.fillStyle = 'yellow';#}
+{#                                        ctx.fillRect(240+i,320,80,80);#}
+{#                                        ctx.strokeRect(240+i,320,80,80);#}
+{#                                        ctx.fillStyle = 'orange';#}
+{#                                        ctx.fillRect(320+i,320,80,80);#}
+{#                                        ctx.strokeRect(320+i,320,80,80)#}
+{#                                        ctx.fillStyle = 'green';#}
+{#                                        ctx.fillRect(0+i,400,80,80);#}
+{#                                        ctx.strokeRect(0+i,400,80,80)#}
+{#                                        ctx.fillStyle = 'green';#}
+{#                                        ctx.fillRect(80+i,400,80,80);#}
+{#                                        ctx.strokeRect(80+i,400,80,80)#}
+{#                                        ctx.fillStyle = 'yellow';#}
+{#                                        ctx.fillRect(160+i,400,80,80);#}
+{#                                        ctx.strokeRect(160+i,400,80,80)#}
+{#                                        ctx.fillStyle = 'yellow';#}
+{#                                        ctx.fillRect(240+i,400,80,80);#}
+{#                                        ctx.strokeRect(240+i,400,80,80)#}
+{#                                        ctx.fillStyle = 'orange';#}
+{#                                        ctx.fillRect(320+i,400,80,80);#}
+{#                                        ctx.strokeRect(320+i,400,80,80);#}
+{#                                        var $box = $(this);#}
+{#                                        var z=this.parentElement.parentElement.parentElement.rowIndex-2;#}
+{##}
+{#                                        alert(z);#}
+{#                                        if ($box.is(":checked")) {#}
+{##}
+{#                                            var group = "input:checkbox";#}
+{##}
+{#                                            $(group).prop("checked", false);#}
+{#                                            $box.prop("checked", true);#}
+{#                                          } else {#}
+{#                                            $box.prop("checked", false);#}
+{#                                          }#}
+{#                                        });#}
+{#                                          var XdataTankJS=[];#}
+{#                                            var YdataTankJS=[];#}
+{#                                          {% for a in APITank %}#}
+{#                                              XdataTankJS.push({{ a.API2.x }});#}
+{#                                                YdataTankJS.push({{ a.API2.y }});#}
+{##}
+{#                                        {% endfor %}#}
+{##}
+{#                                        ctx.beginPath();#}
+{#                                        ctx.fillStyle="Blue";#}
+{#                                        ctx.fillRect(XdataTankJS[z]-15,YdataTankJS[z]-15,30,30);#}
+{##}
+{##}
+{#                                        ctx.beginPath();#}
+{#                                        ctx.arc(XdataTankJS[j],YdataTankJS[j],15,0,2 * Math.PI, true);#}
+{#                                        ctx.fillStyle="LightGray";#}
+{#                                        ctx.fill();#}
+{##}
+{#                                        ctx.beginPath();#}
+{#                                        ctx.fillStyle="Purple";#}
+{#                                        ctx.fillRect(XdataTankJS[j]-15,YdataTankJS[j]-10,30,20);#}
+{#                                        ctx.strokeStyle = 'black';#}
+{#                                        ctx.fillStyle = 'orange';#}
+{##}
+{##}
+{#                                </script>#}
+                                </tbody>
+                            </table>
+                            <div style="position: absolute; top: -45px">
+                                <!--<button type="submit" name="_verification" style="text-align:left" class="btn btn-primary"><i class="fa fa-pencil">&emsp;Verification</i></button>-->
+                                <button type="submit" name="_refresh" style="text-align:right" class="btn btn-primary"><i class="fa fa-spinner">&emsp;Refresh</i></button>
+                                <!--<button type="submit" name="_detail" id="detailT"style="text-align:left" class="btn btn-primary" disabled><i class="fa fa-info-circle" >&emsp;Risk Summary</i></button>-->
+                                <button type="submit" name="_mitigation" id="mitigationT"style="text-align:left" onclick="AnalysicClick()" class="btn btn-primary" disabled><i class="fa fa-sort-amount-asc">&emsp;Mitigation Planning</i></button>
+                            </div>
+                            <script>
+                                $( document ).ready(function() {
+                                    setTimeout(() => {
+                                    var isDisabledBtn = 0;
+                                    $(".checkboxClassTank").each(function(){
+                                        if(this.checked) {
+                                        isDisabledBtn = 1;
+                                        }
+                                    })
+                                    console.log(isDisabledBtn);
+                                    if(isDisabledBtn == 1){ 
+                                        $("#detailT").attr("disabled", false);
+                                        $("#mitigationT").attr("disabled", false);
+                                    }
+                                    }, 10);
+                                });
+                            $("input[id='checkboxT']").change(function (e) {
+                            var isChecked = $(this).prop("checked");
+                            if (isChecked == false) {
+                                $("#detailT").attr("disabled", true);
+                                $("#mitigationT").attr("disabled", true);
+                            }
+                            else {
+                                $("#detailT").attr("disabled", false);
+                                $("#mitigationT").attr("disabled", false);
+                                }
+                            });
+                            $(document).ready(function() {
+                              $("input[type=checkbox]").prop("checked", false);
+                              $("input[type=checkbox]:first").prop("checked", true);
+
+                              $("input[type=checkbox]").click(function(event) {
+                                $("input[type=checkbox]").prop("checked", false);
+                                $(this).prop("checked", true);
+
+                                //event.preventDefault();
+                              });
+                            });
+                            window.onload = function() {
+                              document.querySelectorAll("INPUT[type='checkbox']").forEach(function(rd) {
+                                rd.addEventListener("mousedown", function() {
+                                  if(this.checked) {
+                                    this.onclick=function() {
+                                      this.checked=false
+                                    }
+                                  } else {
+                                    this.onclick=null
+                                  }
+                                })
+                              })
+                            }
+                            function AnalysicClick() {
+                                var div = document.createElement('div');
+                                var img = document.createElement('img');
+                                img.src = '{% static 'image/loading/Pacman-1s-100px.gif' %}';
+                                div.style.cssText = "position: fixed;left: 50%; top: 30%; width: 300px; text-align: center; background: rgba(54, 25, 25, .00004); border: 0px solid #000;";
+                                div.appendChild(img);
+                                document.body.appendChild(div);
+                                return true;
+                            }
+                            function myFunction() {
+                              var input, filter, table,table1, tr,trTank, td,td4, i, txtValue,txtValue4;
+                              input = document.getElementById("myInput");
+                              filter = input.value.toUpperCase();
+                              table = document.getElementById("tableNomal");
+                              table1 = document.getElementById("tableTank");
+                              tr = table.getElementsByTagName("tr");
+                              trTank = table1.getElementsByTagName("tr");
+                              for (i = 0; i < tr.length; i++) {
+                                td = tr[i].getElementsByTagName("td")[3];
+                                td4 = tr[i].getElementsByTagName("td")[4];
+                                if (td) {
+                                  txtValue = td.textContent || td.innerText;
+                                  txtValue4 = td4.textContent || td4.innerText;
+                                  if (txtValue.toUpperCase().indexOf(filter) > -1 || txtValue4.toUpperCase().indexOf(filter) > -1) {
+                                    tr[i].style.display = "";
+                                  } else {
+                                    tr[i].style.display = "none";
+                                  }
+                                }
+                              }
+                              for (i = 0; i < trTank.length; i++) {
+                                td = trTank[i].getElementsByTagName("td")[3];
+                                td4 = trTank[i].getElementsByTagName("td")[4];
+                                if (td) {
+                                  txtValue = td.textContent || td.innerText;
+                                  txtValue4 = td4.textContent || td4.innerText;
+                                  if (txtValue.toUpperCase().indexOf(filter) > -1 || txtValue4.toUpperCase().indexOf(filter) > -1) {
+                                    trTank[i].style.display = "";
+                                  } else {
+                                    trTank[i].style.display = "none";
+                                  }
+                                }
+                              }
+                            }
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+
+
+    </div>
+
+</form>
+{% endblock %}

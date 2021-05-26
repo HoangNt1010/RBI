@@ -1,0 +1,178 @@
+{% extends 'BaseUI/BaseFacility/baseChart.html' %}
+{% load staticfiles %}
+
+{% block library %}
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+{% endblock %}
+
+<!----------BLOCK MENU----------->
+{% block backComp %}{% url 'newsensor' componentID %}{% endblock %}
+<!----------END BLOCK----------->
+
+{% block data-content %}
+    <form method="post">
+    {% csrf_token %}
+        <div style="text-align: center">
+            <canvas id="myChart" width="700" height="300" ></canvas>
+            <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+
+            <script>
+                var ctx = document.getElementById("myChart");
+                var myLineChart = new Chart(ctx,{
+                    type: 'line',
+                    data: {
+                        labels: [{% for datetimes in datetimes %}"{{ datetimes }}",{% endfor %}"{{ endLabel }}"],
+                        datasets:[{
+                            label: 'Temperature',
+                            backgroundColor: "#0000BB",
+                            borderColor: "#0000BB",
+                            data: [{% for temp  in temp  %}{{ temp  }},{% endfor %}],
+                            fill: false,
+                            lineTension:0.2
+                        },{
+                            label: 'Dust',
+                            backgroundColor: "#C00000",
+                            borderColor: "#C00000",
+                            data: [{% for Dust in Dust %}{{ Dust }},{% endfor %}],
+                            fill: false,
+                            lineTension:0.2
+                        },{
+                            label: 'Nominal Diameter',
+                            backgroundColor: "#00FF00",
+                            borderColor: "#00FF00",
+                            data: [{% for diameter in diameter %}{{ diameter }},{% endfor %}],
+                            fill: false,
+                            lineTension:0.2
+                        },{
+                            label: 'Cladding Thickness',
+                            backgroundColor: "#FF00FF",
+                            borderColor: "#FF00FF",
+                            data: [{% for cthickness in cthickness %}{{ cthickness }},{% endfor %}],
+                            fill: false,
+                            lineTension:0.2
+                        },{
+                            label: 'Component Volume',
+                            backgroundColor: "#800000",
+                            borderColor: "#800000",
+                            data: [{% for Com  in Com  %}{{ Com  }},{% endfor %}],
+                            fill: false,
+                            lineTension:0.2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        title: {
+                            display: true,
+                            text: 'Sensor 1 Chart: {{ proposalname }}'
+                        },
+                        tooltips: {
+                            mode: 'index',
+                            intersect: false
+                        },
+                        hover: {
+                            mode: 'nearest',
+                            intersect: true
+                        },
+                        scales: {
+                            xAxes: [{
+                                display: true,
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Time'
+                                }
+                            }],
+                            yAxes: [{
+                                display: true,
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Value'
+                                },
+                                ticks: {
+                                    beginAtZero: true,
+                                    steps: 10,
+                                    stepValue: 5,
+                                    max: 100
+                                }
+                            }]
+                        }
+                    }
+                })
+            </script>
+        </div>
+
+        <div style="text-align: center">
+            <canvas id="myChart2" width="700" height="300" ></canvas>
+            <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+
+            <script>
+                var ctx = document.getElementById("myChart2");
+                var myLineChart = new Chart(ctx,{
+                    type: 'line',
+                    data: {
+                        labels: [{% for datetimes in datetimes %}"{{ datetimes }}",{% endfor %}"{{ endLabel }}"],
+                        datasets:[{
+                            label: 'Maximum Temperature',
+                            backgroundColor: "#0000BB",
+                            borderColor: "#0000BB",
+                            data: [{% for Max_Temp  in Max_Temp  %}{{ Max_Temp  }},{% endfor %}],
+                            fill: false,
+                            lineTension:0.2
+                        },{
+                            label: 'Equipment Volume',
+                            backgroundColor: "#C00000",
+                            borderColor: "#C00000",
+                            data: [{% for Equip  in Equip  %}{{ Equip  }},{% endfor %}],
+                            fill: false,
+                            lineTension:0.2
+                        },{
+                            label: 'Required Temperature',
+                            backgroundColor: "#00FF00",
+                            borderColor: "#00FF00",
+                            data: [{% for Req_Temp  in Req_Temp  %}{{ Req_Temp  }},{% endfor %}],
+                            fill: false,
+                            lineTension:0.2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        title: {
+                            display: true,
+                            text: 'Sensor 2 Chart: {{ proposalname }}'
+                        },
+                        tooltips: {
+                            mode: 'index',
+                            intersect: false
+                        },
+                        hover: {
+                            mode: 'nearest',
+                            intersect: true
+                        },
+                        scales: {
+                            xAxes: [{
+                                display: true,
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Time'
+                                }
+                            }],
+                            yAxes: [{
+                                display: true,
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'value'
+                                },
+                                ticks: {
+                                    beginAtZero: true,
+                                    steps: 10,
+                                    stepValue: 5,
+                                    max: 200
+                                }
+                            }]
+                        }
+                    }
+                })
+            </script>
+        </div>
+    </form>
+{% endblock %}

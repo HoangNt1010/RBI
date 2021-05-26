@@ -1,0 +1,11 @@
+{% extends 'BaseUI/BaseManager/baseManager.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block title %}Manufacture{% endblock %}
+
+{% block vertical %}
+    <!-- <a class="active">Manufacture Management</a> -->
+    <a href="{% block listmanu %}{% endblock %}" class="{% if page == 'listManu' %}activeLink{% endif %}"><i class="fa fa-list">&emsp;List of Manufacture</i></a>
+    <a href="{% block backfaci %}{% endblock %}"><i class="fa fa-arrow-left">&emsp;Back to Management</i></a>
+{% endblock %}

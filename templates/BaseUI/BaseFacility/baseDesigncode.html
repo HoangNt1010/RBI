@@ -1,0 +1,19 @@
+{% extends 'BaseUI/BaseFacility/baseBusiness.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block title %}DesignCode{% endblock %}
+
+{% block vertical %}
+    <!-- <a class="active">DesignCode Management</a> -->
+    {#<a href="{% block listfaci %}{% endblock %}" class="{% if page == 'listFacility' %}activeLink{% endif %}"><i class="fa fa-list">&emsp;List of Facilities</i></a>  #}
+    {#<a href="{% block design %}{% endblock %}" class="{% if page == 'listDesign' %}activeLink{% endif %}"><i class="fa fa-barcode">&emsp;Design Code</i></a>#}
+    {#<a href="{% block manu %}{% endblock %}" class="{% if page == 'listManu' %}activeLink{% endif %}"><i class="fa fa-cubes">&emsp;Manufacture</i></a>#}
+    {#<a href="{% block uploadInsp %}{% endblock %}" class="{% if page == 'uploadHistory' %}activeLink{% endif %}"><i class="fa fa-file">&emsp;Upload History</i></a>#}
+    {#<a href="{% block uploadPlant %}{% endblock %}" class="{% if page == 'uploadPlan' %}activeLink{% endif %}"><i class="fa fa-file-excel-o">&emsp;Upload Plan</i></a>#}
+    <a href="{% block listeq %}{% endblock %}" class="{% if page == 'listEquip' %}activeLink{% endif %}"><i class="fa fa-list">&emsp; List of Equipments</i></a>
+    <a href="{% block design %}{% endblock %}" class="{% if page == 'listDesign' %}activeLink{% endif %}"><i class="fa fa-barcode">&emsp; Design Code</i></a>
+    <a href="{% block manu %}{% endblock %}" class="{% if page == 'listManu' %}activeLink{% endif %}"><i class="fa fa-cubes">&emsp;Manufacture</i></a>
+{#    <a href="{% block mana %}{% endblock %}" class="{% if page == 'mana' %}activeLink{% endif %}"><i class="fa fa-list">&emsp;Management Systems</i></a>#}
+    <a href="{% block backfaci %}{% endblock %}"><i class="fa fa-arrow-left">&emsp; Back to Facility</i></a>
+{% endblock %}

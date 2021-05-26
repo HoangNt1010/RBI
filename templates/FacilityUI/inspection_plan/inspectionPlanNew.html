@@ -1,0 +1,319 @@
+{% extends 'BaseUI/BaseFacility/baseInspectionPlan.html' %}
+{% load staticfiles %}
+{% load static %}
+<!-------------- BLOCK MENU ---------------->
+{% block listfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+{% block newfaci %}{% url 'facilitiesNew' siteID %}{% endblock %}
+{% block design %}{% url 'designcodeDisplay' siteID %}{% endblock %}
+{% block manu %}{% url 'manufactureDisplay' siteID %}{% endblock %}
+{% block uploadInsp %}{% url 'upload' siteID %}{% endblock %}
+{% block uploadPlant %}{% url 'uploadPlan' siteID %}{% endblock %}
+{% block manageFile %}{% url 'manageFile' siteID %}{% endblock %}
+{#{% block uploadScada %}{% url 'uploadScada' siteID %}{% endblock %}#}
+{% block inspecPlan %}{% url 'inspectionPlan' siteID %}{% endblock %}
+{% block rbitracking %}{% url 'rbitracking' %}{% endblock %}
+{% block mitigationSite %}{% url 'mitigationSite' siteID%}{% endblock %}
+{% block HelpSite %}{% url 'help' %}{% endblock %}
+{% block forum %}{% url 'forum' %}{% endblock %}
+{% block testSample %}{% url 'testsample' siteID%}{% endblock %}
+{% block settingAccount %}{% url 'settingAccount' siteID %}{% endblock %}
+{% block settingNotification %}{% url 'settingNotification' siteID %}{% endblock %}
+{% block homedetail %}{% url 'homefacility' siteID%}{% endblock %}
+<!----------------- END BLOCK----------------->
+{% block data-content %}
+<style>
+#customers,#searchs {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+#searchstb tr{
+    cursor:pointer;
+}
+#customers td, #customers th,#searchs td,#searchs th {
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+
+#customers,#searchs tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers,#searchs tr:hover {background-color: #ddd;}
+
+#searchs {
+    width: 98%;
+}
+#searchs th {
+    position: sticky;
+    top: -1px;
+}
+#customers,#searchs th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #1c67b2;
+  color: #fff;
+}
+#searchs td {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    cursor: pointer;
+}
+.city{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+.city td, .city th{
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+.city tr:nth-child(even){background-color: #f2f2f2;}
+.city tr:hover {background-color: #ddd;}
+.city th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #1c67b2;
+  color: #fff;
+  font-size: 13px;
+}
+h2 {
+    text-align: center;
+    color: #fff;
+    font-weight: 600;
+}
+</style>
+<form id="inspectionplan" method="post" >
+    {% csrf_token %}
+    <div>
+        <h2>
+            Inspection Coverages of the selected Inspection / Mitigation Plan
+        </h2>
+    </div>
+    <div>
+        <br/>
+        <div>
+            <h4 class="color-white">Inspection Coverage</h4>
+            <div style="text-align: left">
+                <a id="#search" class="btn btn-primary" data-toggle="modal" data-target="#searchPlan"><i class="fa fa-search" aria-hidden="true">Search Available Inspection plan </i></a>
+                <button name="_creat" class="btn btn-primary" type="submit"><i class="fa fa-pencil">&emsp;Create New Inspection Plan</i></button>
+                {% if name in t2 %}
+                <button name="_scheduled" class="btn btn-primary" type="submit" disabled><i class="fa fa-list-alt">&emsp;Scheduled or Carried</i></button>
+                {% else %}
+                <button name="_scheduled" class="btn btn-primary" type="submit"><i class="fa fa-list-alt">&emsp;Scheduled or Carried</i></button>
+                {% endif %}
+                <!--<button name="_restore" class="btn btn-primary" type="submit"><i classearchs="fa fa-cloud" aria-hidden="true">&emsp;Restore Component</i></button>-->
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-3 color-white">Inspection/Mitigation Plan:<span style="color: red">*</span></div>
+                <div class="col-md-4"><input type="text" class="form-control" name="InspectionPlan" value="{{name}}" disabled required/></div>
+                {% if name in t1 %}
+                <div class="col-md-4" style="text-align: center"><button name="_add" class="btn btn-primary" type="submit" disabled>Add Inspection Plan Details</button></div>
+                {% else %}
+                <div class="col-md-4" style="text-align: center"><button name="_add" class="btn btn-primary" type="submit" onclick="Click();">Add Inspection Plan Details</button></div>
+                {% endif %}
+            </div>
+            {% if error.exist %}
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-8"><span style="color: red; font-size: 16px">{{ error.exist }}</span></div>
+                </div>
+            {% endif %}
+            <div class="row" style="margin-top: 3px;">
+                <div class="col-md-3 color-white">Inspection/Mitigation Plan Date:<span style="color: red">*</span></div>
+                <div class="col-md-4"><input type="text" class="form-control" name="InspectionDate" value="{{date}}" disabled required/></div>
+                {% if name in t2 %}
+                <div class="col-md-4" style="text-align: center"><button name="_edit" class="btn btn-primary" type="submit" disabled>Edit Inspection Plan Details</button></div>
+                {% else %}
+                <div class="col-md-4" style="text-align: center"><button name="_edit" class="btn btn-primary" type="submit" >Edit Inspection Plan Details</button></div>
+                {% endif %}
+            </div>
+        </div>
+        <br>
+        <div class="city">
+            <table style="width: 98%;">
+                {% if listInpsecCoverage %}
+                <tr>
+                    <th>Inspection Plan ID</th>
+                    <th>Inspection Plan Date</th>
+                    <th>Equipment</th>
+                    <th>Component</th>
+                    <th>Remarks</th>
+                    <th>Findings</th>
+                </tr>
+                {% endif%}
+                {% for a in listInpsecCoverage %}
+                    <tr >
+                        <td align="center">{{ a.InpsecName }}</td>
+                        <td align="center">{{ a.InspecDate }}</td>
+                        <td align="center">{{ a.NameEquipment }}</td>
+                        <td align="center">{{ a.NameComponent }}</td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <div class="modal" id="searchPlan" style="margin-top: 10%">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content" style="width: 80%; margin: auto">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <span aria-hidden="true" style="font-size: 24px;font-weight: bold;color: #444444;font-family: Calibri;font-weight: bold;">List of Inspection plan</span>
+          <button type="button" class="close" data-dismiss="modal" style="color: white">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body" style="width: 90%;margin: auto">
+            <table id="searchs">
+                <tr>
+                    <th ></th>
+                    <th>Inspection/Migation Plan Name</th>
+                    <th>Inspection/Migation Plan Date</th>
+                </tr>
+                {% for a in listInpsec %}
+                <tr>
+                    {% if a.InspecPlanName == name %}
+                        <td align="center"><input type="checkbox" name="{{ a.ID }}"  id="checkbox" class="checkboxClass" checked></td>
+                        <td align="center">{{ a.InspecPlanName }}</td>
+                        <td align="center">{{ a.InspecPlanDate }}</td>
+                    {% else %}
+                        <td align="center"><input type="checkbox" name="{{ a.ID }}" id="checkbox"></td>
+                        <td align="center">{{ a.InspecPlanName }}</td>
+                        <td align="center">{{ a.InspecPlanDate }}</td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </table>
+            <script>
+                $( document ).ready(function() {
+                  setTimeout(() => {
+                    var isDisabledBtn = 0;
+                    $(".checkboxClass").each(function(){
+                    console.log(this.checked);
+                      if(this.checked) {
+                        isDisabledBtn = 1;
+                      }
+                    })
+                    if(isDisabledBtn == 1){
+                        $("#select").attr("disabled", false);
+                        $("#delete").attr("disabled", false);
+                    } else {
+                        $("#select").attr("disabled", true);
+                        $("#delete").attr("disabled", true);
+                    }
+                    // $("#checkboxAllNormal").prop("checked", false);
+                  }, 10);
+                });
+                $("input[id='checkbox']").change(function (e) {
+                    var isChecked = $(this).prop("checked");
+                    if (isChecked == false) {
+                        $("#select").attr("disabled", true);
+                        $("#delete").attr("disabled", true);
+                    }
+                    else {
+                        $("#select").attr("disabled", false);
+                        $("#delete").attr("disabled", false);
+                    }
+                });
+                $(document).ready(function() {
+                  $("input[type=checkbox]").prop("checked", false);
+                  $("input[type=checkbox]:first").prop("checked", true);
+
+                  $("input[type=checkbox]").click(function(event) {
+                    $("input[type=checkbox]").prop("checked", false);
+                    $(this).prop("checked", true);
+
+                    //event.preventDefault();
+                  });
+                });
+                window.onload = function() {
+                  document.querySelectorAll("INPUT[type='checkbox']").forEach(function(rd) {
+                    rd.addEventListener("mousedown", function() {
+                      if(this.checked) {
+                        this.onclick=function() {
+                          this.checked=false
+                        }
+                      } else {
+                        this.onclick=null
+                      }
+                    })
+                  })
+                }
+
+            </script>
+        </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer" style="margin: auto; width: 90%">
+                <!--<button name="_delete" id="delete" type="submit" class="btn btn-warning" disabled><i class="fa fa-trash-o">&emsp;Delete Selected</i></button>-->
+                <button name="_select" id="select" onclick="Click();" class="btn btn-primary" type="submit" disabled><i class="fa fa-pencil" >Select</i></button>
+                <button type="button" class="btn btn-success"  style="background-color: #4575B7; border: 1px solid #204d74" data-dismiss="modal">Close</button>
+            </div>
+
+          </div>
+        </div>
+    </div>
+
+</form>
+    <div style="width: 100%; height: calc(100vh - 420px); overflow-y: auto;">
+        <table class="table-plan" id="searchs">
+            <tr>
+                <!--<th>Site</th>-->
+                <th>Facility</th>
+                <th>Equipment Number</th>
+                <th>Conponent Number</th>
+                <th>Proposal</th>
+                <th>Last Inspection Date</th>
+                <th>Due Date</th>
+            </tr>
+            {% for proposal in APITank %}
+            <tr onclick="window.open ('{% url 'riskChartv2' proposal.ID%}')">
+    
+                <!--<td align="center">{{ proposal.Site }}</td>-->
+                <td align="center">{{ proposal.Facility }}</td>
+                <td align="center">{{ proposal.EquipmentNumber }}</td>
+                <td align="center">{{ proposal.ComponentNumber }}</td>
+                <td align="center">{{ proposal.AssessmentName }}</td>
+                <td align="center">{{ proposal.AssessmentDate }}</td>
+                <td align="center">{{ proposal.duedate }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+            <script>
+                /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+                var dropdown = document.getElementsByClassName("dropdown-btn");
+                var i;
+                for (i = 0; i < dropdown.length; i++) {
+                  dropdown[i].addEventListener("click", function() {
+                  this.classList.toggle("active");
+                  var dropdownContent = this.nextElementSibling;
+                  if (dropdownContent.style.display === "block") {
+                  dropdownContent.style.display = "none";
+                  } else {
+                  dropdownContent.style.display = "block";
+                  }
+                  });
+                }
+                function Click() {
+                    ShowLoading();
+                    return false;
+                }
+                function ShowLoading() {
+                    var div = document.createElement('div');
+                    var img = document.createElement('img');
+                    img.src = '{% static 'image/loading/Pacman-1s-100px.gif' %}';
+                    div.style.cssText = "position: fixed;left: 50%; top: 30%; width: 300px; text-align: center; background: rgba(54, 25, 25, .00004); border: 0px solid #000;";
+                    div.appendChild(img);
+                    document.body.appendChild(div);
+                    return true;
+                }
+            </script>
+{% endblock %}

@@ -1,0 +1,217 @@
+<!-- <!DOCTYPE html> -->
+<html lang="en">
+<head>
+    {% load staticfiles %}
+    {% load widget_tweaks %}
+    <title>Sign_in</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/register_business.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        {# specialcharacters #}
+        function blockSpecialChar(e) {
+            var k;
+            document.all ? k = e.keyCode : k = e.which;
+            return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57));
+        }
+        var state = false;
+        {# showpassword #}
+        function toggle() {
+            const eyeIcon = document.getElementById("eye");
+            if (state) {
+                document.getElementById("password").setAttribute("type", "password");
+                document.getElementById("repassword").setAttribute("type", "password");
+                eyeIcon.classList.remove("fa-eye");
+                eyeIcon.classList.add("fa-eye-slash");
+                state = false;
+            } else {
+                document.getElementById("password").setAttribute("type", "text");
+                document.getElementById("repassword").setAttribute("type", "text");
+                eyeIcon.classList.add("fa-eye");
+                eyeIcon.classList.remove("fa-eye-slash");
+                state = true;
+            }
+        }
+
+    </script>
+
+    <style>
+    .alert {
+      padding: 10px;
+      background-color: #ff9800;
+      color: white;
+      opacity: 1;
+      transition: opacity 0.0s;
+      margin-bottom: 15px;
+      font-size: 17px
+    }
+    .closebtn {
+      margin-left: 15px;
+      color: white;
+      font-weight: bold;
+      float: right;
+      font-size: 25px;
+      line-height: 20px;
+      cursor: pointer;
+      transition: 0.0s;
+    }
+    .alert.success {background-color: #4CAF50;}
+    .closebtn:hover {
+      color: black;
+    }
+    </style>
+</head>
+<body>
+<div class="register-business">
+    <div class="language" style="display: flex; font-size: 16px;">
+        <div>
+            Language: <img src="{% static '/image/logo/england.png' %}" />
+        </div>
+        <div style="margin: 0 10px 0 10px" class="custom-span" id="datetime"></div>
+    </div>
+    <script>
+        var dt = new Date();
+        document.getElementById("datetime").innerHTML = dt.toLocaleString();
+        setInterval(() => {
+            dt = new Date();
+            document.getElementById("datetime").innerHTML = dt.toLocaleString();
+        }, 1000);
+
+
+    </script>
+    <div class="wapper">
+        <div class="form-register">
+            <div class="header-form">
+                <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+                <h3 class="text-center ">FREE REGISTER FOR RBI-CORTEK</h3>
+                <h5 class="text-center ">Get your free BRI-Cortek account now.</h5>
+            </div>
+            {% if infor.match %}
+                <div class="alert">
+                    <span class="closebtn">&times;</span>
+                    {{infor.match}}
+                </div>
+            {% endif %}
+            {% if infor.exist %}
+                <div class="alert">
+                    <span class="closebtn">&times;</span>
+                    {{infor.exist}}
+                </div>
+            {% endif %}
+
+            <script>
+                var close = document.getElementsByClassName("closebtn");
+                var i;
+                for (i = 0; i < close.length; i++) {
+                  close[i].onclick = function(){
+                    var div = this.parentElement;
+                    div.style.opacity = "0";
+                    setTimeout(function(){ div.style.display = "none"; }, 600);
+                  }
+                }
+            </script>
+            <form action="" method="post" class="signup-form-business">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-xs-12 input-register">
+                        <div class="">
+                            <p class="text-input-field">Company name</p>
+                            <input class="form-control" type="text" placeholder="Company Name" name="companyname_business" minlength="3" maxlength="25" onkeypress="return blockSpecialChar(event)" required>
+                        </div>
+                    </div>
+                </div>
+
+				<div class="row">
+					<div class="col-xs-12 input-register">
+						<div class="">
+							<p class="text-input-field">User name</p>
+                            <input class="form-control" type="text" placeholder="User name" name="username" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,}" title="Username must contain at least 4 characters, including UPPER/lowercase and number" onkeypress="return blockSpecialChar(event)" required>
+                        </div>
+                    </div>
+                </div>
+
+				<div class="row">
+					<div class="col-xs-12 input-register">
+						<div class="">
+							<p class="text-input-field">Name</p>
+                            <input class="form-control" type="text" placeholder="Name" name="name" minlength="3" maxlength="25" onkeypress="return blockSpecialChar(event)" required>
+                        </div>
+                    </div>
+                </div>
+
+				<div class="row">
+					<div class="col-xs-12 input-register">
+						<div class="form-input">
+							<p class="text-input-field">Password</p>
+                            <input class="form-control" type="password" name="password" id="password" maxlength="20" placeholder="Password" title="Password must contain at least 8 characters, including UPPER/lowercase and number" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+                            <i class="fa fa-eye-slash" aria-hidden="true" id="eye" onclick="toggle()"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+					<div class="col-xs-12 input-register">
+						<div class="">
+                            <p class="text-input-field">Retype Password</p>
+                            <input class="form-control" type="password" name="repassword" id="repassword" minlength="8" maxlength="20" placeholder="Retype Password" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+					<div class="col-xs-12 input-register">
+						<div class="">
+							<p class="text-input-field">Phone Number</p>
+                            <input type="tel" name="phone" class="form-control" pattern="[0]{1}[0-9]{9}" placeholder="Phone number" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+					<div class="col-xs-12 input-register">
+						<div class="">
+							<p class="text-input-field">Email</p>
+                            <input id="email" type="email" pattern="[a-z0-9._%+-]+@gmail.com" title="" name="txtmail" class="form-control" placeholder="your@email.com" required>
+                        </div>
+                    </div>
+                </div>
+
+				<div class="row">
+					<div class="col-xs-12 input-register">
+						<div class="">
+							<p class="text-input-field">Address</p>
+                            <textarea class="form-control" name="txtadd" placeholder="Address" required></textarea>
+                        </div>
+                    </div>
+                </div>
+
+				<div class="row">
+					<div class="col-xs-12 input-register">
+						<div class="">
+							<p class="text-input-field">Company Information</p>
+                            <textarea name="CompanyInformation" placeholder="Company Information" class="form-control" id="datepicker" required></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+					<div class="col-xs-12 input-register">
+						<div class="footer-register">
+                            <button type="submit" name="submitbusiness" class="btn btn-primary" class="button"> Submit </button>
+                        </div>
+                        <div class="footer-register">
+							<a href="{% url 'logout' %}">Already have an account? Login</a>
+						</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

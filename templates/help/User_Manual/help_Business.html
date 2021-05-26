@@ -1,0 +1,158 @@
+{% extends 'BaseUI/BaseHelp/baseHelp_content.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block library %}
+{% endblock %}
+
+{% block title %}Facility Management{% endblock %}
+
+{% block vaco %}
+    <ul>
+        <!-- <h5 style="padding-top: 20px">User Manual</h5> -->
+        <li style="padding-top: 20px"><a href="{% url 'helpUserManualCtizen' %}">for Citizen</a><br></li>
+        <li style="padding-top: 20px"><a href="{% url 'helpUserManualBusiness' %}">for Business</a><br></li>
+        <li style="padding-top: 20px"><a href="{% url 'helpUserManualManager' %}">for Management</a><br></li>
+    </ul>
+{% endblock %}
+{% block data-content %}
+    <div style="padding-left: 40px;padding-right: 100px">
+        <h3>I'm Business:</h3>
+        <div class="panel-heading" style="padding-left: 50px;border-bottom: #9d9d9d" >
+            <h4 class="panel-title">
+            <a data-toggle="collapse" href="#collapse1" style="color: #337ab7;size: 50px;">Login Business</a>
+            </h4>
+        </div>
+        <div id="collapse1" class="panel-collapse collapse" >
+            <div class="panel-body" style="padding-left: 70px;background-color: #dff0d8">Login Business </div>
+            <div class="panel-footer" style="padding-left: 70px">
+                1. Truy cập vào <a href="http://127.0.0.1:8888/">http://127.0.0.1:8888/. </a> <br>
+                2. Nhấn login. <br>
+                3. Nhập username and Passwork Business. <br>
+                4. Nhấn SignIn. <br>
+                >> Khí đó trang chủ của Business sẽ suất hiện.
+            </div>
+        </div>
+
+        <h3>Factility Management:</h3>
+
+        <div class="panel-heading" style="padding-left: 50px;border-bottom: #9d9d9d" >
+            <h4 class="panel-title">
+            <a data-toggle="collapse" href="#collapse2" style="color: #337ab7;size: 50px;">Design Codes</a>
+            </h4>
+        </div>
+        <div id="collapse2" class="panel-collapse collapse" >
+            <div class="panel-body" style="padding-left: 70px;background-color: #dff0d8">
+                Design Codes
+            </div>
+            <div class="panel-footer" style="padding-left: 70px">
+                1. Đăng Nhập Tài Khoản Business.<br>
+                2. Nhấn nào Design Codes.<br>
+                3. Nhấn vào New Design Codes.<br>
+                &emsp;+ Trang new Design Codes sẽ sất hiện.<br>
+                &emsp;+ Điền các thông số Design Codes.<br>
+                4. Nhấn Submit một Design Codes mới sẽ được tạo. <br>
+            </div>
+        </div>
+
+        <div class="panel-heading" style="padding-left: 50px;border-bottom: #9d9d9d" >
+            <h4 class="panel-title">
+            <a data-toggle="collapse" href="#collapse3" style="color: #337ab7;size: 50px;">New Facility</a>
+            </h4>
+        </div>
+        <div id="collapse3" class="panel-collapse collapse" >
+            <div class="panel-body" style="padding-left: 70px;background-color: #dff0d8">
+                New facility.
+            </div>
+            <div class="panel-footer" style="padding-left: 70px">
+                1. Đăng Nhập Tài Khoản Business.<br>
+                2. Tạo một Design Codes chonhaf máy xem mục Design Codes ở trên.<br>
+                3. Nhấn nào New Facility.<br>
+                &emsp;+ Trang new facility sẽ sất hiện.<br>
+                &emsp;+ Điền các thông số cho nhà máy.<br>
+                4. Nhấn Submit một nhà máy mới sẽ được tạo. <br>
+            </div>
+        </div>
+
+        <h3>Equipment Management</h3>
+        <div class="panel-heading" style="padding-left: 50px;border-bottom: #9d9d9d" >
+            <h4 class="panel-title">
+            <a data-toggle="collapse" href="#collapse5" style="color: #337ab7;size: 50px;">New Manufactures</a>
+            </h4>
+        </div>
+        <div id="collapse5" class="panel-collapse collapse" >
+            <div class="panel-body" style="padding-left: 70px;background-color: #dff0d8">
+                New Manufactures
+            </div>
+            <div class="panel-footer" style="padding-left: 70px">
+                1. Đăng Nhập Tài Khoản Business.<br>
+                2. Nhấn nào Manufactures.<br>
+                3. Nhấn vào New Manufactures.<br>
+                &emsp;+ Trang new Manufactures sẽ sất hiện.<br>
+                &emsp;+ Điền các thông số cho Manufactures.<br>
+                4. Nhấn Submit một Manufactures mới sẽ được tạo. <br>
+            </div>
+        </div>
+
+        <div class="panel-heading" style="padding-left: 50px;border-bottom: #9d9d9d" >
+            <h4 class="panel-title">
+            <a data-toggle="collapse" href="#collapse6" style="color: #337ab7;size: 50px;">New Equipments</a>
+            </h4>
+        </div>
+        <div id="collapse6" class="panel-collapse collapse" >
+            <div class="panel-body" style="padding-left: 70px;background-color: #dff0d8">
+                New Equipments
+            </div>
+            <div class="panel-footer" style="padding-left: 70px">
+                1. Nhấn vào Một Facility đã được tạo
+                <p style="color: red">LUU Ý: nếu chưa có facility thì tạo một facility mới xem hướng dẫn ở mục New Facility.</p>
+                2. Nhấn nào New Equipments.<br>
+                3. Nhấn vào New Equipments.<br>
+                &emsp;+ Trang new Equipments sẽ sất hiện.<br>
+                &emsp;+ Điền các thông số cho Equipments.<br>
+                4. Nhấn Submit một Equipments mới sẽ được tạo. <br>
+            </div>
+        </div>
+
+        <div class="panel-heading" style="padding-left: 50px;border-bottom: #9d9d9d" >
+            <h4 class="panel-title">
+            <a data-toggle="collapse" href="#collapse7" style="color: #337ab7;size: 50px;">New Component</a>
+            </h4>
+        </div>
+        <div id="collapse7" class="panel-collapse collapse" >
+            <div class="panel-body" style="padding-left: 70px;background-color: #dff0d8">
+                New Component
+            </div>
+            <div class="panel-footer" style="padding-left: 70px">
+                1. Nhấn vào Một Equipments đã được tạo
+                <p style="color: red">LUU Ý: nếu chưa có Equipments thì tạo một facility mới xem hướng dẫn ở mục New Equipments.</p>
+                2. Nhấn nào New Component.<br>
+                3. Nhấn vào New Component.<br>
+                &emsp;+ Trang new Component sẽ sất hiện.<br>
+                &emsp;+ Điền các thông số cho Equipments.<br>
+                4. Nhấn Submit một Component  mới sẽ được tạo. <br>
+            </div>
+        </div>
+
+        <div class="panel-heading" style="padding-left: 50px;border-bottom: #9d9d9d" >
+            <h4 class="panel-title">
+            <a data-toggle="collapse" href="#collapse8" style="color: #337ab7;size: 50px;">New Proposals</a>
+            </h4>
+        </div>
+        <div id="collapse8" class="panel-collapse collapse" >
+            <div class="panel-body" style="padding-left: 70px;background-color: #dff0d8">
+                New Proposals
+            </div>
+            <div class="panel-footer" style="padding-left: 70px">
+                1. Nhấn vào Một Component đã được tạo
+                <p style="color: red">LUU Ý: nếu chưa có facility thì tạo một Component mới xem hướng dẫn ở mục New Component.</p>
+                2. Nhấn nào New Proposals.<br>
+                3. Nhấn vào New Proposals.<br>
+                &emsp;+ Trang new Proposals sẽ sất hiện.<br>
+                &emsp;+ Điền các thông số cho Proposals.<br>
+                4. Nhấn Submit một Proposals mới sẽ được tạo. <br>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

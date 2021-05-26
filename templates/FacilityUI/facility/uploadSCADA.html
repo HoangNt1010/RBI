@@ -1,0 +1,88 @@
+{% extends 'BaseUI/BaseFacility/baseFacility.html' %}
+
+{% load staticfiles %}
+
+<!------------ BLOCK MENU--------->
+{% block listfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+{% block newfaci %}{% url 'facilitiesNew' siteID %}{% endblock %}
+{% block design %}{% url 'designcodeDisplay' siteID %}{% endblock %}
+{% block manu %}{% url 'manufactureDisplay' siteID %}{% endblock %}
+{% block uploadInsp %}{% url 'upload' siteID %}{% endblock %}
+{% block uploadPlant %}{% url 'uploadPlan' siteID %}{% endblock %}
+{#{% block uploadScada %}{% url 'uploadScada' siteID %}{% endblock %}#}
+{% block inspecPlan %}{% url 'inspectionPlan' siteID %}{% endblock %}
+<!-----------END BLOCK------------>
+
+{% block data-content %}
+    <form method="post" id="fileUpload" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div id="parent" style="text-align: center; margin-top: 5%">
+    </div>
+    <div style="text-align: center; margin-top: 1%;">
+        <div class="row">
+        <div class="col-md-12" style="text-align: center">
+            <img src="{% static 'image/logo/cloud.png' %}">
+            <p>Yêu cầu nhập đúng Site và Facility</p>
+            <p>File History yêu cầu nhập đúng Component và Equipment </p>
+            <p>Lưu ý: Sau khi Upload file PlanProcess cần tiến hành Recalculate lại</p>
+        </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4" style="text-align: center">
+                <label for="myexcelFile" class="btn btn-primary btn-block btn-outlined">{{ showcontent }}</label>
+                <input type="file" id="myexcelFile" name="myexcelFile" accept="text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" style="display: none" >
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <span id="filestatus" style="font-family: 'Times New Roman'; font-size: 16px;">None file selected...</span>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-5"></div>
+            <div class="col-md-2">
+                <button type="button" id="submitFile" class="btn btn-primary" onclick="btnSubmitClick()" disabled>Submit</button>
+            </div>
+            <div class="col-md-5"></div>
+        </div>
+    </div>
+    </form>
+    <script>
+        $("input[id='myexcelFile']").change(function (e) {
+            var $this = $(this);
+            var filename = $this.val().split('\\').pop();
+            if(filename.endsWith(".csv") || filename.endsWith(".xls") || filename.endsWith(".xlsx")){
+                $("#filestatus").text("File selected: " +filename);
+                $("#filestatus").css("color", "green");
+                $("#submitFile").prop("disabled",false);
+            }
+            else {
+                $("#filestatus").text("File isn't supported! Please select *.xls | *.xlsx | *.csv file");
+                $("#filestatus").css("color", "red");
+                $("#submitFile").prop("disabled",true);
+            }
+        });
+        function btnSubmitClick() {
+            document.getElementById("fileUpload").submit();
+            ShowLoading();
+            return false;
+        }
+        function ShowLoading() {
+            var parrent = document.getElementById('parent');
+            var div = document.createElement('div');
+            var img = document.createElement('img');
+            img.src = '{% static "image/loading/Pacman-1s-100px.gif" %}';
+            div.style.cssText = "class=row;";
+            div.appendChild(img);
+            parrent.appendChild(div);
+            $("#submitFile").attr('disabled',true);
+            return true;
+        }
+    </script>
+{% endblock %}

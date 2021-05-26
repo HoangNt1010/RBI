@@ -1,0 +1,1166 @@
+{% extends 'BaseUI/BaseFacility/baseProposal.html' %}
+{% load staticfiles %}
+
+<!----------BLOCK MENU----------->
+{% block vertical %}
+        <!-- <a class="active">Proposal Management</a> -->
+        <a href="{% block listProposal %}{% endblock %}"><i class="fa fa-list">&emsp;Input Data</i></a>
+{#      <a href="{% block newProposal %}{% endblock %}"><i class="fa fa-building">&emsp;New Proposal</i></a>#}
+        <a href="{% block backComp %}{% url 'proposalDisplayMana' componentID %}{% endblock %}"><i class="fa fa-arrow-left">&emsp;Back to List Proposal</i></a>
+{% endblock %}
+<!---------------END BLOCK--------------->
+
+{% block data-content %}
+    <form id="normal" class="view-input-form" method="post" >
+    {% csrf_token %}
+        <div class="input-data">
+            <div class="header-form color-white">DATA</div>
+            <div class="row">
+                <div class="col-12 title">Assessment</div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Assessment Name:
+                    </div>
+                    <div class="value">
+                        {{ rwAss.proposalname }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Assessment Date:
+                    </div>
+                    <div class="value">
+                        {{ assDate }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Risk Analysis Period (months):
+                    </div>
+                    <div class="value">
+                        36
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 title">Equipment Properties</div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Administrative Control for Upset Management:
+                    </div>
+                    <div class="value">
+                        {% if rwEq.adminupsetmanagement == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Contains Deadlegs:
+                    </div>
+                    <div class="value">
+                        {% if rwEq.containsdeadlegs == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Highly Effective Inspection for Deadlegs:
+                    </div>
+                    <div class="value">
+                        {% if rwEq.containsdeadlegs == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Cylic Operation:
+                    </div>
+                    <div class="value">
+                        {% if rwEq.cyclicoperation == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Downtime Protection Used:
+                    </div>
+                    <div class="value">
+                        {% if rwEq.downtimeprotectionused == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Steamed Out Prior to Water Flushing:
+                    </div>
+                    <div class="value">
+                        {% if rwEq.steamoutwaterflush == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Heat Traced:
+                    </div>
+                    <div class="value">
+                        {% if rwEq.heattraced == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        PWHT:
+                    </div>
+                    <div class="value">
+                        {% if rwEq.pwht == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Interface at Soil or Water:
+                    </div>
+                    <div class="value">
+                        {% if rwEq.interfacesoilwater == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Pressurisation Controlled by Admin:
+                    </div>
+                    <div class="value">
+                        {% if rwEq.pressurisationcontrolled == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Liner Online Monitoring:
+                    </div>
+                    <div class="value">
+                        {% if rwEq.lineronlinemonitoring == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Equipment is Operating for Many Years at Lowest Expected Temperature:
+                    </div>
+                    <div class="value">
+                        {% if rwEq.yearlowestexptemp == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Presence of Sulphides, Moisture and Oxygen During Shutdown:
+                    </div>
+                    <div class="value">
+                        {% if rwEq.presencesulphideso2shutdown == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Material is Exposed to Fluids, Mists or Solids Containing Chlorine Externally:
+                    </div>
+                    <div class="value">
+                        {{ rwEq.materialexposedtoclext }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Min. Required Temperature Before Pressurisation Allowed by Admin, &deg;C:
+                    </div>
+                    <div class="value">
+                        {{ rwEq.minreqtemperaturepressurisation }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        External Environment:
+                    </div>
+                    <div class="value">
+                        {{ rwEq.externalenvironment }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Thermal History:
+                    </div>
+                    <div class="value">
+                        {{ rwEq.thermalhistory }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Online Monitoring:
+                    </div>
+                    <div class="value">
+                        {{ rwEq.onlinemonitoring }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Equipment Volume, m3:
+                    </div>
+                    <div class="value">
+                        {{ rwEq.volume }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 title">Component Properties</div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Nominal Diameter, in:
+                    </div>
+                    <div class="value">
+                        {{ rwComp.nominaldiameter }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Nominal Thickness, mm:
+                    </div>
+                    <div class="value">
+                        {{ rwComp.nominalthickness }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Current Thickness, mm:
+                    </div>
+                    <div class="value">
+                        {{ rwComp.currentthickness }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Min. Required Thickness, mm:
+                    </div>
+                    <div class="value">
+                        {{ rwComp.minreqthickness }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Current Corrosion Rate, mm/yr:
+                    </div>
+                    <div class="value">
+                        {{ rwComp.currentcorrosionrate }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Delta FATT:
+                    </div>
+                    <div class="value">
+                        {{ rwComp.deltafatt }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Damage Found During Inspection:
+                    </div>
+                    <div class="value">
+                        {% if rwComp.damagefoundinspection == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Presence of Injection Mix Point:
+                    </div>
+                    <div class="value">
+                        {% if rwComp.chemicalinjection == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Presence of Cracks:
+                    </div>
+                    <div class="value">
+                        {% if rwComp.crackspresent == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Highly Effective Inspection for Corrosion at Injection Mix Point:
+                    </div>
+                    <div class="value">
+                        {% if rwComp.highlyinjectioninsp == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Tramp Elements:
+                    </div>
+                    <div class="value">
+                        {% if rwComp.trampelements == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Maximum Brinnell Hardness of Weld:
+                    </div>
+                    <div class="value">
+                        {{ rwComp.brinnelhardness }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Complexity of Protrusions:
+                    </div>
+                    <div class="value">
+                        {{ rwComp.complexityprotrusion }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Cyclic Loading Connected within 15.25m:
+                    </div>
+                    <div class="value">
+                        {{ rwComp.cyclicloadingwitin15_25m }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Branch Diameter:
+                    </div>
+                    <div class="value">
+                        {{ rwComp.branchdiameter }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Joint Type of Branch:
+                    </div>
+                    <div class="value">
+                        {{ rwComp.branchjointtype }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Number of Fittings on Pipe:
+                    </div>
+                    <div class="value">
+                        {{ rwComp.numberpipefittings }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Pipe Condition:
+                    </div>
+                    <div class="value">
+                        {{ rwComp.pipecondition }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Branch Diameter:
+                    </div>
+                    <div class="value">
+                        {{ rwComp.previousfailures }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Visible or Audible Shaking Detected:
+                    </div>
+                    <div class="value">
+                        {% if rwComp.shakingdetected == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Amount of Shaking of the Pipe:
+                    </div>
+                    <div class="value">
+                        {{ rwComp.shakingamount }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Accumulated Time Shaking of Pipe:
+                    </div>
+                    <div class="value">
+                        {{ rwComp.shakingtime }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Corrective Action to Mitigate Vibration:
+                    </div>
+                    <div class="value">
+                        {{ rwComp.correctiveaction }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 title">Operating Condition</div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Maximum Operating Temperature, &deg;C:
+                    </div>
+                    <div class="value">
+                        {{ rwStream.maxoperatingtemperature }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Maximum Operating Pressure, psi:
+                    </div>
+                    <div class="value">
+                        {{ rwStream.maxoperatingpressure }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Minimum Operating Temperature, &deg;C:
+                    </div>
+                    <div class="value">
+                        {{ rwStream.minoperatingtemperature }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Minimum Operating Pressure, psi:
+                    </div>
+                    <div class="value">
+                        {{ rwStream.minoperatingpressure }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Operating Hydrogen Partial Pressure, psi:
+                    </div>
+                    <div class="value">
+                        {{ rwStream.h2spartialpressure }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Critical Exposure Temperature, &deg;C:
+                    </div>
+                    <div class="value">
+                        {{ rwStream.criticalexposuretemperature }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 title">Operating Temperature in Different Temperature Ranger</div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        % Operating at -12&deg;C to -8&deg;C:
+                    </div>
+                    <div class="value">
+                        {{ rwExcot.minus12tominus8 }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        % Operating at -8&deg;C to 6&deg;C:
+                    </div>
+                    <div class="value">
+                        {{ rwExcot.minus8toplus6 }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        % Operating at 6&deg;C to 32&deg;C:
+                    </div>
+                    <div class="value">
+                        {{ rwExcot.plus6toplus32 }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        % Operating at 32&deg;C to 71&deg;C:
+                    </div>
+                    <div class="value">
+                        {{ rwExcot.plus32toplus71 }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        % Operating at 71&deg;C to 107&deg;C:
+                    </div>
+                    <div class="value">
+                        {{ rwExcot.plus71toplus107 }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        % Operating at 107&deg;C to 121&deg;C:
+                    </div>
+                    <div class="value">
+                        {{ rwExcot.plus107toplus121 }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        % Operating at 121&deg;C to 135&deg;C:
+                    </div>
+                    <div class="value">
+                        {{ rwExcot.plus121toplus135 }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        % Operating at 135&deg;C to 162&deg;C:
+                    </div>
+                    <div class="value">
+                        {{ rwExcot.plus135toplus162 }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        % Operating at 162&deg;C to 176&deg;C:
+                    </div>
+                    <div class="value">
+                        {{ rwExcot.plus162toplus176 }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        % Operating at 176&deg;C or Above:
+                    </div>
+                    <div class="value">
+                        {{ rwExcot.morethanplus176 }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 title">Material</div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Material:
+                    </div>
+                    <div class="value">
+                        {{ rwMaterial.materialname }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Max.Design Temperature, &deg;C:
+                    </div>
+                    <div class="value">
+                        {{ rwMaterial.designtemperature }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Min.Design Temperature, &deg;C:
+                    </div>
+                    <div class="value">
+                        {{ rwMaterial.mindesigntemperature }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Design Pressure, psi:
+                    </div>
+                    <div class="value">
+                        {{ rwMaterial.designpressure }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Reference Temperature, &deg;C:
+                    </div>
+                    <div class="value">
+                        {{ rwMaterial.referencetemperature }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Allowable Stress at Assessment Temperature, psi:
+                    </div>
+                    <div class="value">
+                        {{ rwMaterial.allowablestress }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Brittle Fracture Governing Thickness, mm:
+                    </div>
+                    <div class="value">
+                        {{ rwMaterial.brittlefracturethickness }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Corrosion Allowance, mm:
+                    </div>
+                    <div class="value">
+                        {{ rwMaterial.corrosionallowance }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Sigma Phase, %:
+                    </div>
+                    <div class="value">
+                        {{ rwMaterial.sigmaphase }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Carbon or Low Alloy Steel:
+                    </div>
+                    <div class="value">
+                        {% if rwMaterial.carbonlowalloy == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Austenitic Steel:
+                    </div>
+                    <div class="value">
+                        {% if rwMaterial.austenitic == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Susceptible to Temper:
+                    </div>
+                    <div class="value">
+                        {% if rwMaterial.temper == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Nickel-based Alloy:
+                    </div>
+                    <div class="value">
+                        {% if rwMaterial.nickelbased == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Chromium &ge;12%:
+                    </div>
+                    <div class="value">
+                        {% if rwMaterial.chromemoreequal12 == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Sulfur Content:
+                    </div>
+                    <div class="value">
+                        {{ rwMaterial.sulfurcontent }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Heat Treatment:
+                    </div>
+                    <div class="value">
+                        {{ rwMaterial.heattreatment }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Material Grade to Evaluate Severity of HTHA:
+                    </div>
+                    <div class="value">
+                        {% if rwMaterial.ishtha == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        HTHA Material Grade:
+                    </div>
+                    <div class="value">
+                        {{ rwMaterial.hthamaterialcode }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Material Grade to Evaluate Severity of PTA Cracking PTA Material Grade:
+                    </div>
+                    <div class="value">
+                        {% if rwMaterial.ispta == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Material Cost Factor:
+                    </div>
+                    <div class="value">
+                        {{ rwMaterial.ptamaterialcode }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 title">Coating</div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Internal Coating:
+                    </div>
+                    <div class="value">
+                        {% if rwMaterial.internalcoating == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        External Coating:
+                    </div>
+                    <div class="value">
+                        {% if rwMaterial.externalcoating == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        External Coating Installation Date:
+                    </div>
+                    <div class="value">
+                        {{ extDate }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        External Coating Quality:
+                    </div>
+                    <div class="value">
+                        {{ rwCoat.externalcoatingquality }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Support Configuration Which Does Not Allow Coating Maintenance:
+                    </div>
+                    <div class="value">
+                        {% if rwCoat.supportconfignotallowcoatingmaint == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 title">Cladding</div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Internal Cladding:
+                    </div>
+                    <div class="value">
+                        {% if rwCoat.internalcladding == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Cladding Corrosion Rate, mm/yr:
+                    </div>
+                    <div class="value">
+                        {{ rwCoat.claddingcorrosionrate }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 title">Lining</div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Internal Lining:
+                    </div>
+                    <div class="value">
+                        {% if rwCoat.internallining == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Internal Liner Type:
+                    </div>
+                    <div class="value">
+                        {{ rwCoat.internallinertype }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Internal Liner Condition:
+                    </div>
+                    <div class="value">
+                        {{ rwCoat.internallinercondition }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 title">Insulation</div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        External Insulation:
+                    </div>
+                    <div class="value">
+                        {% if rwCoat.externalinsulation == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Insulation Contains Chlorides:
+                    </div>
+                    <div class="value">
+                        {% if rwCoat.insulationcontainschloride == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        External Insulation Type:
+                    </div>
+                    <div class="value">
+                        {{ rwCoat.externalinsulationtype }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Insulation Condition:
+                    </div>
+                    <div class="value">
+                        {{ rwCoat.insulationcondition }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 title">Environment Condition</div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        NaOH Concentration, %:
+                    </div>
+                    <div class="value">
+                        {{ rwStream.naohconcentration }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Release Fluid Percent Toxic, %:
+                    </div>
+                    <div class="value">
+                        {{ rwStream.releasefluidpercenttoxic }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Chloride Ion, ppm:
+                    </div>
+                    <div class="value">
+                        {{ rwStream.chloride }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        CO3 Concentration in Water, ppm:
+                    </div>
+                    <div class="value">
+                        {{ rwStream.co3concentration }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        H2S Content in Water, ppm:
+                    </div>
+                    <div class="value">
+                        {{ rwStream.h2sinwater }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        PH of Water:
+                    </div>
+                    <div class="value">
+                        {{ rwStream.waterph }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Exposed To Acid Gas Treating Amine:
+                    </div>
+                    <div class="value">
+                        {% if rwCoat.exposedtogasamine == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Toxic Constituents:
+                    </div>
+                    <div class="value">
+                        {% if rwCoat.toxicconstituent == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Exposure to Amine:
+                    </div>
+                    <div class="value">
+                        {{ rwStream.exposuretoamine }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Amine Solution Composition:
+                    </div>
+                    <div class="value">
+                        {{ rwStream.aminesolution }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Aqueous Phase During Operation:
+                    </div>
+                    <div class="value">
+                        {% if rwCoat.aqueousoperation == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Environment Contains H2S:
+                    </div>
+                    <div class="value">
+                        {% if rwCoat.aqueousshutdown == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Aqueous Phase During Operation:
+                    </div>
+                    <div class="value">
+                        {% if rwCoat.h2s == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Presence of Hydrofluoric Acid:
+                    </div>
+                    <div class="value">
+                        {% if rwCoat.hydrofluoric == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Presence of Cyanides:
+                    </div>
+                    <div class="value">
+                        {% if rwCoat.cyanide == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Process Contains Hydrogen:
+                    </div>
+                    <div class="value">
+                        {% if rwCoat.hydrogen == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Environment Contains Caustic in Any Concentration:
+                    </div>
+                    <div class="value">
+                        {% if rwCoat.caustic == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Exposed to Sulphur-Bearing Compounds:
+                    </div>
+                    <div class="value">
+                        {% if rwCoat.exposedtosulphur == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Material is Exposed to Fluids, Mists, or Solids Containing Chlorine Internally:
+                    </div>
+                    <div class="value">
+                        {% if rwCoat.materialexposedtoclint == 0 %}No{% else %}Yes{% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 title">Environment Condition</div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        API Fluid:
+                    </div>
+                    <div class="value">
+                        {{ rwInputCa.api_fluid }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Mass Inventory, kg:
+                    </div>
+                    <div class="value">
+                        {{ rwInputCa.mass_inventory }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Systerm:
+                    </div>
+                    <div class="value">
+                        {{ rwInputCa.system }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Mass Component, kg:
+                    </div>
+                    <div class="value">
+                        {{ rwInputCa.mass_component }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Equipment Cost, $/m<sup>2</sup>:
+                    </div>
+                    <div class="value">
+                        {{ rwInputCa.equipment_cost }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Mittigation Systerm:
+                    </div>
+                    <div class="value">
+                        {{ rwInputCa.mitigation_system }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Production Cost, $/day:
+                    </div>
+                    <div class="value">
+                        {{ rwInputCa.production_cost }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Toxic Percent, %:
+                    </div>
+                    <div class="value">
+                        {{ rwInputCa.toxic_percent }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Injure Cost, $/fatality:
+                    </div>
+                    <div class="value">
+                        {{ rwInputCa.injure_cost }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Release Duration, minutes:
+                    </div>
+                    <div class="value">
+                        {{ rwInputCa.release_duration }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Environment Cost, $/event:
+                    </div>
+                    <div class="value">
+                        {{ rwInputCa.evironment_cost }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div class="require">
+                        Injure Cost, $/fatality:
+                    </div>
+                    <div class="value">
+                        {{ rwInputCa.personal_density }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Detection Type:
+                    </div>
+                    <div class="value">
+                        {{ rwInputCa.detection_type }}
+                    </div>
+                </div>
+                <div class="col-md-6 col-4-slg item">
+                    <div>
+                        Isulation Type:
+                    </div>
+                    <div class="value">
+                        {{ rwInputCa.isulation_type }}
+                    </div>
+                </div>
+            </div>
+    </form>
+    <!----------------- Pagnation Data -------------------->
+    <script>
+        var currentTab = 0; // Current tab is set to be the first tab (0)
+        showTab(currentTab); // Display the crurrent tab
+
+        function showTab(n) {
+          // This function will display the specified tab of the form...
+          var x = document.getElementsByClassName("tab");
+          x[n].style.display = "block";
+          //... and fix the Previous/Next buttons:
+          if (n == 0) {
+            document.getElementById("prevBtn").style.display = "none";
+          } else {
+            document.getElementById("prevBtn").style.display = "inline";
+          }
+          if (n == (x.length - 1)) {
+            document.getElementById("nextBtn").innerHTML = "Submit";
+          } else {
+            document.getElementById("nextBtn").innerHTML = "Next";
+          }
+          //... and run a function that will display the correct step indicator:
+          fixStepIndicator(n)
+        }
+
+        function nextPrev(n) {
+          // This function will figure out which tab to display
+          var x = document.getElementsByClassName("tab");
+          // Exit the function if any field in the current tab is invalid:
+          if (n == 1 && !validateForm()) return false;
+          // Hide the current tab:
+          x[currentTab].style.display = "none";
+          // Increase or decrease the current tab by 1:
+          currentTab = currentTab + n;
+          // if you have reached the end of the form...
+          if (currentTab >= x.length) {
+            // ... the form gets submitted:
+            document.getElementById("normal").submit();
+            ShowLoading();
+            return false;
+          }
+          // Otherwise, display the correct tab:
+          showTab(currentTab);
+        }
+
+        {#function validateForm() {#}
+        {#  // This function deals with validation of the form fields#}
+        {#  var x, y, i, valid = true;#}
+        {#  x = document.getElementsByClassName("tab");#}
+        {#  y = x[currentTab].getElementsByTagName("input");#}
+        {#  // A loop that checks every input field in the current tab:#}
+        {#  for (i = 0; i < y.length; i++) {#}
+        {#    // If a field is empty...#}
+        {#    if (y[i].value == "") {#}
+        {#      // add an "invalid" class to the field:#}
+        {#      y[i].className += " invalid";#}
+        {#      // and set the current valid status to false#}
+        {#      valid = false;#}
+        {#    }#}
+        {#  }#}
+          // If the valid status is true, mark the step as finished and valid:
+        {#  if (valid) {#}
+        {#    document.getElementsByClassName("step")[currentTab].className += " finish";#}
+        {#  }#}
+        {#  return valid; // return the valid status#}
+
+        {#function fixStepIndicator(n) {#}
+        {#  // This function removes the "active" class of all steps...#}
+        {#  var i, x = document.getElementsByClassName("step");#}
+        {#  for (i = 0; i < x.length; i++) {#}
+        {#    x[i].className = x[i].className.replace(" active", "");#}
+        {#  }#}
+        {#  //... and adds the "active" class on the current step:#}
+        {#  x[n].className += " active";#}
+
+        // spinner form by VuNA
+
+    </script>
+{% endblock %}

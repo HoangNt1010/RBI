@@ -1,0 +1,218 @@
+{% extends 'BaseUI/BaseFacility/baseRiskSummary.html' %}
+
+{% load staticfiles %}
+
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactor' proposalID %}{% endblock %}
+{% block fcof%}{% url 'fullyConsequence' proposalID %}{% endblock %}
+{% block acof%}{% url 'areaBasedCoF' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrix' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChart' proposalID %}{% endblock %}
+{% block chartv2 %}{% url 'riskChartv2' proposalID %}{% endblock %}
+{% block corrcontrol %}{% url 'corrosionCotrol' proposalID %}{% endblock %}
+{% block corri %}{% url 'corrision' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'proposalDisplay' ass.componentid_id %}{% endblock %}
+<!---------------END BLOCK--------------->
+
+{% block data-content %}
+    <form method="post">
+    {% csrf_token %}
+        <div class="input-data content-full-df">
+                <h1 class="text-center color-white">Fully-Quantitative Financial Cosequense of Failure</h1>
+                <!---------- BLOCK DATA--------------->
+                <!-------- block 0------------->
+                    <h3 class="color-white">Input</h3>
+                    <hr class="hr-verification"/>
+                    <div class="px-100">
+                        <div class="row">
+                            <div class="col-md-8 color-white">Process unit replacement costs for component ($/m<sup>2</sup>):<span style="color: red">*</span></div>
+                            <div class="col-md-4"><input min="0" max="1000000" step="0.1" type="number" class="form-control" name="EquipCost" value="{{data.equip_cost}}" placeholder="Input here!" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 color-white">Equipment Outage Multiplier:<span style="color: red">*</span></div>
+                            <div class="col-md-4"><input min="0" max="1000000" step="0.1" type="number" class="form-control" name="EquipOutageMultiplier" value="{{data.equip_outage_multiplier}}" placeholder="Input here!" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 color-white">Cost of Loss Production ($/day):<span style="color: red">*</span></div>
+                            <div class="col-md-4"><input min="0" max="1000000" step="0.1" type="number" class="form-control" name="ProdCost" value="{{data.prod_cost}}" placeholder="Input here!" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 color-white">Population Density of Personel (Personnel/m<sup>2</sup>):<span style="color: red">*</span></div>
+                            <div class="col-md-4"><input min="0" max="1000000" step="0.1" type="number" class="form-control" name="PopDens" value="{{data.pop_dens}}" placeholder="Input here!" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 color-white">Cost associated with serious injury of fatality of personel ($):<span style="color: red">*</span></div>
+                            <div class="col-md-4"><input min="0" max="1000000" step="0.1" type="number" class="form-control" name="InjCost" value="{{data.inj_cost}}" placeholder="Input here!" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="text-align: right"><button name="_calculate" class="btn btn-primary" type="submit"><i class="fa fa-pencil">Calculate</i></button></div>
+                        </div>
+                    </div>
+                <!-------- block 1------------->
+                <h3 class="color-white">Fully-Quantitative Financial Cosequense of Failure and Category</h3>
+                <hr class="hr-verification"/>
+                <div class="px-100">
+                    <div class="row">
+                        <div class="col-md-8 color-white">The total consequence, $:</div>
+                        <div class="col-md-4 text-value">{{ data.consequence }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">Consequence Category:</div>
+                        <div class="col-md-4 text-value"><b>{{ data.consequencecategory }}</b></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">Emmua 159 Consequence Category:</div>
+                        <div class="col-md-4 text-value"><b>{{ data.cofemmuacattegory }}</b></div>
+                    </div>
+                </div>
+                    
+                <!-------- block 2------------->
+                    <h3 class="color-white">Intermediate Values</h3>
+                    <hr class="hr-verification"/>
+                    <div class="px-100">
+                        <div class="row">
+                            <div class="col-md-8 color-white">The hydraulic conductivity for water, m/day:</div>
+                            <div class="col-md-4 text-value">{{ data.hydraulic_water }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 color-white">The hydraulic conductivity for fluid, m/day:</div>
+                            <div class="col-md-4 text-value">{{ data.hydraulic_fluid }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 color-white">The product seepage velocity, m/day:</div>
+                            <div class="col-md-4 text-value">{{ data.seepage_velocity }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 color-white">The liquid height above the shell in question, m<sup>3</sup>:</div>
+                            <div class="col-md-4 text-value">{{ data.liquid_height }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 color-white">The volume of fluid above the shell in question, m<sup>3</sup>:</div>
+                            <div class="col-md-4 text-value">{{ data.volume_fluid }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 color-white"></div>
+                            <div class="col-md-2 text-value"><b>D1</b></div>
+                            <div class="col-md-2 text-value"><b>D2</b></div>
+                            <div class="col-md-2 text-value"><b>D3</b></div>
+                            <div class="col-md-2 text-value"><b>D4</b></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 color-white">Flow Rate, bbls/day:</div>
+                            <div class="col-md-2 text-value">{{ data.flow_rate_d1 }}</div>
+                            <div class="col-md-2 text-value">{{ data.flow_rate_d2 }}</div>
+                            <div class="col-md-2 text-value">{{ data.flow_rate_d3 }}</div>
+                            <div class="col-md-2 text-value">{{ data.flow_rate_d4 }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 color-white">Leak duration, days:</div>
+                            <div class="col-md-2 text-value">{{ data.leak_duration_d1 }}</div>
+                            <div class="col-md-2 text-value">{{ data.leak_duration_d2 }}</div>
+                            <div class="col-md-2 text-value">{{ data.leak_duration_d3 }}</div>
+                            <div class="col-md-2 text-value">{{ data.leak_duration_d4 }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 color-white">Release volume from leakage, m<sup>3</sup>:</div>
+                            <div class="col-md-2 text-value">{{ data.release_volume_leak_d1 }}</div>
+                            <div class="col-md-2 text-value">{{ data.release_volume_leak_d2 }}</div>
+                            <div class="col-md-2 text-value">{{ data.release_volume_leak_d3 }}</div>
+                            <div class="col-md-2 text-value">{{ data.release_volume_leak_d4 }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 color-white">Realease volume from rupture, barrels:</div>
+                            <div class="col-md-2 text-value">{{ data.release_volume_rupture }}</div>
+                        </div>
+                    </div>
+                    
+                <!-------------- block 3 ------------->
+                    <h3 class="color-white">Financial Consequence</h3>
+                    <hr class="hr-verification"/>
+                    <div class="px-100">
+                        <div class="row">
+                            <div class="col-md-8 color-white">The material factor:</div>
+                            <div class="col-md-4 color-white text-value">{{ data.material_factor }}</div>
+                        </div>
+                        <div class="row"><br></div>
+                        <div class="row">
+                            <div class="col-md-8 color-white"><h4>Release Type</h4></div>
+                            <div class="col-md-2 text-value">Leakage</div>
+                            <div class="col-md-2 text-value">Rupture</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 color-white">The total barrels of fluid within the dike, barrels:</div>
+                            <div class="col-md-2 text-value">{{ data.barrel_dike_leak }}</div>
+                            <div class="col-md-2 text-value">{{ data.barrel_dike_rupture }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 color-white">The total barrels of fluid in the on-site surface soil from, barrels:</div>
+                            <div class="col-md-2 text-value">{{ data.barrel_onsite_leak }}</div>
+                            <div class="col-md-2 text-value">{{ data.barrel_onsite_rupture }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 color-white">The total barrels of fluid in the off-site surface soil, barrels:</div>
+                            <div class="col-md-2 text-value">{{ data.barrel_offsite_leak }}</div>
+                            <div class="col-md-2 text-value">{{ data.barrel_offsite_rupture }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 color-white">The total barrels of fluid that reach water, barrels:</div>
+                            <div class="col-md-2 text-value">{{ data.barrel_water_leak }}</div>
+                            <div class="col-md-2 text-value">{{ data.barrel_water_rupture }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 color-white">The financial environmental cost, $:</div>
+                            <div class="col-md-2 text-value">{{ data.fc_environ_leak }}</div>
+                            <div class="col-md-2 text-value">{{ data.fc_environ_rupture }}</div>
+                        </div>
+                        <div class="row"><br></div>
+                        <div class="row">
+                            <div class="col-md-8 color-white">The total financial environmental cost, $:</div>
+                            <div class="col-md-4 color-white text-value">{{ data.fc_environ }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 color-white">The component damage cost, $:</div>
+                            <div class="col-md-4 color-white text-value">{{ data.component_damage_cost }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 color-white">Cost of damage to surrounding equipment, $:</div>
+                            <div class="col-md-4 color-white text-value">{{ data.damage_surrounding_equipment_cost }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 color-white">The cost of business interruption, $:</div>
+                            <div class="col-md-4 color-white text-value">{{ data.business_cost }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 color-white">Cost Associated with personnel Injury, $:</div>
+                            <div class="col-md-4 color-white text-value">{{ data.associated_personnel_injury_cost }}</div>
+                        </div>
+                    </div>
+                    
+
+{#                <div class="row"></div>#}
+{##}
+{#                <div class="row">#}
+{#                    <div class="col-md-8 color-white">The time to initate leakage to the ground water, days:</div>#}
+{#                    <div class="col-md-4 color-white">{{ data.time_leak_ground }}</div>#}
+{#                </div>#}
+{#                <!-------------- block 3 ----------->#}
+{#                <div class="row"></div>#}
+{#                <div class="row">#}
+{#                    <div class="col-md-8 color-white"></div>#}
+{#                    <div class="col-md-2 text-value"><b>D1</b></div>#}
+{#                    <div class="col-md-2 text-value"><b>D4</b></div>#}
+{#                </div>#}
+{#                <div class="row">#}
+{#                    <div class="col-md-8 color-white">The volume of the product in the subsoil from lakage, barrels:</div>#}
+{#                    <div class="col-md-2 text-value">{{ data.volume_subsoil_leak_d1 }}</div>#}
+{#                    <div class="col-md-2 text-value">{{ data.volume_subsoil_leak_d4 }}</div>#}
+{#                </div>#}
+{#                <div class="row">#}
+{#                    <div class="col-md-8 color-white">The volume of the product in the ground water from leakage, m<sup>3</sup>:</div>#}
+{#                    <div class="col-md-2 text-value">{{ data.volume_ground_water_leak_d1 }}</div>#}
+{#                    <div class="col-md-2">{{ data.volume_ground_water_leak_d4 }}</div>#}
+{#                </div>#}
+{#                <!------------ block 4 ---------->#}
+{#                <div class="row"></div>#}
+
+        </div>
+    </form>
+{% endblock %}

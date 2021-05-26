@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Expert Help</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
+</head>
+<body>
+    <div class="container" style=" width: 100%">
+        <div class="row">
+            <div class="col-6">
+                <canvas id="myChartCO3" width="400" height="250"></canvas>
+            </div>
+
+            <div class="col-6">
+                <canvas id="myChartph" width="400" height="250"></canvas>
+            </div> 
+            <div class="col-12">
+                <h1>BETA</h1> 
+            </div>
+        </div>
+  
+        <div class="row">
+
+            <div name="x" class="col-12">
+                <canvas id="line-chart" width="800" height="300"></canvas>
+            </div>
+            
+            
+            <div class="row">
+                <div class="col-6">
+                <table class="table table-dark table-striped">
+                    <thead>
+                    <tr>
+                        <th>Susceptibility</th>
+                        <th>Severity Index</th>
+                        <th>Base value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>High</td>
+                        <td>1,000</td>
+                        <td>1,000</td>
+                    </tr>
+                    <tr>
+                        <td>Medium</td>
+                        <td>100</td>
+                        <td>100</td>
+                    </tr>
+                    <tr>
+                        <td>Low</td>
+                        <td>10</td>
+                        <td>10</td>
+                    </tr>
+                    <tr>
+                        <td>None</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="col-6">
+                <div class="row">
+                    <div class="col-6">
+                    <p>Select Damage Factor</p>
+                    </div>
+                    <div class="col-6">
+                    <input type="number" name="pof" id="pof" min="0" style="width: 100%;">
+                    </div>
+                    <div class="col-6">
+                    <p>The number of months from the date of inspection</p>
+                    </div>
+                    <div class="col-6">
+                    <input type="number" name="month" id="month" min="0" style="width: 100%;">
+                    </div>
+                    <div class="col-4">
+                    <input type="button" value="One Time" style="width: 100%;" onclick="setPofPointOneTime()">
+                    </div>
+                    <div class="col-4">
+                    <input type="button" value="All Time" style="width: 100%;" onclick="setPofPointAllTime()">
+                    </div>
+                    <div class="col-4">
+                    <input type="button" value="Reset" style="width: 100%;" onclick="setPofPointReset()">
+                    </div>
+        
+                </div>
+        
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                <h4>Hỗ trợ tính toán</h4>
+                <div class="row">
+                    <div class="col-6">
+                    <p>Desire susceptibility level</p>
+                    </div>
+                    <div class="col-6">
+                    <div class="btn-group" >
+                        <select name="sus" id="sus">
+                        <option value="_high">High</option>
+                        <option value="_medium">Medium</option>
+                        <option value="_low">Low</option>
+                        <option value="_none">None</option>
+                        </select>
+                    </div>
+                    </div>
+                    <div class="col-6">
+                    <p>Currunt Co3 Contrentrat (ppm)</p>
+                    </div>
+                    <div class="col-6">
+                    <input type="number" name="co3" id="co3" min="0" style="width: 100%;">
+                    </div>
+                    <div class="col-6">
+                    <p>Currunt pH Level</p>
+                    </div>
+                    <div class="col-6">
+                    <input type="number" name="ph" id="ph" min="0" max="14" style="width: 100%;">
+                    </div>
+                    <div class="col-6">
+                    <input type="button" value="Predict Co3 Contrentrat" onclick="make_prediction()" style="width: 100%;">
+                    </div>
+                    <div class="col-6">
+                    <input type="button" value="Predict PH" onclick="make_prediction_pH()" style="width: 100%;">
+                    </div>
+                    <div class="col-12">
+                    <textarea name="demo" id="demo" cols="50" rows="4" style="width: 100%;"></textarea>
+                    </div>
+                </div>
+        
+        
+                </div>
+        
+            </div>
+            
+        </div>
+    <script>
+    //var ctx = document.getElementById('myChartNominalThickness').getContext('2d');
+        var lineChartCO3 = document.getElementById('myChartCO3');
+        var myChartCO3 = new Chart(lineChartCO3, {
+                type: 'line',
+                data: {
+                        labels:[{% for x in dataCO3X %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+                    datasets: [
+                        {
+                            label: 'Alkaline Carbonate Stress Corrosion Cracking for 0 months',
+                            data: [{% for x in dataCO3Y0 %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+                            backgroundColor: 'rgba(0, 128, 128, 0.3)',
+                            borderColor: 'rgba(0, 128, 128, 0.7)',
+                            borderWidth: 1,
+                            fill:false
+                        },
+                        {
+                            label: 'PoF',
+                            data: [{% for x in dataCO3Y1 %}
+                            {{ x }},
+                            {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(128, 0, 128, 0.7)',
+                            borderColor: 'rgba(128, 0, 128, 1)',
+                            borderWidth: 1,
+                            fill:false
+                        },
+                        {
+                            label: 'Risk',
+                            data: [{% for x in dataCO3Y2 %}
+                            {{ x }},
+                            {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(0, 128, 128, 1)',
+                            borderColor: 'rgba(128, 0, 0, 1)',
+                            borderWidth: 1,
+                            fill:false
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:false,
+                                stacked: true
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                            display: true,
+    {#                        fontSize: 14,#}
+                            labelString: "CO3 Concentration in Water (ppm)",
+                            }
+                        }]
+
+                    },
+                }
+            });
+{#        #}
+        var lineChartph = document.getElementById('myChartph');
+        var myChartph = new Chart(lineChartph, {
+                type: 'line',
+                data: {
+                        labels:[{% for x in dataphX %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+                    datasets: [
+                        {
+                            label: 'Alkaline Carbonate Stress Corrosion Cracking for 0 months',
+                            data: [{% for x in dataphY0 %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+                            backgroundColor: 'rgba(0, 128, 128, 0.3)',
+                            borderColor: 'rgba(0, 128, 128, 0.7)',
+                            borderWidth: 1,
+                            fill:false
+                        },
+                        {
+                            label: 'PoF',
+                            data: [{% for x in dataphY1 %}
+                            {{ x }},
+                            {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(128, 0, 128, 0.7)',
+                            borderColor: 'rgba(128, 0, 128, 1)',
+                            borderWidth: 1,
+                            fill:false
+                        },
+                        {
+                            label: 'Risk',
+                            data: [{% for x in dataphY2 %}
+                            {{ x }},
+                            {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(0, 128, 128, 1)',
+                            borderColor: 'rgba(128, 0, 0, 1)',
+                            borderWidth: 1,
+                            fill:false
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:false,
+                                stacked: true
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                            display: true,
+    {#                        fontSize: 14,#}
+                            labelString: "pH of Water",
+                            }
+                        }]
+
+                    },
+                }
+            });
+
+            
+
+        async function loadModel() {
+            model = undefined;
+            model = await tf.loadLayersModel("{% static 'json/carbonateCorrossion/predictCO3/model.json'%}");
+            model_pH = undefined;
+            model_pH = await tf.loadLayersModel("{% static 'json/carbonateCorrossion/predictPH/model.json'%}");
+            console.log("model loaded")
+        }
+        loadModel();
+
+        function make_prediction() {
+            var ph, h, m, l, n, output;
+            ph = h = m = l = n = 0;
+            sus = document.getElementById("sus").value;
+            ph = Number(document.getElementById("ph").value);
+            console.log(sus);
+            if (sus == "_high") {
+                h = 1;
+            } else if (sus == "_medium") {
+                m = 1;
+            } else if (sus == "_low") {
+                l = 1;
+            } else {
+                n = 1;
+            }
+
+            input_xs = tf.tensor2d([
+                [ph, h, m, l, n]
+            ]);
+            output = model.predict(input_xs);
+            const outputData = output.dataSync();
+            let msg = "Unknown";
+            if (outputData[0] > 0.5) {
+                msg = "CO3 concentrations greater than 100 ppm"; 
+            } else if (outputData[1] > 0.5) {
+                msg = "CO3 concentration below 100 ppm"; 
+            }
+            //   document.getElementById("demo").value = Number(outputData[0] > 0.5);
+            document.getElementById("demo").value = msg;
+        }  
+    </script> 
+
+    <script>
+        function make_prediction_pH() {
+            let sus, high, output;
+            sus = high = 0;
+            sus = document.getElementById("sus").value;
+            high = Number(document.getElementById("co3").value);
+            console.log(sus);
+            if (sus == "_high") {
+                sus = 4;
+            } else if (sus == "_medium") {
+                sus = 3;
+            } else if (sus == "_low") {
+                sus = 2;
+            } else {
+                sus = 1;
+            }
+            if (high>=100){
+                high = 1;
+            }else{
+                high = 0;
+            }
+
+            input_xs = tf.tensor2d([
+                [sus, high]
+            ]);
+            output = model_pH.predict(input_xs);
+            let outputData = output.dataSync();
+            outputData = outputData.map(function(each_element){
+                return Number(each_element.toFixed(0));
+            });
+            let sumofarr = outputData.reduce((a, b) => a + b, 0)        
+            let msg = "Unknown";
+            if(sumofarr>0){
+                msg = '';
+                let a = b = c = d = 1;
+                while(sumofarr>0) {
+                    sumofarr -= 1;
+                    if (outputData[0] > 0.5 && a==1 ) {
+                        msg += "pH>=9";
+                        a=0; 
+                    } else if (outputData[1] > 0.5 && b==1) {
+                        msg += "9>pH>=8	"; 
+                        b=0; 
+                    }else if (outputData[2] > 0.5 && c==1) {
+                        msg += "8>pH>=7.5"; 
+                        c=0; 
+                    }else if (outputData[3] > 0.5 && d==1) {
+                        msg += "pH<7.5";
+                        d=0; 
+                    } 
+                    msg+="\n" 
+                }  
+            }
+            document.getElementById("demo").value = msg;
+        } 
+    </script>
+
+    <script>
+        function setPofPointOneTime() {
+            setPofPointReset();
+            _pof = parseFloat(document.getElementById('pof').value);
+            _index = parseInt(document.getElementById('month').value);
+            console.log(_index, _pof);
+            total_chart.data.datasets[3].data[_index] = _pof;
+            total_chart.update();
+        }
+        function setPofPointAllTime() {
+            setPofPointReset();
+            _pof = parseFloat(document.getElementById('pof').value);
+            total_chart.data.datasets[3].data.fill(_pof);
+            total_chart.update();
+        }
+        function setPofPointReset() {
+            total_chart.data.datasets[3].data.fill(null);
+            total_chart.update();
+        }
+    </script>
+
+    <script>
+        function range(start, end, step) {
+      var ans = [];
+      for (let i = start; i <= end; i += step) {
+        ans.push(i);
+      }
+      return ans;
+    }
+
+
+    let _arr = range(0, 72, 1);
+    let _high = _arr.map(x => 1000 * Math.pow(Math.max(x / 12, 1), 1.1));
+    let _medium = _arr.map(x => 100 * Math.pow(Math.max(x / 12, 1), 1.1));
+    let _low = _arr.map(x => 10 * Math.pow(Math.max(x / 12, 1), 1.1));
+    const null_array = new Array(_arr.length).fill(null);
+    var ctx = document.getElementById("line-chart").getContext('2d');
+    var total_chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: _arr,
+        datasets: [{
+          data: _high,
+          label: "High",
+          borderColor: "#ff0000",
+          backgroundColor: "#ff0000",
+          fill: false,
+          pointStyle: 'circle',
+          pointRadius: 3
+        },
+        {
+          data: _medium,
+          label: "Medium",
+          borderColor: "#ff9933",
+          backgroundColor: "#ff9933",
+          fill: false,
+          pointStyle: 'circle',
+          pointRadius: 3
+        },
+        {
+          data: _low,
+          label: "Low",
+          borderColor: "#ccff66",
+          backgroundColor: "#ccff66",
+          fill: false,
+          pointStyle: 'circle',
+          pointRadius: 3
+        },
+        {
+          data: null_array,
+          label: "Point",
+          borderColor: "#ccff66",
+          backgroundColor: "#222222",
+          fill: false,
+          pointRadius: 15,
+          pointHoverRadius: 50,
+          showLine: false,
+          pointStyle: 'rectRot'
+        }
+        ]
+      },
+      options: {
+        title: {
+          display: true,
+          text: 'Carbonate Stress Corrosion Craking Damage Factor'
+        },
+        scales: {
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Damage Factor'
+            }
+          }],
+
+          xAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Month'
+            }
+          }]
+        }
+      }
+    });
+    </script>
+</body>
+</html>

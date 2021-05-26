@@ -1,0 +1,82 @@
+{% extends 'BaseUI/BaseManager/basefacilitymana.html' %}
+
+{% block library %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+{% endblock %}
+
+<!-------------- BLOCK MENU ---------------->
+{% block listfaci %}{% url 'facilitiesDisplayMana' siteID %}{% endblock %}
+{% block backfaci %}{% url 'manager' siteID %}{% endblock %}
+<!----------------- END BLOCK----------------->
+
+{% block data-content %}
+    <form method="post">
+        {% csrf_token %}
+        <div>
+            {% if si %}<a class="color-white" href="{% url 'facilitiesDisplayMana' si.siteid %}">{{ si.sitename }}</a>{% endif %}
+        </div>
+        <div class="table-title">
+          <h2><b>List of Facilities</b></h2>
+        </div>
+        <div style="text-align: center" class="table-custom">
+            <br><br>
+            <table class="table" id="mytable" >
+                <thead >
+                    <tr>
+                        <th width="300px" style="text-align: left">Created time</th>
+                        <th width="200px" style="text-align: left">Facility</th>
+                        <th width="250px" style="text-align: left">Facility Management Factor</th>
+                        <th width="200px" style="text-align: left">Facility Risk Target</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in obj %}
+                    <tr >
+                        <td align="left"><a href="{% url 'equipmentDisplayMana' a.ID %}">{{ a.CreatedTime }}</a></td>
+                        <td align="left"><a href="{% url 'equipmentDisplayMana' a.ID %}">{{ a.FacilitiName }}</a></td>
+                        <td align="left">{{ a.ManagementFactor }}</td>
+                        <td align="left">{{ a.RiskTarget }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+
+{#          Pagination div  #}
+            <div>
+                {% if obj.has_other_pages %}
+              <ul class="pagination">
+                {% if obj.has_previous %}
+                  <li><a href="?page={{ obj.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&laquo;</span></li>
+                {% endif %}
+                {% for i in obj.paginator.page_range %}
+                  {% if obj.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                  {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if obj.has_next %}
+                  <li><a href="?page={{ obj.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+              </ul>
+            {% endif %}
+            </div>
+        </div>
+        
+{#        <div class="pagination-custom">#}
+{#          <div class="to-left">#}
+{#            <a href=""><i class="fas fa-angle-left color-white"></i></a>#}
+{#          </div>#}
+{#          <div class="page" style="color: #fff;">Page 1 of 1</div>#}
+{#          <div class="to-right">#}
+{#            <a href=""><i class="fas fa-angle-right color-white"></i></a>#}
+{#          </div>#}
+{#        </div>#}
+    </form>
+{% endblock %}

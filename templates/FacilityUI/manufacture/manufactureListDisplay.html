@@ -1,0 +1,78 @@
+{% extends 'BaseUI/BaseFacility/baseManufacture.html' %}
+
+<!----------- BLOCK MENU ------------->
+{% block listeq %}{% url 'equipmentDisplay' facilityID %}{% endblock %}
+{% block design %}{% url 'designcodeDisplay' facilityID %}{% endblock %}
+{% block manu %}{% url 'manufactureDisplay' facilityID %}{% endblock %}
+
+{% block listmanu %}{% url 'manufactureDisplay' siteID %}{% endblock %}
+{% block newmanu %}{% url 'manufactureNew' siteID %}{% endblock %}
+{% block backfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+{% block listfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+{% block newfaci %}{% url 'facilitiesNew' siteID %}{% endblock %}
+{% block uploadInsp %}{% url 'upload' siteID %}{% endblock %}
+{% block uploadPlant %}{% url 'uploadPlan' siteID %}{% endblock %}
+{% block inspecPlan %}{% url 'inspectionPlan' siteID %}{% endblock %}
+<!----------- END BLOCK ------------->
+
+{% block data-content %}
+    <form method="post">
+    {% csrf_token %}
+        <div class="table-title">
+          <h2><b>List of Manufactures</b></h2>
+        </div>
+        <div style="text-align: center" class="table-custom">
+            <table class="table" id="mytable">
+                <thead>
+                    <tr>
+                        <th width="10px" style="text-align: center"><input type="checkbox" id="chkHeader"></th>
+                        <th width="1000px" style="text-align: left">Manufacture</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for a in obj %}
+                    <tr>
+                        <td style="text-align: center"><input type="checkbox" name="{{ a.manufacturerid }}"></td>
+                        <td style="text-align: left">{{ a.manufacturername }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+         {#          Pagination div  #}
+            <div>
+                {% if obj.has_other_pages %}
+              <ul class="pagination">
+                {% if obj.has_previous %}
+                  <li><a href="?page={{ obj.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&laquo;</span></li>
+                {% endif %}
+                {% for i in obj.paginator.page_range %}
+                  {% if obj.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                  {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if obj.has_next %}
+                  <li><a href="?page={{ obj.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+              </ul>
+            {% endif %}
+            </div>
+
+
+{#            tool div #}
+            <br>
+            <div>
+                <!--<button type="submit" name="_edit" class="btn btn-primary"><i class="fa fa-pencil">&emsp;Edit Selected</i></button>-->
+                <!--<button type="submit" class="btn btn-warning" id="sub" onclick="Sub()"><i class="fa fa-trash-o">&emsp;Delete Selected</i></button>-->
+                <!--<button type="submit" name="_new" class="btn btn-primary"><i class="fa fa-pencil">&emsp;New Manufacture</i></button>-->
+            </div>
+
+        </div>
+    </form>
+{% endblock %}

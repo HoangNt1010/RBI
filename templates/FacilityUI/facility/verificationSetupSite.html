@@ -1,0 +1,173 @@
+{% extends 'BaseUI/BaseFacility/baseFacility.html' %}
+{% load staticfiles %}
+{% load static %}
+
+<!-------------- BLOCK MENU ---------------->
+{% block listfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+{% block newfaci %}{% url 'facilitiesNew' siteID %}{% endblock %}
+{% block design %}{% url 'designcodeDisplay' siteID %}{% endblock %}
+{% block manu %}{% url 'manufactureDisplay' siteID %}{% endblock %}
+{% block uploadInsp %}{% url 'upload' siteID %}{% endblock %}
+{% block uploadPlant %}{% url 'uploadPlan' siteID %}{% endblock %}
+{% block manageFile %}{% url 'manageFile' siteID %}{% endblock %}
+{#{% block uploadScada %}{% url 'uploadScada' siteID %}{% endblock %}#}
+{% block inspecPlan %}{% url 'inspectionPlan' siteID %}{% endblock %}
+{% block rbitracking %}{% url 'rbitracking' %}{% endblock %}
+{% block mitigationSite %}{% url 'mitigationSite' siteID%}{% endblock %}
+{% block HelpSite %}{% url 'help' %}{% endblock %}
+{% block forum %}{% url 'forum' %}{% endblock %}
+{% block testSample %}{% url 'testsample' siteID%}{% endblock %}
+{% block settingAccount %}{% url 'settingAccount' siteID %}{% endblock %}
+{% block Re-verificationSite %}{% url 'Re-verificationSite' siteID %}{% endblock %}
+{% block homedetail %}{% url 'homefacility' siteID%}{% endblock %}
+<!----------------- END BLOCK----------------->
+{% block data-content %}
+<style>
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+</style>
+    <form method="post" id="setting">
+    {% csrf_token %}
+        <div class="input-data">
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border"><b>Set up Auto-Schedule</b></legend>
+                <div class="row">
+                    <div class="col-md-4">Mode Auto Re-Verification <button style="background: white; padding: 0 0 0 0; border:none" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#ModeAuto" title="infomation"><i class="fa fa-info-circle" style="color: blue;" ></i></button></div>
+                    <div class="col-md-8">
+                        <label class="switch">
+                          <input type="checkbox" name="mode" id="mode" onclick="return confirm('Are you sure you want to change mode automatic auditing?');">
+                          <span class="slider"></span>
+                        </label>
+                        <script>
+                            if({{ oldMode }})
+                                $("#mode").attr('checked', 'checked');
+                        </script>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">Timer(day) <button style="background: white; padding: 0 0 0 0; border:none" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#SetTimer" title="infomation"><i class="fa fa-info-circle" style="color: blue;" ></i></button></div>
+                    <div class="col-md-4"><input type="number" min="0" max="1000000" step="1" class="form-control" value="{{oldTimer}}" name="timer" id="timer" placeholder="Input timer" required></div>
+                </div>
+                <script>
+                    $(document).ready(function () {
+                        var check = $("#mode").is(':checked');
+                        if(check){
+                            $("#timer").attr('disabled', false);
+                        }
+                        else {
+                            $("#timer").prop('selectedIndex',0);
+                            $("#timer").attr('disabled', true);
+                        }
+                        $("#mode").click(function () {
+                            if($("#mode").prop('checked') == true){
+                                $("#timer").attr('disabled', false);
+                            }
+                            else {
+                                $("#timer").prop('selectedIndex',0);
+                                $("#timer").attr('disabled', true);
+                            }
+                        })
+                    })
+                </script>
+            </fieldset>
+            <div class="modal fade" id="SetTimer" role="dialog">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Setup Timer</h4>
+                    </div>
+                    <div class="modal-body">
+                      <p class="Cen">
+                          The mode allows automatic data retrieval from collected sensors. Condition:
+                      </p>
+                        <ul style="text-align: justify">
+                            <li>When the difference between the time of the current time and the time when the new record
+                                of the device component is created is larger than your counter, the system automatically
+                                collects data from the sensors.</li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <div class="modal fade" id="ModeAuto" role="dialog">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Mode Auto Re-Verification Setup</h4>
+                    </div>
+                    <div class="modal-body">
+                      <p class="Cen">
+                          The mode allows automatic data retrieval from collected sensors. Condition:
+                      </p>
+                        <ul style="text-align: justify">
+                            <li>The components of your device need to be linked to the sensor via the ThingsBoard, access the page to get
+                                the id from the device :<a href="https://demo.thingsboard.io/" target="_blank">Thingsboard</a></li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <br>
+            <div class="row">
+                <div class="col-md-12" style="text-align: right"><button type="submit" onclick="return confirm('Are you sure you want to save this set up?');" name ="_save" class="btn btn-primary">Save</button></div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

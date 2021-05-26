@@ -1,0 +1,103 @@
+{% extends 'BaseUI/BaseCitizen/baseRiskSummary_Citizen.html' %}
+
+{% load staticfiles %}
+{% load static %}
+{% block library %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+         fieldset.scheduler-border {
+            border: solid 1px #DDDDDD !important;
+            padding: 0 10px 10px 10px;
+            border-bottom: none;
+        }
+
+        legend.scheduler-border {
+            width: auto !important;
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            color: blue;
+        }
+    </style>
+{% endblock %}
+
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactorCitizen' proposalID %}{% endblock %}
+{% block ca%}{% url 'fullyConsequenceCitizen' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrixCitizen' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChartCitizen' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'ListProposalCitizen' faci.facilityid  si.siteid %}{% endblock %}
+<!---------------END BLOCK--------------->
+
+{% block data-content %}
+    <form method="post">
+    {% csrf_token %}
+        <div class="input-data">
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border"><b>Fully-Quantitative Financial Cosequense of Failure and Category</b></legend>
+                <!----------- BLOCK INPUT ---------->
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Input</b></legend>
+                    <div class="row">
+                        <div class="col-md-8">Cost of lost production due to downtime to repair equipment, $/day:</div>
+                        <div class="col-md-4">{{ data.production_cost }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">Equipment cost, $/m2:</div>
+                        <div class="col-md-4">{{ data.equipment_cost }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">Population density of personal or employees in the unit, personal/m2:</div>
+                        <div class="col-md-4">{{ data.personal_density }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">Environmental clean-up cost, $/barrel:</div>
+                        <div class="col-md-4">{{ data.evironment_cost }}</div>
+                    </div>
+                </fieldset>
+
+                <!-------- BLOCK CONSEQUENCE ------->
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Consequence of Failure and Category</b></legend>
+                    <div class="row">
+                        <div class="col-md-8">Financial Consequence Area of Component Damage Flamable, m<sup>2</sup>:</div>
+                        <div class="col-md-4">{{ data.ca_cmd }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">Financial Consequence Area of Personnel Injury Flamable, m<sup>2</sup>:</div>
+                        <div class="col-md-4">{{ data.ca_inj_flame }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">Financial Consequence of Component Damage Costs, $:</div>
+                        <div class="col-md-4">{{ data.fc_cmd }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">Financial Consequence of Affected Area, $:</div>
+                        <div class="col-md-4">{{ data.fc_affa }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">Financial Consequence of Business Interruption Costs, $:</div>
+                        <div class="col-md-4">{{ data.fc_prod }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">Financial Consequence of Potential Injury Costs, $:</div>
+                        <div class="col-md-4">{{ data.fc_inj }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">Financial Consequence of Environmental Cleanup Costs, $:</div>
+                        <div class="col-md-4">{{ data.fc_envi }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">Financial Consequence of Falure, $:</div>
+                        <div class="col-md-4">{{ data.fc_total }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">Consequence of Failure Category:</div>
+                        <div class="col-md-4"><b>{{ data.fcof_category }}</b></div>
+                    </div>
+                </fieldset>
+            </fieldset>
+        </div>
+    </form>
+{% endblock %}

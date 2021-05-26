@@ -1,0 +1,38 @@
+{% extends 'BaseUI/BaseFacility/baseFacility.html' %}
+
+<!------------ BLOCK MENU --------------->
+{% block listdesign %}{% url 'designcodeDisplay' siteID %}{% endblock %}
+{% block newdesign %}{% url 'designcodeNew' siteID %}{% endblock %}
+{% block backfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+<!----------- END BLOCK --------------->
+
+
+{% block data-content %}
+    <form method="post">
+    {% csrf_token %}
+        <div class="input-data">
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border"><b>Design Code Information</b></legend>
+                <div class="row">
+                    <div class="col-md-4">Design Code:<span style="color: red">*</span></div>
+                    <div class="col-md-8"><input type="text" class="form-control" name="design_code_name" value="{{ data.designcode }}" placeholder="Input design code name here!" required></div>
+                </div>
+                {%  if error.exist %}
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-8"><span style="color: red; font-size: 16px">{{ error.exist }}</span> </div>
+                </div>
+                {% endif %}
+                <div class="row">
+                    <div class="col-md-4">Design Code App:<span style="color: red">*</span></div>
+                    <div class="col-md-8"><input type="text" class="form-control" name="design_code_app" value="{{ data.designcodeapp }}" placeholder="Input design code app here!" required></div>
+                </div>
+            </fieldset>
+
+            <div class="row"></div>
+            <div class="row">
+                <div class="col-md-12" style="text-align: right"><button type="submit" class="btn btn-primary">Submit</button></div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

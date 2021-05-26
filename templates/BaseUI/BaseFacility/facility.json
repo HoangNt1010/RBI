@@ -1,0 +1,14 @@
+cuongluong({
+    "type":"FeatureCollection",
+    "features": [
+        {
+            "lat":"21.0286",
+            "lng":"105.8506",
+            "namefacility":"DPM",
+            "numberequip":20,
+            "numbercom":20,
+            "address":"",
+            "link":"http://127.0.0.1:8000/equipment/display/DPM/"
+        }
+    ]
+})

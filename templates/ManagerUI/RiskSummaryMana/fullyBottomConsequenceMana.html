@@ -1,0 +1,231 @@
+{% extends 'BaseUI/BaseManager/baseRiskSummaryMana.html' %}
+
+{% load staticfiles %}
+
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactorMana' proposalID %}{% endblock %}
+{% block ca%}{% url 'fullyConsequenceMana' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrixMana' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChartMana' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'proposalDisplayMana' ass.componentid_id %}{% endblock %}
+<!---------------END BLOCK--------------->
+
+{% block data-content %}
+    <form method="post">
+    {% csrf_token %}
+    {% if thongbao %}
+    <div class="alert" style="background-color:#28a745;text-align:center">
+        <p style="color:#fff"><b>Bạn đã yêu cầu kiểm định thành công</b></p>
+    </div>
+    {% endif %}
+    <div class="title-verifitcation" >
+        <h1>Cosequense of Failure and Category</h1>
+    </div>
+    <div class="header-verification">
+      <div class="row left-header-verification">
+        <div class="col-md-5 column-element column-hight">
+          <img class="ml-16" src="{% static 'image/Sensor/sites.png'%}" alt="">
+          <div class="mr-16">
+            <p>{{ num_site }}</p>
+            <p>Sites</p>
+          </div>
+        </div>
+        <div class="col-md-5 column-element column-medium">
+          <img class="ml-16" src="{% static 'image/Sensor/factory.png'%}" alt="">
+          <div class="mr-16">
+            <p>{{ num_faci }}</p>
+            <p>Facility</p>
+          </div>
+        </div>
+        <div class="col-md-5 column-element column-low">
+          <img class="ml-16" src="{% static 'image/Sensor/equipment.png'%}" alt="">
+          <div class="mr-16">
+            <p>{{ num_eq }}</p>
+            <p>Equipment</p>
+          </div>
+        </div>
+        <div class="col-md-5 column-element column-normal">
+          <img class="ml-16" src="{% static 'image/Sensor/engineering.png'%}" alt="">
+          <div class="mr-16">
+            <p>{{ num_com }}</p>
+            <p>Component</p>
+          </div>
+        </div>
+      </div>
+      <div class="right-header-verification">
+        <!-- <p>Troubleshooting Process</p> -->
+        <div class="content-right-header">
+            <div class="step-content-header">
+                <div class="step-element">
+                  <button class="btn-step">Step 1</button>
+                  <span></span>
+                </div>
+              <p>View List Proposal</p>
+            </div>
+            <div class="step-content-header">
+              <div class="step-element">
+                <button class="btn-step active-btn-step">Step 2</button>
+                <span></span>
+              </div>
+              <p style="padding-left: 18px;">View Risk</p>
+            </div>
+            <div class="step-content-header">
+              <div class="step-element">
+                <button class="btn-step">Step 3</button>
+                <span></span>
+              </div>
+              <p style="padding-left: 5px;">Choose Risk</p>
+            </div>
+            <div class="step-content-header">
+              <div class="step-element">
+                <button class="btn-step">Step 4</button>
+              </div>
+              <p>Send Verification</p>
+            </div>
+        </div>
+      </div>
+    </div>
+    <hr class="hr-verification"/>
+        <div class="input-data content-full-df">
+            <div>
+                <h3 class="color-white">Fully-Quantitative Financial Cosequense of Failure and Category</h3>
+                <hr class="hr-verification"/>
+                <div class="px-100">
+                    <div class="row">
+                        <div class="col-md-8 color-white">The hydraulic conductivity for water, m/day:</div>
+                        <div class="col-md-4 text-value">{{ data.hydraulic_water }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">The hydraulic conductivity for fluid, m/day:</div>
+                        <div class="col-md-4 text-value">{{ data.hydraulic_fluid }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">The product seepage velocity, m/day:</div>
+                        <div class="col-md-4 text-value">{{ data.seepage_velocity }}</div>
+                    </div>
+                    <!------------ BLOCK 2-------------->
+                    <div class="row"></div>
+                    <div class="row">
+                        <div class="col-md-8 color-white"></div>
+                        <div class="col-md-2 text-value"><b>D1</b></div>
+                        <div class="col-md-2 text-value"><b>D4</b></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">Flow Rate, bbls/day:</div>
+                        <div class="col-md-2 text-value">{{ data.flow_rate_d1 }}</div>
+                        <div class="col-md-2 text-value">{{ data.flow_rate_d4 }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">Leak duration, days:</div>
+                        <div class="col-md-2 text-value">{{ data.leak_duration_d1 }}</div>
+                        <div class="col-md-2 text-value">{{ data.leak_duration_d4 }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">Release volume from leakage, barrels:</div>
+                        <div class="col-md-2 text-value">{{ data.release_volume_leak_d1 }}</div>
+                        <div class="col-md-2 text-value">{{ data.release_volume_leak_d4 }}</div>
+                    </div>
+                    <!------------ block 3------------>
+                    <div class="row"></div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">Realease volume from rupture, barrels:</div>
+                        <div class="col-md-4 text-value">{{ data.release_volume_rupture }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">The time to initate leakage to the ground water, days:</div>
+                        <div class="col-md-4 text-value">{{ data.time_leak_ground }}</div>
+                    </div>
+                    <!------------ block 4------------>
+                    <div class="row"></div>
+                    <div class="row">
+                        <div class="col-md-8 color-white"></div>
+                        <div class="col-md-2 text-value"><b>D1</b></div>
+                        <div class="col-md-2 text-value"><b>D4</b></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">The volume of the product in the subsoil from leakage, barrels:</div>
+                        <div class="col-md-2 text-value">{{ data.volume_subsoil_leak_d1 }}</div>
+                        <div class="col-md-2 text-value">{{ data.volume_subsoil_leak_d4 }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">The volume of the product in the ground water from leakage, barrels:</div>
+                        <div class="col-md-2 text-value">{{ data.volume_ground_water_leak_d1 }}</div>
+                        <div class="col-md-2 text-value">{{ data.volume_ground_water_leak_d4 }}</div>
+                    </div>
+                    <!------------ block 5------------>
+                    <div class="row"></div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">The total barrels of fluid within the dike from rupture, barrels:</div>
+                        <div class="col-md-4 text-value">{{ data.barrel_dike_rupture }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">The total barrels of fluid in the on-site surface soil from a rupture, barrels:</div>
+                        <div class="col-md-4 text-value">{{ data.barrel_onsite_rupture }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">The total barrels of fluid in the off-site surface soil from a rupture, barrels:</div>
+                        <div class="col-md-4 text-value">{{ data.barrel_offsite_rupture }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">The total barrels of fluid that reach water from a rupture, barrels:</div>
+                        <div class="col-md-4 text-value">{{ data.barrel_water_rupture }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">The financial environmental cost from leakage, $:</div>
+                        <div class="col-md-4 text-value">{{ data.fc_environ_leak }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">The financial environmental cost from rupture, $:</div>
+                        <div class="col-md-4 text-value">{{ data.fc_environ_rupture }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">The financial environmental cost, $:</div>
+                        <div class="col-md-4 text-value">{{ data.fc_environ }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">The material factor:</div>
+                        <div class="col-md-4 text-value">{{ data.material_factor }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">The component damage cost, $:</div>
+                        <div class="col-md-4 text-value">{{ data.component_damage_cost }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">The cost of business interruption, $:</div>
+                        <div class="col-md-4 text-value">{{ data.business_cost }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">The total consequence, $:</div>
+                        <div class="col-md-4 text-value">{{ data.consequence }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">Consequence Category:</div>
+                        <div class="col-md-4 text-value"><b>{{ data.consequencecategory }}</b></div>
+                    </div>
+                </div>
+            </div>
+            <div class="px-100">
+                <div class="row">
+                    <div class="col-md-12" style="text-align: right"><button type="submit" class="btn btn-primary btn-custom-by-thc" id="changeThinning" onclick="btnChangeClick()">Verification Requirements</button></div>
+                </div>
+            </div>
+        </div>
+        <script>
+        function btnChangeClick() {
+            document.getElementById("fullDF").submit();
+            ShowLoading();
+            return false;
+        }
+        function ShowLoading() {
+            var div = document.createElement('div');
+            var img = document.createElement('img');
+            img.src = '{% static 'image/loading/Pacman-1s-100px.gif' %}';
+            div.style.cssText = "position: fixed;left: 50%; top: 30%; width: 300px; text-align: center; background: rgba(54, 25, 25, .00004); border: 0px solid #000;";
+            div.appendChild(img);
+            document.body.appendChild(div);
+            $("#changeThinning").attr('disabled',true);
+            return true;
+        }
+    </script>
+    </form>
+{% endblock %}

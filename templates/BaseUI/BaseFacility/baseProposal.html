@@ -1,0 +1,14 @@
+{% extends 'BaseUI/BaseFacility/baseBusiness.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block title %}Proposal{% endblock %}
+{% block vertical %}
+    {#<a class="vertical">Proposal Management</a>#}
+    <!-- <a class="active"><span>Proposal Management</span></a> -->
+    <a href="{% block listProposal %}{% endblock %}" class="{% if page == 'listProposal' %}activeLink{% elif page == 'listProposalTank'%}activeLink{% elif page == 'proposalNew'%}activeLink{% elif page == 'tankEdit'%}activeLink{% endif %}"><i class="fa fa-list">&emsp;<span>List of Proposals</span></i></a>
+    <a href="{% block newsensor %}{% endblock %}" class="{% if page == 'newsensor' %}activeLink{% endif %}"><i class="fa fa-anchor">&emsp;<span>Sensor Connection</span></i></a>
+    <a href="{% block scada %}{% endblock %}" class="{% if page == 'scada' %}activeLink{% elif page == 'loadscada' %}activeLink{% endif %}"><i class="fa fa-connectdevelop" aria-hidden="true">&emsp;<span>Scada Connection</span></i></a>
+    <a href="{% block setting %}{% endblock %}" class="{% if page == 'setting' %}activeLink{% endif %}"><i class="fa fa-cogs">&emsp;<span>Set up Auto-schedule</span></i></a>
+    <a href="{% block backComp %}{% endblock %}" ><i class="fa fa-arrow-left">&emsp;<span>Back to Component</span></i></a>
+{% endblock %}

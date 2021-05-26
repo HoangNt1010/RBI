@@ -1,0 +1,1262 @@
+{% extends 'BaseUI/BaseFacility/baseProposal.html' %}
+
+{% load staticfiles %}
+
+<!----------BLOCK MENU----------->
+{% block listProposal %}{% url 'proposalDisplay' componentID %}{% endblock %}
+{% block newProposal %}{% url 'proposalNew' componentID %}{% endblock %}
+{% block backComp %}{% url 'componentDisplay' equipmentID %}{% endblock %}
+<!----------END BLOCK------------>
+
+{% block data-content %}
+    <form id="tank" class="input-data" method="post">
+    {% csrf_token %}
+        <div class="title-proposal" >
+            New Proposal
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <ul class="nav">
+                    <li class="active tab-select"><a data-toggle="tab" href="#assessment">Assessment</a></li>
+                    <li class="tab-select"><a data-toggle="tab" href="#equipment">Equipment</a></li>
+                    <li class="tab-select"><a data-toggle="tab" href="#component">Component</a></li>
+                    <li class="tab-select"><a data-toggle="tab" href="#operatingCondition">Operating Condition</a></li>
+                    <li class="tab-select"><a data-toggle="tab" href="#material">Material</a></li>
+                    <li class="tab-select"><a data-toggle="tab" href="#ccli">Coating, Cladding, Lining, Insulation</a></li>
+                    <li class="tab-select"><a data-toggle="tab" href="#stream">Stream</a></li>
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <div class="tab-content">
+                    <!-- tab 1 -->
+                    <div id="assessment" class="box-custom-proposal tab-pane fade in active">
+                        <div class="row">
+                            <div class="col-md-4">Assessment Name:<span style="color: red">*</span></div>
+                            <div class="col-md-8"><input type="text" class="form-control" name="AssessmentName" placeholder="Input assessment name here!" required/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">Assessment Date:<span style="color: red">*</span></div>
+                            <div class="col-md-8"><input type="text" name="assessmentdate" class="form-control" id="assessmentdate" placeholder="yyyy-mm-dd" required></div>
+                            <script>
+                                $( "#assessmentdate" ).datepicker({
+                                dateFormat: 'yy-mm-dd'
+                            });
+                            $("#assessmentdate").datepicker('setDate', new Date());
+                            </script>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">CommissionDate:<span style="color: red">*</span></div>
+                            <div class="col-md-8">
+                                <input type="text" name="CommisstionDate" class="form-control" id="commissiondate" value="{{ data.commissiondate }}" placeholder="yyyy-mm-dd" required>
+                            </div>
+                            <script>
+                                $( "#commissiondate" ).datepicker({
+                                    dateFormat: 'yy-mm-dd'
+                                });
+                                $("#commissiondate").datepicker('setDate', new Date());
+                            </script>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">Assessment Method:<span style="color: red">*</span></div>
+                            <div class="col-md-8"><select class="form-control" name="AssessmentMethod">
+                                <option>Semi-Quantitative PoF and Semi-Quantitative CoF</option>
+                                <option>Semi-Quantitative PoF and Fully-Quantitative CoF</option>
+                                <option>Fully-Quantitative PoF and Semi-Quantitative CoF</option>
+                                <option>Fully-Quantitative PoF and Fully-Quantitative CoF</option>
+                            </select> </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">Risk Analysis Period (months):</div>
+                            <div class="col-md-8"><input type="text" class="form-control" name="RiskAnalysisPeriod" value="36" readonly></div>
+                        </div>
+                    </div>
+                    <!-- tab 2 -->
+                    <div id="equipment" class="box-custom-proposal tab-pane fade">
+                        <!-- 1 -->
+                        <div>
+                            <b>Generic Properties</b>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="checkbox" id="PWHT" name="PWHT" />
+                                <label class="font-lighter" for="PWHT">PWHT</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="checkbox" id="Admin" name="Admin" />
+                                <label class="font-lighter" for="Admin">Administrative Control for Upset Management</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="checkbox" id="CylicOper" name="CylicOper" />
+                                <label class="font-lighter" style="color: red;" for="CylicOper">Cylic Operation</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="checkbox" id="Highly" name="Highly" />
+                                <label class="font-lighter" for="Highly">Highly Effective Inspection for Deadlegs</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div>Online Monitoring</div>
+                                <select class="form-control" name="OnlineMonitoring">
+                                    <option value="" selected disabled>Please select online monitoring..
+                                    <option>Amine high velocity corrosion - Corrosion coupons</option>
+                                    <option>Amine high velocity corrosion - Electrical resistance probes</option>
+                                    <option>Amine high velocity corrosion - Key process variable</option>
+                                    <option>Amine low velocity corrosion - Corrosion coupons</option>
+                                    <option>Amine low velocity corrosion - Electrical resistance probes</option>
+                                    <option>Amine low velocity corrosion - Key process variable</option>
+                                    <option>HCL corrosion - Corrosion coupons</option>
+                                    <option>HCL corrosion - Electrical resistance probes</option>
+                                    <option>HCL corrosion - Key process variable</option>
+                                    <option>HCL corrosion - Key process variable & Electrical resistance probes</option>
+                                    <option>HF corrosion - Corrosion coupons</option>
+                                    <option>HF corrosion - Electrical resistance probes</option>
+                                    <option>HF corrosion - Key process variable</option>
+                                    <option>High temperature H2S/H2 corrosion - Corrosion coupons</option>
+                                    <option>High temperature H2S/H2 corrosion - Electrical resistance probes</option>
+                                    <option>High temperature H2S/H2 corrosion - Key process parameters</option>
+                                    <option>High temperature Sulfidic / Naphthenic acid corrosion - Corrosion coupons</option>
+                                    <option>High temperature Sulfidic / Naphthenic acid corrosion - Electrical resistance probes</option>
+                                    <option>High temperature Sulfidic / Naphthenic acid corrosion - Key process variable</option>
+                                    <option>No online monitoring</option>
+                                    <option>Other corrosion - Corrosion coupons</option>
+                                    <option>Other corrosion - Electrical resistance probes</option>
+                                    <option>Other corrosion - Key process variable</option>
+                                    <option>Sour water high velocity corrosion - Corrosion coupons</option>
+                                    <option>Sour water high velocity corrosion - Electrical resistance probes</option>
+                                    <option>Sour water high velocity corrosion - Key process variable</option>
+                                    <option>Sour water low velocity corrosion - Corrosion coupons</option>
+                                    <option>Sour water low velocity corrosion - Electrical resistance probes</option>
+                                    <option>Sour water low velocity corrosion - Key process variable</option>
+                                    <option>Sulfuric acid (H2S/H2) corrosion high velocity - Corrosion coupons</option>
+                                    <option>Sulfuric acid (H2S/H2) corrosion high velocity - Electrical resistance probes</option>
+                                    <option>Sulfuric acid (H2S/H2) corrosion high velocity - Key process parameters</option>
+                                    <option>Sulfuric acid (H2S/H2) corrosion high velocity - Key process parameters & electrical resistance probes</option>
+                                    <option>Sulfuric acid (H2S/H2) corrosion low velocity - Corrosion coupons</option>
+                                    <option>Sulfuric acid (H2S/H2) corrosion low velocity - Electrical resistance probes</option>
+                                    <option>Sulfuric acid (H2S/H2) corrosion low velocity - Key process parameters</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    Equipment Volume, m<sup>3</sup>:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" min="0" max="1000000" step="0.01" class="form-control" value="0" name="EquipmentVolume" placeholder="Equipment volume" required/>
+                            </div>
+                        </div>
+                        <!-- 2 -->
+                        <div>
+                            <b>Governing Thinning Damage Factor Properties</b>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="checkbox" id="LOM" name="LOM"/>
+                                <label class="font-lighter" for="LOM">Liner Online Monitoring</label>    
+                            </div>
+                            <div class="col-md-6">
+                                <input type="checkbox" id="ComponentWelded" name="ComponentWelded"/>
+                                <label class="font-lighter" for="ComponentWelded">Component is Welded</label>    
+                            </div>
+                            <div class="col-md-6">
+                                <input type="checkbox" id="TMA" name="TMA"/>
+                                <label class="font-lighter" for="TMA">Tank Is Maintained in Accordance with API 653</label>    
+                            </div>
+                            <div class="col-md-12 class-inline-custom">
+                                <div  style="width: 230px">
+                                    Adjustment for Settlement:
+                                </div>
+                                <select class="form-control" name="AdjForSettlement" id="AdjForSettlement">
+                                    <option value="" selected disabled>Please select adjust settlement..</option>
+                                    <option>Recorded settlement exceeds API 653 criteria</option>
+                                    <option>Recorded settlement meets API 653 criteria</option>
+                                    <option>Settlement never evaluated</option>
+                                    <option>Concrete foundation, no settlement</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- 3 -->
+                        <div>
+                            <b>Governing External Damage Factor Properties</b>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="color: red">
+                                <input type="checkbox" id="MFTF" name="MFTF"/>
+                                <label class="font-lighter" for="MFTF">Material is Exposed to Fluids, Mists or Solids Containing Chlorine Externally</label>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="checkbox" id="InterfaceSoilWater" name="InterfaceSoilWater" />
+                                <label class="font-lighter" for="InterfaceSoilWater">Interface at Soil or Water</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 class-inline-custom">
+                                <div style="width: 230px">
+                                    External Environment
+                                </div>
+                                <select class="form-control" name="ExternalEnvironment">
+                                    <option value="" selected disabled>Please select extern environ..</option>
+                                    <option>Arid/dry</option>
+                                    <option>Marine</option>
+                                    <option>Severe</option>
+                                    <option>Temperate</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- 4 -->
+                        <div>
+                            <b>Governing Stress CorrosionCracking Damage Factor Properties</b>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input  type="checkbox" id="Downtime" name="Downtime" />
+                                <label class="font-lighter" for="Downtime">Downtime Protection Used</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="checkbox" id="Steamed" name="Steamed" />
+                                <label class="font-lighter" for="Steamed">Steamed Out Prior to Water Flushing</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="checkbox" id="HeatTraced" name="HeatTraced" />
+                                <label class="font-lighter" for="HeatTraced">Heat Traced</label>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="checkbox" id="PresenceofSulphides" name="PresenceofSulphides" />
+                                <label class="font-lighter" for="PresenceofSulphides">Presence of Sulphides, Moisture and Oxygen During Operation</label>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="checkbox" id="PresenceofSulphidesShutdow" name="PresenceofSulphidesShutdow" />
+                                <label class="font-lighter" for="PresenceofSulphidesShutdow">Presence of Sulphides, Moisture and Oxygen During Shutdown</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 class-inline-custom">
+                                <div style="width: 170px;">
+                                    Thermal History
+                                </div>
+                                <select  class="form-control" name="ThermalHistory">
+                                    <option value="" selected disabled>Please select thermal history..</option>
+                                    <option>None</option>
+                                    <option>Solution Annealed</option>
+                                    <option>Stabilised After Welding</option>
+                                    <option>Stabilised Before Welding</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- 5 -->
+                        <div>
+                            <b>Governing Thinning Damage Factor Properties</b>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="checkbox" id="PressurisationControlled" name="PressurisationControlled" />
+                                <label class="font-lighter" for="PressurisationControlled">Pressurisation Controlled by Admin</label>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="checkbox" id="lowestTemp" name="lowestTemp" />
+                                <label class="font-lighter" for="lowestTemp">Equipment is Operating for Many Years at Lowest Expected Temperature</label>
+                            </div>
+                            <div class="col-md-12 class-inline-custom">
+                                <div style="width: 1600px;">
+                                    Min. Required Temperature Before Pressurisation Allowed by Admin, &deg;C:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" step="0.01" max="100000" class="form-control" name="MinReq" value="0" placeholder="Min req temp" required/>
+                            </div>
+                        </div>
+                        <!-- 6 -->
+                        <div>
+                            <b>Tank Consequence of Failure Properties</b>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div>
+                                    Type of Soil
+                                </div>
+                                <select class="form-control" name="typeofSoil">
+                                    <option value="" selected disabled>Please select soil type..</option>
+                                    <option>Coarse Sand</option>
+                                    <option>Fine Sand</option>
+                                    <option>Very Fine Sand</option>
+                                    <option>Silt</option>
+                                    <option>Sandy Clay</option>
+                                    <option>Clay</option>
+                                    <option>Concrete-Asphalt</option>
+                                    <option>Gravel</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    Environment Sensitivity
+                                </div>
+                                <select class="form-control" name="EnvironmentSensitivity">
+                                    <option value="" selected disabled>Please select environ sensitivity..</option>
+                                    <option>High</option>
+                                    <option>Medium</option>
+                                    <option>Low</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            {% if isshell %}
+                            <!----- do nothing ------>
+                            {% else %}
+                            <div class="col-md-6">
+                                <div>
+                                    Distance To Ground Water, m:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" step="0.01" max="100000" class="form-control" min="0" name="Distance" value="0" placeholder="Distance to ground water" required/>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <!-- tab 3 -->
+                    <div id="component" class="box-custom-proposal tab-pane fade">
+                        <!-- 3.1 -->
+                        <div>
+                            <b>Generic Properties</b>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="checkbox" id="DFDI" name="DFDI">
+                                <label class="font-lighter" for="DFDI">Damage Found During Inspection</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="checkbox" id="PresenceCracks" name="PresenceCracks">
+                                <label class="font-lighter" for="PresenceCracks">Presence of Cracks</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="checkbox" id="MinStructural" name="MinStructural">
+                                <label class="font-lighter" for="MinStructural">Minimum Structural Thickness Governs</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div>
+                                    Tank Diameter, in:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" max="100000" step="0.01" class="form-control" min="0" value="0" name="TankDiameter" placeholder="Tank diameter" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    Nominal Thickness, mm:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" step="0.01" max="100000" class="form-control" min="0" value="0" name="NominalThickness" placeholder="Normal thickness" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    Current Thickness, mm:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" step="0.01" max="100000" class="form-control" value="0" min="0" name="CurrentThickness" placeholder="Current thickness" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    Min. Required Thickness, mm:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" step="0.01" min="0" max="100000" class="form-control" value="0" name="MinReqThick" placeholder="Req thickness" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    Structural Thickness, mm
+                                </div>
+                                <input type="number" class="form-control" step="0.01" min="0" value="0" max="1000" placeholder="StructuralThickness" name="StructuralThickness" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    Current Corrosion Rate, mm/yr:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" step="0.01" min="0" max="1000" class="form-control" value="0" name="CurrentCorrosionRate" placeholder="Corrosion rate" required/>
+                            </div>
+                            {% if isshell %}
+                                <div class="col-md-6">
+                                    <div>
+                                        Shell Course Height, m:<span style="color: red">*</span>
+                                    </div>
+                                    <input type="number" step="0.01" class="form-control" value="0" min="0" max="1000" name="shellHeight" placeholder="Shell course height" required/>
+                                </div>
+                            {% endif %}
+                            <div class="col-md-6">
+                                <div>
+                                    Weld Joint Efficiency
+                                </div>
+                                <input id="maxN" onkeyup="MaximumN()" type="number" maxlength="10" class="form-control" step="0.01" min="0" value="0" max="1" placeholder="WeldJointEff" name="WeldJointEff" required/>
+                            </div>
+                            <script>
+                                function MaximumN(){
+                                    var max = document.getElementById("maxN").value;
+                                    if(max>1.00) {
+                                        alert("the value must be equal or lesser than 1");
+                                    }
+                                }
+                            </script>
+                            <div class="col-md-6">
+                                <div>
+                                    Component Volume, m<sup>3</sup>
+                                </div>
+                                <input type="number" class="form-control" step="0.01" min="0" value="0" max="1000" placeholder="CompVolume" name="CompVolume" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    Allowable Stress at Assessment Temperature, psi:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" step="0.01" min="0" value="0" max="100000" class="form-control" name="ASAT" placeholder="Allow stress" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    Level Of Confidence In Corrosion Rate
+                                </div>
+                                <select class="form-control" name="ConfidenceCR">
+                                    <option value="" selected disabled>Please select level of confidence..</option>
+                                    <option>Low</option>
+                                    <option>Medium</option>
+                                    <option>High</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- 3.2 -->
+                        <div>
+                            <b>Governing External Damage Factor Properties</b>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 class-inline-custom">
+                                <div style="width: 250px;">
+                                    Complexity of Protrusions
+                                </div>
+                                <select class="form-control" name="ComplexityProtrusions">
+                                    <option value="" selected disabled>Please select complex protrusions..</option>
+                                    <option>Above average</option>
+                                    <option>Average</option>
+                                    <option>Below average</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- 3.3 -->
+                        <div>
+                            <b>Governing Stress Corrosion Cracking Damage Factor Properties</b>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 class-inline-custom">
+                                <div style="width: 250px;">
+                                    Maximum Brinnell Hardness of Weld
+                                </div>
+                                <select class="form-control" list="MBHW" name="MBHW">
+                                    <option value="" selected disabled>Please select brinnel hardness..</option>
+                                    <option>Below 200</option>
+                                    <option>Between 200 and 237</option>
+                                    <option>Greater than 237</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- 3.4 -->
+                        <div>
+                            <b>Governing Brittle Fracture Damage Factor Properties</b>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 class-inline-custom">
+                                <input type="checkbox" id="P1AndP3" name="P1AndP3">
+                                <label class="font-lighter ml-5" for="P1AndP3">It is fabricated from P-1 and P-3 steels where the design temperature is less than or equal to 343&deg;C (650&deg;F).</label>
+                            </div>
+                            <div class="col-md-12 class-inline-custom">
+                                <input type="checkbox" id="EquipmentRequirements" name="EquipmentRequirements">
+                                <label class="font-lighter ml-5" for="EquipmentRequirements">The equipment satisfied all requirements of a recognized code or standard at the time of fabrication.</label>
+                            </div>
+                            <div class="col-md-12 class-inline-custom">
+                                <input type="checkbox" id="OperatingConditions" name="OperatingConditions">
+                                <label class="font-lighter ml-5" for="OperatingConditions">
+                                    The nominal operating conditions have been essentially the same and consistent with the specified design conditions for a significant period of time, and more severe conditions (i.e.,lower temperature and/or higher stress) are not expected in the future.
+                                </label>
+                            </div>
+                            <div class="col-md-12 class-inline-custom">
+                                <input type="checkbox" id="CETtheMAWP" name="CETtheMAWP">
+                                <label class="font-lighter ml-5" for="CETtheMAWP">
+                                    The CET at the MAWP is greater than or equal to -29&deg;C (-20&deg;F) if it is a pressure vessel or -104&deg;C (-155&deg;F) if is a piping circuit.
+                                </label>
+                            </div>
+                            <div class="col-md-12 class-inline-custom">
+                                <input type="checkbox" id="CyclicService" name="CyclicService">
+                                <label class="font-lighter ml-5" for="CyclicService">
+                                    Cyclic service, fatigue or vibration service is not a design requirement per design code.
+                                </label>
+                            </div>
+                            <div class="col-md-12 class-inline-custom">
+                                <input type="checkbox" id="EquipmentorCircuit" name="EquipmentorCircuit">
+                                <label class="font-lighter ml-5" for="EquipmentorCircuit">The equipment or circuit is not subject to shock chilling.</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 class-inline-custom">
+                                <div style="width: 450px;">
+                                    Brittle Fracture Governing Thickness, mm:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" step="0.01" min="0" value="0" max="100000" class="form-control" name="BFGT" placeholder="Brittle thickness" required/>
+                            </div>
+                        </div>
+                        <!-- 3.5 -->
+                        <div>
+                            <b>Governing Fatigue Damage Factor Properties</b>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 class-inline-custom">
+                                <div style="width: 450px;">
+                                    Severity of Vibration
+                                </div>
+                                <select class="form-control" name="SeverityVibration">
+                                    <option value="" selected disabled>Please select severity vibration..</option>
+                                    <option>None</option>
+                                    <option>High</option>
+                                    <option>Medium</option>
+                                    <option>Low</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- 3.6 -->
+                        {% if isshell %}
+                        <!----------do no thing------------>
+                        {% else %}
+                            <div>
+                                <b>Tank Consequence of Failure Properties</b>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="checkbox" id="ReleasePreventionBarrier" name="ReleasePreventionBarrier"/>
+                                    <label class="font-lighter" for="ReleasePreventionBarrier">Release Prevention Barrier</label>    
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="checkbox" id="ConcreteFoundation" name="ConcreteFoundation"/>
+                                    <label class="font-lighter" for="ConcreteFoundation">Concrete or Asphalt Foundation</label>    
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div style="width: 450px;">
+                                        Height of Each Shell Course<span style="color: red">*</span>
+                                    </div>
+                                    <input type="number" step="0.01" min="0" value="0" max="100000" class="form-control" name="HeightEShellC" placeholder="Height of Each Shell Course" required/>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <!-- tab 4 -->
+                    <div id="operatingCondition" class="box-custom-proposal tab-pane fade">
+                        <!-- 4.1 -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div style="color: red">
+                                    Maximum Operating Temperature, &deg;C:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" class="form-control" step="0.01" value="0" max="100000" name="MaxOT" placeholder="Maximum operator temp" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    Maximum Operating Pressure, psi:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" step="0.01" class="form-control" value="0" max="100000" name="MaxOP" placeholder="Maximum operator pressure" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div style="color: red">
+                                    Min.Operating Temperature, &deg;C:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" class="form-control" step="0.01" value="0" max="100000" name="MinOT" placeholder="Minimum operator temp" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    Min.Operating Pressure, psi:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" class="form-control" step="0.01" value="0" max="100000" name="MinOP" placeholder="Minimum operator pressure" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div style="color: red">
+                                    Operating Hydrogen Partial Pressure, psi:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" class="form-control" step="0.01" min="0" value="0" max="1000000000" name="OHPP" placeholder="Operator hydrogen pressure" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div style="color: red">
+                                    Critical Exposure Temperature, &deg;C:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" class="form-control" step="0.01" value="0" max="100000" name="CET" placeholder="Critical temp" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    Flow rate, m<sup>3</sup>/hr
+                                </div>
+                                <input type="number" class="form-control" step="0.01" value="0" max="100000" name="FlowRate" placeholder="Flow rate" required/>
+                            </div>
+                        </div>
+                        <!-- 4.2 -->
+                        <div>
+                            <b>Operating Temperature in Different Temperature Ranger</b>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div>
+                                    % Operating at -12&deg;C to -8&deg;C:
+                                </div>
+                                <input type="number" step="0.01" min="0" max="100" value="0" class="form-control" name="Operating1" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    % Operating at -8&deg;C to 6&deg;C:
+                                </div>
+                                <input type="number" step="0.01" min="0" max="100" value="0" class="form-control" name="Operating2" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    % Operating at 6&deg;C to 32&deg;C:
+                                </div>
+                                <input type="number" step="0.01"  min="0" max="100" value="0" class="form-control" name="Operating3" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    % Operating at 32&deg;C to 71&deg;C:
+                                </div>
+                                <input type="number" step="0.01" min="0" max="100" value="0" class="form-control" name="Operating4" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    % Operating at 71&deg;C to 107&deg;C:
+                                </div>
+                                <input type="number"  min="0" max="100" class="form-control" value="0" step="0.01" name="Operating5" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    % Operating at 107&deg;C to 121&deg;C:
+                                </div>
+                                <input type="number" step="0.01" min="0" max="100" value="0" class="form-control" name="Operating6" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    % Operating at 121&deg;C to 135&deg;C:
+                                </div>
+                                <input type="number" step="0.01" min="0" max="100" value="0" class="form-control" name="Operating7" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    % Operating at 135&deg;C to 162&deg;C:
+                                </div>
+                                <input type="number"  min="0" max="100" class="form-control" step="0.01" value="0" name="Operating8" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    % Operating at 162&deg;C to 176&deg;C:
+                                </div>
+                                <input type="number"  min="0" max="100" step="0.01" value="0" class="form-control" name="Operating9" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    % Operating at 176&deg;C or Above:
+                                </div>
+                                <input type="number"  min="0" max="100" value="0" step="0.01" class="form-control" name="Operating10" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- tab 5 -->
+                    <div id="material" class="box-custom-proposal tab-pane fade">
+                        <!-- 5.1 -->
+                        <div>
+                            <b>Generic Properties</b>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 class-inline-custom">
+                                <div style="width: 85px;">
+                                    Material:<span style="color: red">*</span>
+                                </div>
+                                <input class="form-control" type="text" name="materialname" placeholder="Input material here!" required>
+                            </div>
+                            <div class="col-md-6 class-inline-custom">
+                                <div style="width: 600px;">
+                                    Design Pressure, psi:<span style="color: red">*</span>
+                                </div>
+                                <input type="number "step="0.01" min="0" value="0" max="100000" class="form-control" name="DesignPressure" placeholder="Design pressure" required/>
+                            </div>
+                            <div class="col-md-6 class-inline-custom">
+                                <div style="width: 600px;">
+                                    Max.Design Temperature, &deg;C:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" step="0.01" value="0" max="100000" class="form-control" name="MaxDesignTemp" placeholder="Maximum design temp" required/>
+                            </div>
+                            <div class="col-md-6 class-inline-custom">
+                                <div style="width: 600px;">
+                                    Yield Strength, MPa
+                                </div>
+                                <input type="number" step="0.01" min="0" max="100" value="0" class="form-control" name="YieldStrength" placeholder="Yield Strength" required/>
+                            </div>
+                            <div class="col-md-6 class-inline-custom">
+                                <div style="width: 600px;">
+                                    Tensile Strength, MPa
+                                </div>
+                                <input type="number" step="0.01" min="0" max="100" value="0" class="form-control" name="TensileStrength" placeholder="Tensile Strength" required/>
+                            </div>
+                            <div class="col-md-6 class-inline-custom">
+                                <div style="width: 600px;">
+                                    Material Cost Factor:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" class="form-control" min="0" max="1000" step="0.01" value="0" name="MaterialCostFactor" placeholder="Material cost factor" required/>
+                            </div>
+                            <div class="col-md-6 class-inline-custom">
+                                <div style="width: 600px;">
+                                    Production Cost, $/day:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" class="form-control" min="0" step="0.01" max="1000000000" value="0" name="ProductionCost" placeholder="Production cost" required/>
+                            </div>
+                            <div class="col-md-6" style="color: red">
+                                <input type="checkbox" id="CoLAS" name="CoLAS"/>
+                                <label class="font-lighter" for="CoLAS">Carbon or Low Alloy Steel</label>
+                            </div>
+                            <div class="col-md-6" style="color: red">
+                                <input type="checkbox" id="AusteniticSteel" name="AusteniticSteel"/>
+                                <label class="font-lighter" for="AusteniticSteel">Austenitic Steel</label>
+                            </div>
+                        </div>
+                        <!-- 5.2 -->
+                        <div>
+                            <b>Governing Thinning Damage Factor Properties</b>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 class-inline-custom">
+                                <div style="width: 600px;">
+                                    Corrosion Allowance, mm:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" step="0.01" min="0" value="0" max="100000" class="form-control" name="CorrosionAllowance" placeholder="Corrosion allow" required/>
+                            </div>
+                            <div class="col-md-6 class-inline-custom">
+                                <div style="width: 200px;">
+                                    Heat Treatment
+                                </div>
+                                <select class="form-control" name="heatTreatment">
+                                    <option value="" disabled selected>Please select heat treatment..</option>
+                                    <option>Annealed</option>
+                                    <option>None</option>
+                                    <option>Normalised Temper</option>
+                                    <option>Quench Temper</option>
+                                    <option>Stress Relieved</option>
+                                    <option>Sub Critical PWHT</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- 5.3 -->
+                        <div>
+                            <b>Governing Stress Corrosion Cracking Damage Factor Properties</b>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6" style="color: red;">
+                                <input type="checkbox" id="NickelAlloy" name="NickelAlloy"/>
+                                <label class="font-lighter" for="NickelAlloy">Nickel-based Alloy</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="checkbox" id="PTATank" name="PTATank"/>
+                                <label class="font-lighter" for="PTATank">Material Grade to Evaluate Severity of PTA</label>
+                            </div>
+                            <div class="col-md-6 class-inline-custom">
+                                <div style="width: 200px;">
+                                    Sulfur Content
+                                </div>
+                                <select class="form-control" name="SulfurContent">
+                                    <option value="" selected disabled>Please select sulfur content..</option>
+                                    <option>High > 0.01%</option>
+                                    <option>Low <= 0.01%</option>
+                                    <option>Product form - Seamless/Extruded Pipe</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 class-inline-custom">
+                                <div style="width: 200px;">
+                                    PTA Material Grade
+                                </div>
+                                <select id="PTAMaterialTank" class="form-control" name="PTAMaterialGrade">
+                                    <option value="" selected disabled>Please select PTA material..</option>
+                                    <option>321 Stainless Stee</option>
+                                    <option>347 Stainless Steel, Alloy 20, Alloy 625, All austenitic weld overlay</option>
+                                    <option>Regular 300 series Stainless Steels and Alloys 600 and 800</option>
+                                    <option>H Grade 300 series Stainless Steels</option>
+                                    <option>L Grade 300 series Stainless Steels</option>
+                                    <option>Not Applicable</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- 5.4 -->
+                        <div>
+                            <b>Governing Brittle Facture Factor Properties</b>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="color: red;">
+                                <input type="checkbox" id="Chromium" name="Chromium"/>
+                                <label class="font-lighter" for="Chromium">Chromium &ge;12%</label>
+                            </div>
+                            <div class="col-md-6 class-inline-custom">
+                                <div style="width: 600px;">
+                                    Reference Temperature, &deg;C:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" step="0.01" value="0" max="100000" class="form-control" name="ReferenceTemperature" placeholder="Ref temp" required/>
+                            </div>
+                            <div class="col-md-6 class-inline-custom">
+                                <div style="width: 600px;">
+                                    Min.Design Temperature, &deg;C:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" step="0.01" value="0" max="100000" class="form-control" name="MinDesignTemp" placeholder="Minimum design temp" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- tab 6 -->
+                    <div id="ccli" class="box-custom-proposal tab-pane fade">
+                        <!-- 6.1 -->
+                        <div>
+                            <b>Coating</b>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="checkbox" id="InternalCoating" name="InternalCoating">
+                                <label class="font-lighter" for="InternalCoating">Internal Coating</label>
+                            </div>
+                            <div class="col-md-6" style="color: red">
+                                <input type="checkbox" id="ExternalCoating" name="ExternalCoating">
+                                <label class="font-lighter" for="ExternalCoating">External Coating</label>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="checkbox" id="SCWD" name="SCWD">
+                                <label class="font-lighter" for="SCWD">Support Configuration Which Does Not Allow Coating Maintenance</label>
+                            </div>
+                            <script>
+                                $(document).ready(function () {
+                                    var check = $("#ExternalCoating").is(':checked');
+                                    if(check){
+                                        $("#ExternalCoatingQuality").attr('disabled', false);
+                                        $("#externalID").attr('disabled', false);
+                                    }
+                                    else {
+                                        $("#ExternalCoatingQuality").prop('selectedIndex',0);
+                                        $("#ExternalCoatingQuality").attr('disabled', true);
+                                        $("#externalID").attr('disabled', true);
+                                    }
+                                    $("#ExternalCoating").click(function () {
+                                        if($("#ExternalCoating").prop('checked') == true){
+                                            $("#ExternalCoatingQuality").attr('disabled', false);
+                                            $("#externalID").attr('disabled', false);
+                                        }
+                                        else {
+                                            $("#ExternalCoatingQuality").prop('selectedIndex',0);
+                                            $("#ExternalCoatingQuality").attr('disabled', true);
+                                            $("#externalID").attr('disabled', true);
+                                        }
+                                    })
+                                })
+                            </script>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div>
+                                    External Coating Installation Date
+                                </div>
+                                <input type="text" class="form-control" id="externalID" data-format="yyyy-mm-dd" name="ExternalCoatingID" />
+                                <script>
+                                    $( "#externalID" ).datepicker({
+                                        dateFormat: 'yy-mm-dd'
+                                    });
+                                    $("#externalID").datepicker('setDate', new Date());
+                                </script>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    External Coating Quality:
+                                </div>
+                                <select class="form-control" id="ExternalCoatingQuality" name="ExternalCoatingQuality">
+                                    <option value="" disabled selected>Please select coat quality..</option>
+                                    <option>High coating quality</option>
+                                    <option>Medium coating quality</option>
+                                    <option>No coating or poor quality</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- 6.2 -->
+                        <div>
+                            <b>Cladding</b>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="checkbox" name="InternalCladding" id="InternalCladding"/>
+                                <label class="font-lighter" for="InternalCladding">Internal Cladding</label>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    Cladding Thinkness, mm/yr:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" class="form-control" id="CladdingThinkness" name="CladdingThinkness" value="0" max="1000" step="0.01" min="0" placeholder="Clad Thinkness" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    Cladding Corrosion Rate, mm/yr:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" class="form-control" id="CladdingCorrosionRate" name="CladdingCorrosionRate" value="0" max="1000" step="0.01" min="0" placeholder="Clad corrosion rate" required/>
+                            </div>
+                            <script>
+                                $(document).ready(function () {
+                                    var check = $("#InternalCladding").is(':checked');
+                                    if(check){
+                                        $("#CladdingCorrosionRate").attr('disabled', false);
+                                        $("#CladdingThinkness").attr('disabled', false);
+                                    }
+                                    else {
+                                        $("#CladdingCorrosionRate").attr('disabled', true);
+                                        $("#CladdingThinkness").attr('disabled', true);
+                                    }
+                                    $("#InternalCladding").click(function () {
+                                        if($("#InternalCladding").prop('checked') == true){
+                                            $("#CladdingCorrosionRate").attr('disabled', false);
+                                            $("#CladdingThinkness").attr('disabled', false);
+                                        }
+                                        else {
+                                            $("#CladdingCorrosionRate").attr('disabled', true);
+                                            $("#CladdingThinkness").attr('disabled', true);
+                                        }
+                                    })
+                                })
+                            </script>
+                        </div>
+                        <!-- 6.3 -->
+                        <div>
+                            <b>Lining</b>
+                        </div>
+                        <div class="row">   
+                            <div class="col-md-12" style="color: red">
+                                <input type="checkbox" id="InterLinning" name="InternalLining"/>
+                                <label class="font-lighter" for="InternalLining">Internal Lining</label>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    Internal Liner Type:
+                                </div>
+                                <select class="form-control" id="LinningType" name="InternalLinerType">
+                                    <option value="" disabled selected>Please select linning type..</option>
+                                    <option>Acid Brick</option>
+                                    <option>Castable refractory</option>
+                                    <option>Castable refractory severe condition</option>
+                                    <option>Fiberglass</option>
+                                    <option>Glass lined</option>
+                                    <option>Organic - Low Quality</option>
+                                    <option>Organic - Medium  Quality</option>
+                                    <option>Organic - High Quality</option>
+                                    <option>Strip lined alloy</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    Internal Liner Condition:
+                                </div>
+                                <select class="form-control" id="LinningCondition" name="InternalLinerCondition">
+                                    <option value="" disabled selected>Please select linning condition..</option>
+                                    <option>Average</option>
+                                    <option>Good</option>
+                                    <option>Poor</option>
+                                    <option>Unknown</option>
+                                </select>
+                                <!-----------LINNING CHECKED-------------->
+                                <script>
+                                    $(document).ready(function () {
+                                        var check = $("#InterLinning").is(':checked');
+                                        if(check){
+                                            $("#LinningType").attr('disabled', false);
+                                            $("#LinningCondition").attr('disabled', false);
+                                        }
+                                        else {
+                                            $("#LinningType").prop('selectedIndex',0);
+                                            $("#LinningCondition").prop('selectedIndex',0);
+                                            $("#LinningType").attr('disabled', true);
+                                            $("#LinningCondition").attr('disabled', true);
+                                        }
+                                        $("#InterLinning").click(function () {
+                                            if($("#InterLinning").prop('checked') == true){
+                                                $("#LinningType").attr('disabled', false);
+                                                $("#LinningCondition").attr('disabled', false);
+                                            }
+                                            else {
+                                                $("#LinningType").prop('selectedIndex',0);
+                                                $("#LinningCondition").prop('selectedIndex',0);
+                                                $("#LinningType").attr('disabled', true);
+                                                $("#LinningCondition").attr('disabled', true);
+                                            }
+                                        })
+                                    })
+                                </script>
+                            </div>
+                        </div>
+                        <!-- 6.4 -->
+                        <div>
+                            <b>Insulation</b>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6" style="color:red;">
+                                <input type="checkbox" id="ExternalInsulation" name="ExternalInsulation"/>
+                                <label class="font-lighter" for="ExternalInsulation">External Insulation</label>    
+                            </div>
+                            <div class="col-md-6">
+                                <input type="checkbox" id="ICC" name="ICC"/>
+                                <label class="font-lighter" for="ICC">Insulation Contains Chlorides</label>    
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    External Insulation Type:
+                                </div>
+                                <select class="form-control" id="ExternalInsulationType" name="ExternalInsulationType">
+                                    <option value="" disabled selected>Please select insulation type..</option>
+                                    <option>Unknown/Unspecified</option>
+                                    <option>Asbestos</option>
+                                    <option>Calcium Silicate</option>
+                                    <option>Fiberglass</option>
+                                    <option>Foam Glass</option>
+                                    <option>Mineral Wool</option>
+                                    <option>Pearlite</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6" style="color: red">
+                                <div>
+                                    Insulation Condition:
+                                </div>
+                                <select class="form-control" id="InsulationCondition" name="InsulationCondition">
+                                    <option value="" disabled selected>Please select insulation condition..</option>
+                                    <option>Above average</option>
+                                    <option>Average</option>
+                                    <option>Below average</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!----------------External Checked------------------>
+                            <script>
+                                $(document).ready(function () {
+                                    var check = $("#ExternalInsulation").is(':checked');
+                                    if(check){
+                                        $("#ExternalInsulationType").attr('disabled', false);
+                                        $("#InsulationCondition").attr('disabled', false);
+                                    }
+                                    else {
+                                        $("#ExternalInsulationType").prop('selectedIndex',0);
+                                        $("#InsulationCondition").prop('selectedIndex',0);
+                                        $("#ExternalInsulationType").attr('disabled', true);
+                                        $("#InsulationCondition").attr('disabled', true);
+                                    }
+                                    $("#ExternalInsulation").click(function () {
+                                        if($("#ExternalInsulation").prop('checked') == true){
+                                            $("#ExternalInsulationType").attr('disabled', false);
+                                            $("#InsulationCondition").attr('disabled', false);
+                                        }
+                                        else {
+                                            $("#ExternalInsulationType").prop('selectedIndex',0);
+                                            $("#InsulationCondition").prop('selectedIndex',0);
+                                            $("#ExternalInsulationType").attr('disabled', true);
+                                            $("#InsulationCondition").attr('disabled', true);
+                                        }
+                                    })
+                                })
+                            </script>
+                    </div>
+                    <!-- tab 7 -->
+                    <div id="stream" class="box-custom-proposal tab-pane fade">
+                        <!-- 7.1 -->
+                        <div>
+                            <b>Fluid</b>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div>
+                                    Fluid:<span style="color: red">*</span>
+                                </div>
+                                <select class="form-control" name="Fluid">
+                                    <option value="" selected disabled>Please select tank fluid..</option>
+                                    <option>Gasoline</option>
+                                    <option>Light Diesel Oil</option>
+                                    <option>Heavy Diesel Oil</option>
+                                    <option>Fuel Oil</option>
+                                    <option>Crude Oil</option>
+                                    <option>Heavy Fuel Oil</option>
+                                    <option>Heavy Crude Oil</option>
+                                    <option>Water</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    Fluid Height, m:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" step="0.01" min="0" value="0" max="1000" class="form-control" name="FluidHeight" placeholder="Fluid height" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    Percentage of Fluid Leaving the Dike, %:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" step="0.01" min="0" max="100" value="0" class="form-control" name="PFLD" placeholder="Percent fluid leave dike" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    Percentage of Fluid Going offsite, %:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" step="0.01" max="100" min="0" value="0" class="form-control" name="PFLDGoffsite" placeholder="Percent fluid offsite" required/>
+                            </div>
+                            <div class="col-md-12">
+                                <div>
+                                    Percentage of Fluid Leaving the Dike but Remains on Site, %:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" step="0.01" max="100" min="0" value="0" class="form-control" name="PFLDRS" placeholder="Percent fluid on site" required/>
+                            </div>
+                        </div>
+                        <!-- 7.2 -->
+                        <div>
+                            <b>Environment Condition</b>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div>
+                                    NaOH Concentration, %:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" class="form-control" min="0" max="100" value="0" step="0.01" name="NaOHConcentration" id="NaOHConcentration" placeholder="NaOH concent" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    Release Fluid Percent Toxic, %:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" step="0.01"  min="0" max="100" value="0" class="form-control" name="RFPT" id="RFPT" placeholder="Fluid percent toxic" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    Chloride Ion, ppm:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" class="form-control" step="0.01"  min="0" max="1000000" value="0" name="ChlorideIon" placeholder="Chloride ion" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    CO3 Concentration in Water, ppm:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" class="form-control" step="0.01"  min="0" max="1000000" value="0" name="CO3" placeholder="CO3 concent" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    H2S Content in Water, ppm:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" step="0.01" class="form-control"  min="0" max="1000000" value="0" name="H2SContent" placeholder="H2S content" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    PH of Water:<span style="color: red">*</span>
+                                </div>
+                                <input type="number" step="0.01" class="form-control" min="0" max="14.9" value="7" name="PHWater" id="PHWater" placeholder="PH" required/>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    Exposure to Amine:
+                                </div>
+                                <select name="ExposureAmine" class="form-control">
+                                    <option value="" selected disabled>Please select exposure amine..</option>
+                                    <option>High Rich Amine</option>
+                                    <option>Low Lean Amine</option>
+                                    <option>None</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    Amine Solution Composition:
+                                </div>
+                                <select class="form-control" name="AmineSolution">
+                                    <option value="" selected disabled>Please select amine solution..</option>
+                                    <option>Diethanolamine DEA</option>
+                                    <option>Diglycolamine DGA</option>
+                                    <option>Disopropanolamine DIPA</option>
+                                    <option>Methyldiethanolamine MDEA</option>
+                                    <option>Monoethanolamine MEA</option>
+                                    <option>Sulfinol</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6" style="color: red">
+                                <input type="checkbox" id="EAGTA" name="EAGTA"/>
+                                <label class="font-lighter" for="EAGTA">Exposed To Acid Gas Treating Amine</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="checkbox" id="APDO" name="APDO"/>
+                                <label class="font-lighter" for="APDO">Aqueous Phase During Operation</label>
+                            </div>
+                            <div class="col-md-6" style="color: red">
+                                <input type="checkbox" id="EnvironmentCH2S" name="EnvironmentCH2S"/>
+                                <label class="font-lighter" for="EnvironmentCH2S">Environment Contains H2S</label>
+                            </div>
+                            <div class="col-md-6" style="color: red">
+                                <input type="checkbox" id="APDSD" name="APDSD"/>
+                                <label class="font-lighter" for="APDSD">Aqueous Phase During Shut Down</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="checkbox" id="PresenceCyanides" name="PresenceCyanides"/>
+                                <label class="font-lighter" for="PresenceCyanides">Presence of Cyanides</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="checkbox" id="presenceHF" name="presenceHF"/>
+                                <label class="font-lighter" for="presenceHF">Presence of Hydrofluoric Acid</label>
+                            </div>
+                            <div class="col-md-6 class-inline-custom" style="color: red">
+                                <input type="checkbox" id="ESBC" name="ESBC"/>
+                                <label class="font-lighter ml-5" for="ESBC">Exposed to Sulphur-Bearing Compounds</label>
+                            </div>
+                            <div class="col-md-6 class-inline-custom" style="color: red">
+                                <input type="checkbox" id="PCH" name="PCH"/>
+                                <label class="font-lighter ml-5" for="PCH">Process Contains Hydrogen</label>
+                            </div>
+                            <div class="col-md-6 class-inline-custom" style="color: red">
+                                <input type="checkbox" id="ECCAC" name="ECCAC"/>
+                                <label class="font-lighter ml-5" for="ECCAC">Environment Contains Caustic in Any Concentration</label>
+                            </div>
+                            <div class="col-md-6 class-inline-custom" style="color: red">
+                                <input type="checkbox" id="MEFMSCC" name="MEFMSCC"/>
+                                <label class="font-lighter ml-5" for="MEFMSCC">Material is Exposed to Fluids, Mists, or Solids Containing Chlorine Internally</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="overflow:auto;margin-right: 15px;">
+            <div style="float:right;">
+                <button type="button" class="btn btn-primary" id="nextBtn" onclick="submitEvent()">Submit</button>
+                <a class="btn btn-default" href="{% url 'proposalDisplay' componentID %}">Cancel</a>
+            </div>
+        </div>
+    </form>
+    <script>
+        function submitEvent() {
+            if(!validateForm()) return false
+            document.getElementById("tank").submit();
+            ShowLoading();
+        }
+
+        function validateForm() {
+          // This function deals with validation of the form fields
+          var x, z, i, j, valid = true;
+          x = document.getElementsByClassName("tab-pane");
+          z = document.getElementsByClassName("tab-select");
+          for (i = 0; i < x.length; i++) {
+            var y = x[i].getElementsByTagName("input");
+            for (j = 0; j < y.length; j++) {
+            // If a field is empty...
+            if (y[j].value == "") {
+                // add an "invalid" class to the field:
+                y[j].className += " invalid";
+                console.log(i)
+                z[i].className += " tab-valid";
+                // var alertTemp = $(`<div class="alert alert-danger">
+                //                     <strong>Danger!</strong> This alert box could indicate a dangerous or potentially negative action.
+                //                 </div>`)
+                // $(".alert-position").append(alertTemp)                
+                // and set the current valid status to false
+                valid = false;
+            }
+          }
+          }
+          // If the valid status is true, mark the step as finished and valid:=
+          return valid; // return the valid status
+        }
+
+         function ShowLoading() {
+            var div = document.createElement('div');
+            var img = document.createElement('img');
+            img.src = '{% static 'image/loading/Pacman-1s-100px.gif' %}';
+            div.style.cssText = "position: fixed;left: 50%; top: 30%; width: 300px; text-align: center; rgba(54, 25, 25, .00004); border: 0px solid #000;";
+            div.appendChild(img);
+            document.body.appendChild(div);
+            $("#nextBtn").attr('disabled',true);
+            $("#prevBtn").attr('disabled',true);
+            return true;
+        }
+    </script>
+{% endblock %}

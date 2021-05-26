@@ -1,0 +1,7 @@
+{% extends 'BaseUI/BaseManager/ManagerHome.html' %}
+
+<!-------------- BLOCK MENU ---------------->
+{% block homedetail %}{% url 'managerhomedetail' siteID%}{% endblock %}
+{% block listmana %}{% url 'manager' siteID %}{% endblock %}
+{% block calculate %}{% url 'calculatefunctionmanager' siteID %}{% endblock %}
+<!----------------- END BLOCK----------------->

@@ -1,0 +1,298 @@
+{% extends 'BaseUI/BaseFacility/baseRiskSummary.html' %}
+
+{% load staticfiles %}
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactor' proposalID %}{% endblock %}
+{% block fcof%}{% url 'fullyConsequence' proposalID %}{% endblock %}
+{% block acof%}{% url 'areaBasedCoF' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrix' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChart' proposalID %}{% endblock %}
+{% block corri %}{% url 'corrision' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'damgeFactor' proposalID%}{% endblock %}
+
+{% block data-content %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+      .card {
+          background: #ffffff;
+      }
+
+    .scheduler-border {
+        border: none;
+        padding: 0 1.4em 1.4em 1.4em;
+        margin: 0 0 1.5em 0;
+        font-size: 1.1em ;
+        text-align: left ;
+        text-decoration-color: #444444;
+    }
+    .row{
+        text-align: left;
+    }
+    .arrow-down {
+        margin-left: 50%;
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-top: 2px solid;
+        border-right: 2px solid;
+        transform: rotate(135deg);
+      }
+    </style>
+    <!--suppress ALL -->
+    <form id="inspectionplan" method="post" class="card" >
+    {% csrf_token %}
+       <div style=" text-align: center"><caption><b style="font-size: 20px; color: #444444;">Sulfide Stress Corrosion Cracking Damage Factor</b></caption></div>
+
+                <!-----------BlOCK FULLY QUANTITIVE FCOF AND CATEGORY--------->
+        <fieldset class="scheduler-border">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Assessment General Information</b></legend>
+                    <div class="row">
+                        <div class="col-md-4">Equipment Number</div>
+                        <div class="col-md-6"><form><input  type="text" size="50px" value="{{ a.EquipmentNumber }}"></form></div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Component Number</div>
+                        <div class="col-md-6"><form><input  type="text" size="50px" value="{{ a.ComponentNumber }}"> </form></div>
+                    </div>
+                    <div class="row">
+                         <div class="col-md-4">Assessment Name</div>
+                        <div class="col-md-6"><form><input  type="text" size="50px" value="{{ a.Assessment }}"> </form></div>
+                    </div>
+                </fieldset>
+
+
+        <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Assessment Data Input</b></legend>
+            <div>
+           <a class="arrow-down" data-toggle="collapse" href="#c" aria-expanded="false" >
+              </a></div>
+               <div class="collapse" id="c">
+                    <div class="row">
+                        <div class="col-md-3">Assessment Date</div>
+                        <div class="col-md-3"><form><input type="text" name="assessmentdate"  id="assessmentdate" placeholder="yyyy-mm-dd" value="{{ a.assessmentDate }}">
+                        <script>
+                            $( "#assessmentdate" ).datepicker({
+                            dateFormat: 'yy-mm-dd'
+                        });
+
+                        </script></form>
+                        </div>
+                        <div class="col-md-3">Commission Date</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.CommissionDate }}"> </form></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">Risk Analysis Period</div>
+                        <div class="col-md-3"><form><input  type="text" value="36 months"> </form></div>
+                        <div class="col-md-3">Last Inspection Date</div>
+                        <div class="col-md-3"><form><input  type="text" name="lastInspection"  id="lastInspection" placeholder="yyyy-mm-dd" value="{{a.CommissionDate}}">
+                        <script>
+                            $( "#lastInspection" ).datepicker({
+                            dateFormat: 'yy-mm-dd'
+                        });
+
+                        </script></form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">Highest Inspection Effectiveness</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.SULPHIDE_INSP_EFF }}"> </form></div>
+                        <div class="col-md-3">Number of Inspections</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.SULPHIDE_INSP_NUM }}"> </form></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">PWHT</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.PWHT }}"> </form></div>
+                        <div class="col-md-3">Presence of Cracks</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.CRACK_PRESENT }}"> </form></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">H2S Content in Water (ppm)</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.H2SContent }}"> </form></div>
+                        <div class="col-md-3">pH of Water</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.PH }}"> </form></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">Environment Contains H2S</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.ENVIRONMENT_H2S_CONTENT }}"> </form></div>
+                        <div class="col-md-3">Presence of Cyanides</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.PRESENT_CYANIDE }}"> </form></div>
+                    </div>
+                    <div class="row">
+                         <div class="col-md-3">Maximum Brinnell Hardness of Weld</div>
+                        <div class="col-md-6"><form><input  type="text" size="70px" value="{{ a.BRINNEL_HARDNESS }}"> </form></div>
+                    </div>
+
+               </div>
+            </fieldset>
+            <!-------Khối Intermediate Results------>
+            <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Intermediate Results </b></legend>
+                <div>
+                <a class="arrow-down" data-toggle="collapse" href="#b" aria-expanded="false" >
+              </a></div>
+               <div class="collapse" id="b">
+
+                    <div class="row">
+                        <div class="col-md-6">Environmental Severity <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal1">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                        <div class="col-md-3"><form><input  type="text" size="10px" value="{{ a.environmentalSeverity }}"> </form></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">Susceptibility to Sulfide Stress Cracking <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                        <div class="col-md-3"><form><input  type="text" size="10px" value="{{ a.Susceptibility }}"> </form></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">Severity Index, SVI <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal3">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                        <div class="col-md-3"><form><input  type="text" size="10px" value="{{ a.SVI }}"> </form></div>
+                    </div>
+
+                    <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-1"><form><input  type="text" style="background-color: #0C5BED; color: white" size="54px"  value="0 months                36 months                72 months"> </form></div>
+                    </div>
+                    <div class="row">
+                            <div class="col-md-6">Years Since Last Inspection, age <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal4">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.age1 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.age2 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.age3 }}"> </form></div>
+                    </div>
+                    <div class="row">
+                            <div class="col-md-6">Base Value of Damage Factor <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal5">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.base1 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.base2 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.base3 }}"> </form></div>
+                    </div>
+               </div>
+            </fieldset>
+            <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Damage Factor </b></legend>
+                <div>
+                <a class="arrow-down" data-toggle="collapse" href="#a" aria-expanded="false" >
+              </a></div>
+               <div class="collapse" id="a">
+                    <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-1"><form><input  type="text" size="55px" style="background-color: #0C5BED; color: #FFFFFF"   value="0 months                36 months                72 months"> </form></div>
+                    </div>
+                    <div class="row">
+                            <div class="col-md-6">Sulfide Stress Cracking Damage Factor <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal6">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.Sulphide1 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.Sulphide2 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.Sulphide3 }}"> </form></div>
+                    </div>
+               </div>
+                <div id="myModal1" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content" >
+                      <div class="modal-body">
+                          <p>Environmental Severity (potential level of hydrogen flux) for cracking based on the
+H2S content of the water and its pH using the table below: </p>
+                          <br>
+                          <p style="text-align: center; font-size: 15px; font-weight: bold">Environmental Severity – SSC </p>
+                        <img src="{% static '/image/proposal/ssc_environmentalseverity.JPG' %}" style="width: 100%">
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <div id="myModal2" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+                          <p>Susceptibility to Sulfide Stress Cracking can be calculated from this figure and table below:</p>
+                          <br>
+                          <img src="{% static 'image/proposal/ssc_susceptibilityfigure.JPG'  %}" style="width: 100%" >
+                          <br>
+                          <p style="text-align: center; font-size: 15px; font-weight: bold">Susceptibility to SSC – SSC </p>
+                        <img src="{% static '/image/proposal/ssc_susceptibility.JPG' %}" style="width: 100%">
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal3" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+                          <p>Severity Index: <img src="{% static 'image/proposal/anime_severity.JPG' %}"></p>
+                          <br>
+                          <p style="text-align: center; font-size: 15px; font-weight: bold">Severity Index </p>
+                        <img src="{% static '/image/proposal/ssc-severitytable.JPG' %}" style="width: 100%">
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal4" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+                          <p>Age is the component in-service time since the last cracking inspection or service start date</p>
+                          <br>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal5" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+                          <p><img src="{% static 'image/proposal/ssc_basevalueDF.JPG' %}"> is the base value of the Damage Factor for SSC. 
+                              It is based on the number of, and the highest inspection effectiveness, the severity index and the table below:</p>
+                          <br>
+                          <p style="text-align: center; font-size: 15px; font-weight: bold"> SCC Damage Factors </p>
+                          <img src="{% static 'image/proposal/ssc_base_table_DF.JPG' %}" style="width: 100%">
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal6" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+                          <p><img src="{%  static 'image/proposal/ssc_DF.JPG' %}"> is the DF for sulfide stress cracking. It can be calculated using this equation below:</p>
+                          <br>
+                          <img src="{% static 'image/proposal/ssc_equationDF.JPG' %}">
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </fieldset>
+        </fieldset>
+    </form>
+
+{% endblock %}

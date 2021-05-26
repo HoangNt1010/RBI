@@ -1,0 +1,134 @@
+{% extends 'BaseUI/BaseFacility/baseFacility.html' %}
+{% load staticfiles %}
+{% load static %}
+{% block library %}
+<script src="{% static 'js/notify.min.js' %}"></script>
+{% endblock %}
+
+<!-------------- BLOCK MENU ---------------->
+{% block listfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+{% block newfaci %}{% url 'facilitiesNew' siteID %}{% endblock %}
+{% block design %}{% url 'designcodeDisplay' siteID %}{% endblock %}
+{% block manu %}{% url 'manufactureDisplay' siteID %}{% endblock %}
+{% block uploadInsp %}{% url 'upload' siteID %}{% endblock %}
+{% block uploadPlant %}{% url 'uploadPlan' siteID %}{% endblock %}
+{% block manageFile %}{% url 'manageFile' siteID %}{% endblock %}
+{#{% block uploadScada %}{% url 'uploadScada' siteID %}{% endblock %}#}
+{% block inspecPlan %}{% url 'inspectionPlan' siteID %}{% endblock %}
+{% block rbitracking %}{% url 'rbitracking' %}{% endblock %}
+{% block mitigationSite %}{% url 'mitigationSite' siteID%}{% endblock %}
+{% block HelpSite %}{% url 'help' %}{% endblock %}
+{% block forum %}{% url 'forum' %}{% endblock %}
+{% block testSample %}{% url 'testsample' siteID%}{% endblock %}
+{% block homedetail %}{% url 'homefacility' siteID%}{% endblock %}
+{% block settingAccount %}{% url 'settingAccount' siteID %}{% endblock %}
+{% block settingNotification %}{% url 'settingNotification' siteID %}{% endblock %}
+{% block Re-verificationSite %}{% url 'Re-verificationSite' siteID %}{% endblock %}
+<!----------------- END BLOCK----------------->
+{% block data-content %}
+    <div class="title-verifitcation" id="settingform">
+        <h1>Profile</h1>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-5 label-form-custom">
+                <i class="fas fa-user mr-5"></i>
+                Name:    
+            </div>
+            <div class="col-md-7 value-form-custom">{{ dataNew.Name }}</div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-5 label-form-custom">
+                <i class="fas fa-envelope mr-5"></i>
+                Email:
+            </div>
+            <div class="col-md-7 value-form-custom">{{ dataNew.Email }}</div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-5 label-form-custom">
+                <i class="fas fa-phone-alt mr-5"></i>
+                Phone number:
+            </div>
+            <div class="col-md-7 value-form-custom">{{ dataNew.Phone }}</div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-5 label-form-custom">
+                <i class="fas fa-map-marker-alt mr-5"></i>
+                Address:
+            </div>
+            <div class="col-md-7 value-form-custom">{{ dataNew.Address }}</div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-5 label-form-custom">
+                <i class="fas fa-th-large mr-5"></i>
+                Account:
+            </div>
+            <div class="col-md-7 value-form-custom">{{ dataNew.Kind }}</div>
+        </div>
+        <hr>
+        <div style="text-align: right">
+            <a id="#search" class="btn btn-primary" data-toggle="modal" data-target="#searchPlan">
+                <i class="fa fa-pencil"> Edit profile </i>
+                <p id="demo"></p>
+            </a>
+        </div>
+    </div>
+
+    <form method="post" >
+        {% csrf_token %}
+        <div class="modal" id="searchPlan" style="margin-top: 10%">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content" style="width: 80%; margin: auto">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                    <span aria-hidden="true" style="font-size: 24px;font-weight: bold;color: #444444;font-family: Calibri;font-weight: bold;">Edit profile</span>
+                    </div>
+
+                    <!--Body-->
+                    <div class="row mt-8">
+                        <div class="col-md-5"><span style="font-weight: bold; width: 40%">Name:</span></div>
+                        <div class="col-md-7"><input type="text" class="form-control" name="NameOfUser" value="{{dataNew.Name}}"/></div>
+                    </div>
+
+                    <div class="row mt-8">
+                        <div class="col-md-5"><span style="font-weight: bold; width: 40%">Email:</span></div>
+                        <div class="col-md-7"><input type="text" class="form-control" name="EmailOfUser" value="{{dataNew.Email}}"/></div>
+                    </div>
+
+                    <div class="row mt-8">
+                        <div class="col-md-5"><span style="font-weight: bold; width: 40%">Phone number:</span></div>
+                        <div class="col-md-7"><input type="text" class="form-control" name="PhoneOfUser" value="{{dataNew.Phone}}"/></div>
+                    </div>
+
+                    <div class="row mt-8">
+                        <div class="col-md-5"><span style="font-weight: bold; width: 40%">Address:</span></div>
+                        <div class="col-md-7"><input type="text" class="form-control" name="AddressOfUser" value="{{dataNew.Address}}"/></div>
+                    </div>
+
+                    <div class="row mt-8 mb-8">
+                        <div class="col-md-5"><span style="font-weight: bold; width: 40%">Account:</span></div>
+                        <div class="col-md-7"><input type="text" class="form-control" name="KindOfUser" value="{{dataNew.Kind}}" disabled/></div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer" style="text-align: right;">
+                        <button type="submit" class="btn btn-primary" >
+                            <i class="fa fa-save mr-5"></i>Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                    <script> {# Notification Account or pass false#}
+                     var error ='{{ notisuc }}';
+                        if(error!=''){
+                            $.notify("Edit Success", "success");
+                        }
+                    </script>
+                </div>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}

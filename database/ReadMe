@@ -1,0 +1,37 @@
+----------------------------------------------------------------------
+-----                   PLEASE READ ME FIRST                     -----
+----------------------------------------------------------------------
+
+1. Read file ReadMe.txt in /cloud/process/ for RBI development.
+2. Read file ReadMe.txt in /database/ for using Database.
+3. Read file ReadMe.txt in /templates/ for WebUI designer.
+
+----------------------------------------------------------------------
+
+1. For developer:
+    - step 1: install python 3x.
+    - step 2: restored database.
+    - step 3: open project.
+    - step 4: install library using: pip install -r requirements.txt
+    - step 5: config settings.py file
+
+2. For deployment:
+    - pythonanywhere.com: https://help.pythonanywhere.com/pages/DeployExistingDjangoProject/
+    - windows server : http://blog.mattwoodward.com/2016/07/running-django-application-on-windows.html
+3. Tutorial for Begginer
+    - Setup and Tutorial: https://1drv.ms/u/s!AhZRBvBE2HpfiEjWE628f6BRaBvy?e=RWcK9H
+
+-----------------------------------------------------------------------
+ If you have any question please contact me:
+-Mr. Cuong
+* Facebook: https://www.facebook.com/profile.php?id=100007350017817
+* Email: luongvancuongkmhd1998@gmail.com
+-Mr. Dat
+* Facebook: https://www.facebook.com/nguyenvudat1998/
+* Email: nguyenvudat1998@gmail.com
+-----------------------------------------------------------------------
+
+runserver: python manage.py runserver --noreload
+mosquitto_pub -d -h "demo.thingsboard.io" -t "v1/devices/m1" -u "K6BEkJp2NbDSNjq87VVe" -f "data.json"
+mosquitto_pub -d -h "127.0.0.1" -t "v1/devices/me/attributes" -u "$K6BEkJp2NbDSNjq87VVe" -f "data.json"
+mosquitto_sub -d -h "127.0.0.1" -t "v1/devices/me/attributes" -u "$K6BEkJp2NbDSNjq87VVe"

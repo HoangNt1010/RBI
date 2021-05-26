@@ -1,0 +1,48 @@
+{% extends 'BaseUI/BaseFacility/baseRiskSummary.html' %}
+{% load staticfiles %}
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactor' proposalID %}{% endblock %}
+{% block fcof%}{% url 'fullyConsequence' proposalID %}{% endblock %}
+{% block acof%}{% url 'areaBasedCoF' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrix' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChart' proposalID %}{% endblock %}
+{% block corri %}{% url 'corrision' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'damgeFactor' proposalID%}{% endblock %}
+{% block data-content %}
+    <style>
+    .card{
+        background: #ffffff;
+    }
+    .bang{
+        width: 500px;
+        height: 210px;
+        background-color: #305680;
+        margin: auto;
+    }
+    button{
+        width: 150px;
+        height: 70px;
+        margin-top: 20px;
+        margin-left: 5px;
+        background-color: #FFFFFF;
+    }
+    </style>
+
+    <form id="inspectionplan" method="post" class="card" >
+    {% csrf_token %}
+       <div style=" text-align: center"><caption><b style="font-size: 20px; color: #444444;">Governing Brittle Fracture Damage Factor</b></caption></div>
+        <br>
+    <fieldset class="bang">
+        <div class="row">
+            <div  class="col-md-6"><button  type="submit" name="_brit" style="color: black; font-family: Arial"  value="">brit</button></div>
+            <div  class="col-md-6"><button type="submit" name="_tempe" style="color: black;font-family: Arial"  value="">tempe</button> </div>
+            <div  class="col-md-6"><button type="submit" name="_885f" style="color: black;font-family: Arial"  value="">885F</button> </div>
+            <div  class="col-md-6"><button type="submit" name="_sigma" style="color: black;font-family: Arial"  value="">Sigma</button> </div>
+        </div>
+        </fieldset>
+    </form>
+    <br>
+    <form>
+    <img src="{% static 'image/proposal/brittle_equation.JPG' %}" style="margin-left: 150px">
+    </form>
+{% endblock %}

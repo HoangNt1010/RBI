@@ -1,0 +1,64 @@
+{% extends 'BaseUI/BaseWeb/basedat.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block content %}
+    <form method="post">
+    {% csrf_token %}
+        <div class="container" style=" margin-top: 70px">
+            {% if si %}<a href="{% url 'facilitiesDisplayMana' si.siteid %}">{{ si.sitename }}</a>{% endif %} <span class="fa fa-angle-right"></span>
+            {% if faci %}<a href="{% url 'equipmentDisplayMana' faci.facilityid %}">{{ faci.facilityname }}</a>{% endif %} <span class="fa fa-angle-right"></span>
+            {% if eq %}<a href="{% url 'componentDisplayMana' eq.equipmentid %}">{{ eq.equipmentname }}</a>{% endif %}
+        </div>
+        <div style="text-align: center">
+            <caption><b style="font-size: 22px; color: #444444;">List of Component</b></caption>
+            <br><br>
+            <table class="table" id="mytable">
+                <thead>
+                    <tr>
+                        <th width="50px" style="text-align: left"><input type="checkbox" id="chkHeader"></th>
+                        <th width="200px" style="text-align: left"><i class="fa fa-tag"></i>&ensp;Created time</th>
+                        <th width="200px" style="text-align: left"><i class="fa fa-fax"></i>&ensp;Component Number</th>
+                        <th width="200px" style="text-align: left"><i class="fa fa-tag"></i>&ensp;Component Name</th>
+                        <th width="200px" style="text-align: left"><i class="fa fa-bar-chart-o"></i>&ensp;Risk Summary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in obj %}
+                    <tr><td align="left"><input type="checkbox" name="{{ a.id }}"></td>
+                        <td align="left"><a href="{% url 'reportproposal' a.componentid %}">{{ a.create }}</a></td>
+                        <td style="text-align: left"><a href="{% url 'reportproposal' a.componentid %}">{{ a.componentnumber }}</a></td>
+                        <td style="text-align: left">{{ a.componentname }}</td>
+                        <td align="left"><a href="{% url 'exportData' a.componentid 'Component'%}"><i class="fa fa-print" ></i></a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+                     {#          Pagination div  #}
+            <div>
+                {% if obj.has_other_pages %}
+              <ul class="pagination">
+                {% if obj.has_previous %}
+                  <li><a href="?page={{ obj.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&laquo;</span></li>
+                {% endif %}
+                {% for i in obj.paginator.page_range %}
+                  {% if obj.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                  {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if obj.has_next %}
+                  <li><a href="?page={{ obj.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+              </ul>
+            {% endif %}
+            </div>
+        </div>
+    </form>
+{% endblock %}

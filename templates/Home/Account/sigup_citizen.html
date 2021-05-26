@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load staticfiles %}
+    {% load widget_tweaks %}
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>Sign_in</title>
+</head>
+<body>
+<form method="post">
+    {% csrf_token %}
+<div class="wapper" style="width: 400px; height: 600px; margin-left: 450px;">
+    <div class="container-fluid">
+		<div class="row">
+			<div class="well center-block">
+				<div class="well-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h3 class="text-center "><b> Register Here! </b></h3>
+                    <h4 class="text-center ">Inspection As Service for Citizen</h4>
+					<hr>
+				</div>
+
+                <div class="row">
+					<div class=" col-xs-12">
+						<div class="form-group">
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="glyphicon glyphicon-user"></i>
+								</div>
+								<input type="text" placeholder="Name" name="name" class="form-control " style="">
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+{#				<div class="row">#}
+{#					<div class="col-xs-12 ">#}
+{#						<div class="form-group">#}
+{#							<div class="input-group">#}
+{#								<div class="input-group-addon">#}
+{#									<i class="glyphicon glyphicon-user"></i>#}
+{#								</div>#}
+{#								<input type="text" placeholder="Last Name" name="txtlname" class="form-control">#}
+{#							</div>#}
+{#						</div>#}
+{#					</div>#}
+{#				</div>#}
+				<div class="row">
+					<div class="col-xs-12 ">
+						<div class="form-group">
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="glyphicon glyphicon-user"></i>
+								</div>
+								<input type="text" placeholder="Username" name="username" class="form-control">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group">
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="glyphicon glyphicon-lock"></i>
+								</div>
+								<input type="password" minlength="8" maxlength="20" placeholder="Password" name="txtpass" class="form-control">
+							</div>
+						</div>
+					</div>
+				</div>
+
+                <div class="row">
+					<div class="col-xs-12">
+						<div class="form-group">
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="glyphicon glyphicon-lock"></i>
+								</div>
+								<input type="password" minlength="8" maxlength="20" placeholder="Retype Password" name="repass" class="form-control">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-12 ">
+						<div class="form-group">
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="glyphicon glyphicon-phone"></i>
+								</div>
+								<input type="number" minlength="10" maxlength="12" class="form-control" name="txtmobile" placeholder="Mobile No.">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class=" col-xs-12">
+						<div class="form-group">
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="glyphicon glyphicon-envelope"></i>
+								</div>
+								<input type="email" class="form-control" name="txtmail" placeholder="E-Mail">
+							</div>
+						</div>
+					</div>
+				</div>
+
+                <div class="row">
+					<div class=" col-xs-12 ">
+						<div class="form-group">
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</div>
+                                <input type="text" name="date" placeholder="Date Of Birth" class="form-control" id="datepicker">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class=" col-xs-12 ">
+						<div class="form-group">
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="glyphicon glyphicon-list-alt"></i>
+								</div>
+								<textarea class="form-control" name="txtadd" placeholder="Address"></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+
+				<div class="row widget">
+					<div class=" col-xs-12 ">
+						<button type="submit" class="btn btn-block" style="background: #2e6da4;color: #dbdbdb;font-size: 20px;"> Sign Up </button>
+					</div>
+                    <div class="modal-footer">
+
+                    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</form>
+</body>
+</html>

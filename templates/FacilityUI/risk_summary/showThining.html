@@ -1,0 +1,872 @@
+{% extends 'BaseUI/BaseFacility/baseRiskSummary.html' %}
+
+{% load staticfiles %}
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactor' proposalID %}{% endblock %}
+{% block fcof%}{% url 'fullyConsequence' proposalID %}{% endblock %}
+{% block acof%}{% url 'areaBasedCoF' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrix' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChart' proposalID %}{% endblock %}
+{% block corri %}{% url 'corrision' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'damgeFactor' proposalID%}{% endblock %}
+<!---------------END BLOCK--------------->
+
+{% block data-content %}
+    <style>
+      .card {
+          background: #ffffff;
+      }
+      #assessmentdate datepicker {
+          background: black;
+      }
+    .scheduler-border {
+        border: none;
+        padding: 0 1.4em 1.4em 1.4em;
+        margin: 0 0 1.5em 0;
+        font-size: 1.1em ;
+        text-align: left ;
+        text-decoration-color: #444444;
+    }
+    .row{
+        text-align: left;
+    }
+    .arrow-down {
+        margin-left: 50%;
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-top: 2px solid;
+        border-right: 2px solid;
+        transform: rotate(135deg);
+      }
+    p.Cen{
+        text-align: justify;
+    }
+    p.Right{text-align: right;}
+    p.Left{text-align: left;margin-left: 250px; margin-right: 250px}
+    p.Left0{text-align: left;margin-left: 10px; margin-right: 10px}
+    p.Left1{text-align: left;margin-left: 130px; margin-right: 100px}
+    select {
+{#        display: inline-block;#}
+        width:94%
+    }
+    </style>
+    <!--suppress ALL -->
+    <form id="inspectionplan" method="post" class="card" >
+    {% csrf_token %}
+       <div style=" text-align: center"><caption><b style="font-size: 20px; color: #444444;">Governing Thinning Damage Factor</b></caption></div>
+
+
+  <!-- Modal -->
+        <div class="modal fade" id="baseMetalThickness" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Base Metal Thickness</h4>
+        </div>
+        <div class="modal-body">
+          <p class="Cen">
+              A furnished thickness may be replaced with a measured thickness as a result of a high quality inspection (for
+                thinning and external corrosion, as applicable) and high confidence in the measurement accuracy. Key reasons
+                for replacing the furnished thickness with a measured thickness are:
+          </p>
+            <ul style="text-align: justify">
+                <li>The component service start date when combined with a reasonably conservative corrosion rate predicts an
+                unrealistically high wall loss when the measured wall loss based on quality inspection is much lower than
+                predicted</li>
+                <li>The process conditions differ significantly from historical service conditions that are the basis for historical
+                measured corrosion rate</li>
+                <li>The furnished thickness based on design is significantly different than the thickness measured by a baseline
+                inspection or lack of reliable baseline data</li>
+            </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+        <div class="modal fade" id="shapeFactor" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Shape Factor</h4>
+        </div>
+        <div >
+          <img src="{% static '/image/help/shapeFactor.PNG' %}">
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+        <div class="modal fade" id="strengthRatioMin" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Strength Ratio- Internal Pressure/Hoop Stress</h4>
+            </div>
+            <div >
+              <img  src="{% static '/image/help/strengthRatioIn.PNG' %}">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+
+        <div class="modal fade" id="flowStress" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Flow Stress</h4>
+            </div>
+            <div class="modal-body">
+              <img src="{% static '/image/help/flowStress.PNG' %}">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+
+        <div class="modal fade" id="strengthRatioIn" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Strength Ratio- Minimum Structural Thickness Governs</h4>
+            </div>
+            <div class="modal-body">
+              <img src="{% static '/image/help/strengthRatioMin.PNG' %}">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+
+        <div class="modal fade" id="adjustOnline" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Damage Factor Adjustment for Online Monitoring</h4>
+            </div>
+            <div class="modal-body">
+              <img src= "{% static '/image/help/eqAdjustOnl.png' %}" >
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+        <div class="modal fade" id="adjustInj" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Damage Factor Adjustment for Injection Points</h4>
+            </div>
+            <div class="modal-body">
+               <img src= "{% static '/image/help/adjustInject.PNG' %}" >
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+        <div class="modal fade" id="adjustDead" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Damage Factor Adjustment for Dead Legs</h4>
+            </div>
+            <div class="modal-body">
+              <img src= "{% static '/image/help/adjustDead.PNG.' %}" >
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+
+        <div class="modal fade" id="priorProbabilities" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Prior Probability of Corrosion Rate Data Confidence</h4>
+            </div>
+            <div class="modal-body">
+
+                <img src= "{% static '/image/help/priorPro.PNG' %}" >
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+        <div class="modal fade" id="inspectioneffectivenessfactors" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Inspection Effectiveness Factors</h4>
+            </div>
+            <div class="modal-body">
+              <img src= "{% static '/image/help/inspectionEffec.PNG' %}" >
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+
+        <div class="modal fade" id="PosteriorProbability" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Posterior Probability</h4>
+            </div>
+            <div class="modal-body">
+                <img src= "{% static '/image/help/posteriorPro.PNG' %}" >
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+        <div class="modal fade" id="BetaReliabilityIndicesAP0" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">The Beta Reliability Indices at 0AP</h4>
+            </div>
+            <div class="modal-body">
+               <img src= "{% static '/image/help/Beta0AP.PNG.' %}" >
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+        <div class="modal fade" id="BetaReliabilityIndicesAP1" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">The Beta Reliability Indices at 1AP</h4>
+            </div>
+            <div class="modal-body">
+               <img src= "{% static '/image/help/Beta1AP.PNG' %}" >
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+        <div class="modal fade" id="BetaReliabilityIndicesAP2" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">The Beta Reliability Indices at 2AP</h4>
+            </div>
+            <div class="modal-body">
+               <img src= "{% static '/image/help/beta2AP.PNG' %}" >
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+        <div class="modal fade" id="ArtWithoutCladdingMaterial" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Wall Loss Fraction Without Cladding Material </h4>
+            </div>
+            <div class="modal-body">
+                <img src= "{% static '/image/help/wallLosswithout.PNG' %}" >
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+        <div class="modal fade" id="ArtWithoutCladdingMaterialWith1" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Wall Loss Fraction With Cladding Material(Age_tk< Age_rc) </h4>
+            </div>
+            <div class="modal-body">
+                <img src= "{% static '/image/help/wallLossWith1.PNG' %}" >
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+
+        <div class="modal fade" id="ArtWithoutCladdingMaterialWith2" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Wall Loss Fraction With Cladding Material(Age_tk>= Age_rc) </h4>
+            </div>
+            <div class="modal-body">
+           <img src= "{% static '/image/help/wallLostWith2.PNG' %}" >
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+        <div class="modal fade" id="WallLossFraction" role="dialog">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Wall Loss Fraction</h4>
+                </div>
+                <div class="modal-body">
+                    <img src= "{% static '/image/help/wallLoss.PNG' %}" >
+
+
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="modal fade" id="agerc" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Remaining Life of Cladding Material, Age_rc</h4>
+            </div>
+            <div class="modal-body">
+                <img src= "{% static '/image/help/AGErc.PNG' %}" >
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+        <div class="modal fade" id="agetk" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Years Since Last Inspection, age, tk </h4>
+            </div>
+            <div class="modal-body">
+                <img src= "{% static '/image/help/AGEtk.PNG' %}" >
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+        <div class="modal fade" id="age" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Years in Service, Age</h4>
+            </div>
+            <div class="modal-body">
+               <p>age is the in-service time that the damage is applied</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+        <div class="modal fade" id="BaseDamageFactor" role="dialog">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Base Damage Factor</h4>
+                </div>
+                <div class="modal-body">
+                    <img src= "{% static '/image/help/baseDMThin.PNG' %}" >
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="modal fade" id="ThinningDamageFactor" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Thinning Damage Factor</h4>
+            </div>
+            <div class="modal-body">
+                <img src= "{% static '/image/help/DMThin.PNG' %}" >
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+                <!-----------BlOCK FULLY QUANTITIVE FCOF AND CATEGORY--------->
+        <fieldset class="scheduler-border">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Assessment General Information</b></legend>
+                    <div class="row">
+                        <div class="col-md-4">Equipment Number</div>
+                        <div class="col-md-6"><input  type="text" size="70px" value="{{ a.EquipmentNumber }}" readonly></div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Component Number</div>
+                        <div class="col-md-6"><input  type="text" size="70px" value="{{ a.ComponentNumber }}" readonly> </div>
+                    </div>
+                    <div class="row">
+                         <div class="col-md-4">Assessment Name</div>
+                        <div class="col-md-6"><input  type="text" size="70px" value="{{ a.Assessment }}" readonly> </div>
+                    </div>
+                </fieldset>
+
+                <!-----------BLOCK INFLUENCING INPUT------------>
+            <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Assessment Data Input</b></legend>
+
+               <div>
+                    <a class="arrow-down" data-toggle="collapse" href="#a" aria-expanded="false" >
+                </a></div>
+               <div class="collapse" id="a">
+                    <div class="row">
+                        <div class="col-md-3">Assessment Date</div>
+                        <div class="col-md-3"><input type="text" name="assessmentdate"  id="assessmentdate" placeholder="yyyy-mm-dd" value="{{ a.assessmentDate }}">
+                        <script>
+                            $( "#assessmentdate" ).datepicker({
+                                dateFormat: 'yy-mm-dd'
+                        });
+
+                        </script>
+                        </div>
+                        <div class="col-md-3">Commission Date</div>
+{#                        <div class="col-md-3"><input  type="text" id="LastInspectionDate" placeholder="yyyy-mm-dd" value="{{ a.LastInspectionDate }}"></div>#}
+                        <div class="col-md-3"><input  type="text" id="LastInspectionDate" placeholder="yyyy-mm-dd" value="{{ a.commisstiondate }}"></div>
+                        <script>
+                            $( "#LastInspectionDate" ).datepicker({
+                                dateFormat: 'yy-mm-dd'
+                        });
+                        </script>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">Risk Analysis Period</div>
+                        <div class="col-md-3"><input  type="text" value="36 months" readonly></div>
+                        <div class="col-md-3">Last Inspection Date</div>
+                        <div class="col-md-3"><input  type="text" name="lastInspection"  id="lastInspection" placeholder="yyyy-mm-dd" value="{{a.LastInspectionDate}}">
+                        <script>
+                            $( "#lastInspection" ).datepicker({
+                            dateFormat: 'yy-mm-dd'
+                        });
+
+                        </script>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">Number of A Effectiveness Inspections</div>
+                        <div class="col-md-3"><input  type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' value="{{ a.NA_Thin }} " readonly></div>
+                        <div class="col-md-3">Number of B Effectiveness Inspections</div>
+                        <div class="col-md-3"><input  type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' value="{{ a.NB_Thin }}"readonly> </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">Number of C Effectiveness Inspections</div>
+                        <div class="col-md-3"><input  type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' value="{{ a.NC_Thin }}"readonly> </div>
+                        <div class="col-md-3">Number of D Effectiveness Inspections</div>
+                        <div class="col-md-3"><input  type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' value="{{ a.ND_Thin }}"readonly> </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">Nominal Thickness, mm</div>
+                        <div class="col-md-3"><input  type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' value="{{a.NominalThickness }}" name="NominalThickness"> </div>
+                        <div class="col-md-3">Minimum Measured Thickness, mm</div>
+                        <div class="col-md-3"><input  type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' value="{{ a.CurentThickness }}" name="CurentThickness"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">Current Corrosion Rate, mm/yr</div>
+                        <div class="col-md-3"><input  type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' value="{{ a.CorrosionRate }}" name="CorrosionRate"></div>
+                        <div class="col-md-3">Minimum Required Thickness, mm</div>
+                        <div class="col-md-3"><input  type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' value="{{a.MinimunRequiredThickness  }}" name="MinimunRequiredThickness"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">Internal Cladding</div>
+                        <div class="col-md-3"><select id="InternalCladding" name="InternalCladding">
+                            <option value="1">True</option>
+                            <option value="0">False</option>
+                        </select></div>
+                        <script>
+                            document.getElementById("InternalCladding").value = "{{ a.InternalCladding }}";
+                        </script>
+                        <div class="col-md-3">Cladding Corrosion Rate, mm/yr</div>
+                        <div class="col-md-3"><input onkeypress='return event.charCode >= 48 && event.charCode <= 57' type="text" value="{{ a.CladdingCorrosionRate }}" name="CladdingCorrosionRate"> </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">Design Pressure, MPa</div>
+                        <div class="col-md-3"><input onkeypress='return event.charCode >= 48 && event.charCode <= 57' type="text" value="{{ a.DesignPressure }}" name="DesignPressure"> </div>
+                        <div class="col-md-3">Diameter, mm</div>
+                        <div class="col-md-3"><input onkeypress='return event.charCode >= 48 && event.charCode <= 57' type="text" name="Diameter" value="{{ a.Diameter }}"> </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">Chemical Injection</div>
+                        <div class="col-md-3"><select id="ChemicalInjection" name="ChemicalInjection">
+                            <option value="1">True</option>
+                            <option value="0">False</option>
+                        </select> </div>
+                        <script>
+                            document.getElementById("ChemicalInjection").value = "{{ a.ChemicalInjection }}";
+                        </script>
+
+                        <div class="col-md-3">Highly Effective Inspection for Chemical Injection </div>
+                        <div class="col-md-3"><select id="HighlyEffectiveInspectionforChemicalInjection" name="HighlyEffectiveInspectionforChemicalInjection">
+                            <option value="1">True</option>
+                            <option value="0">False</option>
+                        </select> </div>
+                        <script>
+                            document.getElementById("HighlyEffectiveInspectionforChemicalInjection").value = "{{ a.HighlyEffectiveInspectionforChemicalInjection }}";
+                        </script>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">Dead legs</div>
+                        <div class="col-md-3"><select id="deadLegs" name="deadLegs">
+                            <option value="1">True</option>
+                            <option value="0">False</option>
+                        </select> </div>
+                        <script>
+                            document.getElementById("deadLegs").value = "{{ a.deadLegs }}";
+                        </script>
+                        <div class="col-md-3">Highly Effective Inspection for Dead legs</div>
+                        <div class="col-md-3"><select id="HighEffectiveDeadlegs" name="HighEffectiveDeadlegs">
+                            <option value="1">True</option>
+                            <option value="0">False</option>
+                        </select></div>
+                        <script>
+                            document.getElementById("HighEffectiveDeadlegs").value = "{{ a.HighEffectiveDeadlegs }}";
+                        </script>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">Level of Confidence in Corrorion Sources</div>
+                        <div class="col-md-3">
+                            <select id="confidencecorrosionrate" name="confidencecorrosionrate">
+                                <option value="" selected disabled>Please select level of confidence..</option>
+                                    <option>Low</option>
+                                    <option>Medium</option>
+                                    <option>High</option>
+                            </select>
+    {#                            <input onkeypress='return event.charCode >= 48 && event.charCode <= 57' type="text" value="{{ a.confidencecorrosionrate }}" name="confidencecorrosionrate"> </div>#}
+                            <script>
+                                    if ("{{ a.confidencecorrosionrate }}")
+                                        $("#confidencecorrosionrate").val("{{ a.confidencecorrosionrate }}");
+                                    else
+                                        $("#confidencecorrosionrate").prop("selectedIndex",0);
+
+                            </script></div>
+                   <div class="row">
+                       <div class="col-md-3">Weld Joint Efficiency</div>
+                        <div class="col-md-3"><input onkeypress='return event.charCode >= 48 && event.charCode <= 57' type="text" value="{{ a.WeltJointEfficiency }}" name="WeltJointEfficiency"> </div>
+
+                   </div>
+                    <div class="row">
+                        <div class="col-md-3">Yield Strength, MPa</div>
+                        <div class="col-md-3"><input onkeypress='return event.charCode >= 48 && event.charCode <= 57' type="text" value="{{ a.YeildStrength }}" name="YeildStrength"> </div>
+                        <div class="col-md-3">Tensile Strength, MPa</div>
+                        <div class="col-md-3"><input onkeypress='return event.charCode >= 48 && event.charCode <= 57' type="text" value="{{ a.TensileStrength }}" name="TensileStrength"> </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">Allowable Stress Assessment, MPa</div>
+                        <div class="col-md-3"><input onkeypress='return event.charCode >= 48 && event.charCode <= 57' type="text" value="{{ a.AllowableStress }}" name="AllowableStress"> </div>
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">Online Monitoring</div>
+                        <div class="col-md-3"><select id="Onlinemonitoring" name="Onlinemonitoring">
+                            <option value="" disabled selected >Please select online monitoring..</option>
+                                <option>Amine high velocity corrosion - Corrosion coupons</option>
+                                <option>Amine high velocity corrosion - Electrical resistance probes</option>
+                                <option>Amine high velocity corrosion - Key process variable</option>
+                                <option>Amine low velocity corrosion - Corrosion coupons</option>
+                                <option>Amine low velocity corrosion - Electrical resistance probes</option>
+                                <option>Amine low velocity corrosion - Key process variable</option>
+                                <option>HCL corrosion - Corrosion coupons</option>
+                                <option>HCL corrosion - Electrical resistance probes</option>
+                                <option>HCL corrosion - Key process variable</option>
+                                <option>HCL corrosion - Key process variable & Electrical resistance probes</option>
+                                <option>HF corrosion - Corrosion coupons</option>
+                                <option>HF corrosion - Electrical resistance probes</option>
+                                <option>HF corrosion - Key process variable</option>
+                                <option>High temperature H2S/H2 corrosion - Corrosion coupons</option>
+                                <option>High temperature H2S/H2 corrosion - Electrical resistance probes</option>
+                                <option>High temperature H2S/H2 corrosion - Key process parameters</option>
+                                <option>High temperature Sulfidic / Naphthenic acid corrosion - Corrosion coupons</option>
+                                <option>High temperature Sulfidic / Naphthenic acid corrosion - Electrical resistance probes</option>
+                                <option>High temperature Sulfidic / Naphthenic acid corrosion - Key process variable</option>
+                                <option>No online monitoring</option>
+                                <option>Other corrosion - Corrosion coupons</option>
+                                <option>Other corrosion - Electrical resistance probes</option>
+                                <option>Other corrosion - Hydrogen probes</option>
+                                <option>Other corrosion - Key process variable</option>
+                                <option>Other corrosion - Key process variable and Hydrogen probes</option>
+                                <option>Sour water high velocity corrosion - Corrosion coupons</option>
+                                <option>Sour water high velocity corrosion - Electrical resistance probes</option>
+                                <option>Sour water high velocity corrosion - Key process variable</option>
+                                <option>Sour water low velocity corrosion - Corrosion coupons</option>
+                                <option>Sour water low velocity corrosion - Electrical resistance probes</option>
+                                <option>Sour water low velocity corrosion - Key process variable</option>
+                                <option>Sulfuric acid (H2S/H2) corrosion high velocity - Corrosion coupons</option>
+                                <option>Sulfuric acid (H2S/H2) corrosion high velocity - Electrical resistance probes</option>
+                                <option>Sulfuric acid (H2S/H2) corrosion high velocity - Key process parameters</option>
+                                <option>Sulfuric acid (H2S/H2) corrosion high velocity - Key process parameters & electrical resistance probes</option>
+                                <option>Sulfuric acid (H2S/H2) corrosion low velocity - Corrosion coupons</option>
+                                <option>Sulfuric acid (H2S/H2) corrosion low velocity - Electrical resistance probes</option>
+                                <option>Sulfuric acid (H2S/H2) corrosion low velocity - Key process parameters</option>
+                        </select> </div>
+                        <script>
+                                if ("{{ a.Onlinemonitoring }}")
+                                    $("#Onlinemonitoring").val("{{ a.Onlinemonitoring }}");
+                                else
+                                    $("#Onlinemonitoring").prop("selectedIndex", 0);
+
+                            </script>
+{#                        <script>#}
+{#                            document.getElementById("Onlinemonitoring").value = "{{ a.Onlinemonitoring }}";#}
+{#                        </script>#}
+{#                        <div class="col-md-1"><input  type="text" size="70px" value="{{ a.Onlinemonitoring }}" name="Onlinemonitoring"></div>#}
+                    </div>
+               </div>
+            </fieldset>
+               {#      Khối Intermediate Results       #}
+
+            <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Intermediate Results</b></legend>
+                <div>
+                    <a class="arrow-down" data-toggle="collapse" href="#b" aria-expanded="false" >
+                </a></div>
+                <div class="collapse" id="b">
+                    <div class="row">
+                        <div class="col-md-4">Base Metal Thickness <button style="background: white; padding: 0 0 0 0; border:none" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#baseMetalThickness"><i class="fa fa-question-circle" style="color: blue;" ></i></button></div>
+{#                        <div class="col-md-1"><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal"><i class="fa fa-question-circle" style="color: black" ></i></button></div>#}
+                        <div class="col-md-1"><input  type="text" size="70px" value="{{a.NominalThickness }}" readonly> </div>
+                    </div>
+
+
+
+
+                    <div class="row">
+                        <div class="col-md-4">Shape</div>
+                        <div class="col-md-1"><input  type="text" size="70px" value="{{a.shape}}" readonly> </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">Shape Factor <button style="background: white; padding: 0 0 0 0; border:none" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#shapeFactor"><i class="fa fa-question-circle" style="color: blue;" ></i></button></div>
+                        <div class="col-md-1"><input  type="text" size="70px" value="{{a.shapeFactor}}" readonly> </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">Flow Stress <button style="background: white; padding: 0 0 0 0; border:none" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#flowStress"><i class="fa fa-question-circle" style="color: blue;" ></i></button></div>
+                        <div class="col-md-1"><input  type="text" size="70px" value="{{ a.flowTress }}" readonly> </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">Strength Ratio- Minimum Structural Thickness Governs <button style="background: white; padding: 0 0 0 0; border:none" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#strengthRatioIn"><i class="fa fa-question-circle" style="color: blue;" ></i></button></div>
+                        <div class="col-md-1"><input  type="text" size="70px" value="{{ a.strengthRatioMin }} " readonly> </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">Strength Ratio- Internal Pressure/Hoop Stress <button style="background: white; padding: 0 0 0 0; border:none" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#strengthRatioMin"><i class="fa fa-question-circle" style="color: blue;" ></i></button></div>
+                        <div class="col-md-1"><input  type="text" size="70px" value="{{ a.strengthRatioIn }}" readonly> </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">Damage Factor Adjustment for Injection Points <button style="background: white; padding: 0 0 0 0; border:none" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#adjustInj"><i class="fa fa-question-circle" style="color: blue;" ></i></button></div>
+                        <div class="col-md-1"><input  type="text" size="70px" value="{{ a.adjustmentInjection }}" readonly> </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">Damage Factor Adjustment for Dead Legs <button style="background: white; padding: 0 0 0 0; border:none" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#adjustDead "><i class="fa fa-question-circle" style="color: blue;" ></i></button></div>
+                        <div class="col-md-1"><input  type="text" size="70px" value="{{ a.adjustmentDeadLegs }}" readonly></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">Damage Factor Adjustment for Online Monitoring <button style="background: white; padding: 0 0 0 0; border:none" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#adjustOnline "><i class="fa fa-question-circle" style="color: blue;" ></i></button></div>
+                        <div class="col-md-1"><input  type="text" size="70px" value="{{ a.adjustmentOnline }}" readonly> </div>
+                    </div>
+                </div>
+            </fieldset>
+{#            Khối Structral Realiability Theory Parameters#}
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border"><b>Structral Realiability Theory Parameters </b></legend>
+                <div>
+                    <a class="arrow-down" data-toggle="collapse" href="#c" aria-expanded="false" >
+                </a></div>
+                    <div class="collapse" id="c">
+                        <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-1"><input  type="text" size="51px" style="background-color: #0C5BED; color: white" value="0 months                    36 months                  72 months"> </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">Prior Probability of Corrosion Rate Data Confidence <button style="background: white; padding: 0 0 0 0; border:none" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#priorProbabilities"><i class="fa fa-question-circle" style="color: blue;" ></i></button></div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.priorProbabilities1 }} " readonly> </div>
+                            <div class="col-md-2"><input  type="text"size="9px"value="{{ a.priorProbabilities2 }}" readonly></div>
+                            <div class="col-md-2"><input  type="text"size="9px" value="{{ a.priorProbabilities3 }}" readonly></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">Inspection Effectiveness Factors <button style="background: white; padding: 0 0 0 0; border:none" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#inspectioneffectivenessfactors"><i class="fa fa-question-circle" style="color: blue;" ></i></button></div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.inspectioneffectivenessfactors1 }} " disabled></div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.inspectioneffectivenessfactors2 }}" disabled></div>
+                            <div class="col-md-2"><input  type="text"size="9px"  value="{{ a.inspectioneffectivenessfactors3 }}"> </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">Posterior Probability <button style="background: white; padding: 0 0 0 0; border:none" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#PosteriorProbability"><i class="fa fa-question-circle" style="color: blue;" ></i></button></div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.PosteriorProbability1 }}"> </div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.PosteriorProbability2 }}"> </div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.PosteriorProbability3 }}"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">The Beta Reliability Indices at 0AP <button style="background: white; padding: 0 0 0 0; border:none" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#BetaReliabilityIndicesAP0"><i class="fa fa-question-circle" style="color: blue;" ></i></button></div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.BetaReliabilityIndices0AP_1 }}"></div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.BetaReliabilityIndices0AP_2 }}"></div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.BetaReliabilityIndices0AP_3 }}"> </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">The Beta Reliability Indices at 1AP <button style="background: white; padding: 0 0 0 0; border:none" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#BetaReliabilityIndicesAP1"><i class="fa fa-question-circle" style="color: blue;" ></i></button></div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.BetaReliabilityIndices1AP_1 }}"></div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.BetaReliabilityIndices1AP_2 }}"></div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.BetaReliabilityIndices1AP_3}}"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">The Beta Reliability Indices at 2AP <button style="background: white; padding: 0 0 0 0; border:none" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#BetaReliabilityIndicesAP2"><i class="fa fa-question-circle" style="color: blue;" ></i></button></div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.BetaReliabilityIndices2AP_1 }}"></div>
+                            <div class="col-md-2"><input  type="text" size="9px" value={{ a.BetaReliabilityIndices2AP_2 }}></div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.BetaReliabilityIndices2AP_3 }}"></div>
+                        </div>
+
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-1"><input  type="text" style="background-color: #0C5BED; color: white;" size="51px"  value="0 months                    36 months                  72 months"> </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">Years in Service, Age <button style="background: white; padding: 0 0 0 0; border:none" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#age"><i class="fa fa-question-circle" style="color: blue;" ></i></button></div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.age1 }}"> </div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.age2 }}"> </div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.age3 }}"> </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">Years Since Last Inspection, age, tk <button style="background: white; padding: 0 0 0 0; border:none" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#agetk"><i class="fa fa-question-circle" style="color: blue;" ></i></button></div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.agetk1 }}"> </div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.agetk2 }}"> </div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.agetk3 }}"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">Remaining Life of Cladding Material, Age_rc <button style="background: white; padding: 0 0 0 0; border:none" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#agerc"><i class="fa fa-question-circle" style="color: blue;" ></i></button></div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.agerc1 }}"> </div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.agerc2 }}"> </div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.agerc3 }}"> </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">Wall Loss Fraction Without Cladding Material <button style="background: white; padding: 0 0 0 0; border:none" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#ArtWithoutCladdingMaterial"><i class="fa fa-question-circle" style="color: blue;" ></i></button></div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.ArtWithout1 }}"> </div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.ArtWithout2 }}"></div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.ArtWithout3 }}"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">Wall Loss Fraction With Cladding Material(Age_tk< Age_rc) <button style="background: white; padding: 0 0 0 0; border:none" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#ArtWithoutCladdingMaterialWith1"><i class="fa fa-question-circle" style="color: blue;" ></i></button></div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.ArtWith1_1 }}"> </div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.ArtWith1_2 }}"> </div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.ArtWith1_3 }}"> </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">Wall Loss Fraction With Cladding Material(Age_tk>= Age_rc) <button style="background: white; padding: 0 0 0 0; border:none" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#ArtWithoutCladdingMaterialWith2"><i class="fa fa-question-circle" style="color: blue;" ></i></button></div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.ArtWith2_1 }}"> </div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.ArtWith2_2 }}"> </div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.ArtWith2_3 }}"> </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">Wall Loss Fraction <button style="background: white; padding: 0 0 0 0; border:none" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#WallLossFraction"><i class="fa fa-question-circle" style="color: blue;" ></i></button></div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.WallLossFraction1 }}"></div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.WallLossFraction2 }}"></div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.WallLossFraction3 }}"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">Base Damage Factor <button style="background: white; padding: 0 0 0 0; border:none" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#BaseDamageFactor"><i class="fa fa-question-circle" style="color: blue;" ></i></button></div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.BaseDamageFactor1 }}"> </div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.BaseDamageFactor2 }}"> </div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.BaseDamageFactor3 }}"> </div>
+                        </div>
+
+                        <br>
+
+                        <div class="row">
+                            <div class="col-md-6">Thinning Damage Factor <button style="background: white; padding: 0 0 0 0; border:none" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#ThinningDamageFactor"><i class="fa fa-question-circle" style="color: blue;" ></i></button></div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.ThinningDamageFactor1 }}"> </div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.ThinningDamageFactor2 }}"> </div>
+                            <div class="col-md-2"><input  type="text" size="9px" value="{{ a.ThinningDamageFactor3 }}"> </div>
+                        </div>
+                    </div>
+            </fieldset>
+            <input type="submit" name='try' style="background: blue; float: right;color: white; border:black 2px solid" value="TRY">
+            <input type="submit" name="expertHelp" style="background: blue; float: right;color: white; border:black 2px solid;margin-right:1px;" value="EXPERT HELP">
+        </fieldset>
+
+    </form>
+{% endblock %}

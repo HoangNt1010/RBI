@@ -1,0 +1,94 @@
+{% extends 'BaseUI/BaseFacility/baseProposal.html' %}
+{% load staticfiles %}
+
+{% block library %}
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <meta http-equiv="refresh" content="{{ t }}" >
+{% endblock %}
+
+<!----------BLOCK MENU----------->
+{% block listProposal %}{% url 'proposalDisplay' componentID %}{% endblock %}
+{% block newsensor %}{% url 'newsensor' componentID %}{% endblock %}
+{% block scada %}{% url 'scada' componentID %}{% endblock %}
+{% block setting %}{% url 'setting' componentID %}{% endblock %}
+{% block backComp %}{% url 'componentDisplay' equipmentID %}{% endblock %}
+<!----------END BLOCK----------->
+
+{% block data-content %}
+    <form method="post" id="listProposal">
+    {% csrf_token %}
+    <div>
+        <table>
+            <tr style="width: 500px;height: 20px">
+                <td style="text-align: center"><h4>Sensor: {{ sensorName }}</h4></td>
+                <td></td>
+                <td style="text-align: center"><h4>Component: {{ comp.componentname }}</h4></td>
+            </tr>
+            <tr style="width: 10%;height: 10%;">
+                <td>
+                    <img src={% static '/image/Sensor/sensor.png' %} alt="Flowers" style="width:200px;height: 200px">
+                </td>
+                <td>
+                    <img src={% static '/image/Sensor/connect_logo.PNG' %} alt="Flowers" style="width:150px;height: 50px">
+                    <br>
+                    <img src={% static '/image/Sensor/connect.png' %} alt="Flowers" style="width:150px;height: 100px">
+                </td>
+                <td>
+                    <img src={% static '/image/Sensor/facility.PNG' %} alt="Flowers" style="width:200px;height: 200px">
+                </td>
+            </tr>
+        </table>
+
+        <div class="container">
+            <h2>List of Pakage</h2>
+            <p>The .table class adds basic styling (light padding and horizontal dividers) to a table:</p>
+            <table class="table">
+                <thead>
+                <tr>
+{#                    <th width="50px" style="text-align: center"><input type="checkbox" id="chkHeader"></th>#}
+                    <th style="text-align: center">Object</th>
+                    <th style="text-align: center">Value</th>
+                    <th>Time</th>
+                </tr>
+                </thead>
+                <tbody>
+{#                {% for pac in packagedata %}#}
+{#                    {% if pac.idpackage == latestid %}#}
+                        <tr>
+{#                            <td style="text-align: center"><input type="checkbox" name="{{ pac.idpackage }}"></td>#}
+                            <td style="text-align: center">{{ obj.temp }}</td>
+                            <td style="text-align: center">{{ value.temp }}</td>
+                            <td>{{ time }}</td>
+                        </tr>
+                        <tr>
+{#                            <td style="text-align: center"><input type="checkbox" name="{{ pac.idpackage }}"></td>#}
+                            <td style="text-align: center">{{ obj.dust}}</td>
+                            <td style="text-align: center">{{ value.dust}}</td>
+                            <td>{{ time }}</td>
+                        </tr>
+                        <tr>
+{#                            <td style="text-align: center"><input type="checkbox" name="{{ pac.idpackage }}"></td>#}
+                            <td style="text-align: center">{{ obj.cthickness }}</td>
+                            <td style="text-align: center">{{ value.cthickness }}</td>
+                            <td>{{ time }}</td>
+                        </tr>
+                        <tr>
+{#                            <td style="text-align: center"><input type="checkbox" name="{{ pac.idpackage }}"></td>#}
+                            <td style="text-align: center">{{ obj.diameter }}</td>
+                            <td style="text-align: center">{{ value.diameter }}</td>
+                            <td>{{ time }}</td>
+                        </tr>
+
+{#                    {% endif %}#}
+{#                {% endfor %}#}
+                </tbody>
+            </table>
+            <div style="text-align: center">
+                <button name="_new" class="btn btn-primary" type="submit"><i class="fa fa-pencil">&emsp;&emsp;Update&emsp;&emsp;</i></button>
+{#                <button name="_delete" type="submit" class="btn btn-warning" id="sub" onclick="Sub()" ><i class="fa fa-trash-o">&emsp;Delete Selected</i></button>#}
+                <button type="submit" name="_viewchart" class="btn btn-primary"><i class="fa fa-pencil">&emsp;View Chart</i></button>
+            </div>
+        </div>
+    </div>
+    </form>
+{% endblock %}

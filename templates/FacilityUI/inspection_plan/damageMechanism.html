@@ -1,0 +1,200 @@
+{% extends 'BaseUI/BaseFacility/baseInspectionPlan.html' %}
+
+<!-------------- BLOCK MENU ---------------->
+{% block listfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+{% block newfaci %}{% url 'facilitiesNew' siteID %}{% endblock %}
+{% block design %}{% url 'designcodeDisplay' siteID %}{% endblock %}
+{% block manu %}{% url 'manufactureDisplay' siteID %}{% endblock %}
+{% block uploadInsp %}{% url 'upload' siteID %}{% endblock %}
+{% block uploadPlant %}{% url 'uploadPlan' siteID %}{% endblock %}
+{% block manageFile %}{% url 'manageFile' siteID %}{% endblock %}
+{#{% block uploadScada %}{% url 'uploadScada' siteID %}{% endblock %}#}
+{% block inspecPlan %}{% url 'inspectionPlan' siteID %}{% endblock %}
+{% block rbitracking %}{% url 'rbitracking' %}{% endblock %}
+{% block mitigationSite %}{% url 'mitigationSite' siteID%}{% endblock %}
+{% block HelpSite %}{% url 'help' %}{% endblock %}
+{% block forum %}{% url 'forum' %}{% endblock %}
+{% block testSample %}{% url 'testsample' siteID%}{% endblock %}
+{% block settingAccount %}{% url 'settingAccount' siteID %}{% endblock %}
+{% block settingNotification %}{% url 'settingNotification' siteID %}{% endblock %}
+{% block homedetail %}{% url 'homefacility' siteID%}{% endblock %}
+<!----------------- END BLOCK----------------->
+{% block data-content %}
+<style>
+div.a {
+  white-space: nowrap;
+  width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+div.a:hover {
+  overflow: visible;
+}
+.city{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+
+.city td, .city th{
+  /* border: 1px solid #ddd; */
+  padding: 0px;
+  text-align: center;
+  font-size: 13px;
+
+}
+
+.city tr:nth-child(even){background-color: white;}
+.city tr:hover {background-color: #ddd;}
+
+.city th {
+  padding: 7px 36px;
+  background-color: #1c67b2;
+  color: white;
+}
+.alert {
+  padding: 10px;
+  background-color: #ff9800;
+  color: white;
+  opacity: 1;
+  transition: opacity 0.0s;
+  margin-bottom: 15px;
+  font-size: 17px
+}
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 25px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.0s;
+}
+.alert.success {background-color: #4CAF50;}
+.closebtn:hover {
+  color: black;
+}
+
+</style>
+<form method="post" >
+    {% csrf_token %}
+    <div>
+        <ul class="nav nav-pills mb-10">
+            <li class="btn btn-primary active" data-toggle="pill" href="#process">Damage Mechanism</li>
+            <!--<li class="btn btn-primary" href="#tank" data-toggle="pill">Inspection Findings/Description</li>-->
+        </ul>
+        <div class="tab-content">
+            <!---------------- Process Plant------------------>
+            <div id="process" class="tab-pane fade in active">
+                <div style="text-align: right;margin-right: 18px;">
+                    <!--<button type="submit" name="_ok" class="btn btn-primary"><i class="fa fa-pencil mr-5"></i>Save</button>-->
+                    <button type="submit" name="_ok" id="id_complete" class="btn btn-primary" disabled><i class="fa fa-cloud mr-5" aria-hidden="true"></i>Save</button>
+
+                    <!--<button type="submit" name="_mitigation" id="mitigation" class="btn btn-primary" disabled><i class="fa fa-sort-amount-asc mr-5"></i><span>Mitigation</span></button>-->
+
+                    <button type="submit" name="_cancel" class="btn btn-default" id="cancel" onclick="Sub()">Back</button>
+                </div>
+                <br>
+                {% if info.notify %}
+                    <div class="alert success" style="text-align:center;">
+                        <span class="closebtn">&times;</span>
+                        <strong>Notification:</strong>{{info.notify}}
+                    </div>
+                    <script>
+                    var close = document.getElementsByClassName("closebtn");
+                    var i;
+
+                    for (i = 0; i < close.length; i++) {
+                        close[i].onclick = function(){
+                            var div = this.parentElement;
+                            div.style.opacity = "0";
+                            setTimeout(function(){ div.style.display = "none"; }, 600);
+                        }
+                    }
+                    </script>
+                {% endif %}
+                <div style="text-align: center;" class="table-custom">
+                    <table class="table" id="mytable">
+                        <thead>
+                            <tr>
+                                <!------- Proposal-------->
+                                <th></th>
+                                <!-- <th width="100px" style="text-align: center"><input type="checkbox" id="check"></th> -->
+                                <th >Equipment Number</th>
+                                <th>Conponent Number</th>
+                                <th>Damage Mechanism</th>
+                                <th>Inspection Summary</th>
+                                <th>Inspection Effectiveness</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for a in dataSumary %}
+                                <tr >
+                                    <td><div class="a"><input type="checkbox"  class="checkbox" name="{{ a.CoverageDetailID }}"></div></td>
+                                    <td align="center">{{a.EquipmentName}}</td>
+                                    <td align="center">{{a.ComponenttName}}</td>
+                                    <td align="center">{{a.DMITemName}}</td>
+                                    {% if a.Summary %}
+                                        <td align="center" width="250px">{{a.Summary}}</td>
+                                    {% else %}
+                                        <td align="center" width="250px">None.<span style="color:red;"> Note:You need choose another Inspection Technique!</span></td>
+                                    {% endif %}
+
+                                    <td align="center">
+                                        <select class="form-control" name="EEF{{a.CoverageDetailID}}">
+                                            <option selected></option>
+                                            <option>A</option>
+                                            <option>B</option>
+                                            <option>C</option>
+                                            <option>D</option>
+                                            <option>E</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!---------------- Tank------------------>
+            <!--<div id="tank" class="tab-pane fade">-->
+                <!--<div class="row">-->
+                    <!--<div class="col-md-12">-->
+                        <!--<textarea style="width: 100%; height: calc(100vh - 160px);" type="text" name="decription" placeholder="Write component description here!"></textarea>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!----------------Save-------------------->
+            <br>
+            <script>
+                $( document ).ready(function() {
+                  setTimeout(() => {
+                    var isDisabledBtn = 0;
+                    $(".checkboxClass").each(function(){
+                    console.log(this.checked);
+                      if(this.checked) {
+                        isDisabledBtn = 1;
+                      }
+                    })
+                    if(isDisabledBtn == 1){
+                        $("#id_complete").attr("disabled", false);
+                    } else {
+                        $("#id_complete").attr("disabled", true);
+                    }
+                    // $("#checkboxAllNormal").prop("checked", false);
+                  }, 10);
+                });
+                $(function() {
+                    $(".checkbox").click(function(){
+                        console.log("Cuong")
+                        $('#id_complete').prop('disabled',$('input.checkbox:checked').length == 0);
+                    });
+                });
+            </script>
+        </div>
+    </div>
+</form>
+{% endblock %}

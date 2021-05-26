@@ -1,0 +1,80 @@
+{% extends 'BaseUI/BaseFacility/baseFacility.html' %}
+
+<!-------------- BLOCK MENU ---------------->
+{% block listfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+{% block newfaci %}{% url 'facilitiesNew' siteID %}{% endblock %}
+{% block design %}{% url 'designcodeDisplay' siteID %}{% endblock %}
+{% block manu %}{% url 'manufactureDisplay' siteID %}{% endblock %}
+<!----------------- END BLOCK----------------->
+
+
+{% block data-content %}
+        <form method="post" >
+        {% csrf_token %}
+            <div class="input-data">
+                <div class="title-verifitcation">
+                    <h1>Edit Facility</h1>
+                </div>
+                <div class="mb-10">
+                    <b class="color-white">Facility Information</b>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="color-white">
+                            Facility Name:<span style="color: red">*</span>
+                        </div>
+                        <div>
+                            <input type="text" name="FacilityName" class="form-control" value="{{ dataNew.facilityname }}" placeholder="Input Facility name here!" required/>
+                        </div>
+                        {% if error.exist %}
+                            <div class="row">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-8"><span style="color: red; font-size: 16px">{{ error.exist }}</span></div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4">
+                        <div class="color-white">
+                            Site:
+                        </div>
+                        <div>
+                            <input type="text"  name="site" list="site" value="{{ dataNew.sitename }}" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="color-white">
+                            Management System Factor:<span style="color: red">*</span>
+                        </div>
+                        <div>
+                            <input type="number"  name="ManagementSystemFactor" min="0.1" max="10" placeholder="Input management system fator here!" step="0.01" value="{{ dataNew.manageFactor }}" class="form-control" required/>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-10">
+                    <b class="color-white">Fully-quantitave CoF and FCoF Risk Target</b>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="color-white" style="width: 190px;">
+                            Area (m<sup>2</sup>/year):<span style="color: red">*</span>
+                        </div>
+                        <input type="number" step="0.01" name="Area" size="40" min="0" max="1000000" class="form-control" value="{{ dataNew.targetAC }}" placeholder="Input maximum area target!" required/>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="color-white" style="width: 225px;">
+                            Financial ($/year):<span style="color: red">*</span>
+                        </div>
+                        <input type="number" step="0.01" name="Financial" size="40" min="0" max="1000000000" class="form-control" value="{{ dataNew.targetFC }}" placeholder="Input maximum financial target!" required/>
+                    </div>
+                </div>
+            <div class="row">
+            </div>
+            <div style="text-align:center;margin-top: calc(100vh - 500px);">
+                <button type="submit" class="btn btn-primary mr-16">Submit</button>
+                <button type="submit" name="_helpfms" class="btn btn-primary mr-16"><i class="fa fa-pencil mr-5"></i>Help</button>
+                <a class="btn btn-default" href="{% url 'facilitiesDisplay' siteID %}">Cancel</a>
+             </div>
+
+            </div>
+        </form>
+{% endblock %}

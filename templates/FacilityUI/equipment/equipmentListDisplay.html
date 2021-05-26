@@ -1,0 +1,230 @@
+{% extends 'BaseUI/BaseFacility/baseEquipment.html' %}
+
+<!--------------- BLOCK MENU ------------->
+{% block listeq %}{% url 'equipmentDisplay' facilityID %}{% endblock %}
+{% block design %}{% url 'designcodeDisplay' facilityID %}{% endblock %}
+{% block manu %}{% url 'manufactureDisplay' facilityID %}{% endblock %}
+{% block backfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+
+{#{% block mana %}{% url 'managmentsystems' facilityID %}{% endblock %}#}
+{% block neweq %}{% url 'equipmentNew' facilityID %}{% endblock %}
+
+{% block listfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+{% block newfaci %}{% url 'facilitiesNew' siteID %}{% endblock %}
+{% block uploadInsp %}{% url 'upload' siteID %}{% endblock %}
+{% block uploadPlant %}{% url 'uploadPlan' siteID %}{% endblock %}
+<!--------------- END BLOCK -------------->
+
+{% block data-content %}
+<style>
+.alert {
+  padding: 10px;
+  background-color: #ff9800;
+  color: white;
+  opacity: 1;
+  transition: opacity 0.0s;
+  margin-bottom: 15px;
+  font-size: 17px
+}
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 25px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.0s;
+}
+.alert.success {background-color: #4CAF50;}
+.closebtn:hover {
+  color: black;
+}
+</style>
+    <form method="post">
+    {% csrf_token %}
+        <div class="search-table-group-custom">
+            <input type="text" class="search-field" placeholder="Search Equipment..." value="" name='searchEquipment'>
+            <button type="submit" name="_search" id="search" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i></button></div>
+        <div class="step-link">
+            <a href="{% url 'facilitiesDisplay' siteID %}">Fatories </a><span class="fa fa-angle-right"></span>
+            {% if faci %}<a href="{% url 'equipmentDisplay' faci.facilityid %}">{{ faci.facilityname }}</a>{% endif %}
+        </div>
+        <div class="table-title">
+          <h2><b>List of Equipments</b></h2>
+        </div>
+        
+        <div class="btn-group-table-bottom">
+          <button type="submit" name="_new" class="btn btn-primary"><i class="fa fa-pencil">&emsp;New Equipment</i></button>
+          <div>
+            <button type="submit" name="_edit" class="btn btn-primary" id="edit" disabled><i class="fa fa-pencil">&emsp;Edit Selected</i></button>
+            <button type="submit" name="_delete" class="btn btn-warning" id="sub" onclick="return confirm('Are you sure you want to delete this equipment?');" disabled><i class="fa fa-trash-o">&emsp;Delete Selected</i></button>
+          </div>
+        </div>
+
+        <div style="text-align: center;" class="table-custom">
+            <table class="table" id="mytable" style="min-width: 1400px;">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th width="500px" style="text-align: left">Equipment Number</th>
+                        <th width="200px" style="text-align: left">Equipment Name</th>
+                        <th width="200px" style="text-align: left">Equipment Type</th>
+                        <th width="200px" style="text-align: left">Total PoF</th>
+                        <th width="200px" style="text-align: left">Total CoF</th>
+                        <th width="200px" style="text-align: left">Reliability</th>
+                        <th width="500px" style="text-align: left">Created time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% if error.exist %}
+                <div class="alert">
+                    <span class="closebtn">&times;</span>
+                    <!--<span class="closebtn">&times;</span>-->
+                    <strong>Not found!</strong> {{error.exist}}
+                    <h4 style="text-align:left">Recommend:</h4>
+                    <ul style="text-align:left">
+                      <li>Please make sure all words are correctly spelled.</li>
+                      <li>Try other keywords.</li>
+                      <li>Try more general keywords.</li>
+                    </ul>
+                </div>
+                <script>
+                var close = document.getElementsByClassName("closebtn");
+                var i;
+
+                for (i = 0; i < close.length; i++) {
+                  close[i].onclick = function(){
+                    var div = this.parentElement;
+                    div.style.opacity = "0";
+                    setTimeout(function(){ div.style.display = "none"; }, 600);
+                  }
+                }
+                </script>
+                {% else %}
+                    {% if result.data %}
+                    <div class="alert success">
+                        <span class="closebtn">&times;</span>
+                        <!--<span class="closebtn">&times;</span>-->
+                        <strong>Results!</strong>{{result.data}}
+                    </div>
+                    <script>
+                    var close = document.getElementsByClassName("closebtn");
+                    var i;
+
+                    for (i = 0; i < close.length; i++) {
+                        close[i].onclick = function(){
+                            var div = this.parentElement;
+                            div.style.opacity = "0";
+                            setTimeout(function(){ div.style.display = "none"; }, 600);
+                        }
+                    }
+                    </script>
+                    {% endif %}
+                    {% for a in obj %}
+                    <tr>
+                        <td style="text-align: left"><input type="checkbox" id="checkbox" name="{{ a.ID }}" class="checkboxClass"></td>
+                        <td style="text-align: left"><a href="{% url 'componentDisplay' a.ID %}">{{ a.EquipmentNumber }}</a></td>
+                        <td style="text-align: left">{{ a.EquipmentName }}</td>
+                        <td style="text-align: left">{{ a.EquipmentType }}</td>
+                        <td style="text-align: left">{{ a.TotalPoF }}</td>
+                        <td style="text-align: left">{{ a.TotalCoF }}</td>
+                        <td style="text-align: left">{{ a.reliability }}</td>
+                        <td style="text-align: left">{{ a.Created }}</td>
+{#                        <td align="left"><a href="{% url 'exportData' a.ID 'Equipment' %}"><i class="fa fa-print" ></i></a></td>#}
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+
+              {#          Pagination div  #}
+            <div>
+                {% if obj.has_other_pages %}
+              <ul class="pagination">
+                {% if obj.has_previous %}
+                  <li><a href="?page={{ obj.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&laquo;</span></li>
+                {% endif %}
+                {% for i in obj.paginator.page_range %}
+                  {% if obj.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                  {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if obj.has_next %}
+                  <li><a href="?page={{ obj.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+              </ul>
+            {% endif %}
+            </div>
+
+
+{#            tool div #}
+            <br>
+            <script>
+                    $( document ).ready(function() {
+                      setTimeout(() => {
+                        var isDisabledBtn = 0;
+                        $(".checkboxClass").each(function(){
+                        console.log(this.checked);
+                          if(this.checked) {
+                            isDisabledBtn = 1;
+                          }
+                        })
+                        if(isDisabledBtn == 1){ 
+                            $("#edit").attr("disabled", false);
+                            $("#sub").attr("disabled", false);
+                        } else {
+                            $("#edit").attr("disabled", true);
+                            $("#sub").attr("disabled", true);
+                        }
+                        // $("#checkboxAllNormal").prop("checked", false);
+                      }, 10);
+                    });
+                    $("input[id='checkbox']").change(function (e) {
+                        var isChecked = $(this).prop("checked");
+                        if (isChecked == false) {
+                            $("#edit").attr("disabled", true);
+                            $("#sub").attr("disabled", true);
+                        }
+                        else {
+                            $("#edit").attr("disabled", false);
+                            $("#sub").attr("disabled", false);
+                        }
+                    });
+                    $(document).ready(function() {
+                      $("input[type=checkbox]").prop("checked", false);
+                      $("input[type=checkbox]:first").prop("checked", true);
+
+                      $("input[type=checkbox]").click(function(event) {
+                        $("input[type=checkbox]").prop("checked", false);
+                        $(this).prop("checked", true);
+
+                        //event.preventDefault();
+                      });
+                    });
+                    window.onload = function() {
+                      document.querySelectorAll("INPUT[type='checkbox']").forEach(function(rd) {
+                        rd.addEventListener("mousedown", function() {
+                          if(this.checked) {
+                            this.onclick=function() {
+                              this.checked=false
+                            }
+                          } else {
+                            this.onclick=null
+                          }
+                        })
+                      })
+                    }
+            </script>
+
+        </div>
+        
+        
+    </form>
+{% endblock %}

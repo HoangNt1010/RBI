@@ -1,0 +1,219 @@
+{% extends 'BaseUI/BaseFacility/baseRiskSummary.html' %}
+
+{% load staticfiles %}
+{% block library %}
+<script src="{% static 'js/notify.min.js' %}"></script>
+{% endblock %}
+
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactor' proposalID %}{% endblock %}
+{% block fcof%}{% url 'fullyConsequence' proposalID %}{% endblock %}
+{% block acof%}{% url 'areaBasedCoF' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrix' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChart' proposalID %}{% endblock %}
+{% block chartv2 %}{% url 'riskChartv2' proposalID %}{% endblock %}
+{% block corrcontrol %}{% url 'corrosionCotrol' proposalID %}{% endblock %}
+{% block corri %}{% url 'corrision' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'proposalDisplay' assess.componentid_id %}{% endblock %}
+<!---------------END BLOCK--------------->
+
+{% block data-content %}
+<style>
+.alert {
+  padding: 10px;
+  background-color: #ff9800;
+  color: white;
+  opacity: 1;
+  transition: opacity 0.0s;
+  margin-bottom: 15px;
+  font-size: 17px
+}
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 25px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.0s;
+}
+.alert.success {background-color: #4CAF50;}
+.closebtn:hover {
+  color: black;
+}
+</style>
+<form method="post" id="fullDF">
+    {% csrf_token %}
+    <div class="title-verifitcation">
+        <h1>Initial Factor</h1>    
+      </div>
+    {% if obj.notify %}
+        <div class="alert success" style="text-align:center;">
+            <span class="closebtn">&times;</span>
+            <strong>Notification: {{obj.notify}}</strong>
+        </div>
+        <script>
+        var close = document.getElementsByClassName("closebtn");
+        var i;
+
+        for (i = 0; i < close.length; i++) {
+            close[i].onclick = function(){
+                var div = this.parentElement;
+                div.style.opacity = "0";
+                setTimeout(function(){ div.style.display = "none"; }, 600);
+            }
+        }
+        </script>
+        {% endif %}
+    <div class="input-data content-full-df">
+            <!-----------BLOCK DATA GENERAL FACTOR---------->
+            <hr class="hr-verification"/>            
+            <div class="px-100">
+                <div class="row">
+                    <div class="col-md-6 color-white">Thinning Type:</div>
+                    <div class="col-md-6"><select class="form-control" id="thinningType" name="thinningType">
+                        <option>Local</option>
+                        <option>General</option>
+                    </select></div>
+                    <script>
+                        $("#thinningType").val("{{ obj.thinningType }}");
+                    </script>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 color-white">Total Generic Frequence:</div>
+                    <div class="col-md-6 text-value">{{ obj.gfftotal }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 color-white">Factor of Management System:</div>
+                    <div class="col-md-6 text-value">{{ obj.fms }}</div>
+                </div>
+            </div>
+            <!----------------END BLOCK----------------->
+
+            <!-------------- BLOCK DETAIL DAMAGE FACTOR ------------>
+           <div class="px-100">
+            <div class="row">
+                <div class="col-md-6 color-white">Assessment Periods</div>
+                <div class="col-md-2 text-value">0 months</div>
+                <div class="col-md-2 text-value">36 months</div>
+                <div class="col-md-2 text-value">72 months</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 color-white">Governing Thinning Damage Factor <div style="display: inline-block"><button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="submit" name="_btnThinning" class="btn btn-primary"><i class="fa fa-question-circle" style="color: blue" ></i></button> </div></div>
+                <div class="col-md-2 text-value">{{ obj.thinningap1 }}</div>
+                <div class="col-md-2 text-value">{{ obj.thinningap2 }}</div>
+                <div class="col-md-2 text-value">{{ obj.thinningap3 }}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 color-white">Governing Stress Corrosion Cracking Damage Factor <div style="display: inline-block"><button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="submit" name="_btnGoverningStress" class="btn btn-primary"><i class="fa fa-question-circle" style="color: blue" ></i></button> </div></div>
+                <div class="col-md-2 text-value">{{ obj.sccap1 }}</div>
+                <div class="col-md-2 text-value">{{ obj.sccap2 }}</div>
+                <div class="col-md-2 text-value">{{ obj.sccap3 }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 color-white">Governing External Damage Factor <div style="display: inline-block"><button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="submit" name="_btnGoverningExternal" class="btn btn-primary"><i class="fa fa-question-circle" style="color: blue" ></i></button> </div></div>
+                <div class="col-md-2 text-value">{{ obj.externalap1 }}</div>
+                <div class="col-md-2 text-value">{{ obj.externalap2 }}</div>
+                <div class="col-md-2 text-value">{{ obj.externalap3 }}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 color-white">High Temperature Hydrogen Attack Damage Factor <div style="display: inline-block"><button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="submit" name="_btnHTHA" class="btn btn-primary"><i class="fa fa-question-circle" style="color: blue" ></i></button> </div></div>
+                <div class="col-md-2 text-value">{{ obj.htha_ap1 }}</div>
+                <div class="col-md-2 text-value">{{ obj.htha_ap2 }}</div>
+                <div class="col-md-2 text-value">{{ obj.htha_ap3 }}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 color-white">Governing Brittle Fracture Damage Factor <div style="display: inline-block"><button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="submit" name="_btnGoverningBrittle" class="btn btn-primary"><i class="fa fa-question-circle" style="color: blue" ></i></button> </div></div>
+                <div class="col-md-2 text-value">{{ obj.brittleap1 }}</div>
+                <div class="col-md-2 text-value">{{ obj.brittleap2 }}</div>
+                <div class="col-md-2 text-value">{{ obj.brittleap3 }}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 color-white">Piping Mechanical Fatigue Damage Factor</div>
+                <div class="col-md-2 text-value">{{ obj.fatigueap1 }}</div>
+                <div class="col-md-2 text-value">{{ obj.fatigueap2 }}</div>
+                <div class="col-md-2 text-value">{{ obj.fatigueap3 }}</div>
+            </div>
+
+            <!--<div class="row">-->
+                <!--<div class="col-md-6 color-white">Other Damage Factor <div style="display: inline-block"><button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="submit" name="_show7" class="btn btn-primary"><i class="fa fa-question-circle" style="color: blue" ></i></button> </div></div>-->
+                <!--<div class="col-md-2 text-value">0.0</div>-->
+                <!--<div class="col-md-2 text-value">0.0</div>-->
+                <!--<div class="col-md-2 text-value">0.0</div>-->
+            <!--</div>-->
+
+            <div class="row">
+                <div class="col-md-6 color-white">Total Damage Factor with General Thinning</div>
+                <div class="col-md-2 text-value">{{ obj.thinninggeneralap1 }}</div>
+                <div class="col-md-2 text-value">{{ obj.thinninggeneralap2 }}</div>
+                <div class="col-md-2 text-value">{{ obj.thinninggeneralap3 }}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 color-white">Total Damage Factor with Local Thinning</div>
+                <div class="col-md-2 text-value">{{ obj.thinninglocalap1 }}</div>
+                <div class="col-md-2 text-value">{{ obj.thinninglocalap2 }}</div>
+                <div class="col-md-2 text-value">{{ obj.thinninglocalap3 }}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 color-white">Final Total Damage Factor:</div>
+                <div class="col-md-2 text-value">{{ obj.totaldfap1 }}</div>
+                <div class="col-md-2 text-value">{{ obj.totaldfap2 }}</div>
+                <div class="col-md-2 text-value">{{ obj.totaldfap3 }}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 color-white">Probability of Failure:</div>
+                <div class="col-md-2 text-value">{{ obj.pofap1 }}</div>
+                <div class="col-md-2 text-value">{{ obj.pofap2 }}</div>
+                <div class="col-md-2 text-value">{{ obj.pofap3 }}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 color-white">Probability of Failure Category:</div>
+                <div class="col-md-2 text-value"><b>{{ obj.pofap1category }}</b></div>
+                <div class="col-md-2 text-value"><b>{{ obj.pofap2category }}</b></div>
+                <div class="col-md-2 text-value"><b>{{ obj.pofap3category }}</b></div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 color-white">Emmua 159 Probability of Failure Category:</div>
+                <div class="col-md-2 text-value"><b>{{ obj.emmuapofap1 }}</b></div>
+                <div class="col-md-2 text-value"><b>{{ obj.emmuapofap2 }}</b></div>
+                <div class="col-md-2 text-value"><b>{{ obj.emmuapofap3 }}</b></div>
+            </div>
+           </div>
+            <!----------------END BLOCK ------------------------->
+        <br>
+        <div class="px-100">
+            <div class="row">
+                <div class="col-md-12" style="text-align: right;"><button type="submit" class="btn btn-primary btn-custom-by-thc" id="changeThinning" onclick="btnChangeClick()">Save</button></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function btnChangeClick() {
+            document.getElementById("fullDF").submit();
+            ShowLoading();
+            $.notify("Save Success", "success");
+            return false;
+        }
+        function ShowLoading() {
+            var div = document.createElement('div');
+            var img = document.createElement('img');
+            img.src = '{% static 'image/loading/Pacman-1s-100px.gif' %}';
+            div.style.cssText = "position: fixed;left: 50%; top: 30%; width: 300px; text-align: center; background: rgba(54, 25, 25, .00004); border: 0px solid #000;";
+            div.appendChild(img);
+            document.body.appendChild(div);
+            $("#changeThinning").attr('disabled',true);
+            return true;
+        }
+    </script>
+</form>
+{% endblock %}

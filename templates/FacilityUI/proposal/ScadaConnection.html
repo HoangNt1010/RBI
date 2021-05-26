@@ -1,0 +1,145 @@
+{% extends 'BaseUI/BaseFacility/baseProposal.html' %}
+{% load staticfiles %}
+{% block library %}
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <meta http-equiv="refresh" content="{{ t }}" >
+{% endblock %}
+
+<!----------BLOCK MENU----------->
+{% block listProposal %}{% url 'proposalDisplay' componentID %}{% endblock %}
+{% block newsensor %}{% url 'newsensor' componentID %}{% endblock %}
+{% block scada %}{% url 'scada' componentID %}{% endblock %}
+{% block setting %}{% url 'setting' componentID %}{% endblock %}
+{% block backComp %}{% url 'componentDisplay' equipmentID %}{% endblock %}
+<!----------END BLOCK----------->
+{% block data-content %}
+<style>
+.alert {
+  padding: 10px;
+  background-color: #ff9800;
+  color: white;
+  opacity: 1;
+  transition: opacity 0.0s;
+  margin-bottom: 15px;
+  font-size: 17px
+}
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 25px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.0s;
+}
+.alert.success {background-color: #4CAF50;}
+.closebtn:hover {
+  color: black;
+}
+</style>
+    <form method="post" id="listProposal">
+    {% csrf_token %}
+    <div class="title-verifitcation" >
+        <h1>Scada Connection</h1>
+      </div>
+
+        <!--<div class="alert" style="text-align:center;">-->
+            <!--<span class="closebtn">&times;</span>-->
+            <!--<strong>Important ! </strong>You need to give permission for the google sheet file to the system by sharing the file with <a>'cuong-270@my-project-rbicuong.iam.gserviceaccount.com'</a> account.Then enter the name of the filename you just shared in the <a>File name</a>-->
+        <!--</div>-->
+        <!--<script>-->
+            <!--var close = document.getElementsByClassName("closebtn");-->
+            <!--var i;-->
+
+            <!--for (i = 0; i < close.length; i++) {-->
+              <!--close[i].onclick = function(){-->
+                <!--var div = this.parentElement;-->
+                <!--div.style.opacity = "0";-->
+                <!--setTimeout(function(){ div.style.display = "none"; }, 600);-->
+              <!--}-->
+            <!--}-->
+        <!--</script>-->
+        {% if  notify.suscess %}
+            <div class="alert success" style="text-align:center;">
+                <span class="closebtn">&times;</span>
+                <strong>Notify!</strong>{{notify.suscess}}
+            </div>
+            <script>
+            var close = document.getElementsByClassName("closebtn");
+            var i;
+
+            for (i = 0; i < close.length; i++) {
+                close[i].onclick = function(){
+                    var div = this.parentElement;
+                    div.style.opacity = "0";
+                    setTimeout(function(){ div.style.display = "none"; }, 600);
+                }
+            }
+            </script>
+        {% endif %}
+        {% if notify.error %}
+        <div class="alert" style="text-align:center;">
+            <span class="closebtn">&times;</span>
+            <strong>Warning ! </strong>{{ notify.error }}
+        </div>
+        <script>
+            var close = document.getElementsByClassName("closebtn");
+            var i;
+
+            for (i = 0; i < close.length; i++) {
+              close[i].onclick = function(){
+                var div = this.parentElement;
+                div.style.opacity = "0";
+                setTimeout(function(){ div.style.display = "none"; }, 600);
+              }
+            }
+        </script>
+        {% endif %}
+        {% if not notify.suscess %}
+        <div class="input-data">
+        <div class="row">
+            <div class="col-md-4 color-white">Facility Name:</div>
+            <div class="col-md-8"><input type="text" name="facilityName" class="form-control" value="{{ faci.facilityname }}" placeholder="Input equipment name here!" readonly></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 color-white">Equipment Name:</div>
+            <div class="col-md-8"><input type="text" class="form-control" name="equipmentNumber" placeholder="Input equipment number here!" value="{{ equip.equipmentname }}" readonly></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 color-white">Component Name:</div>
+            <div class="col-md-8"><input type="text" name="componentName" class="form-control" value="{{ comp.componentname }}" placeholder="Input equipment name here!" readonly></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 color-white">Link:<span style="color: red">*</span></div>
+            <div class="col-md-8"><input type="text" name="ScadaName" class="form-control" value="https://docs.google.com/spreadsheets/d/14Nf6l0lX5GV9WaXPZkTWW-6WdrL4JAS6TDK5JoPZ-Rg/edit?usp=sharing" placeholder="Input equipment name here!" readonly></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 color-white">File Name:<span style="color: red">*</span></div>
+            <div class="col-md-8"><input type="text" name="filename" class="form-control" value="SCADA" placeholder="Input file name here!" readonly></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 color-white">Description:</div>
+            <div class="col-md-8">
+                <textarea type="text"  class="form-control"  name="description" placeholder="Write file name description here!"></textarea>
+            </div>
+        </div>
+
+        <div class="row"></div>
+        <div class="row">
+            <div class="col-md-12" style="text-align: right"><button name="_create" type="submit" class="btn btn-primary">Submit</button></div>
+        </div>
+        {% else %}
+            <div class="row" style="text-align:center;">
+                <div class="col-md-12" style="text-align: center;"><button name="_load" type="submit" class="btn btn-primary">Load data</button></div>
+            </div>
+        {% endif %}
+    </div>
+    </form>
+
+{% endblock %}

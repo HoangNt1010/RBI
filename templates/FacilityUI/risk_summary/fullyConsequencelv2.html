@@ -1,0 +1,511 @@
+{% extends 'BaseUI/BaseFacility/baseBusiness.html' %}
+
+{% load staticfiles %}
+
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactor' proposalID %}{% endblock %}
+{% block fcof%}{% url 'fullyConsequence' proposalID %}{% endblock %}
+{% block acof%}{% url 'areaBasedCoF' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrix' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChart' proposalID %}{% endblock %}
+{% block chartv2 %}{% url 'riskChartv2' proposalID %}{% endblock %}
+{% block corrcontrol %}{% url 'corrosionCotrol' proposalID %}{% endblock %}
+{% block corri %}{% url 'corrision' proposalID %}{% endblock %}
+{#{% block backProposal %}{% url 'proposalDisplay' ass.componentid_id %}{% endblock %}#}
+<!---------------END BLOCK--------------->
+{% block title %}Risk Summary{% endblock %}
+
+{% block vertical %}
+    {#<a class="vertical">Risk<br>Summary</a>#}
+    <!-- <a class="active">Risk<br>Summary</a> -->
+{#    <a href="{% block pof %}{% endblock %}" class="{% if page == 'damageFactor' %}activeLink{% endif %}"><i class="fa fa-bomb">&emsp;Probability of<br>&emsp;&emsp; Failure</i></a>#}
+{#    <a href="{% block fcof%}{% endblock %}" class="{% if page == 'fullyConse' %}activeLink{% endif %}"><i class="fa fa-money">&emsp;Financial CoF</i></a>#}
+{#    {% if isTank == 0 and isShell == 0 %}<a href="{% block acof%}{% endblock %}" class="{% if page == 'areaBasedCoF' %}activeLink{% endif %}"><i class="fa fa-money">&emsp;Area-based CoF</i></a>{% endif %}#}
+{#    <a href="{% block matrix %}{% endblock %}" class="{% if page == 'riskMatrix' %}activeLink{% endif %}"><i class="fa fa-th">&emsp;Risk Matrix</i></a>#}
+{#    <a href="{% block chart %}{% endblock %}" class="{% if page == 'riskChart' %}activeLink{% endif %}"><i class="fa fa-bar-chart-o">&emsp;Risk Chart</i></a>#}
+{#    {% if isTank or isShell %}<a href="{% block corri %}{% endblock %}" class="{% if page == 'corrsionRate' %}activeLink{% endif %}"><i class="fa fa-bomb">&emsp;Corrosion Rate</i></a>{% endif %}#}
+    <a href="{% block backProposal %}{% url 'fullyConsequence' proposalID %}{% endblock %}"><i class="fa fa-arrow-left">&emsp;Back to Financial CoF</i></a>
+{% endblock %}
+{% block data-content %}
+    <style>
+        .input-data-footer {
+            position: -webkit-sticky;
+            position: sticky;
+            bottom: 0; 
+        }
+    </style>
+    <!--suppress ALL -->
+    <form method="post">
+    {% csrf_token %}
+    <div class="title-verifitcation">
+        <h1>FINANCIAL COF LEVEL 2</h1>
+    </div>
+        <div class="input-data content-full-df">
+
+                <!-------- BLOCK CONSEQUENCE ------->
+            <h3 class="color-white">Input</h3>
+            <hr class="hr-verification"/>
+            <div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The Saturation Temperature</div>
+                    <div class="col-md-2"><input min=0 max=100000 step="0.01" type="number" class="form-control" value="{{ data.Psat }}" name="Psat" placeholder="Psat" required/></div>
+                    <div class="col-md-4 color-white">Mass Fraction Liquid</div>
+                    <div class="col-md-2"><input min=0 max=100000 step="0.01" type="number" class="form-control" value="{{ data.Frac_l }}" name="Frac_l" placeholder="Frac_l" required/></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">Mass Fraction Vapor</div>
+                    <div class="col-md-2"><input min=0 max=100000 step="0.01" type="number" class="form-control" value="{{ data.Frac_v }}" name="Frac_v" placeholder="Frac_v" required/></div>
+                    <div class="col-md-4 color-white">Lower Flammability Limit</div>
+                    <div class="col-md-2"><input min=0 max=100000 step="0.01" type="number" class="form-control" value="{{ data.Lower_flammable }}" name="Lower_flammable" placeholder="Lower_flammable" required/></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">Upper Flammable Limit</div>
+                    <div class="col-md-2"><input min=0 max=100000 step="0.01" type="number" class="form-control" value="{{ data.Upper_flammable }}" name="Upper_flammable" placeholder="Upper_flammable" required/></div>
+                    <div class="col-md-4 color-white">The Heat of Combustion of the stored fluid or mixture</div>
+                    <div class="col-md-2"><input min=0 max=100000 step="0.01" type="number" class="form-control" value="{{ data.HCs }}" name="HCs" placeholder="HCs" required/></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white"> Heat of Combustion of Liquid</div>
+                    <div class="col-md-2"><input min=0 max=100000 step="0.01" type="number" class="form-control" value="{{ data.HCl }}" name="HCl" placeholder="HCl" required/></div>
+                    <div class="col-md-4 color-white"> Heat of Combustion of Vapor</div>
+                    <div class="col-md-2"><input min=0 max=100000 step="0.01" type="number" class="form-control" value="{{ data.HCv }}" name="HCv" placeholder="HCv" required/></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white"> Bubble Pont Temperature of Liquid</div>
+                    <div class="col-md-2"><input min=0 max=100000 step="0.01"type="number" class="form-control" value="{{ data.Tb }}" name="Tb" placeholder="Tb" required/></div>
+                    <div class="col-md-4 color-white"> Dew Point Temperature of Vapors</div>
+                    <div class="col-md-2"><input min=0 max=100000 step="0.01" type="number" class="form-control" value="{{ data.Td }}" name="Td" placeholder="Td" required/></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white"> Latent Heat of Vaporization of Liquid</div>
+                    <div class="col-md-2"><input min=0 max=100000 step="0.01" type="number" class="form-control" value="{{ data.deltaHv }}" name="deltaHv" placeholder="deltaHv" required/></div>
+                    <div class="col-md-4 color-white">The Surface Roughness Factor:</div>
+                    <div class="col-md-2"><select class="form-control" name="Xsurf" id="Xsurf" required>
+                            <option value="" selected disabled >Please Select Surface Roughness Factor...</option>
+                            <option>Concrete</option>
+                            <option>Moist/8% water/sandy</option>
+                            <option>Average</option>
+                            <option>Sandy/dry</option>
+                    </select></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4  color-white">The Flash Temperature of the released fluid</div>
+                    <div class="col-md-2"><input min=0 step="0.01" max=100000 type="number" class="form-control" value="{{ data.temp_flash }}" name="Tf" placeholder="Tf" required/></div>
+                    <div class="col-md-4 color-white"> The Equipment Stored Vapor Volume, m<sup>3</sup> (ft3) </div>
+                    <div class="col-md-2"><input min=0 step="0.01" max=100000 type="number" class="form-control" value="{{ data.Vs }}" name="Vs" placeholder="Vs" required/></div>
+                </div>
+                <div class="row">
+                    
+                    <script>
+                            {% if data.Xsurf %}
+                                $("#Xsurf").val("{{ data.Xsurf }}");
+                            {% else %}
+                                $("#Xsurf").prop("selectedIndex", 0);
+                            {% endif %}
+                        </script>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">  The Flash Point of the released fluid, K</div>
+                    <div class="col-md-2"><input min=0 step="0.01" max=100000 type="number" class="form-control" value="{{ data.Tfp }}" name="Tfp" placeholder="Tfp" required/></div>
+                    <div class="col-md-4 color-white"> The Atmospheric Temperature, K</div>
+                    <div class="col-md-2"><input min=0 step="0.01" max=100000 type="number" class="form-control" value="{{ data.Tatm }}" name="Tatm" placeholder="Tatm" required/></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white"> The Atmospheric Air Density, kg/m<sup>3</sup></div>
+                    <div class="col-md-2"><input min=0 step="0.0001" max=100000 type="number" class="form-control" value="{{ data.patm }}" name="patm" placeholder="patm" required/></div>
+                    <div class="col-md-4 color-white"> The Atmospheric Relative Humidity</div>
+                    <div class="col-md-2"><input min=0 step="0.01" max=100000 type="number" class="form-control" value="{{ data.RH }}" name="RH" placeholder="RH" required/></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white"> The Explosion Yield Factor, unitless</div>
+                    <div class="col-md-2"><input min=0 step="0.01" max=100000 type="number" class="form-control" value="{{ data.n }}" name="n" placeholder="n" required/></div>
+                    <div class="col-md-4 color-white">The ground temperature, K</div>
+                    <div class="col-md-2"><input min=0 step="0.01" max=100000 type="number" class="form-control" value="{{ data.Tg }}" name="Tg" placeholder="Tg" required/></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white"> The Flammable Mass Fraction of the released fluid mixture</div>
+                    <div class="col-md-2"><input min=0 step="0.01" max=100000 type="number" class="form-control" value="{{ data.mfrac_flam }}" name="mfrac_flam" placeholder="mfrac_flam" required/></div>
+                    <div class="col-md-4 color-white">The Toxic Mole Fraction of the Released Fluid Mixture</div>
+                    <div class="col-md-2"><input min=0 step="0.01" max=100000 type="number" class="form-control" value="{{data.mol_frac_tox}}" name="mol_frac_tox" placeholder="mol_frac_tox" required/></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white"> The wind speed measured at 6 feet off of grade, m/s (ft/s) </div>
+                    <div class="col-md-2"><input min=0 step="0.01" max=100000 type="number" class="form-control" value="{{ data.Uw }}" name="Uw" placeholder="Uw" required/></div>
+                    <div class="col-md-4 color-white"> The Atmospheric Water Partial Pressure, kPa (psia)</div>
+                    <div class="col-md-2"><input min=0 step="0.01" max=100000 type="number" class="form-control" value="{{ data.Tw }}" name="Tw" placeholder="Tw" required/></div>
+                </div>
+           
+                <div class="row">
+                    <div class="col-md-4 color-white">The Component or Equipment Burst Pressure, kPa (psia) </div>
+                    <div class="col-md-2"><input min=0 step="0.01" max=100000 type="number" class="form-control" value="{{ data.PB }}" name="PB" placeholder="PB" required/></div>
+                    <div class="col-md-4 color-white"> The Safe Distance from the Flame Surface of A Fireball, m (ft)</div>
+                    <div class="col-md-2"><input min=0 max=100000 step="0.01" type="number" class="form-control" value="{{ data.Xs_fball }}" name="Xs_fball" placeholder="Xs_fball" required/></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The Moles that Flash from Liquid to Vapor upon Release to Atmosphere, kg-mol (lb-mol) </div>
+                    <div class="col-md-2"><input min=0 max=100000 step="0.01" type="number" class="form-control" value="{{data.nv}}" name="nv" placeholder="nv" required/></div>
+                    <div class="col-md-4 color-white"> The mass fraction of the stored fluid that flashes to vapor upon release to the atmosphere</div>
+                    <div class="col-md-2"><input min=0 max=100000 step="0.01" type="number" class="form-control" min="0.01" max="0.99" step="0.01" value="{{ data.frac_flash }}" name="frac_flash" placeholder="frac_flash" required/></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-9 color-white">The Bubble-point pressure of the released fluid at the ground temperature, kPa (psia) </div>
+                    <div class="col-md-3"><input min=0 max=100000 step="0.01" type="number" class="form-control" value="{{ data.Pb_g }}" name="Pb_g" placeholder="Pb_g" required/></div>
+                    <div class="col-md-9 color-white"> The Toxic Exposure Limit for a Toxic Component in the Released Stream (e.g. IDLH, AEGL-3,
+ERPG), usually expressed in ppm.</div>
+                    <div class="col-md-3"><input min=0 max=100000 step="0.01" type="number" class="form-control" value="{{ data.tox_lim }}" name="tox_lim" placeholder="tox_lim" required/></div>
+                </div>
+
+
+                <div class="row input-data-footer">
+                    <div class="col-md-12 " style="text-align: right"><button name="_save" class="btn btn-primary" type="submit"><i class="fa fa-pencil">Calculate</i></button></div>
+                </div>
+            </div>
+            <h3 class="color-white">Fully-Quantitative Financial Consequence of Failure and Category</h3>
+            <hr class="hr-verification"/>
+            <div class="px-100">
+                <div class="row">
+                    <div class="col-md-8 color-white">Financial Consequence of Falure, $</div>
+                    <div class="col-md-4 color-white text-value">{{ data.ca }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8 color-white">Consequence of Failure Category</div>
+                    <div class="col-md-4 color-white text-value"><b>E</b></div>
+                </div>
+            </div>
+            <!--------BLOCK INTERMEDIATE VALUES------>
+            <h3 class="color-white">Flammable Consequence Area</h3>
+            <hr class="hr-verification"/>
+            <div class="px-100">
+                <div class="row">
+                    <div class="col-md-8 color-white">Aerosol and Rainout Modeling</div>
+                    <div class="col-md-4 color-white text-value">0</div>
+                </div>
+                <div class="row" style="padding: 10px 0;">
+                    <div class="col-md-4 color-white"><b></b></div>
+                    <div class="col-md-2 text-value"><b>Small</b></div>
+                    <div class="col-md-2 text-value"><b>Medium</b></div>
+                    <div class="col-md-2 text-value"><b>Large</b></div>
+                    <div class="col-md-2 text-value"><b>Rupture</b></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">Releases Hole Size</div>
+                    <div class="col-md-2 text-value">{{ data.a_n_1 }}</div>  <!-- ô chứa giá trị hiển thị -->
+                    <div class="col-md-2 text-value">{{ data.a_n_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.a_n_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.a_n_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">Release Rate</div>
+                    <div class="col-md-2 text-value">{{ data.W_n_1 }}</div>  <!-- ô chứa giá trị hiển thị -->
+                    <div class="col-md-2 text-value">{{ data.W_n_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.W_n_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.W_n_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">Release Type</div>
+                    <div class="col-md-2 text-value">{{ data.ReleaseType_1 }}</div>  <!-- ô chứa giá trị hiển thị -->
+                    <div class="col-md-2 text-value">{{ data.ReleaseType_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ReleaseType_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ReleaseType_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">Jet Release Rate</div>
+                    <div class="col-md-2 text-value">{{ data.jet_rate_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.jet_rate_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.jet_rate_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.jet_rate_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">Pool Release Rate</div>
+                    <div class="col-md-2 text-value">{{ data.pool_rate_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.pool_rate_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.pool_rate_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.pool_rate_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The vapor rate generated off of the surface of a boiling pool</div>
+                    <div class="col-md-2 text-value">{{ data.erate_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.erate_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.erate_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.erate_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">Release rate of flammable material</div>
+                    <div class="col-md-2 text-value">{{ data.rate_flam_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.rate_flam_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.rate_flam_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.rate_flam_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The probability of ignition at amibient temperature associated</div>
+                    <div class="col-md-2 text-value">{{ data.poi_amb_liquid_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.poi_amb_liquid_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.poi_amb_liquid_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.poi_amb_liquid_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The probability of ignition </div>
+                    <div class="col-md-2 text-value">{{ data.poi_two_phase_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.poi_two_phase_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.poi_two_phase_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.poi_two_phase_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The probability of imediate ignition given ignition </div>
+                    <div class="col-md-2 text-value">{{ data.poii_two_phase_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.poii_two_phase_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.poii_two_phase_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.poii_two_phase_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The probability of VCE given a delayed ignition </div>
+                    <div class="col-md-2 text-value">{{ data.pvcedi_two_phase_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.pvcedi_two_phase_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.pvcedi_two_phase_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.pvcedi_two_phase_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The probability of flash given a delayed ignition </div>
+                    <div class="col-md-2 text-value">{{ data.pffdi_two_phase_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.pffdi_two_phase_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.pffdi_two_phase_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.pffdi_two_phase_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The probability of safe release of a leaking </div>
+                    <div class="col-md-2 text-value">{{ data.psafe_two_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.psafe_two_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.psafe_two_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.psafe_two_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The maximum size of the pool </div>
+                    <div class="col-md-2 text-value">{{ data.amaxpf_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.amaxpf_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.amaxpf_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.amaxpf_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The pool fire area </div>
+                    <div class="col-md-2 text-value">{{ data.apf_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.apf_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.apf_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.apf_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The flame length of a pool fire </div>
+                    <div class="col-md-2 text-value">{{ data.lpf_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.lpf_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.lpf_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.lpf_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The amount of energy radiated by the pool fire </div>
+                    <div class="col-md-2 text-value">{{ data.qrad_pool_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.qrad_pool_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.qrad_pool_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.qrad_pool_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The received thermal flux by the pool fire </div>
+                    <div class="col-md-2 text-value">{{ data.ith_pool_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ith_pool_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ith_pool_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ith_pool_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The radiation view factor by the pool fire </div>
+                    <div class="col-md-2 text-value">{{ data.fcyl_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.fcyl_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.fcyl_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.fcyl_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">Component damage consequence area by pool fire </div>
+                    <div class="col-md-2 text-value">{{ data.ca_pool_cmd_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_pool_cmd_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_pool_cmd_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_pool_cmd_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">Personnel injury consequence area by pool fire </div>
+                    <div class="col-md-2 text-value">{{ data.ca_pool_inj_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_pool_inj_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_pool_inj_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_pool_inj_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The amount of energy radiated by the jet </div>
+                    <div class="col-md-2 text-value">{{ data.qrad_jet_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.qrad_jet_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.qrad_jet_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.qrad_jet_1 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The received thermal flux by the jet </div>
+                    <div class="col-md-2 text-value">{{ data.ith_jet_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ith_jet_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ith_jet_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ith_jet_1 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">Component damage consequence area by the jet</div>
+                    <div class="col-md-2 text-value">{{ data.ca_jet_cmd_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_jet_cmd_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_jet_cmd_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_jet_cmd_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">Personnel injury consequence area by the jet</div>
+                    <div class="col-md-2 text-value">{{ data.ca_jet_inj_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_jet_inj_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_jet_inj_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_jet_inj_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The Fire ball component damage consequence area   </div>
+                    <div class="col-md-2 text-value">{{ data.ca_fball_cmd }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_fball_cmd }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_fball_cmd }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_fball_cmd }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The Fire ball personnel injury consequence area  </div>
+                    <div class="col-md-2 text-value">{{ data.ca_fball_inj }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_fball_inj }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_fball_inj }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_fball_inj }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The Hopkinson-scaled data </div>
+                    <div class="col-md-2 text-value">{{ data.pso_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.pso_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.pso_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.pso_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The Hopkinson-scaled distance </div>
+                    <div class="col-md-2 text-value">{{ data.r_hs_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.r_hs_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.r_hs_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.r_hs_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The VCE component damage consequence area  </div>
+                    <div class="col-md-2 text-value">{{ data.ca_vce_cmd_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_vce_cmd_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_vce_cmd_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_vce_cmd_1 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The VCE personnel injury consequence area   </div>
+                    <div class="col-md-2 text-value">{{ data.ca_vce_inj_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_vce_inj_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_vce_inj_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_vce_inj_1 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The flammbale component damage consequence area  </div>
+                    <div class="col-md-2 text-value">{{ data.ca_flam_cmd_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_flam_cmd_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_flam_cmd_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_flam_cmd_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The flammable personnel injury consequence area   </div>
+                    <div class="col-md-2 text-value">{{ data.ca_flam_inj_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_flam_inj_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_flam_inj_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_flam_inj_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 color-white"><b>The final flammbale component damage consequence area</b></div>
+                    <div class="col-md-6 text-value"><b>{{ data.ca_flam_cmd }}</b></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 color-white"><b>The final flammable personnel injury consequence area</b></div>
+                    <div class="col-md-6 text-value"><b>{{ data.ca_flam_inj }}</b></div>
+                </div>
+
+            </div>
+            <h3 class="color-white">Toxic Consequence Area</h3>
+            <hr class="hr-verification"/>
+            <div class="px-100">
+                <div class="row">
+                    <div class="col-md-4 color-white">Maximum leak duration</div>
+                    <div class="col-md-2 text-value">{{ data.ld_tox_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ld_tox_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ld_tox_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ld_tox_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The personnel injury toxic consequence area </div>
+                    <div class="col-md-2 text-value">{{ data.ca_tox_inj_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_tox_inj_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_tox_inj_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_tox_inj_1 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 color-white"><b>The final toxic personnel injury consequence area</b></div>
+                    <div class="col-md-6 text-value"><b>{{ data.ca_tox_inj }}</b></div>
+                </div>
+            </div>
+            <h3 class="color-white">Non Flammable, Non Toxic Consequence Area</h3>
+            <hr class="hr-verification"/>
+            <div class="px-100">
+                <div class="row">
+                    <div class="col-md-4 color-white">The component damage consequence area for physical explosion safe distance </div>
+                    <div class="col-md-2 text-value">{{ data.ca_pexp_cmd_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_pexp_cmd_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_pexp_cmd_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_pexp_cmd_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The flammable personnel injury consequence area for physical explosion safe distance  </div>
+                    <div class="col-md-2 text-value">{{ data.ca_pexp_inj_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_pexp_inj_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_pexp_inj_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_pexp_inj_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The component damage consequence area for a BLEVE associated </div>
+                    <div class="col-md-2 text-value">{{ data.ca_bleve_cmd_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_bleve_cmd_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_bleve_cmd_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_bleve_cmd_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The flammable personnel injury consequence area for a BLEVE asscociated  </div>
+                    <div class="col-md-2 text-value">{{ data.ca_bleve_inj_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_bleve_inj_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_bleve_inj_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_bleve_inj_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The component damage consequence area  </div>
+                    <div class="col-md-2 text-value">{{ data.ca_nfnt_cmd_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_nfnt_cmd_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_nfnt_cmd_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_nfnt_cmd_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">The flammable personnel injury consequence area</div>
+                    <div class="col-md-2 text-value">{{ data.ca_nfnt_inj_1 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_nfnt_inj_2 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_nfnt_inj_3 }}</div>
+                    <div class="col-md-2 text-value">{{ data.ca_nfnt_inj_4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 color-white"><b>The final non-flammable and non-toxic component damage consequence area</b></div>
+                    <div class="col-md-6 text-value"><b>{{ data.ca_nfnt_cmd }}</b></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 color-white"><b>The final non-flammbale and non-toxic personnel injury consequence area</b></div>
+                    <div class="col-md-6 text-value"><b>{{ data.ca_nfnt_inj }}</b></div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+

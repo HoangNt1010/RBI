@@ -1,0 +1,14 @@
+/*       404 banner        */
+.img-div {
+    display: block;
+    top: 76px;
+    bottom: 46px;
+}
+.img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 120px;
+    width: 40%;
+    height: 30%;
+}

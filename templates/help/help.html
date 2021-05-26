@@ -1,0 +1,37 @@
+{% extends 'BaseUI/BaseHelp/BaseHelp.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block library %}
+
+
+{% endblock %}
+
+{% block content-a %}
+<div class="container bg-help">
+    <!-- <div class="img">
+        <img src= "{% static '/image/logo/help-and-support.png' %}" style="padding-top: 70px;padding-left: 20px;float: right;padding-right: 100px;">
+    </div> -->
+    <div class="content-qt">
+            <h2><span style="color: #4575B7; margin-left: 60px;padding-top: 70px;"><i><b>Questions</b></i></span></h2><br>
+            <a href="{% url 'helpUseSoftware' %}"><button type="button"  class="btn btn-primary" style="border-radius:15px;margin-bottom: 5px;margin-left: 25px; "><b>How can I use the software?</b></button></a><br>
+            <button type="button" class="btn btn-primary" style="border-radius:15px;margin-bottom: 5px;margin-left: 25px; "><b>How do I change or reset my password?</b></button><br>
+            <button type="button" class="btn btn-primary" style="border-radius:15px;margin-bottom: 5px;margin-left: 25px; "><b>Where can I see my information?</b></button><br>
+    </div>
+</div>
+
+<script>
+    // Add active class to the current button (highlight it)
+    var header = document.getElementById("myDIV");
+    var btns = header.getElementsByClassName("btn");
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].addEventListener("click", function() {
+        var current = document.getElementsByClassName("active");
+        current[0].className = current[0].className.replace(" active", "");
+        this.className += " active";
+      });
+    }
+</script>
+{% endblock %}
+
+

@@ -1,0 +1,152 @@
+{% extends 'BaseUI/BaseWeb/basedat.html' %}
+{% load staticfiles %}
+{% load static %}
+<style>
+
+.buttondat {
+  margin:auto;
+  position: absolute;
+  top: 50%;
+    background-color: blue ;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+</style>
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+            <div class="container" style=" margin-top: 70px">
+                <div style="text-align: center">
+            <caption><b style="font-size: 25px; color: #444444;">Danh mục nhà máy</b></caption>
+
+            <br><br>
+                <div>
+                    <input type="text" id="myInput" onkeyup="search()" style="align: left" placeholder="Tìm kiếm..." title="Type in a name">
+                </div>
+            <table class="table" id="mytable" >
+                <thead >
+                    <tr>
+                        <th width="10px" style="text-align: left"><input type="checkbox" id="chkHeader"></th>
+                        <th width="10px" style="text-align: left"><i class="fa fa-tag"></i>&ensp;Created time</th>
+                        <th width="10px" style="text-align: left"><i class="fa fa-tag"></i>&ensp;Name Company</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <ul id="myUL">
+                    {% for a in obj %}
+                    <tr >
+                        <td align="left"><input type="checkbox" name="{{ a.ID }}"></td>
+                        <td align="left"><a href="{% url 'reportfacilities' a.ID %}">{{ a.CreatedTime }}</a></td>
+                        <td align="left"><a href="{% url 'reportfacilities' a.ID %}">{{ a.SiteName }}</a></td>
+                    </tr>
+                    {% endfor %}
+                </ul>
+                </tbody>
+            </table>
+
+{# Pagination div #}
+            <div>
+                {% if obj.has_other_pages %}
+              <ul class="pagination">
+                {% if obj.has_previous %}
+                  <li><a href="?page={{ obj.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&laquo;</span></li>
+                {% endif %}
+                {% for i in obj.paginator.page_range %}
+                  {% if obj.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                  {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if obj.has_next %}
+                  <li><a href="?page={{ obj.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+              </ul>
+            {% endif %}
+            </div>
+            </div>
+            </div>
+</div>
+
+{#        Tool div #}
+            <br>
+            <div style="text-align: center">
+                <a id="#search" class="btn btn-primary" data-toggle="modal" data-target="#searchPlan"><i class="fa fa-search" aria-hidden="true">Search Within Inspection plan</i></a>
+{#                <button name="_viewdetail" class="btn btn-primary" data-toggle="modal" type="submit"><i class="fa fa-view" aria-hidden="true">Chi tiết</i></button>#}
+                <a id="#view" name="_viewdetail" class="btn btn-primary" data-toggle="modal" data-target="#viewdetail"><i class="fa fa-view" aria-hidden="true">Chi tiết</i></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="viewdetail" style="margin-top: 10%">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content" style="width: 80%; margin: auto">
+
+        <!-- Modal Header -->
+        <div class="modal-header" style="background-color: #305680;">
+          <span aria-hidden="true" style="font-size: 24px;font-weight: bold;color: #ffffff;font-family: Calibri;font-weight: bold;">Facility Properties</span>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body" style="width: 90%;margin: auto">
+            <table id="view">
+                {% for a in obj %}
+                <tr>
+                    <th style="font-size: 20px">Facility Information</th>
+                </tr>
+            <tr>
+                <tr>
+                    <th>Tên: </th>
+                    <th>{{ a.SiteName }}</th>
+                </tr>
+                <tr>
+                    <th>Site: </th>
+                </tr>
+                <tr>
+                    <th>Hệ số con người: </th>
+                </tr>
+            </tr>
+                <tr>
+                    <th style="font-size: 20px; ">Fully-Quantitave PoF and FCoF</th>
+                </tr>
+                <tr>
+                    <th>Area(m2/year): </th>
+                </tr>
+                <tr>
+                    <th>Financial: </th>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer" style="margin: auto; width: 90%">
+                <button type="button" class="btn btn-success"  style="background-color: #4575B7; border: 1px solid #204d74" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    <script>
+function search() {
+    var input, filter, ul, li, a, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("pagination");
+    li = ul.getElementsByTagName("li");
+    for (i = 0; i < li.length; i++) {
+        a = li[i].getElementsByTagName("a")[0];
+        txtValue = a.textContent || a.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}
+</script>
+    </form>
+{% endblock %}

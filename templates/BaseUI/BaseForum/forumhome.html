@@ -1,0 +1,681 @@
+{% load staticfiles %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    {# title block #}
+    <title>Forum</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="{% static '/image/logo/iconlink.png' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/forum.css' %}">
+
+{#    <link rel="stylesheet" href="{% static 'css/forum.css' %}">#}
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
+    <!--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
+    <!--<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    {# library block #}
+    {% block library %}{% endblock %}
+    <script type="text/javascript">
+{#        $(document).ready(function(){#}
+{#            $('[data-toggle="tooltip"]').tooltip('enabled');#}
+{#        });#}
+        $('[data-toggle="tooltip"]').tooltip();
+    </script>
+
+</head>
+
+<body style="background-color: #EBEBEB">
+<style>
+    .sidebar ul{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .sidebar ul li{
+        line-height: 15px;
+    }
+    .sidebar ul ul{
+        position: static;
+        display: none;
+    }
+    .sidebar ul ul li{
+        line-height: 30px;
+        border-bottom: none;
+    }
+    .sidebar ul ul li button{
+        font-size: 13px;
+        color: white;
+        padding-left: 20%;
+        text-decoration: none;
+    }
+    button{
+        background-color: #305680;
+        text-emphasis-color: white;
+        width: 100%;
+    }
+    .active, button:hover {
+  background-color: #666;
+  color: white;
+}
+
+</style>
+<form method="post">
+    {% csrf_token %}
+<script>
+    // Add active class to the current button (highlight it)
+    var header = document.getElementById("myDIV");
+    var btns = header.getElementsByClassName("btn");
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].addEventListener("click", function() {
+      var current = document.getElementsByClassName("active");
+      current[0].className = current[0].className.replace(" active", "");
+      this.className += " active";
+      });
+    }
+</script>
+{# header #}
+<div class="navbar navbar-fixed-top" style="padding: 0.5rem 0;">
+    <div class="header">
+         <a href="{% url 'home' %}" style="float: left;height: 60px;width: 240px;padding-top: 0px;padding-left:0px;background-color: #ffffff;" class="text-logo"><img src= "{% static '/image/logo/logo.png' %}" style="height: 36px;"></a>
+{#        <a href="{% url 'home' %}" style="float: left;height: 60px;width: 240px;padding-top: 0px"><img src= "{% static '/image/logo/forum.png' %}" style="height: 60px;padding-top: 2px;padding-left: 20px"></a>#}
+    <span style="margin: 8px 15px 0px 10px; font-size: 14px" class="custom-span" id="datetime"></span>
+    <script>
+        var dt = new Date();
+        document.getElementById("datetime").innerHTML = dt.toLocaleString();
+        setInterval(() => {
+            dt = new Date();
+            document.getElementById("datetime").innerHTML = dt.toLocaleString();
+        }, 1000);
+    </script>
+        <a class="a-logout" href="{% url 'logout' %}" data-toggle="tooltip" data-placement="bottom" title="Sign Out"><i class="fa fa-sign-out"></i></a>
+        <span class="custom-span">
+            <img src="../../../static/image/logo/england.png" style="height: 15px; margin: 13px 10px 0 10px;">
+        </span>
+        <a class="a-normal" href="" data-toggle="modal" data-target="#notiModal"  data-placement="bottom" title="Notification" onclick="hidenoti()" style="position: relative"><i class="fa fa-bell">{% if countnoti %}<span id="countnoti" class="forum-notification">{{ countnoti }}</span>{% endif %}</i></a>
+        <a class="a-normal" href="" data-toggle="modal" data-target="#myModal" data-placement="bottom" title="Profile"><i class="fa fa-user"></i></a>
+        <a class="a-normal" href="{% url 'home' %}" data-toggle="tooltip" data-placement="bottom" title="Home"><i class="fa fa-home"></i></a>
+        <!-- {% if info.kind == "factory" %}<a class="a-normal" href="{% url 'help' %}" data-toggle="tooltip" data-placement="bottom" title="Help"><i class="fa fa-question"></i></a>{% endif %} -->
+        <!-- <a class="a-normal" href="{% url 'messagesInbox' %}" data-toggle="tooltip" data-placement="bottom" title="Messages"><i class="fa fa-wechat">{% if count %}<span class="badge red" style="color: red">{{ count }}</span>{% endif %}</i></a>
+        <a class="a-normal active" href="{% url 'forum' %}" data-toggle="tooltip" data-placement="bottom" title="Forum"><i class="fa fa-dedent"></i></a>
+        {% if info.kind == "manager" %}<a class="a-normal" href="{% url 'calculatefunctionmanager' 3 %}" data-toggle="tooltip" data-placement="bottom" title="Verification"><i class="fa fa-exclamation-triangle">{% if countveri %}<span class="badge red" style="color: red">{{ countveri }}</span>{% endif %}</i></a> {% endif %}
+        {% if info.kind == "factory" %}<a class="a-normal" href="{% url 'VerificationFaci' %}" data-toggle="tooltip" data-placement="bottom" title="Verification"><i class="fa fa-exclamation-triangle">{% if countveri %}<span class="badge red" style="color: red">{{ countveri }}</span>{% endif %}</i></a> {% endif %}
+        <a class="a-normal" href="" data-toggle="modal" data-target="#LanguageModal" data-placement="bottom"><i class="fa fa-language"></i></a>
+        <a class="a-normal" href="{% url 'home' %}" data-toggle="tooltip" data-placement="bottom" title="Home"><i class="fa fa-home"></i></a> -->
+    </div>
+</div>
+<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" integrity="sha256-46r060N2LrChLLb5zowXQ72/iKKNiw/lAmygmHExk/o=" crossorigin="anonymous" />-->
+<div>
+<div class="">
+    <div class="inner-wrapper" style="height: calc(100vh - 87px);">
+        <!-- Inner sidebar -->
+        <div class="inner-sidebar">
+            <!-- Inner sidebar header -->
+            <div class="">
+                <button class="btn btn-primary has-icon btn-block btn-create-discussion" type="button" data-toggle="modal" data-target="#threadModal">
+                    <i class="fa fa-plus"></i>
+                    NEW DISCUSSION</button>
+            </div>
+            <!-- /Inner sidebar header -->
+
+            <!-- Inner sidebar body -->
+            <div class="inner-sidebar-body p-0">
+                <div class="" data-simplebar="init">
+                    <div class="simplebar-wrapper">
+                        <div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div>
+                        <div class="simplebar-mask">
+                            <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+                                <div class="simplebar-content-wrapper">
+                                    <div  id="myDIV">
+                                        <nav class="sidebar" >
+                                            <ul>
+                                                {% if fill.all %}
+                                                    <li><button class="active" type="submit" name="all" href="javascript:void(0)"  >All Threads</button></li>
+                                                {% else %}
+                                                    <li><button type="submit" name="all" href="javascript:void(0)"  >All Threads</button></li> </li>
+                                                {% endif %}
+{#                                                <li><button  href="javascript:void(0)" class="nav-link nav-link-faded has-icon">Newest</button></li>#}
+                                                {% if fill.active %}
+                                                    <li><button class="active" type="submit" name="active" href="javascript:void(0)" >Active</button></li>
+                                                {% else %}
+                                                    <li><button  type="submit" name="active" href="javascript:void(0)" >Active</button></li>
+                                                {% endif %}
+                                                {% if fill.closed %}
+                                                    <li><button class="active" type="submit" name="closed" href="javascript:void(0)" >Closed</button></li>
+                                                {% else %}
+                                                    <li><button type="submit" name="closed" href="javascript:void(0)" >Closed</button></li>
+                                                {% endif %}
+                                                {% if fill.noreply %}
+                                                    <li><button class="active" type="submit" name="no_replies" href="javascript:void(0)" >No replies yet</button></li>
+                                                {% else %}
+                                                    <li><button  type="submit" name="no_replies" href="javascript:void(0)" >No replies yet</button></li>
+                                                {% endif %}
+                                            </ul>
+{#                                            <button href="javascript:void(0)" class="nav-link nav-link-faded has-icon">Solved</button>#}
+{#                                            <button href="javascript:void(0)" class="nav-link nav-link-faded has-icon">Unsolved</button>#}
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="simplebar-placeholder" style="width: 234px; height: 292px;"></div> -->
+                    </div>
+                    <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div>
+                    <div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 151px; display: block; transform: translate3d(0px, 0px, 0px);"></div></div>
+                </div>
+            </div>
+            <!-- /Inner sidebar body -->
+        </div>
+        <!-- /Inner sidebar -->
+
+        <!-- Inner main -->
+        <div class="inner-main">
+            <!-- Inner main header -->
+            <div class="inner-main-header">
+                <div class="search-table-group-custom">
+                    <input type="text" class="search-field" id="myInput" onkeyup="myFunction()" placeholder="Search ..." value="" name='searchComponent'>
+                    <button type="submit" name="_search" id="search" class="btn btn-primary" style="padding: 5px 10px; font-size: 15px; width: 50px;"><i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                </div>
+        </div>
+            <!-- /Inner main header -->
+
+            <!-- Inner main body -->
+
+            <!-- Forum List -->
+            <div class="inner-main-body p-2 p-sm-3 collapse forum-content show">
+                {% for data in data %}
+                <div class="card mb-2" style="background-color: #ffffff4f;">
+                    <div class="card-body p-2 p-sm-3" >
+                        <div class="media forum-item">
+                            <a href="#" data-toggle="collapse" data-target=".forum-content"><i class="fa fa-user-circle mr-3 rounded-circle text-white-forum" style="font-size:35px" width="50" alt="User" ></i></a>
+                            <div class="media-body" align="left">
+                                <h3><a href="{% url 'posts' data.id %}" class="text-white-forum" style="border-top: 1px solid #e3e3e3"><span>Topic:</span> {{ data.title }}</a></h3>
+                                <p class="text-white-forum">By <a href="javascript:void(0)">{{ data.nameUser }}</a> on <a href="javascript:void(0)">{{ data.time }}</a></p>
+                                <p class="text-white-forum">
+                                    {{ data.content }}
+                                </p>
+                                <!--<p class="text-muted"><a href="javascript:void(0)">drewdan</a> replied <span class="text-secondary font-weight-bold">13 minutes ago</span></p>-->
+                                <i class="text-white-forum">{{ data.tag }}</i>
+                            </div>
+                            <div class="text-muted text-center ">
+                                <span class="d-none d-sm-inline-block text-white-forum"><i class="fa fa-eye"></i> {{ data.views }}</span>
+                                <span class="text-white-forum"><i class="fa fa-comments"></i> {{ data.reply }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <!--<ul class="pagination pagination-sm pagination-circle justify-content-center mb-0">-->
+                    <!--<li class="page-item disabled">-->
+                        <!--<span class="page-link has-icon"><i class="material-icons">chevron_left</i></span>-->
+                    <!--</li>-->
+                    <!--<li class="page-item"><a class="page-link" href="javascript:void(0)">1</a></li>-->
+                    <!--<li class="page-item active"><span class="page-link">2</span></li>-->
+                    <!--<li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>-->
+                    <!--<li class="page-item">-->
+                        <!--<a class="page-link has-icon" href="javascript:void(0)"><i class="material-icons">chevron_right</i></a>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            </div>
+            <!-- /Forum List -->
+
+            <!-- Forum Detail -->
+            <!--<div class="inner-main-body p-2 p-sm-3 collapse forum-content">-->
+                <!--<a href="#" class="btn btn-light btn-sm mb-3 has-icon" data-toggle="collapse" data-target=".forum-content"><i class="fa fa-arrow-left mr-2"></i>Back</a>-->
+                <!--<div class="card mb-2">-->
+                    <!--<div class="card-body">-->
+                        <!--<div class="media forum-item">-->
+                            <!--<a href="javascript:void(0)" class="card-link">-->
+                                <!--<img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle" width="50" alt="User" />-->
+                                <!--<small class="d-block text-center text-muted">Newbie</small>-->
+                            <!--</a>-->
+                            <!--<div class="media-body ml-3">-->
+                                <!--<a href="javascript:void(0)" class="text-secondary">Mokrani</a>-->
+                                <!--<small class="text-muted ml-2">1 hour ago</small>-->
+                                <!--<h5 class="mt-1">Realtime fetching data</h5>-->
+                                <!--<div class="mt-3 font-size-sm">-->
+                                    <!--<p>Hellooo :)</p>-->
+                                    <!--<p>-->
+                                        <!--I'm newbie with laravel and i want to fetch data from database in realtime for my dashboard anaytics and i found a solution with ajax but it dosen't work if any one have a simple solution it will be-->
+                                        <!--helpful-->
+                                    <!--</p>-->
+                                    <!--<p>Thank</p>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="text-muted small text-center">-->
+                                <!--<span class="d-none d-sm-inline-block"><i class="far fa-eye"></i> 19</span>-->
+                                <!--<span><i class="far fa-comment ml-2"></i> 3</span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="card mb-2">-->
+                    <!--<div class="card-body">-->
+                        <!--<div class="media forum-item">-->
+                            <!--<a href="javascript:void(0)" class="card-link">-->
+                                <!--<img src="https://bootdey.com/img/Content/avatar/avatar2.png" class="rounded-circle" width="50" alt="User" />-->
+                                <!--<small class="d-block text-center text-muted">Pro</small>-->
+                            <!--</a>-->
+                            <!--<div class="media-body ml-3">-->
+                                <!--<a href="javascript:void(0)" class="text-secondary">drewdan</a>-->
+                                <!--<small class="text-muted ml-2">1 hour ago</small>-->
+                                <!--<div class="mt-3 font-size-sm">-->
+                                    <!--<p>What exactly doesn't work with your ajax calls?</p>-->
+                                    <!--<p>Also, WebSockets are a great solution for realtime data on a dashboard. Laravel offers this out of the box using broadcasting</p>-->
+                                <!--</div>-->
+                                <!--<button class="btn btn-xs text-muted has-icon"><i class="fa fa-heart" aria-hidden="true"></i>1</button>-->
+                                <!--<a href="javascript:void(0)" class="text-muted small">Reply</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!-- /Forum Detail -->
+
+            <!-- /Inner main body -->
+        </div>
+        <!-- /Inner main -->
+    </div>
+
+    <!-- New Thread Modal -->
+    <div class="modal fade" id="threadModal" tabindex="-1" role="dialog" aria-labelledby="threadModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content modal-discussion">
+                <form>
+                    <div class="modal-header bg-primary">
+                        <h3 class="title-modal-discussion" id="threadModalLabel">New Discussion</h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">
+                                <i class="fa fa-times"></i>
+                            </span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <div class="row">
+                                <div class="col-md-1 mt-2"><span for="threadTitle">Title</span></div>
+                                <div class="col-md-5 align-right"><input type="text" class="form-control custom-select" name="txttitle" id="threadTitle" placeholder="Enter title" autofocus="" style="max-width: 300px;"/></div>
+                                <div class="col-md-2 mt-2">Assignment</div>
+                                <div class="col-md-4 align-right"><select class="form-control custom-select" name="txtReciever" id="threadReciever"  autofocus="">
+                                    <option value="">Choose people involved</option>
+                                {% for a in allUser %}
+                                    <option value="{{a.id}}">{{a.name}}</option>
+                                {% endfor %}
+                                </select></div>
+                            </div>
+                            <br>
+                            <h3 class="mb-10">Tag describe task</h3>
+                            <div class="mb-10">
+                                <div class="row">
+                                    <div class="col-md-1"><input type="checkbox" name="1" value="1"/></div>
+                                    <div class="col-md-3">Yêu cầu kiểm tra thiết bị</div>
+                                    <div class="col-md-1"><input type="checkbox" name="2" value="2"/></div>
+                                    <div class="col-md-3">Yêu cầu báo cáo kết quả</div>
+                                    <div class="col-md-1"><input type="checkbox" name="3" value="3"/></div>
+                                    <div class="col-md-3">Yêu cầu báo cáo tiến độ</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-1"><input type="checkbox" name="4" value="4"/></div>
+                                    <div class="col-md-3">Báo cáo kết quả kiểm tra</div>
+                                    <div class="col-md-1"><input type="checkbox" name="5" value="5"/></div>
+                                    <div class="col-md-3">Báo cáo tiến độ công việc</div>
+                                    <div class="col-md-1"><input type="checkbox" name="6" value="6"/></div>
+                                    <div class="col-md-3">Thông báo</div>
+                                </div>
+                            </div>
+
+                            <h3 class="mb-10">Related ingredients</h3>
+                            <div>
+                                <div class="row mb-10">
+                                    <div class="col-md-2 validate-form mt-2">Facilities</div>
+                                    <div class="col-md-4">
+                                        <select name="txtFacility" id="txtFacility" class="form-control custom-select">
+                                            <option>Choose Facility...</option>
+                                            {% for a in faci %}
+                                            <option typeof="number" value="{{a.facilityid}}">
+                                                {{a.facilityname}}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2 validate-form mt-2">Equipments</div>
+                                    <div class="col-md-4">
+                                        <select name="txtEquipment" id="txtEquipment" class="form-control custom-select">
+                                            <option value="0">Choose Equipment...</option>
+                                            {% for a in equip %}
+                                            <option typeof="number" value="{{a.equipmentid}}">
+                                                 {{ a.equipmentnumber}}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-10">
+                                    <div class="col-md-2 validate-form mt-2">Components</div>
+                                    <div class="col-md-4">
+                                        <select name="txtComponent" id="txtComponent" class="form-control custom-select">
+                                            <option>Choose Component...</option>
+                                            {% for a in comp %}
+                                                <option typeof="number" value="{{a.componentid}}">
+                                                    {{ a.componentnumber}}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <script>
+                                    $(document).ready(function () {
+                                        var name="";
+                                        var nameEquip ="";
+                                        $("#txtFacility").change(function (){
+                                            var txtFacility = $("#txtFacility").val();
+                                            <!--alert(txtFacility);-->
+                                            if(txtFacility == "Choose Facility..."){
+                                                name = "<option>Choose Equipment...</option>"+"{%  for a in equip %}"+
+                                                    "<option value={{a.equipmentid}}>{{ a.equipmentnumber }}</option>"+"{% endfor %}";
+                                            }else{
+                                                {%  for a in equip %}
+                                                    if(Number(txtFacility) == {{a.facilityid_id}}){
+                                                         name = "<option value={{a.equipmentid}}>{{ a.equipmentnumber }}</option>"+"+"+name;
+                                                    }
+                                                {% endfor %}
+                                            }
+
+                                            <!--var strr= "{%  for a in equip %}"+"{% ifequal 71  a.facilityid_id %}" +-->
+                                                    <!--"<option value={{a.equipmentid}}>{{ a.equipmentnumber }}</option>"+-->
+                                                <!--"{% endifequal %}"+"{% endfor %}";-->
+                                            $("#txtEquipment").html(name);
+                                            name = name.slice(0,0);
+                                            <!--alert(name);-->
+                                            var e = document.getElementById("txtEquipment");
+                                            var txtEquipment = e.options[0].text;
+                                            var idEquipment = e.options[0].value;
+                                            <!--alert(idEquipment)-->
+                                            if(txtEquipment == "Choose Equipment..."){
+                                                <!--alert("Go g");-->
+                                                nameEquip = "<option>Choose Component...</option>"+"{%  for a in comp %}"+
+                                                    "<option value={{a.componentid}}>{{ a.componentnumber }}</option>"+"{% endfor %}";
+                                            }else{
+                                                <!--alert("Go Gp");-->
+                                                {%  for a in comp %}
+                                                    if(Number(idEquipment) == {{a.equipmentid_id}}){
+                                                         nameEquip = "<option value={{a.componentid}}>{{ a.componentnumber }}</option>"+"+"+nameEquip;
+                                                    }
+                                                {% endfor %}
+                                            }
+                                             $("#txtComponent").html(nameEquip);
+                                             nameEquip = nameEquip.slice(0,0);
+                                        });
+                                        var nameEquip2 = "";
+                                        $("#txtEquipment").change(function (){
+                                            var txtEquipment = $("#txtEquipment").val();
+                                            <!--alert(txtEquipment);-->
+                                            {%  for a in comp %}
+                                                if(Number(txtEquipment) == {{a.equipmentid_id}}){
+                                                     nameEquip2 = "<option value={{a.componentid}}>{{ a.componentnumber }}</option>"+"+"+nameEquip2;
+                                                }
+                                            {% endfor %}
+                                            $("#txtComponent").html(nameEquip2);
+                                            nameEquip2 = nameEquip2.slice(0,0);
+                                        });
+                                    })
+                                </script>
+                            </div>
+                            <div class="row mb-10">
+                                <div class="col-md-2">Content</div>
+                                <div class="col-md-10">
+                                    <textarea style="font-size: 13px;" class="form-control autoExpand" name="txtcontent" id="" cols="2" rows="5" data-min-rows="3"
+                                    placeholder="Content..."></textarea>
+                                </div>
+                            <div>
+                            <!--<div class="form-group" >-->
+                                <!--<label for="threadContent">Content</label>-->
+                                <!--<textarea class="form-control forum-font autoExpand" name="txtcontent" id="threadContent" cols="2" rows="3" data-min-rows="3"-->
+                                      <!--placeholder="Content..." style="height: 200px;"></textarea>-->
+                            <!--</div>-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="threadTag">Tag</label>-->
+                                <!--<input type="text" class="form-control" id="threadTag" name="txttag" placeholder="Enter tag" autofocus="" />-->
+                            <!--</div>-->
+                            <!--<div class="custom-file form-control-sm mt-3" style="max-width: 300px;">-->
+                                <!--<input type="file" class="custom-file-input" id="customFile" multiple="" />-->
+                                <!--<label class="custom-file-label" for="customFile">Attachment</label>-->
+                            <!--</div>-->
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light custom-btn" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary custom-btn" name="btnsend">Post</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="https://netdna.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+
+</script>
+<div class="forum-content">
+    <!--<div class="forum-title"><span>Create a new post</span></div>-->
+    <!--<div class="forum-post">-->
+        <!--<div class="row" style="width: 96%;margin: auto">-->
+            <!--<input class="form-control forum-font" style="margin-top: 12px;margin-bottom: 12px" type="text" name="txttitle" placeholder="Title...">-->
+            <!--<textarea class="form-control forum-font autoExpand" style="margin-top: 12px;" name="txtcontent" id="" cols="2" rows="3" data-min-rows="3" placeholder="Content..."></textarea>-->
+            <!--<input class="form-control forum-font" style="margin-top: 12px" type="text" name="txttag" placeholder="Tag...">-->
+            <!--<div style="margin-top: 5px; height: 45px;line-height: 45px">-->
+                <!--&lt;!&ndash;<a href=""><i class=" fa fa-file-image-o forum-icon"></i></a>&ndash;&gt;-->
+                <!--&lt;!&ndash;<a href=""><i class="fa fa-file forum-icon"></i></a>&ndash;&gt;-->
+                <!--&lt;!&ndash;<a data-toggle="modal" data-target="#myModal" ><i class="fa fa-link forum-icon "></i></a>&ndash;&gt;-->
+                <!--<input  type="submit" class="btn btn-success" style="float: right;" name="btnsend" value="Send">-->
+            <!--</div>-->
+        <!--</div>-->
+
+    <!--</div>-->
+    <!--<div class="forum-title" style="margin-top: 11px"><span>Recent Posts</span></div>-->
+    <!--<div class="forum-post">-->
+        <!--<div style="width: 96%;margin: auto;">-->
+        <!--<table class="forum-listposts">-->
+            <!--<tr style="border-bottom: 2px solid #9d9d9d">-->
+                <!--<td style="width: 55%;padding: 13px">Topic</td>-->
+                <!--<td style="width: 15%">Tag</td>-->
+                <!--<td style="width: 10%">Views</td>-->
+                <!--<td style="width: 10%">Reply</td>-->
+                <!--<td>Time</td>-->
+            <!--</tr>-->
+            <!--{% for data in data %}-->
+            <!--<tr style="border-top: 1px solid #e3e3e3">-->
+                <!--<td style="width: 55%;padding: 13px"><a href="{% url 'posts' data.id %}"><b>{{ data.title }}</b></a></td>-->
+                <!--<td style="width: 15%">{{ data.tag }}</td>-->
+                <!--<td style="width: 10%">{{ data.views }}</td>-->
+                <!--<td style="width: 10%">{{ data.reply }}</td>-->
+                <!--<td>{{ data.time }}</td>-->
+            <!--</tr>-->
+            <!--{% endfor %}-->
+        <!--</table>-->
+        <!--</div>-->
+    <!--</div>-->
+</div>
+
+{# body #}
+
+ <!-- The Modal -->
+  <div class="modal" id="myModalpro">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <span class="modal-title">Attach Link</span>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <input type="text" placeholder="Link..." class="border form-control" style="width: 80%;margin: auto">
+            <input type="text" placeholder="Title..." class="border form-control mt-2" style="width: 80%;margin: auto">
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Attach</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+<!-- Modal notification-->
+  <div class="modal" id="notiModal">
+      <div class="modal-content" style="margin-left: 60%;margin-top:60px;width: 40%;border-radius: 0px">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><i class="fa fa-bell"></i></a> Notification</h4>
+        </div>
+        <div class="modal-body">
+            {% for noti in noti %}
+                {% if noti.content == " đã xóa nhà máy " %}
+                    <div class="noti{{ noti.state }}" style="border-bottom: 1px solid #e3e3e3;border-top: 1px solid #e3e3e3;width: 100%;text-align: left;padding-left: 15px;padding-top: 15px;padding-bottom: 10px; font-family: Arial">
+                    <a href="{% url 'facilitiesDisplay' noti.link %}" >
+                        <span style="color: #204d74">{{ noti.subject }}</span><span style="color: black"> {{ noti.content }} </span><span style="color: #204d74">{{ noti.object }}</span>
+                    </a>
+                    </div>
+                {% endif %}
+                {% if noti.content == " đã phản hồi bài viết " %}
+                    <div class="noti{{ noti.state }}" style="border-bottom: 1px solid #e3e3e3;border-top: 1px solid #e3e3e3;width: 100%;text-align: left;padding-left: 15px;padding-top: 15px;padding-bottom: 10px; font-family: Arial">
+                    <a href="{% url 'posts' noti.link %}">
+                        <span style="color: #204d74">{{ noti.subject }}</span><span style="color: black"> {{ noti.content }} </span><span style="color: #204d74">{{ noti.object }}</span>
+                    </a>
+                    </div>
+                {% endif %}
+                {% if noti.content == " đã thêm nhà máy " %}
+                    <div class="noti{{ noti.state }}" style="border-bottom: 1px solid #e3e3e3;border-top: 1px solid #e3e3e3;width: 100%;text-align: left;padding-left: 15px;padding-top: 15px;padding-bottom: 10px; font-family: Arial">
+                    <a href="{% url 'facilitiesDisplay' noti.link %}">
+                        <span style="color: #204d74">{{ noti.subject }}</span><span style="color: black"> {{ noti.content }} </span><span style="color: #204d74">{{ noti.object }}</span>
+                    </a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" style="color: white;background-color: #4575B7;" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+  </div>
+
+
+      <!-- Modal -->
+<div class="modal fade" id="delete" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Error</h4>
+            </div>
+            <div class="modal-body" >
+                <h4>Đối tượng đã bị xóa</h4>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+  <div class="modal" id="myModal">
+      <div class="modal-content" style="margin-left: 60%;margin-top:60px;width: 40%;border-radius: 0px">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title"><a href=""><i class="fa fa-user"></i></a> Profile</h4>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col-md-5"><span style="font-weight: bold; width: 40%">Name:</span></div>
+                  <div class="col-md-7">{{ info.name }}</div>
+              </div>
+              <hr>
+              <div class="row">
+                  <div class="col-md-5"><span style="font-weight: bold; width: 40%">Email:</span></div>
+                  <div class="col-md-7">{{ info.email }}</div>
+              </div>
+              <hr>
+              <div class="row">
+                  <div class="col-md-5"><span style="font-weight: bold; width: 40%">Phone number:</span></div>
+                  <div class="col-md-7">{{ info.phone }}</div>
+              </div>
+              <hr>
+              <div class="row">
+                  <div class="col-md-5"><span style="font-weight: bold; width: 40%">Address:</span></div>
+                  <div class="col-md-7">{{ info.address }}</div>
+              </div>
+              <hr>
+              <div class="row">
+                  <div class="col-md-5"><span style="font-weight: bold; width: 40%">Account:</span></div>
+                  <div class="col-md-7">{{ info.kind }}</div>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn" style="color: white;background-color: #4575B7;" data-dismiss="modal">Close</button>
+          </div>
+      </div>
+  </div>
+    <!--Modal Language-->
+  <div class="modal" id="LanguageModal">
+      <div class="modal-content" style="margin-left: 60%;margin-top:60px;width: 40%;border-radius: 0px">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><i class="fa fa-language"></i></a> Select language you want:</h4>
+        </div>
+        <div class="modal-body">
+            <a href="https://eng.cortekrbi.com/" ><img src='/static/image/logo/vietnam.png' style="width:70px;padding-left: 6px;height: 45px;"></a>
+            <a href="https://cortekrbi.com/" ><img src='/static/image/logo/england.png' style="width:70px;padding-left: 6px;height: 45px;"></a>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" style="color: white;background-color: #4575B7;" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+  </div>
+
+</form>
+<script>
+    {#    Chức năng thông báo#}
+    $(document).ready(function () {
+        var x={{ countnoti }}
+        if(x==0){
+            $("#countnoti").hide();
+        }
+        $(".noti0").addClass("forum-noti-background");
+    })
+    function hidenoti() {
+        $("#countnoti").hide();
+    }
+$(document)
+    .one('focus.autoExpand', 'textarea.autoExpand', function(){
+        var savedValue = this.value;
+        this.value = '';
+        this.baseScrollHeight = this.scrollHeight;
+        this.value = savedValue;
+    })
+    .on('input.autoExpand', 'textarea.autoExpand', function(){
+        var minRows = this.getAttribute('data-min-rows')|0, rows;
+        this.rows = minRows;
+        rows = Math.ceil((this.scrollHeight - this.baseScrollHeight) / 16);
+        this.rows = minRows + rows;
+    });
+</script>
+</body>
+</html>

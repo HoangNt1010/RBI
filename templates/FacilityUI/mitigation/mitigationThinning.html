@@ -1,0 +1,377 @@
+{% extends 'BaseUI/BaseFacility/baseMitigation.html' %}
+{% load staticfiles %}
+{% load static %}
+<!-------------- BLOCK MENU ---------------->
+{% block homedetail %}{% url 'homefacility' siteID%}{% endblock %}
+{% block listfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+{% block newfaci %}{% url 'facilitiesNew' siteID %}{% endblock %}
+{% block design %}{% url 'designcodeDisplay' siteID %}{% endblock %}
+{% block manu %}{% url 'manufactureDisplay' siteID %}{% endblock %}
+{% block uploadInsp %}{% url 'upload' siteID %}{% endblock %}
+{% block uploadPlant %}{% url 'uploadPlan' siteID %}{% endblock %}
+{#{% block uploadScada %}{% url 'uploadScada' siteID %}{% endblock %}#}
+{% block manageFile %}{% url 'manageFile' siteID %}{% endblock %}
+{% block inspecPlan %}{% url 'inspectionPlan' siteID %}{% endblock %}
+{% block rbitracking %}{% url 'rbitracking' %}{% endblock %}
+{% block mitigationSite %}{% url 'mitigationSite' siteID%}{% endblock %}
+{% block data-content %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <style>
+    .card{
+        background: #ffffff;
+    }
+    .bang{
+        width: 50%;
+        height: 50%;
+        background-color: #305680;
+        margin: auto;
+        /*overflow-x: scroll;*/
+    }
+    button{
+        width: 150px;
+        height: 70px;
+        margin-top: 20px;
+        margin-left: 5px;
+        background-color: #FFFFFF;
+    }
+  
+
+    </style>
+    <!-- <a href="{% url 'mitigationSite' siteID %}" title="Back" style="color:black; font-size:20px"><img src='/static/image/loading/back.png' style="padding-bottom: 6px;width:40px;"></a> -->
+    <div class="title-verifitcation">
+        <h1>Prevention / Mitigation</h1>
+    </div>
+    <form id="inspectionplan" method="post">
+      {% csrf_token %}
+        <!-- <div style=" text-align: center"><caption><b style="font-size: 20px; color: #444444;">Prevention / Mitigation 9</b></caption></div> -->
+        <div>
+          <div>
+            <div class="row">
+              <div class="col-sm-4">
+                <select id="type" class="form-control">
+                  <option value="0">PoF</option>
+                  <option value="1">CoF</option>
+                </select>
+              </div>
+              <div class="col-sm-4">
+                <select id="size" name='size' class="form-control">
+                  <option value="thinning">Thinning Damage Factor</option>
+                  <option value="alkaline">Alkaline Carbonate Stress Corrosion Cracking</option>
+                  <option value="caustic">SCC - Caustic Cracking </option>
+                  <option value="amine">SCC - Amine Cracking </option>
+                  <option value="pascc">Polythionic Acid Stress Corrosion Cracking</option>
+                    <option value='all'>All</option>
+
+                </select>
+              </div>
+            <div class="col-sm-4" style="text-align: right;">
+                 <input type="submit" name="analysis" onclick="AnalysicClick();"value="analysis">
+            </div>
+            </div>
+          </div>
+      </div>
+      <br/>
+      <script type="text/javascript">
+        $(document).ready(function () {
+        $("#type").change(function () {
+        var val = $(this).val();
+        if (val == "0") {
+            $("#size").html("<option value='thinning'>Thinning Damage Factor</option><option value='alkaline'>Alkaline Carbonate Stress Corrosion Cracking</option><option value='caustic'>SCC - Caustic Cracking </option><option value='amine'>SCC - Amine Cracking </option><option value='pascc'>Polythionic Acid Stress Corrosion Cracking</option><option value='all'>All</option>");
+
+        } else if (val == "1") {
+            $("#size").html("<option value='financial'>Finance</option>");
+
+        } 
+    });
+});
+        function AnalysicClick() {
+            var div = document.createElement('div');
+            var img = document.createElement('img');
+            img.src = '{% static 'image/loading/Pacman-1s-100px.gif' %}';
+            div.style.cssText = "position: fixed;left: 50%; top: 30%; width: 300px; text-align: center; background: rgba(54, 25, 25, .00004); border: 0px solid #000;";
+            div.appendChild(img);
+            document.body.appendChild(div);
+            return true;
+        }
+      </script>
+
+    </form>
+
+    <div id='0' name="left" style="float: left;" class="chart-mitigation-50">
+    <!--  Day la chart -->
+        <canvas id="myChartNominalThickness" ></canvas>
+    </div>
+    <div id='1' name="right" style="float: left;" class="chart-mitigation-50">
+<!--  Day la chart -->
+    <canvas id="myChartCurentThickness" ></canvas>
+     </div>
+    <div id='2' name="left" style="float: left;" class="chart-mitigation-50">
+    <!--  Day la chart -->
+        <canvas id="myChartCorrosionRate" ></canvas>
+     </div>
+     <div id='3'name="right" style="float: right;" class="chart-mitigation-50">
+    <!--  Day la chart -->
+        <canvas id="myChartMinimunRequiredThickness" ></canvas>
+     </div>
+
+     <script type="text/javascript">
+         var lineChartNominalThickness = document.getElementById('myChartNominalThickness');
+         var myChartNominalThickness = new Chart(lineChartNominalThickness, {
+                type: 'line',
+                data: {
+                        labels:[{% for x in objThin.dataNominalThicknessX %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+                    datasets: [
+                        {
+                            label: 'Thinning DM',
+                            data: [{% for x in objThin.dataNominalThicknessY0 %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+                            backgroundColor: 'rgba(0, 128, 128, 0.3)',
+                            borderColor: 'rgba(0, 128, 128, 0.7)',
+                            borderWidth: 1,
+                            fill:false
+                        },
+                        {
+                            label: 'PoF',
+                            data: [{% for x in objThin.dataNominalThicknessY1 %}
+                            {{ x }},
+                            {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(128, 0, 128, 0.7)',
+                            borderColor: 'rgba(128, 0, 128, 1)',
+                            borderWidth: 1,
+                            fill:false
+                        },
+                        {
+                            label: 'Risk',
+                            data: [{% for x in objThin.dataNominalThicknessY2 %}
+                            {{ x }},
+                            {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(0, 128, 128, 1)',
+                            borderColor: 'rgba(128, 0, 0, 1)',
+                            borderWidth: 1,
+                            fill:false
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:false,
+                                stacked: true
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                            display: true,
+    {#                        fontSize: 14,#}
+                            labelString: "Nominal Thickness (mm)",
+                            }
+                        }]
+
+                    },
+                }
+            });
+{#         #}
+            var lineChartCurentThickness = document.getElementById('myChartCurentThickness');
+            var myChartCurentThickness = new Chart(lineChartCurentThickness, {
+            type: 'line',
+            data: {
+                    labels:[{% for x in objThin.dataCurentThicknessX %}
+                        {{ x }},
+                    {% endfor %}
+                    ],
+                datasets: [
+                    {
+                        label: 'Thinning DM',
+                        data: [{% for x in objThin.dataCurentThicknessY0 %}
+                        {{ x }},
+                    {% endfor %}
+                    ],
+                        backgroundColor: 'rgba(0, 128, 128, 0.3)',
+                        borderColor: 'rgba(0, 128, 128, 0.7)',
+                        borderWidth: 1,
+                        fill:false
+                    },
+                    {
+                        label: 'PoF',
+                        data: [{% for x in objThin.dataCurentThicknessY1 %}
+                        {{ x }},
+                        {% endfor %}
+                        ],
+                        backgroundColor: 'rgba(128, 0, 128, 0.7)',
+                        borderColor: 'rgba(128, 0, 128, 1)',
+                        borderWidth: 1,
+                        fill:false
+                    },
+                    {
+                        label: 'Risk',
+                        data: [{% for x in objThin.dataCurentThicknessY2 %}
+                        {{ x }},
+                        {% endfor %}
+                        ],
+                        backgroundColor: 'rgba(0, 128, 128, 1)',
+                        borderColor: 'rgba(128, 0, 0, 1)',
+                        borderWidth: 1,
+                        fill:false
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:false,
+                            stacked: true
+                        }
+                    }],
+                    xAxes: [{
+                        scaleLabel: {
+                        display: true,
+{#                        fontSize: 14,#}
+                        labelString: "Minimum Measured Thickness (mm)",
+                        }
+                    }]
+
+                },
+            }
+        });
+         var lineChartCorrosionRate = document.getElementById('myChartCorrosionRate');
+        var myChartCorrosionRate = new Chart(lineChartCorrosionRate, {
+            type: 'line',
+            data: {
+                    labels:[{% for x in objThin.dataCorrosionRateX %}
+                        {{ x }},
+                    {% endfor %}
+                    ],
+                datasets: [
+                    {
+                        label: 'Thinning DM',
+                        data: [{% for x in objThin.dataCorrosionRateY0 %}
+                        {{ x }},
+                    {% endfor %}
+                    ],
+                        backgroundColor: 'rgba(0, 128, 128, 0.3)',
+                        borderColor: 'rgba(0, 128, 128, 0.7)',
+                        borderWidth: 1,
+                        fill:false
+                    },
+                    {
+                        label: 'PoF',
+                        data: [{% for x in objThin.dataCorrosionRateY1 %}
+                        {{ x }},
+                        {% endfor %}
+                        ],
+                        backgroundColor: 'rgba(128, 0, 128, 0.7)',
+                        borderColor: 'rgba(128, 0, 128, 1)',
+                        borderWidth: 1,
+                        fill:false
+                    },
+                    {
+                        label: 'Risk',
+                        data: [{% for x in objThin.dataCorrosionRateY2 %}
+                        {{ x }},
+                        {% endfor %}
+                        ],
+                        backgroundColor: 'rgba(0, 128, 128, 1)',
+                        borderColor: 'rgba(128, 0, 0, 1)',
+                        borderWidth: 1,
+                        fill:false
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:false,
+                            stacked: true
+                        }
+                    }],
+                    xAxes: [{
+                        scaleLabel: {
+                        display: true,
+{#                        fontSize: 14,#}
+                        labelString: "Current Corrosion Rate (mm/yr)",
+                        }
+                    }]
+
+                },
+            }
+        });
+        var lineChartMinimunRequiredThickness = document.getElementById('myChartMinimunRequiredThickness');
+        var myChartMinimunRequiredThickness = new Chart(lineChartMinimunRequiredThickness, {
+            type: 'line',
+            data: {
+                    labels:[{% for x in objThin.dataMinimunRequiredThicknessX %}
+                        {{ x }},
+                    {% endfor %}
+                    ],
+                datasets: [
+                    {
+                        label: 'Thinning DM',
+                        data: [{% for x in objThin.dataMinimunRequiredThicknessY0 %}
+                        {{ x }},
+                    {% endfor %}
+                    ],
+                        backgroundColor: 'rgba(0, 128, 128, 0.3)',
+                        borderColor: 'rgba(0, 128, 128, 0.7)',
+                        borderWidth: 1,
+                        fill:false
+                    },
+                    {
+                        label: 'PoF',
+                        data: [{% for x in objThin.dataMinimunRequiredThicknessY1 %}
+                        {{ x }},
+                        {% endfor %}
+                        ],
+                        backgroundColor: 'rgba(128, 0, 128, 0.7)',
+                        borderColor: 'rgba(128, 0, 128, 1)',
+                        borderWidth: 1,
+                        fill:false
+                    },
+                    {
+                        label: 'Risk',
+                        data: [{% for x in objThin.dataMinimunRequiredThicknessY2 %}
+                        {{ x }},
+                        {% endfor %}
+                        ],
+                        backgroundColor: 'rgba(0, 128, 128, 1)',
+                        borderColor: 'rgba(128, 0, 0, 1)',
+                        borderWidth: 1,
+                        fill:false
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:false,
+                            stacked: true
+                        }
+                    }],
+                    xAxes: [{
+                        scaleLabel: {
+                        display: true,
+{#                        fontSize: 14,#}
+                        labelString: "Minimum Required Thickness (mm)",
+                        }
+                    }]
+
+                },
+            }
+        });
+{#        document.getElementById('{{ m }}').style.border='red 2px solid';#}
+         {% for x in medthod %}
+            document.getElementById('{{ x }}').style.border='red 2px solid';
+         {% endfor %}
+         </script>
+{% endblock %}
+<!----------------- END BLOCK----------------->

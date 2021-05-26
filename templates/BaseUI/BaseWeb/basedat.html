@@ -1,0 +1,173 @@
+{% load staticfiles %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{#    <style>#}
+{#        .bg-image {#}
+{#  /* The image used */#}
+{#  background-image: url("../../../static/image/logo/ok.jpg");#}
+{##}
+{#  /* Add the blur effect */#}
+{#  filter: blur(8px);#}
+{#  -webkit-filter: blur(8px);#}
+{##}
+{#  /* Full height */#}
+{#  height: 100%;#}
+{##}
+{#  /* Center and scale the image nicely */#}
+{#  background-position: center;#}
+{#  background-repeat: no-repeat;#}
+{#  background-size: cover;#}
+{#}#}
+{#    </style>#}
+    {# title block #}
+    <title>{% block title %}Lập báo cáo{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+{#    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">#}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/help.css' %}">
+
+
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+{#    <script src="{% static 'js/bootstrap.min.js' %}"></script>#}
+
+{#     library block#}
+    {% block library %}{% endblock %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip('enabled');
+        });
+        $('[data-toggle="tooltip"]').tooltip();
+    </script>
+
+</head>
+<body>
+{# header #}
+<div class="navbar navbar-fixed-top" style="border-bottom: 4px solid #000000;">
+    <div class="header" >
+            <img src= "{% static '/image/logo/logocortek.png' %}" style="height: 60px;padding-top: 2px;padding-left: 6px;width: 240px">
+            {% block navbar %}
+            <a class="a-logout" href="{% url 'logout' %}" data-toggle="tooltip" data-placement="bottom" title="Sign Out"><i class="fa fa-sign-out"></i></a>
+            <a class="a-normal" href="" data-toggle="modal" data-target="#myModal" data-placement="bottom" title="Profile"><i class="fa fa-user"></i></a>
+            <a class="a-normal active" href="{% url 'help' %}" data-toggle="tooltip" data-placement="bottom" title="Help"><i class="fa fa-question"></i></a>
+            <a class="a-normal" href="" data-toggle="modal" data-target="#notiModal"  data-placement="bottom" title="Notification" onclick="hidenoti()" style="position: relative"><i class="fa fa-bell">{% if countnoti %}<span id="countnoti" class="forum-notification">{{ countnoti }}</span>{% endif %}</i></a>
+            <a class="a-normal" href="{% url 'messagesInbox' %}" data-toggle="tooltip" data-placement="bottom" title="Messages"><i class="fa fa-wechat">{% if count %}<span class="badge red" style="color: red">{{ count }}</span>{% endif %}</i></a>
+            <a class="a-normal" href="{% url 'forum' %}" data-toggle="tooltip" data-placement="bottom" title="Forum"><i class="fa fa-dedent"></i></a>
+            <!--{% if info.kind == "factory" %}<a class="a-normal" href="{% url 'VerificationHome' %}" data-toggle="tooltip" data-placement="bottom" title="Verification"><i class="fa fa-exclamation-triangle"><span class="badge red" style="color: red">1</span></i></a> {% endif %}-->
+            {% if info.kind == "factory" %}<a class="a-normal" href="{% url 'VerificationFaci' %}" data-toggle="tooltip" data-placement="bottom" title="Verification"><i class="fa fa-exclamation-triangle"><span class="badge red" style="color: red">1</span></i></a> {% endif %}
+            <a class="a-normal" href="{% url 'home'  %}" data-toggle="tooltip" data-placement="bottom" title="Home"><i class="fa fa-home"></i></a>
+            <a class="a-normal" href="" data-toggle="modal" data-target="#LanguageModal" data-placement="bottom"><i class="fa fa-language"></i></a>
+        {% endblock %}
+    </div>
+</div>
+
+
+
+{# body #}
+{#<div class="ig-image"></div>#}
+{% block content %}
+<!-- Modal notification-->
+  <div class="modal" id="notiModal">
+      <div class="modal-content" style="margin-left: 60%;margin-top:60px;width: 40%;border-radius: 0px; font-size: 14px;">
+        <div class="modal-header">
+            Notification
+        </div>
+        <div class="modal-body">
+            {% for noti in noti %}
+            <div class="noti{{ noti.state }}" style="border-bottom: 1px solid #e3e3e3;border-top: 1px solid #e3e3e3;width: 100%;text-align: left;padding-left: 15px;padding-top: 15px;padding-bottom: 10px; font-family: Arial">
+            <a href="{% url 'posts' noti.link %}">
+                <span style="color: #204d74">{{ noti.subject }}</span><span style="color: black"> {{ noti.content }} </span><span style="color: #204d74">{{ noti.object }}</span>
+            </a>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" style="color: white;background-color: #4575B7;" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+  </div>
+
+    <!-- Modal -->
+  <div class="modal" id="myModal">
+
+      <div class="modal-content" style="margin-left: 60%;margin-top:60px;width: 40%;border-radius: 0px">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><a href=""><i class="fa fa-user"></i></a> Profile</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-5"><span style="font-weight: bold; width: 40%">Name:</span></div>
+                <div class="col-md-7">{{ info.name }}</div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-5"><span style="font-weight: bold; width: 40%">Email:</span></div>
+                <div class="col-md-7">{{ info.email }}</div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-5"><span style="font-weight: bold; width: 40%">Phone number:</span></div>
+                <div class="col-md-7">{{ info.phone }}</div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-5"><span style="font-weight: bold; width: 40%">Address:</span></div>
+                <div class="col-md-7">{{ info.address }}</div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-5"><span style="font-weight: bold; width: 40%">Account:</span></div>
+                <div class="col-md-7">{{ info.kind }}</div>
+            </div>
+
+        </div>
+        /* <div class="modal-footer">
+          <button type="button" class="btn" style="color: white;background-color: #4575B7;" data-dismiss="modal">Close</button>
+        </div> */
+      </div>
+  </div>
+    <!--Modal Language-->
+  <div class="modal" id="LanguageModal">
+      <div class="modal-content" style="margin-left: 60%;margin-top:60px;width: 40%;border-radius: 0px">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><i class="fa fa-language"></i></a> Select language you want:</h4>
+        </div>
+        <div class="modal-body">
+            <a href="https://cortekrbi.com/" ><img src='/static/image/logo/vietnam.png' style="width:70px;padding-left: 6px;height: 45px;"></a>
+            <a href="https://cortekrbi.com/" ><img src='/static/image/logo/england.png' style="width:70px;padding-left: 6px;height: 45px;"></a>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" style="color: white;background-color: #4575B7;" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+  </div>
+<script>
+    var header = document.getElementById("myDIV");
+    var btns = header.getElementsByClassName("btn");
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", function() {
+            var current = document.getElementsByClassName("active");
+            current[0].className = current[0].className.replace(" active", "");
+            this.className += " active";
+        });
+    }
+</script>
+    {% block content-a %}{% endblock %}
+{% endblock %}
+{% block footer %}
+    <div class="footer">Copyright by Cortek CO.Ltd,.</div>
+{% endblock %}
+
+</body>
+</html>

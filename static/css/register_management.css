@@ -1,0 +1,105 @@
+.register-management {
+    background-image: url("../image/logo/bg-login.png");
+    background-size: cover;
+    height: 100vh;
+    color: #fff;
+    overflow: auto;
+    user-select: none;
+}
+
+.register-management .language {
+    position: fixed;
+    top: 3px;
+    right: 25px;
+}
+
+.register-management .language img {
+    width: 17px;
+    height: 13px;
+}
+
+
+.register-management .wapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.register-management .wapper .form-register .header-form h3 {
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.register-management .wapper .form-register .signup-form-management .row {
+    display: flex;
+    justify-content: center;
+}
+
+.register-management .wapper .form-register .signup-form-management .input-register {
+    width: 360px;
+    position: relative;
+}
+.register-management .wapper .form-register img {
+    position: absolute;
+    top: 42px;
+    right: 12px;
+    width: 10px;
+    height: 10px;
+}
+
+.register-management .wapper .form-register input {
+    width: 340px;
+    height: 32px;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #1160ae;
+    padding: 8px 28px 8px 16px;
+    border: none;
+    outline: none !important;
+}
+::placeholder {
+	color: #1160ae;
+    font-size: 12px;
+}
+::-webkit-input-placeholder { /* Edge */
+	color: #1160ae;
+    font-size: 12px;
+}
+  
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+	color: #1160ae;
+    font-size: 12px;
+}
+  
+  
+.text-input-field {
+margin: 5px 0;
+}
+
+.footer-register {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+.footer-register button {
+    width: 185px;
+    height: 35px;
+    border-radius: 20px;
+}
+.footer-register button:focus {
+    outline: none !important;
+}
+
+.footer-register a {
+    color: #969698;
+    text-decoration: none;
+}
+
+.footer-register a:hover {
+    color:#fff;
+}
+
+span{
+    position: absolute;
+    right: 15px;
+}

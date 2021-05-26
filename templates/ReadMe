@@ -1,0 +1,16 @@
+---------------------------------------------------
+---             UI WEB DESIGN READ ME           ---
+---------------------------------------------------
+
+- /BaseUI/ : chứa các UI gốc <để tận dụng khả năng kế thừa trong HTML>
+        + /BaseWeb/: chứa giao diện gốc của toàn bộ chương trình, những thư viện dùng chung cho cả chương trình.
+        + /BaseCitizen/: giao diện dùng chung cho UI của người dân.
+        + /BaseFacility/: các giao diện dùng chung cho UI nhà máy (những người dùng chức năng phân tích RBI)
+        + /BaseManager/: các giao diện gốc cho cơ quan quản lý hoặc chính phủ(Government)
+- /404/ : chứa giao diện thông báo lỗi
+- /CitizenUI/ : các giao diện chức năng sử dụng cho người dân.
+- /FacilityUI/ : các giao diện chức năng sử dụng cho nhà máy.
+- /ManagementUI/ : các giao diện chức năng sử dụng cho cơ quan quản lý.
+- /Home/: giao diện trang chủ.
+
+------------------------------------------------------

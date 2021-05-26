@@ -1,0 +1,48 @@
+{% extends 'BaseUI/BaseFacility/baseRiskSummary.html' %}
+{% load staticfiles %}
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactor' proposalID %}{% endblock %}
+{% block fcof%}{% url 'fullyConsequence' proposalID %}{% endblock %}
+{% block acof%}{% url 'areaBasedCoF' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrix' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChart' proposalID %}{% endblock %}
+{% block corri %}{% url 'corrision' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'damgeFactor' proposalID%}{% endblock %}
+{% block data-content %}
+    <style>
+    .card{
+        background: #ffffff;
+    }
+    .bang{
+        width: 500px;
+        height: 210px;
+        background-color: #305680;
+        margin: auto;
+    }
+    button{
+        width: 150px;
+        height: 70px;
+        margin-top: 20px;
+        margin-left: 5px;
+        background-color: #FFFFFF;
+    }
+    </style>
+
+    <form id="inspectionplan" method="post" class="card" >
+    {% csrf_token %}
+       <div style=" text-align: center"><caption><b style="font-size: 20px; color: #444444;">Governing External Damage Factor</b></caption></div>
+        <br>
+    <fieldset class="bang">
+        <div class="row">
+            <div  class="col-md-6"><button  type="submit" name="_extf" style="color: black; font-family: Arial"  value="">extf</button></div>
+            <div  class="col-md-6"><button type="submit" name="_cuif" style="color: black;font-family: Arial"  value="">CUIF</button> </div>
+            <div  class="col-md-6"><button type="submit" name="_ext_clscc" style="color: black;font-family: Arial"  value="">ext-CLSCC</button> </div>
+            <div  class="col-md-6"><button type="submit" name="_cui_clscc" style="color: black;font-family: Arial"  value="">CUI-CLSCC</button> </div>
+        </div>
+        </fieldset>
+    </form>
+    <br>
+    <form>
+    <img src="{% static 'image/proposal/external_equation.JPG' %}" style="margin-left: 150px">
+    </form>
+{% endblock %}

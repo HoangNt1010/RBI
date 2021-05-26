@@ -1,0 +1,800 @@
+{% extends 'BaseUI/BaseFacility/baseProposal.html' %}
+{#{% extends 'BaseUI/BaseFacility/baseBusiness.html' %}#}
+
+<!-------------- BLOCK MENU ---------------->
+{#{% block listProposal %}{% url 'proposalDisplay' componentID %}{% endblock %}#}
+
+<!----------------- END BLOCK----------------->
+{% block title %}View Proposal Excel{% endblock %}
+{% block vertical %}
+{% endblock %}
+{% block data-content %}
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<style>
+div.a {
+  white-space: nowrap;
+  width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+div.a:hover {
+  overflow: visible;
+}
+#searchs{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+.city{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+#search3{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+#proposal
+{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+#search2{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+#searchs td,#searchs th {
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+.city td, .city th{
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+#search2 th,#search2 td{
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+#search3 th,#search3 td{
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+#proposal th,#proposal td{
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+#searchs tr:nth-child(even){background-color: #f2f2f2;}
+.city tr:nth-child(even){background-color: white;}
+#search2 tr:nth-child(even){background-color: #f2f2f2;}
+#search3 tr:nth-child(even){background-color: #f2f2f2;}
+#proposal tr:nth-child(even){background-color: #f2f2f2;}
+#searchs tr:hover {background-color: #f2f2f2;}
+.city tr:hover {background-color: #f2f2f2;}
+#search2 tr:hover {background-color: #f2f2f2;}
+#search3 tr:hover {background-color: #f2f2f2;}
+#proposal tr:hover {background-color: #f2f2f2;}
+
+#searchs th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #305680;
+  color: white;
+}
+.city th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #305680;
+  color: white;
+}
+#search2 th{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #305680;
+  color: white;
+}
+#search3 th{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color :#305680;
+  color: white;
+}
+#proposal th{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #305680;
+  color: white;
+}
+
+.containerflex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
+
+    padding: 2px;
+    background: white;
+    min-width: 1250px;
+    height: 230px;
+    margin: auto;
+}
+
+.flexitem {
+    width: 530px;
+    height: 220px;
+    padding: 0px;
+    background: #0AA6DB;
+    margin: 1px;
+    font-weight: bold;
+}
+
+hr {
+  margin: 5px 0;
+  border-top: 1px solid #ddd;
+}
+
+.row {
+  margin: 0;
+}
+
+.nav>li>a:focus {
+  background-color: #ffffff00 !important;
+}
+
+</style>
+<form id="inspectionplan2" method="post" >
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-md-2">
+        <ul class="nav">
+          <li class="active tab-select"><a data-toggle="tab" href="#rickSummary">Rick Summary</a></li>
+          <li class="tab-select"><a data-toggle="tab" href="#rickSummaryDetail">Rick Summary Detail</a></li>
+          <li class="tab-select"><a data-toggle="tab" href="#inspectionPlan">Inspection Plan</a></li>
+        </ul>
+      </div>
+      <div class="col-md-10">
+        <div class="tab-content">
+          <!-- tab1 -->
+          <div id="rickSummary" style="height: calc(100vh - 150px);" class="box-custom-proposal tab-pane fade in active">
+            <div class="f-18">
+              <b>Indentification</b>
+            </div>
+            <div class="row mt-5">
+              <div class="col-md-3 class-inline-custom">
+                <div>
+                  <b>Equipment: </b>
+                </div>
+                <div>
+                  {{ obj.equipment_name }}
+                </div>
+              </div>
+              <div class="col-md-3 class-inline-custom">
+                <div>
+                  <b>Equipment Type: </b>
+                </div>
+                <div>
+                  {{ obj.equipment_type }}
+                </div>
+              </div>
+              <div class="col-md-6 class-inline-custom">
+                <div>
+                  <b>Component: </b>
+                </div>
+                <div>
+                  {{ obj.component_name }}
+                </div>
+              </div>
+              <div class="col-md-12 class-inline-custom">
+                <div>
+                  <b>Equipment Description: </b>
+                </div>
+                <div>
+                  {{ obj.equipment_desc }}
+                </div>
+              </div>
+            </div>
+            <hr >
+
+            <div class="f-18">
+              <b>Represent Fluid</b>
+            </div>
+            <div class="row mt-5">
+              <div class="col-md-12 class-inline-custom">
+                <div>
+                  <b>Represent.fluid: </b>
+                </div>
+                <div>
+                  {{ obj.fluid }}
+                </div>
+              </div>
+            </div>
+            <hr>
+
+            <div class="f-18">
+              <b>Releases Fluid</b>
+            </div>
+            <div class="row mt-5">
+              <div class="col-md-12 class-inline-custom">
+                <div>
+                  <b>Fluid Phase: </b>
+                </div>
+                <div>
+                  {{ obj.fluid_phase }}
+                </div>
+              </div>
+            </div>
+            <hr>
+
+            <div class="f-18">
+              <b>Consequence (COF)</b>
+            </div>
+            <div class="row mt-5">
+              <div class="col-md-3 class-inline-custom">
+                <div>
+                  <b>Current Risk: </b>
+                </div>
+                <div>
+                  N/A
+                </div>
+              </div>
+              <div class="col-md-3 class-inline-custom">
+                <div>
+                  <b>Cofcat.Flammable:	</b>
+                </div>
+                <div>
+                  {{ obj.flamablecv }}
+                </div>
+              </div>
+              <div class="col-md-3 class-inline-custom">
+                <div>
+                  <b>Cofcat.People: </b>
+                </div>
+                <div>
+                  {{ obj.injcv }}
+                </div>
+              </div>
+              <div class="col-md-3 class-inline-custom">
+                <div>
+                  <b>Cofcat.Asset: </b>
+                </div>
+                <div>
+                  {{ obj.businesscv }}
+                </div>
+              </div>
+              <div class="col-md-3 class-inline-custom">
+                <div>
+                  <b>Cofcat.Env: </b>
+                </div>
+                <div>
+                  {{ obj.envcv }}
+                </div>
+              </div>
+              <div class="col-md-3 class-inline-custom">
+                <div>
+                  <b>Cofcat.Reputation: </b>
+                </div>
+                <div>
+                  N/A
+                </div>
+              </div>
+              <div class="col-md-3 class-inline-custom">
+                <div>
+                  <b>Cofcat.Combined: </b>
+                </div>
+                <div>
+                  {{ obj.consequencecv }}
+                </div>
+              </div>
+            </div>
+            <hr>
+
+            <div class="f-18">
+              <b>Component Material Glade	</b>
+            </div>
+            <div class="row mt-5">
+              <div class="col-md-12 class-inline-custom">
+                <div>
+                  <b>Component Material Glade: </b>
+                </div>
+                <div></div>
+              </div>
+            </div>
+            <hr>
+
+            <div class="f-18">
+              <b>Probability (POF)</b>
+            </div>
+            <div class="row mt-5">
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>Init Thinning POF Catalog: </b>
+                </div>
+                <div>
+                  {{ obj.init_thinningcv }}
+                </div>
+              </div>
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>InitEnv.Cracking: </b>
+                </div>
+                <div>
+                  {{ obj.init_crackingcv }}
+                </div>
+              </div>
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>Init Other POF Catalog: </b>
+                </div>
+                <div>
+                  {{ obj.init_othercv }}
+                </div>
+              </div>
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>Init POF Catelog: </b>
+                </div>
+                <div>
+                  {{ obj.init_pofcv }}
+                </div>
+              </div>
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>Ext Thinning POF: </b>
+                </div>
+                <div>
+                  {{ obj.ext_thinningcv }}
+                </div>
+              </div>
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>Cracking Probability Catelog: </b>
+                </div>
+                <div>
+                  N/A
+                </div>
+              </div>
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>ExtOther POF Catelog: </b>
+                </div>
+                <div>
+                  N/A
+                </div>
+              </div>
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>Ext POF Catelog: </b>
+                </div>
+                <div>
+                  {{ obj.ext_thinningcv }}
+                </div>
+              </div>
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>POF Category: </b>
+                </div>
+                <div>
+                  {{ obj.pof_catalogcv }}
+                </div>
+              </div>
+            </div>
+            <hr>
+
+            <div class="f-18">
+              <b>Risk</b>
+            </div>
+            <div class="row mt-5 mb-5">
+              <div class="col-md-3 class-inline-custom">
+                <div>
+                  <b>Current Risk: </b>
+                </div>
+                <div>
+                  {{ obj.riskcv }}
+                </div>
+              </div>
+              <div class="col-md-3 class-inline-custom">
+                <div>
+                  <b>Future Risk: </b>
+                </div>
+                <div>
+                  {{ obj.risk_futurecv }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- tab2 -->
+          <div id="rickSummaryDetail" style="height: calc(100vh - 150px);" class="box-custom-proposal tab-pane fade">
+            <div class="f-18">
+              <b>Indentification</b>
+            </div>
+            <div class="row mt-5">
+              <div class="col-md-3 class-inline-custom">
+                <div>
+                  <b>Equipment: </b>
+                </div>
+                <div>
+                  {{ obj.equipment_name }}
+                </div>
+              </div>
+              <div class="col-md-3 class-inline-custom">
+                <div>
+                  <b>Equipment Type: </b>
+                </div>
+                <div>
+                  {{ obj.equipment_type }}
+                </div>
+              </div>
+              <div class="col-md-6 class-inline-custom">
+                <div>
+                  <b>Component: </b>
+                </div>
+                <div>
+                  {{ obj.component_name }}
+                </div>
+              </div>
+              <div class="col-md-12 class-inline-custom">
+                <div>
+                  <b>Equipment Description: </b>
+                </div>
+                <div>
+                  {{ obj.equipment_desc }}
+                </div>
+              </div>
+            </div>
+            <hr >
+
+            <div class="f-18">
+              <b>Represent Fluid</b>
+            </div>
+            <div class="row mt-5">
+              <div class="col-md-12 class-inline-custom">
+                <div>
+                  <b>Represent.fluid: </b>
+                </div>
+                <div>
+                  {{ obj.fluid }}
+                </div>
+              </div>
+            </div>
+            <hr>
+
+            <div class="f-18">
+              <b>Releases Fluid</b>
+            </div>
+            <div class="row mt-5">
+              <div class="col-md-12 class-inline-custom">
+                <div>
+                  <b>Fluid Phase: </b>
+                </div>
+                <div>
+                  {{ obj.fluid_phase }}
+                </div>
+              </div>
+            </div>
+            <hr>
+
+            <div class="f-18">
+              <b>Consequence (COF)</b>
+            </div>
+            <div class="row mt-5">
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>Current Risk: </b>
+                </div>
+                <div>
+                  N/A
+                </div>
+              </div>
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>Cofcat.Flammable:	</b>
+                </div>
+                <div>
+                  {{ obj.flamable }}
+                </div>
+              </div>
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>Cofcat.People: </b>
+                </div>
+                <div>
+                  {{ obj.inj }}
+                </div>
+              </div>
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>Cofcat.Asset: </b>
+                </div>
+                <div>
+                  {{ obj.business }}
+                </div>
+              </div>
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>Cofcat.Env: </b>
+                </div>
+                <div>
+                  {{ obj.env }}
+                </div>
+              </div>
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>Cofcat.Reputation: </b>
+                </div>
+                <div>
+                  N/A
+                </div>
+              </div>
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>Cofcat.Combined: </b>
+                </div>
+                <div>
+                  {{ obj.consequence }}
+                </div>
+              </div>
+            </div>
+            <hr>
+
+            <div class="f-18">
+              <b>Component Material Glade	</b>
+            </div>
+            <div class="row mt-5">
+              <div class="col-md-12 class-inline-custom">
+                <div>
+                  <b>Component Material Glade: </b>
+                </div>
+                <div></div>
+              </div>
+            </div>
+            <hr>
+
+            <div class="f-18">
+              <b>Probability (POF)</b>
+            </div>
+            <div class="row mt-5">
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>Init Thinning POF Catalog: </b>
+                </div>
+                <div>
+                  {{ obj.init_thinning }}
+                </div>
+              </div>
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>InitEnv.Cracking: </b>
+                </div>
+                <div>
+                  {{ obj.init_cracking }}
+                </div>
+              </div>
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>Init Other POF Catalog: </b>
+                </div>
+                <div>
+                  {{ obj.init_other }}
+                </div>
+              </div>
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>Init POF Catelog: </b>
+                </div>
+                <div>
+                  {{ obj.init_pof }}
+                </div>
+              </div>
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>Ext Thinning POF: </b>
+                </div>
+                <div>
+                  {{ obj.ext_thinning }}
+                </div>
+              </div>
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>Cracking Probability Catelog: </b>
+                </div>
+                <div>
+                  N/A
+                </div>
+              </div>
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>ExtOther POF Catelog: </b>
+                </div>
+                <div>
+                  N/A
+                </div>
+              </div>
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>Ext POF Catelog: </b>
+                </div>
+                <div>
+                  {{ obj.ext_thinning }}
+                </div>
+              </div>
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>POF Category: </b>
+                </div>
+                <div>
+                  {{ obj.pof_catalog }}
+                </div>
+              </div>
+            </div>
+            <hr>
+
+            <div class="f-18">
+              <b>Risk</b>
+            </div>
+            <div class="row mt-5 mb-5">
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>Current Risk: </b>
+                </div>
+                <div>
+                  {{ obj.risk }}
+                </div>
+              </div>
+              <div class="col-md-4 class-inline-custom">
+                <div>
+                  <b>Future Risk: </b>
+                </div>
+                <div>
+                  {{ obj.risk_future }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- tab3 -->
+          <div id="inspectionPlan" style="height: calc(100vh - 150px);" class="box-custom-proposal tab-pane fade">
+            <div class="f-18">
+              <b>Inspection Plan</b>
+            </div>
+            <div class="row mt-5">
+              <div class="col-md-12 class-inline-custom mb-8">
+                <div>
+                  <b>Equipment: </b>
+                </div>
+                <div>
+                  {{ obj1.Equipment }}
+                </div>
+              </div>
+              <div class="col-md-12 class-inline-custom mb-8">
+                <div>
+                  <b>Component Name: </b>
+                </div>
+                <div>
+                  {{ obj1.System }}
+                </div>
+              </div>
+              <div class="col-md-12 class-inline-custom mb-8">
+                <div>
+                  <b>Damage Mechanism: </b>
+                </div>
+                <div>
+                  {{ obj1.Damage }}
+                </div>
+              </div>
+              <div class="col-md-12 class-inline-custom mb-8">
+                <div>
+                  <b>Method: </b>
+                </div>
+                <div>
+                  {{ obj1.Method }}
+                </div>
+              </div>
+              <div class="col-md-12 class-inline-custom mb-8">
+                <div>
+                  <b>Coverage: </b>
+                </div>
+                <div>
+                  {{ obj1.Coverage }}
+                </div>
+              </div>
+              <div class="col-md-12 class-inline-custom mb-8">
+                <div>
+                  <b>Availability: </b>
+                </div>
+                <div>
+                  {{ obj1.Avaiable }}
+                </div>
+              </div>
+              <div class="col-md-12 class-inline-custom mb-8">
+                <div>
+                  <b>Last Inspection Date: </b>
+                </div>
+                <div>
+                  {{ obj1.Last }}
+                </div>
+              </div>
+              <div class="col-md-12 class-inline-custom mb-8">
+                <div>
+                  <b>Inspection Interval, years:</b>
+                </div>
+                <div>
+                  {{ obj1.Interval }}
+                </div>
+              </div>
+              <div class="col-md-12 class-inline-custom mb-8">
+                <div>
+                  <b>Due Date:</b>
+                </div>
+                <div>
+                  {{ obj1.Duedate }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align: right; margin-top: 10px; margin-right: 15px;">
+      <a href="{% url 'exportData' id 'Proposal' %}" type="button" class="btn btn-info" data-toggle="modal">Excel Download</a>
+      <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal" style="background-color: #34835c">Detail</button>
+    </div>
+    <!--Modal-->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Chi tiết</h4>
+            </div>
+            <div class="modal-body" >
+                <h4>&ensp; <b><u> Risk Summary</u></b></h4>
+                <p>Risk summary là bảng thống kê tổng quát bản kiểm định, bao gồm các thông sô như tên thiết bị, loại thiết bị, kết quả tính toán tổng quan,...
+                    Trong trang Risk summary có các trường cột:</p>
+                <p>&nbsp; <b>Indentification:</b> bao gồm tên thiết bị, chi tiết thiết bị, loại thiết bị và các thành phần</p>
+                <p>&nbsp; <b>Represent Fluid:</b> chứa thông tin chất lỏng, pha của chất lỏng</p>
+                <p>&nbsp; <b>Consequence(COF)</b> bao gồm các thiệt hại lần lượt về hiện tại, cháy nổ, con người, tài sản, môi trường, uy tín...</p>
+                <p>&nbsp; <b>Probability(POF)</b> bao gồm xác xuất hư hại lần lượt như làm mỏng, bẻ gãy, ăn mòn,..</p>
+                <p>&nbsp; <b>Risk</b> là tổng quan rủi ro bao gồm hiện tại và sau này </p>
+                <h4>&ensp; <b><u> Risk Summary Detail</u></b></h4>
+                <p>Cũng giống như các trường bên Risk Summary thì Risk Summary Detail thay vì hiển thị tổng quan các kết quả thì sẽ hiển thị chi tiết kết quả</p>
+                <h4>&ensp; <b><u> Inspection Plan</u></b></h4>
+                <p>Đây là bảng chứa các dữ liệu liên quan đến việc lập kế hoạch kiểm định, phương pháp cũng như ngày kiểm định</p>
+                <p>&nbsp; <b>Damage Mechanism</b> là hư hại mà thiết bị đang có</p>
+                <p>&nbsp; <b>Method</b> đây là phương pháp kiểm định</p>
+                <p>&nbsp; <b>Inspection date/due date</b> là ngày kiểm định gần nhất và ngày kiểm định kế tiếp</p>
+                <p>&nbsp; <b>Inspection Interval, years</b> là thời gian giữa ngày kiểm định gần nhất và ngày kiểm định tiếp theo</p>
+                <h4>&ensp; <b><u> Giải thích các đại lượng</u></b></h4>
+                <p>A,B,C,D,E: là mức độ xác suất gây hại từ thấp lên cao</p>
+                <p>1,2,3,4,5: là mức độ thiệt hại từ thấp lên cao</p>
+                <p>Medium High, High, Medium, Low, N/A: là mức độ đánh giá rủi ro từ cao xuống thấp, N/A nghĩa là gần như không có rủi ro thiệt hại nào</p>
+                <p><b><u>NOTE:</u></b> Kết quả này được đánh giá dựa theo kết quả bên bảng Risk Summary Detail</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+    </div>
+  </div>
+</form>
+{% endblock %}

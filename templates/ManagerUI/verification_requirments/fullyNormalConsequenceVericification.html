@@ -1,0 +1,171 @@
+{% extends 'BaseUI/BaseManager/baseRiskSummaryMana.html' %}
+
+{% load staticfiles %}
+
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactorMana' proposalID %}{% endblock %}
+{% block ca%}{% url 'fullyConsequenceMana' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrixMana' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChartMana' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'proposalDisplayMana' ass.componentid_id %}{% endblock %}
+<!---------------END BLOCK--------------->
+
+{% block data-content %}
+<form method="post">
+    {% csrf_token %}
+  <div class="title-verifitcation" >
+      <h1>CONSEQUENCE OF FAILURE</h1>
+  </div>
+  <div class="header-verification">
+    <div class="row left-header-verification">
+      <div class="col-md-5 column-element column-hight">
+        <img class="ml-16" src="{% static 'image/Sensor/sites.png'%}" alt="">
+        <div class="mr-16">
+          <p>56</p>
+          <p>Sites</p>
+        </div>
+      </div>
+      <div class="col-md-5 column-element column-medium">
+        <img class="ml-16" src="{% static 'image/Sensor/factory.png'%}" alt="">
+        <div class="mr-16">
+          <p>56</p>
+          <p>Facility</p>
+        </div>
+      </div>
+      <div class="col-md-5 column-element column-low">
+        <img class="ml-16" src="{% static 'image/Sensor/equipment.png'%}" alt="">
+        <div class="mr-16">
+          <p>56</p>
+          <p>Equipment</p>
+        </div>
+      </div>
+      <div class="col-md-5 column-element column-normal">
+        <img class="ml-16" src="{% static 'image/Sensor/engineering.png'%}" alt="">
+        <div class="mr-16">
+          <p>56</p>
+          <p>Component</p>
+        </div>
+      </div>
+    </div>
+    <div class="right-header-verification">
+      <!-- <p>Troubleshooting Process</p> -->
+      <div class="content-right-header">
+          <div class="step-content-header">
+              <div class="step-element">
+                <button class="btn-step">Step 1</button>
+                <span></span>
+              </div>
+            <p>View List Proposal</p>
+          </div>
+          <div class="step-content-header">
+            <div class="step-element">
+              <button class="btn-step">Step 2</button>
+              <span></span>
+            </div>
+            <p style="padding-left: 18px;">View Risk</p>
+          </div>
+          <div class="step-content-header">
+            <div class="step-element">
+              <button class="btn-step active-btn-step">Step 3</button>
+              <span></span>
+            </div>
+            <p style="padding-left: 5px;">Choose Risk</p>
+          </div>
+          <div class="step-content-header">
+            <div class="step-element">
+              <button class="btn-step">Step 4</button>
+            </div>
+            <p>Send Verification</p>
+          </div>
+      </div>
+    </div>
+  </div>
+  <hr class="hr-verification"/>
+    
+  <div class="input-data content-full-df">
+    <!-- <h2 class="color-white"></h2> -->
+                <!----------- BLOCK INPUT ---------->
+    <h3  class="color-white">Input</h3>
+    <hr class="hr-verification"/>
+    <div class="px-100">
+        <div class="row">
+            <div class="col-md-1"><input type="checkbox" name="check" value="Cost of lost production due to downtime to repair equipment, $/day"></div>
+            <div class="col-md-7 color-white">Cost of lost production due to downtime to repair equipment, $/day:</div>
+            <div class="col-md-4 text-value">{{ data.production_cost }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"><input type="checkbox" name="check" value="Equipment cost, $/m2"></div>
+            <div class="col-md-7 color-white">Equipment cost, $/m2:</div>
+            <div class="col-md-4 text-value">{{ data.equipment_cost }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"><input type="checkbox" name="check" value="Population density of personal or employees in the unit, personal/m2"></div>
+            <div class="col-md-7 color-white">Population density of personal or employees in the unit, personal/m2:</div>
+            <div class="col-md-4 text-value">{{ data.personal_density }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"><input type="checkbox" name="check" value="Environmental clean-up cost, $/barrel"></div>
+            <div class="col-md-7 color-white">Environmental clean-up cost, $/barrel:</div>
+            <div class="col-md-4 text-value">{{ data.evironment_cost }}</div>
+        </div>
+    </div>
+
+                <!-------- BLOCK CONSEQUENCE ------->
+    <h3 class="color-white">Consequence of Failure and Category</h3>
+    <hr class="hr-verification"/>
+    <div class="px-100">
+        <div class="row">
+            <div class="col-md-1"><input type="checkbox" name="check" value="Financial Consequence Area of Component Damage Flamable, m"></div>
+            <div class="col-md-7 color-white">Financial Consequence Area of Component Damage Flamable, m<sup>2</sup>:</div>
+            <div class="col-md-4 text-value">{{ data.ca_cmd }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"><input type="checkbox" name="check" value="Financial Consequence Area of Personnel Injury Flamable, m"></div>
+            <div class="col-md-7 color-white">Financial Consequence Area of Personnel Injury Flamable, m<sup>2</sup>:</div>
+            <div class="col-md-4 text-value">{{ data.ca_inj_flame }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"><input type="checkbox" name="check" value="Financial Consequence of Component Damage Costs, $"></div>
+            <div class="col-md-7 color-white">Financial Consequence of Component Damage Costs, $:</div>
+            <div class="col-md-4 text-value">{{ data.fc_cmd }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"><input type="checkbox" name="check" value="Financial Consequence of Affected Area, $"></div>
+            <div class="col-md-7 color-white">Financial Consequence of Affected Area, $:</div>
+            <div class="col-md-4 text-value">{{ data.fc_affa }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"><input type="checkbox" name="check" value="Financial Consequence of Business Interruption Costs, $"></div>
+            <div class="col-md-7 color-white">Financial Consequence of Business Interruption Costs, $:</div>
+            <div class="col-md-4 text-value">{{ data.fc_prod }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"><input type="checkbox" name="check" value="Financial Consequence of Potential Injury Costs, $"></div>
+            <div class="col-md-7 color-white">Financial Consequence of Potential Injury Costs, $:</div>
+            <div class="col-md-4 text-value">{{ data.fc_inj }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"><input type="checkbox" name="check" value="Financial Consequence of Environmental Cleanup Costs, $"></div>
+            <div class="col-md-7 color-white">Financial Consequence of Environmental Cleanup Costs, $:</div>
+            <div class="col-md-4 text-value">{{ data.fc_envi }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"><input type="checkbox" name="check" value="Financial Consequence of Falure, $"></div>
+            <div class="col-md-7 color-white">Financial Consequence of Falure, $:</div>
+            <div class="col-md-4 text-value">{{ data.fc_total }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"><input type="checkbox" name="check" value="Consequence of Failure Category"></div>
+            <div class="col-md-7 color-white">Consequence of Failure Category:</div>
+            <div class="col-md-4 text-value"><b>{{ data.fcof_category }}</b></div>
+        </div>
+      </div>
+      <br>
+      <div class="px-100">
+        <div class="row">
+          <div class="col-md-12" style="text-align: right"><button type="submit" name="Verifica" class="btn btn-primary btn-custom-by-thc" id="changeThinning" onclick="btnChangeClick()">Send Verification</button></div>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,1998 @@
+{% extends 'BaseUI/BaseFacility/baseEquipment.html' %}
+
+{% load staticfiles %}
+{% load static %}
+
+<!--------------- BLOCK MENU ------------->
+{#{% block listeq %}{% url 'equipmentDisplay' facilityID %}{% endblock %}#}
+{#{% block mana %}{% url 'managmentsystems' facilityID %}{% endblock %}#}
+{% block neweq %}{% url 'equipmentNew' facilityID %}{% endblock %}
+{% block backfaci %}{% url 'facilitiesEdit' facilityID %}{% endblock %}
+{#{% block listfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}#}
+{#{% block newfaci %}{% url 'facilitiesNew' siteID %}{% endblock %}#}
+{#{% block design %}{% url 'designcodeDisplay' siteID %}{% endblock %}#}
+{#{% block manu %}{% url 'manufactureDisplay' siteID %}{% endblock %}#}
+{#{% block uploadInsp %}{% url 'upload' siteID %}{% endblock %}#}
+{#{% block uploadPlant %}{% url 'uploadPlan' siteID %}{% endblock %}#}
+<!--------------- END BLOCK -------------->
+
+{% block data-content %}
+    <form id="tank" method="post">
+    {% csrf_token %}
+        <div class="input-data">
+{#            <-------TAB 1------->#}
+            <div class="tab">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b></b>Leadership and Administration</legend>
+                    <table class="table" id="mytable">
+                        <thead>
+                            <tr>
+                                <th width="90%" style="text-align: center">Questions</th>
+                                <th width="100%" style="text-align: right"><input type="checkbox" id="chkHeader"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align: left">Does the organization at the corporate or local level have a general policy
+                                    statement reflecting management’s commitment to Process Safety
+                                    Management, and emphasizing safety and loss control issues?</td>
+                                <td style="text-align: right"><input type="checkbox" name="check1"></td>
+                            </tr>
+                            <tr>
+                                <td>Is the general policy statement:</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. Contained in manuals?
+                                    <br>
+                                    b. Posted in various locations?
+                                    <br>
+                                    c. Included as a part of all rule booklets?
+                                    <br>
+                                    d. Referred to in all major training programs?
+                                    <br>
+                                    e. Used in other ways? (Describe)
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check2" >
+                                    <br>
+                                    <input type="checkbox" name="check3" >
+                                    <br>
+                                    <input type="checkbox" name="check4" >
+                                    <br>
+                                    <input type="checkbox" name="check5" >
+                                    <br>
+                                    <input type="checkbox" name="check6" >
+                                </td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Are responsibilities for process safety and health issues clearly defined in
+                                    every manager’s job description?</td>
+                                <td><input type="checkbox" name="check7" ></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Are annual objectives in the area of process safety and health issues
+                                    established for all management personnel, and are they then included as
+                                    an important consideration in their regular annual appraisals?</td>
+                                <td><input type="checkbox" name="check8" ></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">What percentage of the total management team has participated in a
+                                    formal training course or outside conference or seminar on Process Safety
+                                    Management over the last three years?</td>
+                                <td><input type="checkbox" name="check9" ></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Is there a site Safety Committee, or equivalent?</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left">
+                                    a. Does the committee make-up represent a diagonal slice of the organization?
+                                    <br>
+                                    b. Does the committee meet regularly and document that appropriate recommendations are implemented?
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check10">
+                                    <br>
+                                    <br>
+                                    <input type="checkbox" name="check11" >
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+{#            <--------TAB 2------->#}
+            <div class="tab">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Process Safety Information</b></legend>
+                    <table class="table" id="mytable">
+                        <thead>
+                            <tr>
+                                <th width="90%" style="text-align: center">Questions</th>
+                                <th width="100%" style="text-align: right"><input type="checkbox" id="chkHeader"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Are Material Safety Data Sheets (MSDS) available for all chemical substances
+                                    used or handled in each unit?</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. Is the maximum on-site inventory of each of these chemicals listed?
+                                    <br>
+                                    b. Is this information available to operations and maintenance personnel and any appropriate contract personnel in the unit?
+                                    <br>
+                                    c. Are the hazardous effects, if any, of inadvertent mixing of the various
+                                    materials on site clearly stated in the Standard Operating Procedures and
+                                    emphasized in operator training programs?
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check12">
+                                    <br>
+                                    <br>
+                                    <input type="checkbox" name="check13">
+                                    <br>
+                                    <br>
+                                    <input type="checkbox" name="check14">
+                                </td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Are quality control procedures in place and practiced to ensure that all
+                                    identified materials meet specifications when received and used?</td>
+                                <td><input type="checkbox" name="check15"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Is up-to-date written information readily available in the unit that:</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left">
+                                    a. Summarizes the process chemistry?
+                                    <br>
+                                    b. Lists the safe upper and lower limits for such items as temperatures,
+                                    pressures, flows and compositions?
+                                    <br>
+                                    c. States the safety-related consequences of deviations from these limits?
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check16">
+                                    <br>
+
+                                    <input type="checkbox" name="check17">
+                                    <br><br>
+                                    <input type="checkbox" name="check18">
+                                </td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Is a block flow diagram or simplified process flow diagram available to aid in
+                                    the operator’s understanding of the process? </td>
+                                <td><input type="checkbox" name="check19"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Are P&IDs available for all units at the site?</td>
+                                <td><input type="checkbox" name="check20"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Does documentation show all equipment in the unit is designed and
+                                    constructed in compliance with all applicable codes, standards, and generally
+                                    accepted good engineering practices?</td>
+                                <td><input type="checkbox" name="check21"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Has all existing equipment been identified that was designed and constructed
+                                    in accordance with codes, standards, or practices that are no longer in general
+                                    use?</td>
+                                <td><input type="checkbox" name="check22"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Has it been documented that the design, maintenance, inspection and testing
+                                    of such equipment will allow it to be operated in a safe manner?</td>
+                                <td><input type="checkbox" name="check23"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Have written records been compiled for each piece of equipment in the
+                                    process, and do they include all of the following?</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left">
+                                    a. Materials of construction
+                                    <br>
+                                    b. Design codes and standards employed
+                                    <br>
+                                    c. Electrical classification
+                                    <br>
+                                    d. Relief system design and design basis
+                                    <br>
+                                    e. Ventilation system design
+                                    <br>
+                                    f. Safety systems, including interlocks, detection and suppression systems
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check24">
+                                    <br>
+                                    <input type="checkbox" name="check25">
+                                    <br>
+                                    <input type="checkbox" name="check26">
+                                    <br>
+                                    <input type="checkbox" name="check27">
+                                    <br>
+                                    <input type="checkbox" name="check28">
+                                    <br>
+                                    <input type="checkbox" name="check29">
+                                </td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Are procedures in place to ensure that each individual with responsibility for
+                                    managing the process has a working knowledge of the process safety
+                                    information appropriate to his or her responsibilities?</td>
+                                <td><input type="checkbox" name="check30"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Are procedures in place to ensure that each individual with responsibility for
+                                    managing the process has a working knowledge of the process safety
+                                    information appropriate to his or her responsibilities?</td>
+                                <td><input type="checkbox" name="check31"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Is a documented compilation of all the above Process Safety Information
+                                    maintained at the facility as a reference? The individual elements of the
+                                    Information may exist in various forms and locations, but the compilation
+                                    should confirm the existence and location of each element.</td>
+                                <td><input type="checkbox" name="check32"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+{#            <--------TAB 3------>#}
+            <div class="tab">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Process Hazard Analysis</b></legend>
+                    <table class="table" id="mytable">
+                        <thead>
+                            <tr>
+                                <th width="90%" style="text-align: center">Questions</th>
+                                <th width="100%" style="text-align: right"><input type="checkbox" id="chkHeader"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align: left">What percentage of all process units that handle hazardous chemicals at the
+                                    facility have had a formal Process Hazard Analysis (PHA) within the last five
+                                    years?</td>
+                                <td style="text-align: right"><input type="checkbox" name="check33"></td>
+                            </tr>
+                            <tr>
+                                <td>Has a priority order been established for conducting future PHAs? and Does the basis for the prioritization address the following factors?:</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. The quantity of toxic, flammable, or explosive material at the site
+                                    <br>
+                                    b. The level of toxicity or reactivity of the materials
+                                    <br>
+                                    c. The number of people in the immediate proximity of the facility, including
+                                    both onsite and offsite locations
+                                    <br>
+                                    d. Process complexity
+                                    <br>
+                                    e. Severe operating conditions or conditions that can cause corrosion or
+                                    erosion
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check34">
+                                    <br>
+                                    <input type="checkbox" name="check35">
+                                    <br>
+                                    <input type="checkbox" name="check36">
+                                    <br>
+                                    <br>
+                                    <input type="checkbox" name="check37">
+                                    <br>
+                                    <input type="checkbox" name="check38">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Do the PHAs conducted to date address:</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. The hazards of the process?
+                                    <br>
+                                    b. A review of previous incident/accident reports from the unit being analyzed
+                                    to identify any previous incidents that had a potential for catastrophic
+                                    consequences?
+                                    <br>
+                                    c. Engineering and administrative controls applicable to the hazards and their
+                                    interrelationships?
+                                    <br>
+                                    d. Consequences of failure of engineering and administrative controls?
+                                    <br>
+                                    e. Facilities siting?
+                                    <br>
+                                    f. Human factors?
+                                    <br>
+                                    g. A qualitative evaluation of the possible safety and health effects of failure
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check39">
+                                    <br>
+                                    <input type="checkbox" name="check40">
+                                    <br><br><br>
+                                    <input type="checkbox" name="check41">
+                                    <br><br>
+                                    <input type="checkbox" name="check42">
+                                    <br><br>
+                                    <input type="checkbox" name="check43">
+                                    <br>
+                                    <input type="checkbox" name="check44">
+                                    <br>
+                                    <input type="checkbox" name="check45">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Based on the most recent PHA conducted:</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. Was the team leader experienced in the technique being employed?
+                                    <br>
+                                    b. Had the team leader received formal training in the method being
+                                    employed?
+                                    <br>
+                                    c. Was at least one member of the team an expert on the process being
+                                    analyzed?
+                                    <br>
+                                    d. Were all appropriate disciplines represented on the team or brought in as
+                                    required during the analysis?
+                                    <br>
+                                    e. Was at least one member of the team a person who did not participate in
+                                    the original design of the facility?
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check46">
+                                    <br><br>
+                                    <input type="checkbox" name="check47">
+                                    <br><br>
+                                    <input type="checkbox" name="check48">
+                                    <br><br>
+                                    <input type="checkbox" name="check49">
+                                    <br><br>
+                                    <input type="checkbox" name="check50">
+                                </td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Is a formal system in place to promptly address the findings and
+                                    recommendations of a Process Hazard Analysis to ensure that the
+                                    recommendations are resolved in a timely manner and that the resolution is
+                                    documented?</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. If so, are timetables established for implementation?
+                                    <br>
+                                    b. Does the system require that decisions concerning recommendations in
+                                    PHAs and the status of implementation be communicated to all operations,
+                                    maintenance and other personnel who may be affected?
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check51">
+                                    <br>
+                                    <input type="checkbox" name="check52">
+                                </td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Is the methodology used in past PHAs and/or planned future PHAs appropriate
+                                    for the complexity of the process?</td>
+                                <td><input type="checkbox" name="check53"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Are the PHAs being led by an individual who has been trained in the methods
+                                    being used?</td>
+                                <td><input type="checkbox" name="check54"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Based on the most recent PHAs conducted, are the average rates of analysis
+                                    appropriate for the complexity of the systems being analyzed? (Typically, 2–4
+                                    P&IDs of average complexity will be analyzed per day.)</td>
+                                <td><input type="checkbox" name="check55"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">After the process hazards have been identified, are the likelihood and
+                                    consequences of the failure scenarios assessed using either qualitative or
+                                    quantitative techniques?</td>
+                                <td><input type="checkbox" name="check56"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+{#            <---------TAB 4 -------->#}
+            <div class="tab">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Management of Change</b></legend>
+                    <table class="table" id="mytable">
+                        <thead>
+                            <tr>
+                                <th width="90%" style="text-align: center">Questions</th>
+                                <th width="100%" style="text-align: right"><input type="checkbox" id="chkHeader"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align: left">Does the facility have a written Management of Change procedure that must
+                                    be followed whenever new facilities are added or changes are made to a
+                                    process?</td>
+                                <td style="text-align: right"><input type="checkbox" name="check57"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left">Are authorization procedures clearly stated and at an appropriate level?</td>
+                                <td style="text-align: right"><input type="checkbox" name="check58"></td>
+                            </tr>
+                            <tr>
+                                <td>Do the following types of “changes” invoke the Management of Change
+                                    procedure?</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. Physical changes to the facility, other than replacement in kind
+                                    (expansions, equipment modifications, instrument or alarm system
+                                    revisions, etc.).
+                                    <br>
+                                    b. Changes in process chemicals (feedstocks, catalysts, solvents, etc.)
+                                    <br>
+                                    c. Changes in process conditions (operating temperatures, pressures,
+                                    production rates, etc.).
+                                    <br>
+                                    d. Significant changes in operating procedures (startup or shutdown
+                                    sequences, unit staffing level or assignments, etc.)
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check59">
+                                    <br><br><br>
+                                    <input type="checkbox" name="check60">
+                                    <br><br>
+                                    <input type="checkbox" name="check61">
+                                    <br><br>
+                                    <input type="checkbox" name="check62">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Is there a clear understanding at the facility of what constitutes a “temporary
+                                    change?”</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. Does Management of Change handle temporary changes as well as
+                                    permanent changes?
+                                    <br>
+                                    b. Are items that are installed as “temporary” tracked to ensure that they are
+                                    either removed after a reasonable period of time or reclassified as permanent?
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check63">
+                                    <br><br>
+                                    <input type="checkbox" name="check64">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Do the Management of Change procedures specifically require the following
+                                    actions whenever a change is made to a process?</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. Require an appropriate Process Hazard Analysis for the unit.
+                                    <br>
+                                    b. Update all affected operating procedures
+                                    <br>
+                                    c. Update all affected maintenance programs and inspection schedules.
+                                    <br>
+                                    d. Modify P&IDs, statement of operating limits, Material Safety Data Sheets,
+                                    and any other process safety information affected.
+                                    <br>
+                                    e. Notify all process and maintenance employees who work in the area of
+                                    the change, and provide training as required.
+                                    <br>
+                                    f. Notify all contractors affected by the change.
+                                    <br>
+                                    g. Review the effect of the proposed change on all separate but interrelated
+                                    upstream and downstream facilities.
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check65">
+                                    <br>
+                                    <input type="checkbox" name="check66">
+                                    <br>
+                                    <input type="checkbox" name="check67">
+                                    <br><br>
+                                    <input type="checkbox" name="check68">
+                                    <br><br>
+                                    <input type="checkbox" name="check69">
+                                    <br><br>
+                                    <input type="checkbox" name="check70">
+                                    <br>
+                                    <input type="checkbox" name="check71">
+                                </td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Is a formal system in place to promptly address the findings and
+                                    recommendations of a Process Hazard Analysis to ensure that the
+                                    recommendations are resolved in a timely manner and that the resolution is
+                                    documented?</td>
+                                <td><input type="checkbox" name="check72"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">When changes are made in the process or operating procedures, are there
+                                    written procedures requiring that the impact of these changes on the
+                                    equipment and materials of construction be reviewed to determine whether
+                                    they will cause any increased rate of damage or failure, or will result in
+                                    different failure mechanisms in the process equipment?</td>
+                                <td><input type="checkbox" name="check73"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">When the equipment or materials of construction are changed through
+                                    replacement or maintenance items, is there a system in place to formally
+                                    review any metallurgical change to ensure that the new material is suitable for
+                                    the process?</td>
+                                <td><input type="checkbox" name="check74"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+{#            <--------TAB 5-------->#}
+            <div class="tab">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Operating Procedures</b></legend>
+                    <table class="table" id="mytable">
+                        <thead>
+                            <tr>
+                                <th width="90%" style="text-align: center">Questions</th>
+                                <th width="100%" style="text-align: right"><input type="checkbox" id="chkHeader"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align: left">Are written operating procedures available to operations and maintenance
+                                    personnel in all units?</td>
+                                <td style="text-align: right"><input type="checkbox" name="check75"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left">Do the operating procedures clearly define the position of the person or
+                                    persons responsible for operation of each applicable area?</td>
+                                <td style="text-align: right"><input type="checkbox" name="check76"></td>
+                            </tr>
+                            <tr>
+                                <td>Are the following operating considerations covered in all Standard Operating
+                                    Procedures (SOPs)?</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. Initial startup
+                                    <br>
+                                    b. Normal (as well as emergency) operation
+                                    <br>
+                                    c. Normal shutdown
+                                    <br>
+                                    d. Emergency shutdown
+                                    <br>
+                                    e. Is the position of the person or persons who may initiate these procedures
+                                    defined?
+                                    <br>
+                                    f. Steps required to correct or avoid deviation from operating limits and
+                                    consequences of the deviation
+                                    <br>
+                                    g. Startup following a turnaround
+                                    <br>
+                                    h. Safety systems and their functions
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check77">
+                                    <br>
+                                    <input type="checkbox" name="check78">
+                                    <br>
+                                    <input type="checkbox" name="check79">
+                                    <br>
+                                    <input type="checkbox" name="check80">
+                                    <br>
+                                    <input type="checkbox" name="check81">
+                                    <br><br>
+                                    <input type="checkbox" name="check82">
+                                    <br><br>
+                                    <input type="checkbox" name="check83">
+                                    <br>
+                                    <input type="checkbox" name="check84">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Are the following safety and health considerations covered in all SOPs for the
+                                    chemicals used in the process?</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. Properties of, and hazards presented by, the chemicals
+                                    <br>
+                                    b. Precautions necessary to prevent exposure, including controls and
+                                    personal protective equipment
+                                    <br>
+                                    c. Control measures to be taken if physical contact occurs
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check85">
+                                    <br>
+                                    <input type="checkbox" name="check86">
+                                    <br><br>
+                                    <input type="checkbox" name="check87">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Are there adequate procedures for handover/transfer of information between
+                                    shifts?</td>
+                                <td><input type="checkbox" name="check88"></td>
+                            </tr>
+                            <tr>
+                                <td>How frequently are operating procedures formally reviewed to ensure they
+                                    reflect current operating practices and updated as required? (Choose one)</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    At least annually, or as changes occur
+                                    <br>
+                                    Each two years
+                                    <br>
+                                    Only when major process changes occur
+                                    <br>
+                                    No schedule has been established
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check89">
+                                    <br>
+                                    <input type="checkbox" name="check90">
+                                    <br>
+                                    <input type="checkbox" name="check91">
+                                    <br>
+                                    <input type="checkbox" name="check92">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>How often is an unbiased evaluation made of the level of compliance with
+                                    written operating procedures? (Choose one)</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Every 6 months
+                                    <br>
+                                    Yearly
+                                    <br>
+                                    Each 3 years
+                                    <br>
+                                    Not Done
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check93">
+                                    <br>
+                                    <input type="checkbox" name="check94">
+                                    <br>
+                                    <input type="checkbox" name="check95">
+                                    <br>
+                                    <input type="checkbox" name="check96">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+{#            <--------- TAB 6 --------->#}
+            <div class="tab">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Safe Work Practices</b></legend>
+                    <table class="table" id="mytable">
+                        <thead>
+                            <tr>
+                                <th width="90%" style="text-align: center">Questions</th>
+                                <th width="100%" style="text-align: right"><input type="checkbox" id="chkHeader"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Have safe work practices been developed and implemented for employees
+                                    and contractors to provide for the control of hazards during operation or
+                                    maintenance, including:</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. Hot work
+                                    <br>
+                                    b. Line breaking procedures
+                                    <br>
+                                    c. Lockout/tagout
+                                    <br>
+                                    d. Confined space entry
+                                    <br>
+                                    e. Opening process equipment or piping
+                                    <br>
+                                    f. Entrance into a facility by maintenance, contract, laboratory, or other
+                                    support personnel
+                                    <br>
+                                    g. Vehicle entry
+                                    <br>
+                                    h. Crane lifts
+                                    <br>
+                                    i. Handling of particularly hazardous materials (toxic, radioactive, etc.)
+                                    <br>
+                                    j. Inspection or maintenance of in-service equipment
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check97">
+                                    <br>
+                                    <input type="checkbox" name="check98">
+                                    <br>
+                                    <input type="checkbox" name="check99">
+                                    <br>
+                                    <input type="checkbox" name="check100">
+                                    <br>
+                                    <input type="checkbox" name="check101">
+                                    <br>
+                                    <input type="checkbox" name="check102">
+                                    <br><br>
+                                    <input type="checkbox" name="check103">
+                                    <br>
+                                    <input type="checkbox" name="check104">
+                                    <br>
+                                    <input type="checkbox" name="check105">
+                                    <br>
+                                    <input type="checkbox" name="check106">
+                                    <br>
+                                    <input type="checkbox" name="check107">
+                                </td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Do all the safe work practices listed in Question 1 require a work authorization
+                                    form or permit prior to initiating the activity?</td>
+                                <td><input type="checkbox" name="check108"></td>
+                            </tr>
+                            <tr>
+                                <td>If so, do the permit procedures include the following features?</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. Forms that adequately cover the subject area
+                                    <br>
+                                    b. Clear instructions denoting the number of copies issued and who receive
+                                    each copy
+                                    <br>
+                                    c. Authority required for issuance
+                                    <br>
+                                    d. Sign-off procedure at completion of work
+                                    <br>
+                                    e. Procedure for extension or reissue after shift change
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check109">
+                                    <br>
+                                    <input type="checkbox" name="check110">
+                                    <br><br>
+                                    <input type="checkbox" name="check111">
+                                    <br>
+                                    <input type="checkbox" name="check112">
+                                    <br>
+                                    <input type="checkbox" name="check113">
+                                </td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Is formal training provided to persons issuing each of the above permits?</td>
+                                <td><input type="checkbox" name="check114"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Are the affected employees trained in the above permit and procedure
+                                    requirements?</td>
+                                <td><input type="checkbox" name="check115"></td>
+                            </tr>
+                            <tr>
+                                <td>How often is an independent evaluation made (e.g., by Safety Department or
+                                    similar group), with results communicated to appropriate management, to
+                                    determine the extent of compliance with requirements for work permits and
+                                    specialized procedures for major units within the organization? (Choose one)</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Every 3 months
+                                    <br>
+                                    Every 6 months
+                                    <br>
+                                    Yearly
+                                    <br>
+                                    Not done
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check116">
+                                    <br>
+                                    <input type="checkbox" name="check117">
+                                    <br>
+                                    <input type="checkbox" name="check118">
+                                    <br>
+                                    <input type="checkbox" name="check119">
+                                </td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Is a procedure in place that requires that all work permit procedures and work
+                                    rules be formally reviewed at least every three years and updated as required?</td>
+                                <td><input type="checkbox" name="check120"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Do records indicate that these reviews are being conducted on a timely basis?</td>
+                                <td><input type="checkbox" name="check121"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Have surveys been conducted to determine whether working environments are
+                                    consistent with ergonomic standards?</td>
+                                <td><input type="checkbox" name="check121"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Either no deficiencies were found in the above survey, or if they were, are they
+                                    being corrected?</td>
+                                <td><input type="checkbox" name="check122"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+{#            <-------- TAB 7 -------->#}
+            <div class="tab">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Training</b></legend>
+                    <table class="table" id="mytable">
+                        <thead>
+                            <tr>
+                                <th width="90%" style="text-align: center">Questions</th>
+                                <th width="100%" style="text-align: right"><input type="checkbox" id="chkHeader"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Is there a written procedure that defines the general training in site-wide safety
+                                    procedures, work practices, etc., that a newly hired employee will receive?</td>
+                                <td><input type="checkbox" name="check123"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Is there a written procedure that defines the amount and content of site-specific
+                                    training, in addition to the general training provided in Question 1, that an
+                                    employee newly assigned to an operations position will receive prior to
+                                    assuming his duties?</td>
+                                <td><input type="checkbox" name="check124"></td>
+                            </tr>
+                            <tr>
+                                <td>Does the procedure described in Question 2 require that the training include the
+                                    following?</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. An overview of the process and its specific safety and health hazards
+                                    <br>
+                                    b. Training in all operating procedures
+                                    <br>
+                                    c. Training on site-emergency procedures
+                                    <br>
+                                    d. Emphasis on safety-related issues such as work permits, importance of
+                                    interlocks and other safety systems, etc.
+                                    <br>
+                                    e. Safe work practices
+                                    <br>
+                                    f. Appropriate basic skills
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check125">
+                                    <br><br>
+                                    <input type="checkbox" name="check126">
+                                    <br>
+                                    <input type="checkbox" name="check127">
+                                    <br>
+                                    <input type="checkbox" name="check128">
+                                    <br>
+                                    <input type="checkbox" name="check129">
+                                    <br>
+                                    <input type="checkbox" name="check130">
+                                    <br>
+                                    <input type="checkbox" name="check131">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>At the completion of formal training of operations personnel, what method is
+                                    used to verify that the employee understands the information presented?
+                                    (Choose one)</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Performance test followed by documented observation
+                                    <br>
+                                    Performance test only
+                                    <br>
+                                    Opinion of instructor
+                                    <br>
+                                    No verification
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check132">
+                                    <br>
+                                    <input type="checkbox" name="check133">
+                                    <br>
+                                    <input type="checkbox" name="check134">
+                                    <br>
+                                    <input type="checkbox" name="check135">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>How often are operations employees given formal refresher training? (Choose
+                                    one)</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    At least once every three years
+                                    <br>
+                                    Only when major process changes occur
+                                    <br>
+                                    Never
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check136">
+                                    <br>
+                                    <input type="checkbox" name="check137">
+                                    <br>
+                                    <input type="checkbox" name="check138">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>What is the average amount of training given to each operations employee per
+                                    year, averaged over all grades? (Choose one)</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    15 days/year or more
+                                    <br>
+                                    11 to 14 days/year
+                                    <br>
+                                    7 to 10 days/year
+                                    <br>
+                                    3 to 6 days/year
+                                    <br>
+                                    Less than 3 days/year
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check139">
+                                    <br>
+                                    <input type="checkbox" name="check140">
+                                    <br>
+                                    <input type="checkbox" name="check141">
+                                    <br>
+                                    <input type="checkbox" name="check142">
+                                    <br>
+                                    <input type="checkbox" name="check143">
+                                </td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Has a systematic approach (e.g., employee surveys, task analysis, etc.) been
+                                    used to identify the training needs of all employees at the facility, including the
+                                    training programs referred to in Questions 1 and 2?</td>
+                                <td><input type="checkbox" name="check144"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. Have training programs been established for the identified needs?
+                                    <br>
+                                    b. Are training needs reviewed and updated periodically?
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check145">
+                                    <br>
+                                    <input type="checkbox" name="check146">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Are the following features incorporated in the plan's formal training programs?</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. Qualifications for trainers have been established and are documented for
+                                    each trainer.
+                                    <br>
+                                    b. Written lesson plans are used that have been reviewed and approved to
+                                    ensure complete coverage of the topic.
+                                    <br>
+                                    c. Training aids and simulators are used where appropriate to permit “handson” training.
+                                    <br>
+                                    d. Records are maintained for each trainee showing the date of training and
+                                    means used to verify that training was understood.
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check147">
+                                    <br><br>
+                                    <input type="checkbox" name="check148">
+                                    <br><br>
+                                    <input type="checkbox" name="check149">
+                                    <br><br>
+                                    <input type="checkbox" name="check150">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+{#            <----------- TAB 7 ----------->#}
+            <div class="tab">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Mechanical Integrity</b></legend>
+                    <table class="table" id="mytable">
+                        <thead>
+                            <tr>
+                                <th width="90%" style="text-align: center">Questions</th>
+                                <th width="100%" style="text-align: right"><input type="checkbox" id="chkHeader"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Has a written inspection plan for the process unit been developed that includes
+                                    the following elements:</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. All equipment needing inspection has been identified?
+                                    <br>
+                                    b. The responsibilities to conduct the inspections have been assigned?
+                                    <br>
+                                    c. Inspection frequencies have been established?
+                                    <br>
+                                    d. The inspection methods and locations have been specified?
+                                    <br>
+                                    e. Inspection reporting requirements have been defined?
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check151">
+                                    <br>
+                                    <input type="checkbox" name="check152">
+                                    <br><br>
+                                    <input type="checkbox" name="check153">
+                                    <br>
+                                    <input type="checkbox" name="check154">
+                                    <br>
+                                    <input type="checkbox" name="check155">
+                                </td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Does the inspection plan referred to in Question 1 include a formal, external
+                                    visual inspection program for all process units?</td>
+                                <td><input type="checkbox" name="check155"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. Are all the following factors considered in the visual inspection program: the
+                                    condition of the outside of equipment, insulation, painting/coatings, supports
+                                    and attachments, and identifying mechanical damage, corrosion, vibration,
+                                    leakage or improper components or repairs?
+                                    <br>
+                                    b. Based on the inspection plan referred to in Question 1, do all pressure
+                                    vessels in the unit receive such a visual external inspection at least every 5
+                                    years?
+                                    <br>
+                                    c. Based on this inspection plan, do all on-site piping systems that handle
+                                    volatile, flammable products, toxins, acids and caustics, and other similar
+                                    materials receive a visual external inspection at least every 5 years?
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check156">
+                                    <br><br><br><br><br>
+                                    <input type="checkbox" name="check157">
+                                    <br><br><br>
+                                    <input type="checkbox" name="check158">
+                                </td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Based on the inspection plan, do all pressure vessels in the unit receive an
+                                    internal or detailed inspection using appropriate nondestructive examination
+                                    procedures at least every 10 years?</td>
+                                <td><input type="checkbox" name="check159"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Has each item of process equipment been reviewed by appropriate personnel
+                                    to identify the probable causes of damage or failure?</td>
+                                <td><input type="checkbox" name="check160"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. Has this information been used to establish the inspection methods,
+                                    locations, and frequencies and the preventive maintenance programs?
+                                    <br>
+                                    b. Have defect limits been established, based on fitness for service
+                                    considerations?
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check161">
+                                    <br><br><br>
+                                    <input type="checkbox" name="check162">
+                                </td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Is a formal program for thickness measurements of piping as well as vessels
+                                    being used?</td>
+                                <td><input type="checkbox" name="check163"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. When the locations for thickness measurements are chosen,
+                                    <br>
+                                    --> 1. Is the likelihood and consequence of failure a major factor?
+                                    <br>
+                                    --> 2. Is localized corrosion and erosion a consideration?
+                                    <br>
+                                    b. Are thickness measurement locations clearly marked on inspection
+                                    drawings and on the vessel or piping system to allow repetitive
+                                    measurements at precisely the same locations?
+                                    <br>
+                                    c. Are thickness surveys up to date?
+                                    <br>
+                                    d. Are the results used to predict remaining life and adjust future inspection
+                                    frequency?
+                                </td>
+                                <td>
+                                    <br>
+                                    <input type="checkbox" name="check164">
+                                    <br>
+                                    <input type="checkbox" name="check165">
+                                    <br>
+                                    <input type="checkbox" name="check166">
+                                    <br><br><br>
+                                    <input type="checkbox" name="check167">
+                                    <br>
+                                    <input type="checkbox" name="check168">
+                                </td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Has the maximum allowable working pressure (MAWP) been established for all
+                                    piping systems, using applicable codes and current operating conditions?</td>
+                                <td><input type="checkbox" name="check169"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Are the MAWP calculations updated after each thickness measurement, using
+                                    the latest wall thickness and corrosion rate?</td>
+                                <td><input type="checkbox" name="check170"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Has a systematic approach (e.g., employee surveys, task analysis, etc.) been
+                                    used to identify the training needs of all employees at the facility, including the
+                                    training programs referred to in Questions 1 and 2?</td>
+                                <td><input type="checkbox" name="check171"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Is there a written procedure that requires an appropriate level of review and
+                                    authorization prior to any changes in inspection frequencies or methods and
+                                    testing procedures?</td>
+                                <td><input type="checkbox" name="check172"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Have adequate inspection checklists been developed and are they being used?</td>
+                                <td><input type="checkbox" name="check173"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Are they periodically reviewed and updated as equipment or processes
+                                    change?</td>
+                                <td><input type="checkbox" name="check174"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Are all inspections, tests and repairs performed on the process equipment being
+                                    promptly documented?</td>
+                                <td><input type="checkbox" name="check175"></td>
+                            </tr>
+                            <tr>
+                                <td>Does the documentation include all of the following information:</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. The date of the inspection
+                                    <br>
+                                    b. The name of the person who performed the inspection
+                                    <br>
+                                    c. Identification of the equipment inspected
+                                    <br>
+                                    d. A description of the inspection or testing
+                                    <br>
+                                    e. The results of the inspection
+                                    <br>
+                                    f. All recommendations resulting from the inspection
+                                    <br>
+                                    g. A date and description of all maintenance performed
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check176">
+                                    <br>
+                                    <input type="checkbox" name="check177">
+                                    <br>
+                                    <input type="checkbox" name="check178">
+                                    <br>
+                                    <input type="checkbox" name="check179">
+                                    <br>
+                                    <input type="checkbox" name="check180">
+                                    <br>
+                                    <input type="checkbox" name="check181">
+                                    <br>
+                                    <input type="checkbox" name="check182">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Is there a written procedure requiring that all process equipment deficiencies
+                                    identified during an inspection be corrected in a safe and timely manner and are
+                                    they tracked and followed up to assure completion?</td>
+                                <td style="text-align: right"><input type="checkbox" name="check183"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. Is a system used to help determine priorities for action?
+                                    <br>
+                                    b. If defects are noted, are decisions to continue to operate the equipment
+                                    based on sound engineering assessments of fitness for service?
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check184">
+                                    <br>
+                                    <input type="checkbox" name="check185">
+                                </td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Is there a complete, up-to-date, central file for all inspection program
+                                    information and reports?</td>
+                                <td><input type="checkbox" name="check186"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Is this file information available to everyone who works with the process?</td>
+                                <td><input type="checkbox" name="check187"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Have all employees involved in maintaining and inspecting the process
+                                    equipment been trained in an overview of the process and its hazards?</td>
+                                <td><input type="checkbox" name="check188"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Have all employees involved in maintaining and inspecting the process
+                                    equipment been trained in all procedures applicable to their job tasks to ensure
+                                    that they can perform the job tasks in a safe and effective manner?</td>
+                                <td><input type="checkbox" name="check189"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">At completion of the training described above, are formal methods used to verify
+                                    that the employee understands what he was trained on?</td>
+                                <td><input type="checkbox" name="check190"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Are inspectors certified for performance in accordance with applicable industry
+                                    codes and standards (e.g., API 510, 570 and 653)?</td>
+                                <td><input type="checkbox" name="check191"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Are training programs conducted for contractors’ employees where special skills
+                                    or techniques unique to the unit or plan are required for these employees to
+                                    perform the job safely?</td>
+                                <td><input type="checkbox" name="check192"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Has a schedule been established for the inspection or testing of all pressure
+                                    relief valves in the unit?</td>
+                                <td><input type="checkbox" name="check193"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. Is the schedule being met?
+                                    <br>
+                                    b. Are all inspections and repairs fully documented?
+                                    <br>
+                                    c. Are all repairs made by personnel fully trained and experienced in relief
+                                    valve maintenance?
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check194">
+                                    <br>
+                                    <input type="checkbox" name="check195">
+                                    <br>
+                                    <input type="checkbox" name="check196">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Does the preventive maintenance program used at the facility meet the
+                                    following criteria?</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. All safety-critical items and other key equipment, such as electrical
+                                    switchgear and rotating equipment, are specifically addressed.
+                                    <br>
+                                    b. Check lists and inspection sheets are being used.
+                                    <br>
+                                    c. Work is being completed on time.
+                                    <br>
+                                    d. The program is continuously modified based on inspection feedback.
+                                    <br>
+                                    e. Repairs are identified, tracked and completed as a result of the PM program
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check196">
+                                    <br><br><br>
+                                    <input type="checkbox" name="check197">
+                                    <br>
+                                    <input type="checkbox" name="check198">
+                                    <br>
+                                    <input type="checkbox" name="check199">
+                                    <br><br>
+                                    <input type="checkbox" name="check200">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Does the facility have a quality assurance program for construction and
+                                    maintenance to ensure that:</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. Proper materials of construction are used?
+                                    <br>
+                                    b. Fabrication and inspection procedures are proper?
+                                    <br>
+                                    c. Equipment is maintained in compliance with codes and standards?
+                                    <br>
+                                    d. Flanges are properly assembled and tightened?
+                                    <br>
+                                    e. Replacement and maintenance materials are properly specified, inspected
+                                    and stored?
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check201">
+                                    <br>
+                                    <input type="checkbox" name="check202">
+                                    <br>
+                                    <input type="checkbox" name="check203">
+                                    <br>
+                                    <input type="checkbox" name="check204">
+                                    <br>
+                                    <input type="checkbox" name="check205">
+                                </td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Is there a permanent and progressive record for all pressure vessels that
+                                    includes all of the following?</td>
+                                <td><input type="checkbox" name="check206"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Are systems in place, such as written requirements, with supervisor sign off,
+                                    sufficient to ensure that all design repair and alteration done on any pressure
+                                    vessel or piping system be done in accordance with the code to which the item
+                                    was built, or in-service repair and inspection code?</td>
+                                <td><input type="checkbox" name="check207"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+{#            <----------- TAB 8 ----------->#}
+            <div class="tab">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b> Pre-Startup Safety Review</b></legend>
+                    <table class="table" id="mytable">
+                        <thead>
+                            <tr>
+                                <th width="90%" style="text-align: center">Questions</th>
+                                <th width="100%" style="text-align: right"><input type="checkbox" id="chkHeader"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align: left">Does company policy require a formal Process Hazard Analysis at the
+                                    conception and/or design stages of all new development, construction, and
+                                    major modification projects?</td>
+                                <td style="text-align: right"><input type="checkbox" name="check208"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left">Is there a written procedure requiring that all of the following items have been
+                                    accomplished before the startup of new or significantly modified facilities?</td>
+                                <td style="text-align: right"><input type="checkbox" name="check209"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Is there a written procedure requiring that all equipment be inspected prior to
+                                    startup to confirm that it has been installed in accordance with the design
+                                    specifications and manufacturer’s recommendations?</td>
+                                <td><input type="checkbox" name="check210"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. Does the procedure require formal inspection reports at each appropriate
+                                    stage of fabrication and construction?
+                                    <br>
+                                    b. Does the procedure define the corrective action and follow-up needed when
+                                    deficiencies are found?
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check211">
+                                    <br><br>
+                                    <input type="checkbox" name="check212">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>In the pre-startup safety review, is it required that physical checks be made to
+                                    confirm:</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. Leak tightness of all mechanical equipment prior to the introduction of
+                                    highly hazardous chemicals to the process?
+                                    <br>
+                                    b. Proper operation of all control equipment prior to startup?
+                                    <br>
+                                    c. Proper installation and operation of all safety equipment (relief valves,
+                                    interlocks, leak detection equipment, etc.)?
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check213">
+                                    <br><br>
+                                    <input type="checkbox" name="check214">
+                                    <br>
+                                    <input type="checkbox" name="check215">
+                                </td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Is there a requirement to formally document the completion of the items in
+                                    Questions 1, 2, 3, and 4 prior to startup, with a copy of the certification going to
+                                    facility management?</td>
+                                <td><input type="checkbox" name="check216"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+{#            <---------------TAB 9--------->#}
+            <div class="tab">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b> Emergency Response</b></legend>
+                    <table class="table" id="mytable">
+                        <thead>
+                            <tr>
+                                <th width="90%" style="text-align: center">Questions</th>
+                                <th width="100%" style="text-align: right"><input type="checkbox" id="chkHeader"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align: left">Does the facility have an emergency plan in writing to address all probable
+                                    emergencies?</td>
+                                <td style="text-align: right"><input type="checkbox" name="check217"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Is there a requirement to formally review and update the emergency plan on a
+                                    specified schedule?</td>
+                                <td><input type="checkbox" name="check218"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. Does the facility's Management of Change procedure include a requirement
+                                    to consider possible impact on the facility emergency plan?
+                                    <br>
+                                    b. Are the results of all new or updated PHA’s reviewed to determine whether
+                                    any newly identified hazards will necessitate a change in the facility
+                                    emergency plan?
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check219">
+                                    <br><br><br>
+                                    <input type="checkbox" name="check220">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Does the emergency plan include at least the following?</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. Procedures to designate one individual as Coordinator in an emergency
+                                    situation, with a clear statement of his or her responsibilities.
+                                    <br>
+                                    b. Emergency escape procedures and emergency escape route assignments.
+                                    <br>
+                                    c. Procedures to be followed by employees who remain to perform critical
+                                    plan operations before they evacuate.
+                                    <br>
+                                    d. Procedures to account for all employees after emergency evacuation has
+                                    been completed.
+                                    <br>
+                                    e. Rescue and medical duties for those employees who are to perform them.
+                                    <br>
+                                    f. Preferred means of reporting fires and other emergencies.
+                                    <br>
+                                    g. Procedures for control of hazardous materials.
+                                    <br>
+                                    h. A search and rescue plan.
+                                    <br>
+                                    i. An all-clear and re-entry procedure.
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check221">
+                                    <br><br><br>
+                                    <input type="checkbox" name="check222">
+                                    <br><br>
+                                    <input type="checkbox" name="check223">
+                                    <br><br>
+                                    <input type="checkbox" name="check224">
+                                    <br><br>
+                                    <input type="checkbox" name="check225">
+                                    <br><br>
+                                    <input type="checkbox" name="check226">
+                                    <br>
+                                    <input type="checkbox" name="check227">
+                                    <br>
+                                    <input type="checkbox" name="check228">
+                                    <br>
+                                    <input type="checkbox" name="check229">
+                                </td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Has an emergency control center been designated for the facility?</td>
+                                <td><input type="checkbox" name="check230"></td>
+                            </tr>
+                            <tr>
+                                <td>Does it have the following minimum resources?</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. Emergency power source
+                                    <br>
+                                    b. Adequate communication facilities
+                                    <br>
+                                    c. Copies of P&IDs, SOPs, MSDS, Plot Plans, and other critical safety
+                                    information for all process units at the facility
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check231">
+                                    <br>
+                                    <input type="checkbox" name="check232">
+                                    <br>
+                                    <input type="checkbox" name="check233">
+                                </td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Have persons been designated who can be contacted for further information or
+                                    explanation of duties under the emergency plan?</td>
+                                <td><input type="checkbox" name="check234"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Is this list of names posted in all appropriate locations (control rooms, security
+                                    office, emergency control center, etc.)? </td>
+                                <td><input type="checkbox" name="check235"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Are regular drills conducted to evaluate and reinforce the emergency plan?</td>
+                                <td><input type="checkbox" name="check236"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+{#            <-------- TAB 11 ------>#}
+            <div class="tab">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Incident Investigation</b></legend>
+                    <table class="table" id="mytable">
+                        <thead>
+                            <tr>
+                                <th width="90%" style="text-align: center">Questions</th>
+                                <th width="100%" style="text-align: right"><input type="checkbox" id="chkHeader"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align: left">Is there a written incident/accident investigation procedure that includes both
+                                    accidents and near misses?</td>
+                                <td style="text-align: right"><input type="checkbox" name="check237"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left">Does the procedure require that findings and recommendations of
+                                    investigations be addressed and resolved promptly?</td>
+                                <td style="text-align: right"><input type="checkbox" name="check238"></td>
+                            </tr>
+                            <tr>
+                                <td>Does the procedure require that the investigation team include:</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. A member trained in accident investigation techniques?
+                                    <br>
+                                    b. The line supervisor or someone equally familiar with the process?
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check239">
+                                    <br>
+                                    <input type="checkbox" name="check240">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Indicate whether the investigation procedure requires an investigation of the
+                                    following items by the immediate supervisor with the results recorded on a
+                                    standard form:</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. Fire and explosions
+                                    <br>
+                                    b. Property losses at or above an established cost base
+                                    <br>
+                                    c. All non-disabling injuries and occupational illnesses
+                                    <br>
+                                    d. Hazardous substance discharge
+                                    <br>
+                                    e. Other accidents/incidents (near-misses)
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check241" >
+                                    <br>
+                                    <input type="checkbox" name="check242">
+                                    <br>
+                                    <input type="checkbox" name="check243">
+                                    <br>
+                                    <input type="checkbox" name="check244">
+                                    <br>
+                                    <input type="checkbox" name="check245">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Is there a standard form for accident/incident investigation that includes the
+                                    following information?</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. Date of incident
+                                    <br>
+                                    b. Date investigation began
+                                    <br>
+                                    c. Description of the incident
+                                    <br>
+                                    d. Underlying causes of the incident
+                                    <br>
+                                    e. Evaluation of the potential severity and probable frequency of recurrence
+                                    <br>
+                                    f. Recommendations to prevent recurrence
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check246">
+                                    <br>
+                                    <input type="checkbox" name="check247">
+                                    <br>
+                                    <input type="checkbox" name="check248">
+                                    <br>
+                                    <input type="checkbox" name="check249">
+                                    <br>
+                                    <input type="checkbox" name="check250">
+                                    <br><br>
+                                    <input type="checkbox" name="check251">
+                                </td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Based on a review of plan records, to what degree does it appear that the
+                                    established incident investigation procedures are being followed?</td>
+                                <td><input type="checkbox" name="check252"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">If the incident/accident involved a failure of a component or piece of equipment,
+                                    are appropriate inspection or engineering people required to be involved in a
+                                    failure analysis to identify the conditions or practices that caused the failure?</td>
+                                <td><input type="checkbox" name="check253"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Are incident investigation reports reviewed with all affected personnel whose job
+                                    tasks are relevant to the incident findings, including contract employees, where
+                                    applicable?</td>
+                                <td><input type="checkbox" name="check254"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">During the last 12-month period, have any incident or accident reports or report
+                                    conclusions been transmitted to other sites that operate similar facilities within
+                                    the company?</td>
+                                <td><input type="checkbox" name="check255"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Do the procedures for incident reporting and/or process hazard analysis require
+                                    that the findings from all applicable incident reports be reviewed and
+                                    incorporated into future PHAs?</td>
+                                <td><input type="checkbox" name="check256"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+            <div class="tab">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Contractors</b></legend>
+                    <table class="table" id="mytable">
+                        <thead>
+                            <tr>
+                                <th width="90%" style="text-align: center">Questions</th>
+                                <th width="100%" style="text-align: right"><input type="checkbox" id="chkHeader"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Do contractor selection procedures include the following prior to awarding the
+                                    contract?</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. A review of the contractor’s existing safety and health programs
+                                    <br>
+                                    b. A review of the contractor’s previous loss experience data
+                                    <br>
+                                    c. A review of the documentation of the experience and skills necessary to
+                                    reasonably expect the contractor to perform the work safely and efficiently
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check257">
+                                    <br>
+                                    <input type="checkbox" name="check258">
+                                    <br>
+                                    <input type="checkbox" name="check259">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Before the start of work, is the contract employer advised in writing of:</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. All known potential hazards of the process and of the contractor's work?
+                                    <br>
+                                    b. Plan safe-work practices?
+                                    <br>
+                                    c. Entry/access controls?
+                                    <br>
+                                    d. All applicable provisions of the emergency response plan?
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check260">
+                                    <br><br>
+                                    <input type="checkbox" name="check261">
+                                    <br>
+                                    <input type="checkbox" name="check262">
+                                    <br>
+                                    <input type="checkbox" name="check263">
+                                </td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Are pre-job meetings held with contractors to review the scope of contract work
+                                    activity plus the company's requirements for safety, quality assurance, and
+                                    performance?</td>
+                                <td><input type="checkbox" name="check264"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Are periodic assessments performed to ensure that the contract employer is
+                                    providing to his or her employees the training, instruction, monitoring, etc.,
+                                    required to ensure the contract employees abide by all facility safe-work
+                                    practices?</td>
+                                <td><input type="checkbox" name="check265"></td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Are all contractors who perform maintenance or repair, turnaround, major
+                                    renovation or specialty work covered by all the procedures addressed in this
+                                    section?</td>
+                                <td><input type="checkbox" name="check266"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+            <div class="tab">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Management Systems Assessments</b></legend>
+                    <table class="table" id="mytable">
+                        <thead>
+                            <tr>
+                                <th width="90%" style="text-align: center">Questions</th>
+                                <th width="100%" style="text-align: right"><input type="checkbox" id="chkHeader"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>How often is a formal written assessment conducted of the facility's Process
+                                    Safety Management system? (Choose one)</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Every year
+                                    <br>
+                                    Every three years
+                                    <br>
+                                    Not done
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check267">
+                                    <br>
+                                    <input type="checkbox" name="check268">
+                                    <br>
+                                    <input type="checkbox" name="check269">
+                                </td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Has an action plan been developed to meet program needs as indicated by the
+                                    last assessment?</td>
+                                <td><input type="checkbox" name="check270"></td>
+                            </tr>
+                            <tr>
+                                <td>Based on the most recent assessment, did the assessment team include
+                                    people with the following skills:</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    a. Formal training in assessment techniques?
+                                    <br>
+                                    b. In-depth knowledge of the process being assessed?
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="check271">
+                                    <br>
+                                    <input type="checkbox" name="check272">
+                                </td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td style="text-align: left">Based on a review of the most recent assessment, was the breadth and depth
+                                    of the assessment appropriate for the facility?</td>
+                                <td><input type="checkbox" name="check273"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+
+            <div style="overflow:auto;">
+                <div style="float:right;">
+                  <button type="button" class="btn btn-default" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                  <button type="button" class="btn btn-success" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                </div>
+              </div>
+            <!-- Circles which indicates the steps of the form: -->
+            <div style="text-align:center;margin-top:40px;">
+                <span class="step"></span>
+                <span class="step"></span>
+                <span class="step"></span>
+                <span class="step"></span>
+                <span class="step"></span>
+                <span class="step"></span>
+                <span class="step"></span>
+                <span class="step"></span>
+                <span class="step"></span>
+                <span class="step"></span>
+                <span class="step"></span>
+                <span class="step"></span>
+                <span class="step"></span>
+            </div>
+        </div>
+    </form>
+    <script>
+        var currentTab = 0; // Current tab is set to be the first tab (0)
+        showTab(currentTab); // Display the crurrent tab
+
+        function showTab(n) {
+          // This function will display the specified tab of the form...
+          var x = document.getElementsByClassName("tab");
+          x[n].style.display = "block";
+          //... and fix the Previous/Next buttons:
+          if (n == 0) {
+            document.getElementById("prevBtn").style.display = "none";
+          } else {
+            document.getElementById("prevBtn").style.display = "inline";
+          }
+          if (n == (x.length - 1)) {
+            document.getElementById("nextBtn").innerHTML = "Submit";
+          } else {
+            document.getElementById("nextBtn").innerHTML = "Next";
+          }
+          //... and run a function that will display the correct step indicator:
+          fixStepIndicator(n)
+        }
+
+        function nextPrev(n) {
+          // This function will figure out which tab to display
+          var x = document.getElementsByClassName("tab");
+          // Exit the function if any field in the current tab is invalid:
+          if (n == 1 && !validateForm()) return false;
+          // Hide the current tab:
+          x[currentTab].style.display = "none";
+          // Increase or decrease the current tab by 1:
+          currentTab = currentTab + n;
+          // if you have reached the end of the form...
+          if (currentTab >= x.length) {
+              // ... the form gets submitted:
+              document.getElementById("tank").submit();
+              ShowLoading();
+              return false;
+          }
+          // Otherwise, display the correct tab:
+          showTab(currentTab);
+        }
+
+        function validateForm() {
+          // This function deals with validation of the form fields
+          var x, y, i, valid = true;
+          x = document.getElementsByClassName("tab");
+          y = x[currentTab].getElementsByTagName("input");
+          // A loop that checks every input field in the current tab:
+          for (i = 0; i < y.length; i++) {
+            // If a field is empty...
+            if (y[i].value == "") {
+              // add an "invalid" class to the field:
+              y[i].className += " invalid";
+              // and set the current valid status to false
+              valid = false;
+            }
+          }
+          // If the valid status is true, mark the step as finished and valid:
+          if (valid) {
+            document.getElementsByClassName("step")[currentTab].className += " finish";
+          }
+          return valid; // return the valid status
+        }
+
+        function fixStepIndicator(n) {
+          // This function removes the "active" class of all steps...
+          var i, x = document.getElementsByClassName("step");
+          for (i = 0; i < x.length; i++) {
+            x[i].className = x[i].className.replace(" active", "");
+          }
+          //... and adds the "active" class on the current step:
+          x[n].className += " active";
+        }
+
+         function ShowLoading() {
+            var div = document.createElement('div');
+            var img = document.createElement('img');
+            img.src = '{% static 'image/loading/Pacman-1s-100px.gif' %}';
+            div.style.cssText = "position: fixed;left: 50%; top: 30%; width: 300px; text-align: center; background: rgba(54, 25, 25, .00004); border: 0px solid #000;";
+            div.appendChild(img);
+            document.body.appendChild(div);
+            $("#nextBtn").attr('disabled',true);
+            $("#prevBtn").attr('disabled',true);
+            return true;
+        }
+        function calculation() {
+            var x1 = document.getElementById("check1").value;
+            var x2 = document.getElementById("check2").value;
+            score=x1+x2
+            pscore=score/10
+
+        }
+    </script>
+{% endblock %}

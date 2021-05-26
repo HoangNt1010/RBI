@@ -1,0 +1,519 @@
+{% extends 'BaseUI/BaseHelp/BaseHelp.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block library %}
+
+
+{% endblock %}
+
+{% block content-a %}
+    <link rel="stylesheet"href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+    .font{
+        background-image: url("{% static 'image/help/fix.jpg' %}");
+        background-repeat: no-repeat;
+        background-origin:padding-box;
+        background-position-x: 50%;
+        background-size: 80%;
+    }
+    .sidebar ul{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .sidebar ul li{
+        line-height: 30px;
+    }
+    .sidebar ul li a{
+        text-decoration: none;
+        padding: 0 10px;
+    }
+
+    .More{
+        position: static;
+        background: #c7ddef;
+        display: block;
+        color: #555555;
+        float: none;
+    }
+    
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+    .leftcolumn {
+        float: left;
+        width: 25%;
+    }
+
+    .rightcolumn {
+        float: left;
+        width: 70%;
+        background-color: #ffffff;
+    }
+    </style>
+
+    <!-- <div class="font">
+    <br><br><br>
+    <h1 style="font-weight: bold; color: #858b8f; padding-left: 30%"> Chào mừng bạn đến với dịch vụ hỗ trợ </h1>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    </div> -->
+    <div class="row mt-5" style="margin: 0;">
+        <div class="col-md-2 left-content-help">
+            <div class="sidebar">
+
+                <ul class="nav nav-vertical-bar" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <li><h3 style="color: #fff;"> Tổ chức hoạt động:</h3></li>
+                    <li>
+                    <a class="nav-link active" id="v-pills-tongquan-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-tongquan" aria-selected="true" onclick="divVisibility('tongquan');" >Tổng quan hệ thống</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" id="v-pills-sododulieu-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-sododulieu" aria-selected="false" onclick="divVisibility('sododulieu');" >Sơ đồ dữ liệu </a>
+                    </li>
+                    <li>
+                    <a class="nav-link" id="v-pills-dangnhap-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-dangnhap" aria-selected="false" onclick="divVisibility('dangnhap');"  >Cách đăng nhập</a>
+        
+                    </li>
+                    <li>
+                    <a class="nav-link" id="v-pills-video-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-video" aria-selected="false" onclick="divVisibility('video');"  >Video hướng dẫn</a>
+        
+                    </li>
+                    <li>
+                    <h3 style="color: #fff;">Màn hình chính: </h3>
+                    </li>
+        
+                    <li>
+                    <a class="nav-link" id="v-pills-thanhcongcuchinh-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-thanhcongcuchinh" aria-selected="false" onclick="divVisibility('thanhcongcuchinh');"  >Thanh công cụ chính</a>
+                    </li>
+        
+                    <li>
+                    <a class="nav-link" id="v-pills-tabhome-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-tabhome" aria-selected="false" onclick="divVisibility('tabhome');"  >Tab Home </a>
+                    </li>
+        
+                    <li>
+                    <a class="nav-link" id="v-pills-listfacilities-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-listfacilities" aria-selected="false" onclick="divVisibility('factories');"  >Factories </a>
+                    </li>
+        
+                    <li>
+                    <a class="nav-link" id="v-pills-listfacilities-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-listfacilities" aria-selected="false" onclick="divVisibility('equipment');"  >Equipment </a>
+                    </li>
+        
+                    <li>
+                    <a class="nav-link" id="v-pills-listfacilities-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-listfacilities" aria-selected="false" onclick="divVisibility('component');"  >Component </a>
+                    </li>
+        
+                    <li>
+                    <a class="nav-link" id="v-pills-listfacilities-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-listfacilities" aria-selected="false" onclick="divVisibility('proposal');"  >Proposal </a>
+                    </li>
+        
+                    <li>
+                    <a class="nav-link" id="v-pills-listfacilities-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-listfacilities" aria-selected="false" onclick="divVisibility('uploadfile');"  >Upload File </a>
+                    </li>
+        
+                    <li>
+                    <a class="nav-link" id="v-pills-inspection_plan-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-inspection_plan" aria-selected="false" onclick="divVisibility('inspection_plan');"  >Inspection Plan</a>
+                    </li>
+        
+                    <li>
+                    <a class="nav-link" id="v-pills-inspection_plan-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-inspection_plan" aria-selected="false" onclick="divVisibility('rbitracking');"  >RBI Tracking</a>
+                    </li>
+        
+        
+                    <li>
+                    <a class="nav-link" id="v-pills-designcode-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-designcode" aria-selected="false" onclick="divVisibility('designcode');"  >Design Code</a>
+                    </li>
+        
+                    <li>
+                    <a class="nav-link" id="v-pills-manufactures-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-manufactures" aria-selected="false" onclick="divVisibility('manufactures');"  >Manufactures</a>
+                    </li>
+        
+                    <li>
+                    <a class="nav-link" id="v-pills-upload_history-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-upload_history" aria-selected="false" onclick="divVisibility('upload_history');"  >Upload History</a>
+                    </li>
+        
+                    <li>
+                    <a class="nav-link" id="v-pills-upload_plan-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-upload_plan" aria-selected="false" onclick="divVisibility('upload_plan');"  >Upload Plan</a>
+                    </li>
+        
+        
+        
+                     <li>
+                    <a class="nav-link" id="v-pills-inspection_plan-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-inspection_plan" aria-selected="false" onclick="divVisibility('verification');"  >Verification</a>
+                    </li>
+        
+                    <li>
+                    <a class="nav-link" id="v-pills-forum-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-forum" aria-selected="false" onclick="divVisibility('forum');"  >Forum</a>
+                    </li>
+        
+                    <li>
+                    <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-messages" aria-selected="false" onclick="divVisibility('messages');"  >Messages </a>
+                    </li>
+        
+                    <li>
+                        <a class="nav-link" id="v-pills-notification-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-notification" aria-selected="false"  onclick="divVisibility('notification');" >Notification</a>
+                    </li>
+        
+                    <li>
+                    <a class="nav-link" id="v-pills-help-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-help" aria-selected="false" onclick="divVisibility('help');"  >Help </a>
+                    </li>
+                    <li>
+                    <a class="nav-link" id="v-pills-inspection_plan-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-inspection_plan" aria-selected="false" onclick="divVisibility('mitigation');"  >Mitigation</a>
+                    </li>
+        
+                </ul>
+        
+            </div>
+        </div>
+    <div class="col-md-9 right-content-help">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <div class="inner_div">
+    <div id="tongquan">
+        <p style="font-size: 35px;">Tổng quan</p>
+        <div style="font-size: 16px;">
+            Hệ thống phân cấp dữ liệu trong RBI-Cortek dựa trên cơ sở là một nhà máy sẽ bao gồm các loại dữ liệu có mối quan hệ như sau : <br>
+             <b>&emsp;1. Site</b>: Bao gồm bộ cơ sở vật chất ,thiết bị lớn nhất và các bộ phận cấu thành của chúng  .
+            Điều này đại diện cho nhóm nội dung cao cấp nhất mà rủi ro toàn cầu cần được xác định. <br>
+            <b>&emsp;2. Facility</b>: Thường là một phần của Site và thường gồm một số thiết bị và linh kiện  <br>
+            <b>&emsp;3. Equipment</b> : Là các đơn vị riêng lẻ bên trong một cơ sở vật chất .
+            Ví dụ , một bộ trao đổi nhiệt bên trong một đơn vị sản xuất hơi nước được coi là thiết bị đơn lẻ , bên trong nó lại bao gồm một số bộ phận  <br>
+            <b>&emsp;4. Component</b>  : Chiếm mức độ chi tiết cao nhất trong hoạt động đánh giá RBI .
+            Ví dụ , phần vỏ của bộ trao đổi nhiệt ở trên sẽ đại diện như một bộ phận trong RBI-Cortek.<br>
+            >>Thông tin chi tiết về từng bộ phận là  rất cần thiết khi thực hiện phân tích trong RBI-Cortek .
+            Tuy nhiên , có một số bộ phận không có đủ dữ liệu để đánh giá RBI hoàn chỉnh .Đó là lí do tại sao bên trong các bộ phận có mục được đặt tên là “proposal” hay còn được gọi là các đề xuất  .
+            Đội ngũ RBI làm việc linh hoạt với một số đề xuất của một bộ phận cụ thể , cho đến khi đề xuất cuối cùng được đồng ý và thông qua .
+        </div>
+    </div>
+
+    <div style="display: none" id="sododulieu">
+        <div class="content" style="font-size: 35px;">Sơ đồ dữ liệu</div>
+        <div>
+            <p style="padding-left: 30%;"> 1. Proposal</p> <br>
+            <img style="width: 900px; height: 400px;padding-left: 150px" src="{% static '/image/help/proposal.png' %}"><br>
+            <p style="padding-left: 30%">2. Component</p><br>
+            <img style="width: 900px; height: 400px;padding-left: 150px" src="{% static '/image/help/component.png' %}"><br>
+            <p style="padding-left: 30%">3. Equipment</p><br>
+            <img style="width: 750px; height: 400px; margin-left: 150px " src="{% static '/image/help/equipment.png' %}"><br>
+            <p style="padding-left: 30%">4. Factory</p><br>
+            <img style="width: 750px; height: 400px; margin-left: 150px " src="{% static 'image/help/factory.png' %}"><br>
+            <p style="padding-left: 30%">5. Sequence Diagram</p><br>
+            <img style="width: 750px; height: 400px; margin-left: 150px " src="{% static 'image/help/sequence diagram.png' %}">
+        </div>
+    </div>
+
+    <div style="display: none" id="dangnhap">
+        <div class="content" style="font-size: 35px;">Đăng nhập</div>
+        <div  style="font-size: 16px">
+                Bước 1 : Truy cập vào  https://cortekrbi.com/<br>
+                Bước 2 : Nhấn Login<br>
+                Bước 3 : Nhập username và passwork<br>
+                Bước 4 : Nhấn Sign in<br>
+            <p style="color: red"> >>Khi đó trang chủ sẽ xuất hiện </p>
+            <img src="{% static '/image/help/giao dien.png'%}" style="padding-left: 150px"><br><br>
+            <img src="{% static '/image/help/dangnhap.png' %}" style="padding-left: 150px">
+        </div>
+    </div>
+        <div style="display: none" id="video">
+        <div class="content" style="font-size: 35px;">Hướng dẫn sử dụng CortekRBI</div>
+        <iframe width="900" height="500" src="https://www.youtube.com/embed/EV3yvXCBsYw?autoplay=1">
+        </iframe>
+    </div>
+
+    <div style="display: none" id="thanhcongcuchinh">
+    <div class="content" style="font-size: 35px;">
+            Thanh công cụ chính
+    </div>
+    <div style="font-size: 16px">
+            Màn hình chính xuất hiện sau khi bạn đăng nhập .Nó hiển thị tất cả các tùy chọn .
+        RBI-Cortek cung cấp giao diện trực quan , thân thiện với người dùng , nơi người dùng có thể xem hình thức tổ chức của cơ sở dữ liệu ở mỗi bước phân tích. <br>
+        <img src="{% static '/image/help/mainscreen.png' %} " style="width: 900px; height: 400px;padding-left: 150px">
+        <img src="{% static '/image/help/change_language.png' %} " style="width: 900px; height: 400px;padding-left: 150px">
+    </div>
+    </div>
+
+    <div style="display: none" id="tabhome" >
+   <div class="content" style="font-size: 35px;">
+       Tab Home
+   </div>
+    <div style="font-size: 16px">
+           Tab Home chứa một số mô-đun cho phép việc  quản lí dữ liệu.
+        Khi mà màn hình chính lưu trữ các tab ghi thiết bị và thành phần , tab Home mở rộng dùng để lưu trữ các thao tác khác liên quan đến thiết bị và thành phần tương ứng. <br>
+        <br>
+        <img src="{% static '/image/help/mainscreen2.png' %} " style="width: 900px; height: 400px; padding-left: 150px ">
+    </div>
+    </div>
+
+    <div style="display: none" id="factories" >
+   <div class="content" style="font-size: 35px;">
+       Factories
+   </div>
+    <div  style="font-size: 16px ">
+        Cho phép người dùng xem danh sách các nhà máy hiện tại, đồng thời thêm , sửa đổi hoặc xóa những nhà máy có sẵn.<br>
+        <br>
+        <img src="{% static '/image/help/factories.JPG' %} " style="width: 900px; height: 400px; padding-left: 150px "> <br>
+        Khi chọn Facility và nhấn Edit Selected , màn hình hiện lên như sau :<br>
+        <br>
+        <img src="{% static '/image/help/thong tin nha may.png' %} " style="width: 900px; height: 400px; padding-left: 150px "><br>
+        <p >Tại đây bạn có thể chỉnh sửa các thông tin của nhà máy hiện tại rồi nhấn Submit để kết thúc quá trình .<br>
+            Khi chọn một Facility , người dùng có thể xem danh sách các thiết bị , thành phần cũng như các đề xuất .</p>
+    </div>
+    </div>
+
+    <div style="display: none" id="equipment" >
+   <div class="content" style="font-size: 35px;">
+       Equipment
+   </div>
+    <div  style="font-size: 16px ">
+        Cho phép xem danh sách thiết bị, đồng thời cho phép thêm, sửa đổi hoặc xóa những thiết bị có sẵn.<br>
+        <br>
+        <img src="{% static '/image/help/equipment.png' %} " style="width: 900px; height: 400px; padding-left: 150px "> <br>
+    </div>
+    </div>
+
+    <div style="display: none" id="component" >
+   <div class="content" style="font-size: 35px;">
+       Component
+   </div>
+    <div  style="font-size: 16px ">
+        Hiển thị danh sách những thành phần trong thiết bị, đồng thời cho phép thêm, sửa đổi hoặc xóa những thành phần có sẵn.<br>
+        <br>
+        <img src="{% static '/image/help/component.png' %} " style="width: 900px; height: 400px; padding-left: 150px "> <br>
+    </div>
+    </div>
+
+     <div style="display: none" id="proposal" >
+   <div class="content" style="font-size: 35px;">
+       Proposal
+   </div>
+    <div  style="font-size: 16px ">
+        Hiển thị danh sách những yêu cầu, đồng thời cho phép thêm, sửa đổi hoặc xóa những yêu cầu có sẵn.<br>
+        <br>
+        <img src="{% static '/image/help/proposal.JPG' %} " style="width: 900px; height: 400px; padding-left: 150px "> <br>
+    </div>
+    </div>
+
+    <div style="display: none" id="uploadfile" >
+   <div class="content" style="font-size: 35px;">
+       Upload File
+   </div>
+    <div  style="font-size: 16px ">
+        Cập nhật các file kế hoạch và lịch sử.<br>
+        <br>
+        <img src="{% static '/image/help/upload file.JPG' %} " style="width: 900px; height: 400px; padding-left: 150px "> <br>
+    </div>
+    </div>
+
+        <div style="display: none" id="inspection_plan" >
+   <div class="content" style="font-size: 35px;">
+       Inspection Plan
+   </div>
+
+    <div style="font-size: 16px">
+        Đây là một mô-đun thiết bị cho phép người dùng nhập các kế hoạch kiểm tra. Nói chung, RBI-Cortek  xác định kế hoạch kiểm tra dựa trên ngày kiểm tra; phạm vi / phạm vi bao phủ; công nghệ giám định; và các cơ chế suy thoái.
+        Dữ liệu kế hoạch kiểm tra cho thiết bị và linh kiện sẽ được nhập vào mô-đun<br>
+        Hình 1 cho thấy cửa sổ chính của mô-đun lập kế hoạch kiểm tra / giảm thiểu. Để bắt đầu, người dùng phải thêm mới hoặc tìm kiếm một kế hoạch kiểm tra hiện có. <br>
+        Phạm vi kiểm tra được xác định bởi những điều sau: <br>
+        ‣ Công nghệ giám định được sử dụng.<br>
+        ‣ Hiệu quả của phương pháp kiểm tra được sử dụng. <br>
+        ‣ Ngày kiểm tra được thực hiện / lên kế hoạch. <br>
+        ‣ Số lượng các thành phần được kiểm tra. <br>
+        ‣  Các nhận xét hoặc báo cáo kết quả, về các cuộc kiểm tra đã lên lịch hoặc đã thực hiện tương ứng.<br>
+        <br>
+        <img src="{% static '/image/help/inspection plan.png' %} " style="width: 900px; height: 400px; padding-left: 150px " > <br>
+        <p style="padding-left: 20%; color: #a94442">Hình 1. Cửa sổ chính cho kế hoạch kiểm định</p>
+        Hình 2 cho thấy cửa sổ phạm vi, nơi người dùng phải gán các giá trị chi tiết cho phương pháp kiểm tra, niên đại của nó, các cơ chế suy thoái mà nó phát hiện và hiệu quả phát hiện.
+        Tiếp theo sẽ là chọn các thành phần được xem xét cho kế hoạch kiểm tra (Hình 3) .
+        Người dùng có thể đăng ký kết quả kiểm tra, hoặc nhận xét, như thể hiện trong Hình 4 .
+        RBI-Cortek cung cấp hữu ích các chức năng thao tác dữ liệu như nhận xét hoặc phát hiện có thể tìm kiếm được.
+        <img src="{% static '/image/help/inspection plan2.png' %} " style="width: 750px; height: 400px; margin-left: 10%" > <br>
+        <p style="padding-left: 20%; color: #a94442">Hình 2. Cửa sổ mở ra phạm vi kiểm tra, hiển thị chi tiết về loại kiểm tra và các cơ chế hư hỏng </p><br>
+        <img src="{% static '/image/help/inspection plan3.png' %} " style="width: 750px; height: 400px; margin-left: 10% " > <br>
+        <p style="padding-left: 20%; color: #a94442">Hình 3.Các thành phần được chọn cho một kế hoạch kiểm duyệt </p><br>
+        <img src="{% static '/image/help/inspection plan4.png' %} " style="width: 750px; height: 400px; margin-left: 10% " > <br>
+        <p style="padding-left: 20%; color: #a94442">Hình 4.Kết quả kiểm tra hoặc nhận xét có thể được nhập cho mỗi kế hoạch  kiểm tra </p><br>
+
+    </div>
+    </div>
+
+        <div style="display: none" id="rbitracking" >
+   <div class="content" style="font-size: 35px;">
+       RBI Tracking
+   </div>
+    <div  style="font-size: 16px ">
+        Bảng theo dõi những hạng mục của RBI.<br>
+        <br>
+        <img src="{% static '/image/help/rbitracking.JPG' %} " style="width: 900px; height: 400px; padding-left: 150px "> <br>
+         </div>
+    </div>
+
+         <div style="display: none" id="mitigation" >
+   <div class="content" style="font-size: 35px;">
+       Mitigation
+   </div>
+    <div  style="font-size: 16px ">
+        <p>Cho phép xem các phương pháp giảm nhẹ của các thành phần thiết bị có rủi ro cao.</p>
+        <img src="{% static 'image/help/mitigation.JPG' %}"style="width: 900px; height: 400px; padding-left: 150px">
+
+    </div>
+         </div>
+    <div style="display: none" id="designcode" >
+   <div class="content" style="font-size: 35px;">
+       Design Code
+   </div>
+    <div  style="font-size: 16px ">
+        <p>Cho phép người dùng xem danh sách các mã thiết kế được sử dụng hiện tại, và cũng để thêm, sửa đổi hoặc xóa các mã có sẵn.</p>
+        <img src="{% static 'image/help/designcode.png' %}"style="width: 900px; height: 400px; padding-left: 150px">
+
+    </div>
+    </div>
+    <div style="display: none" id="manufactures" >
+   <div class="content" style="font-size: 35px;">
+       Manufactures
+   </div>
+    <div style="font-size: 16px">
+           Cho phép người dùng xem danh sách các nhà sản xuất hiện tại và cũng có thể thêm , sửa đổi hoặc xóa các nhà sản xuất có sẵn .<br>
+        <br>
+        <img src="{% static '/image/help/manufactures.png' %} " style="width: 900px; height: 400px; padding-left: 150px ">
+    </div>
+    </div>
+
+    <div style="display: none" id="upload_history" >
+   <div class="content" style="font-size: 35px;">
+       Upload History
+   </div>
+    <div  style="font-size: 16px">
+        Đây là một mô-đun thiết bị nơi người dùng có thể xem tóm tắt quá trình tải lên lịch sử cho các thành phần liên quan được lưu trữ trong mỗi hạng mục thiết bị.<br>
+        <br>
+        <img class="desc" src="{% static '/image/help/upload history.png' %} " style="width: 900px; height: 400px; padding-left: 150px ">
+    </div>
+    </div>
+
+    <div style="display: none" id="upload_plan" >
+   <div class="content" style="font-size: 35px;">
+       Upload Plan
+   </div>
+    <div style="font-size: 16px">
+        Tại đây người dùng có thể xem: <br>
+        <br>
+        <img class="desc" src="{% static '/image/help/upload plan.png' %} " style="width: 900px; height: 400px; padding-left: 150px ">
+    </div>
+    </div>
+
+
+    <div style="display: none" id="verification" >
+   <div class="content" style="font-size: 35px;">
+        Verification
+   </div>
+    <div  style="font-size: 16px">
+        <br>
+        <img class="desc" src="{% static '/image/help/verification.png' %} " style="width: 900px; height: 400px; padding-left: 150px ">
+    </div>
+    </div>
+
+    <div style="display: none" id="forum" >
+   <div class="content" style="font-size: 35px;">
+        Forum
+   </div>
+    <div  style="font-size: 16px">
+        <br>
+        <img class="desc" src="{% static '/image/help/forum.png' %} " style="width: 900px; height: 400px; padding-left: 150px ">
+    </div>
+    </div>
+
+    <div style="display: none" id="messages" >
+   <div class="content" style="font-size: 35px;">
+        Messages
+   </div>
+    <div style="font-size: 16px">
+        <br>
+        <img class="desc" src="{% static '/image/help/messenger.png' %} " style="width: 900px; height: 400px; padding-left: 150px ">
+    </div>
+    </div>
+
+    <div style="display: none" id="notification" >
+   <div class="content" style="font-size: 35px;">
+        Notification
+   </div>
+    <div style="font-size: 16px">
+         Người dùng sẽ nhận được thông báo khi có tin nhắn hay một bình luận trong bài viết mà mình đã tương tác.<br>
+        <img class="desc" src="{% static '/image/help/notification.JPG' %} " style="width: 900px; height: 400px; padding-left: 150px ">
+    </div>
+    </div>
+
+    <div style="display: none" id="help" >
+   <div class="content" style="font-size: 35px;">
+        Help
+   </div>
+    <div style="font-size: 16px">
+         Tab Trợ giúp chứa các mô-đun cung cấp cho người dùng quyền truy cập vào sổ tay trợ giúp và nhật ký lỗi.
+        Hình dưới cho thấy menu  trợ giúp
+        <img class="desc" src="{% static '/image/help/help.png' %} " style="width: 900px; height: 400px; padding-left: 150px ">
+    </div>
+    </div>
+    </div>
+    <script>
+      var divs = ["tongquan", "sododulieu","dangnhap","video", "thanhcongcuchinh", "tabhome",
+            "factories","equipment","component","proposal","uploadfile","rbitracking","designcode", "manufactures", "upload_history", "upload_plan",
+        "inspection_plan","verification", "forum", "messages", "notification", "help", "mitigation"];
+      var visibleDivId = null;
+      function divVisibility(divId) {
+          if(visibleDivId === divId) {
+            visibleDivId = null;
+          } else {
+            visibleDivId = divId;
+          }
+          hideNonVisibleDivs();
+        }
+        function hideNonVisibleDivs() {
+          var i, divId, div;
+          for(i = 0; i < divs.length; i++) {
+            divId = divs[i];
+            div = document.getElementById(divId);
+            if(visibleDivId === divId) {
+              div.style.display = "block";
+            } else {
+              div.style.display = "none";
+            }
+          }
+        }
+    </script>
+
+    </div>
+    </div>
+
+{% endblock %}
+
+{% block footer %}
+ <!-- <style>
+    .More {
+        position: static;
+        background: #c7ddef;
+        display: block;
+        color: #555555;
+        float: none;
+    }
+    </style>
+    <br><br>
+    <div class="More">
+    <br>
+        <h3 style="padding-left: 150px;" >  Liên hệ chúng tôi</h3><br>
+        <h4 style="padding-left: 150px;"> <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-telephone-inbound-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511zM15.854.146a.5.5 0 0 1 0 .708L11.707 5H14.5a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 1 0v2.793L15.146.146a.5.5 0 0 1 .708 0z"/>
+</svg> Gọi điện cho chúng tôi</h4>
+        <h4 style="padding-left: 150px"> <i class="glyphicon glyphicon-envelope"></i> Email cho chúng tôi</h4>
+        <h4 style="padding-left: 150px"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-headset" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M8 1a5 5 0 0 0-5 5v4.5H2V6a6 6 0 1 1 12 0v4.5h-1V6a5 5 0 0 0-5-5z"/>
+  <path d="M11 8a1 1 0 0 1 1-1h2v4a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1V8zM5 8a1 1 0 0 0-1-1H2v4a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V8z"/>
+  <path fill-rule="evenodd" d="M13.5 8.5a.5.5 0 0 1 .5.5v3a2.5 2.5 0 0 1-2.5 2.5H8a.5.5 0 0 1 0-1h3.5A1.5 1.5 0 0 0 13 12V9a.5.5 0 0 1 .5-.5z"/>
+  <path d="M6.5 14a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2h-1a1 1 0 0 1-1-1z"/>
+</svg></i>  Hỗ trợ trực tuyến</h4>
+        <h4 style="padding-left: 150px"> <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-cpu-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M5.5.5a.5.5 0 0 0-1 0V2A2.5 2.5 0 0 0 2 4.5H.5a.5.5 0 0 0 0 1H2v1H.5a.5.5 0 0 0 0 1H2v1H.5a.5.5 0 0 0 0 1H2v1H.5a.5.5 0 0 0 0 1H2A2.5 2.5 0 0 0 4.5 14v1.5a.5.5 0 0 0 1 0V14h1v1.5a.5.5 0 0 0 1 0V14h1v1.5a.5.5 0 0 0 1 0V14h1v1.5a.5.5 0 0 0 1 0V14a2.5 2.5 0 0 0 2.5-2.5h1.5a.5.5 0 0 0 0-1H14v-1h1.5a.5.5 0 0 0 0-1H14v-1h1.5a.5.5 0 0 0 0-1H14v-1h1.5a.5.5 0 0 0 0-1H14A2.5 2.5 0 0 0 11.5 2V.5a.5.5 0 0 0-1 0V2h-1V.5a.5.5 0 0 0-1 0V2h-1V.5a.5.5 0 0 0-1 0V2h-1V.5zm1 4.5A1.5 1.5 0 0 0 5 6.5v3A1.5 1.5 0 0 0 6.5 11h3A1.5 1.5 0 0 0 11 9.5v-3A1.5 1.5 0 0 0 9.5 5h-3zm0 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z"/>
+</svg>  MyCortek App</h4><br><br>
+        <br>
+    </div> -->
+    <div class="footer">Copyright by Cortek CO.Ltd,.</div>
+{% endblock %}

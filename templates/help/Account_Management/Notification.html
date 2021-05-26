@@ -1,0 +1,35 @@
+{% extends 'BaseUI/BaseHelp/baseHelp_content.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block library %}
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Facility Management{% endblock %}
+
+{% block vaco %}
+    <ul>
+        <!-- <h5 style="padding-top: 20px">Account Management</h5> -->
+        <li style="padding-top: 20px"><a href="{% url 'LoginPasswork' %}">Login and Password</a><br></li>
+        <li style="padding-top: 20px"><a href="{% url 'perinfor' %}">Personal Information</a><br></li>
+        <li style="padding-top: 20px"><a href="{% url 'notification' %}">Notification</a><br></li>
+        <li style="padding-top: 20px"><a href="{% url 'accdownload' %}">Access and Download Information</a><br></li>
+    </ul>
+{% endblock %}
+{% block data-content %}
+    <h3>Notification</h3>
+        <div class="panel-heading" style="padding-left: 50px;border-bottom: #9d9d9d" >
+            <h4 class="panel-title">
+            <a data-toggle="collapse" href="#collapse1" style="color: #337ab7;size: 50px;">Notification</a>
+            </h4>
+        </div>
+        <div id="collapse1" class="panel-collapse collapse" >
+{#            <div class="panel-body" style="padding-left: 70px;background-color: #dff0d8">Nhấn vào biểu tượng Profile<br>Hiển Thị</div>#}
+            <div class="panel-footer" style="padding-left: 70px">
+                Lưu ý: <a style="color: red">Người dùng sẽ nhận được thông báo khi có tin nhắn hay một bình
+                luận trong bài viết mà mình đã tương tác</a>
+            </div>
+        </div>
+{% endblock %}
+

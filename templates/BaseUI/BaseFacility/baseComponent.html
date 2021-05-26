@@ -1,0 +1,12 @@
+{% extends 'BaseUI/BaseFacility/baseBusiness.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block title %}Component{% endblock %}
+
+{% block vertical %}
+    {#<a class="vertical">Component Management</a>#}
+    <!-- <a class="active"><span>Component Management</span></a> -->
+    <a href="{% block listcomp %}{% endblock %}" class="{% if page == 'listComp' or 'componentNew' or 'newTank' %}activeLink{% endif %}"><i class="fa fa-list">&emsp;<span>List of Components</span></i></a>
+    <a href="{% block backeq %}{% endblock %}"><i class="fa fa-arrow-left">&emsp;<span>Back to Equipment</span></i></a>
+{% endblock %}

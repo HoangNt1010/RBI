@@ -1,0 +1,113 @@
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro);
+
+.register-business {
+    background-image: url("../image/logo/bg-login.png");
+    background-size: cover;
+    height: 100vh;
+    color: #fff;
+    overflow: auto;
+    user-select: none;
+}
+
+.register-business .language {
+    position: fixed;
+    top: 3px;
+    right: 25px;
+}
+
+.register-business .language img {
+    width: 17px;
+    height: 13px;
+}
+
+.form-input {
+    position: relative;
+}
+.form-input i {
+    position: absolute;
+    right: 8px;
+    top: 38px;
+    color: #1160ae;
+}
+
+.register-business .wapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.register-business .wapper .form-register .header-form h3 {
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.register-business .wapper .form-register .signup-form-business .row {
+    display: flex;
+    justify-content: center;
+}
+
+.register-business .wapper .form-register .signup-form-business .input-register {
+    width: 360px;
+    position: relative;
+}
+.register-business .wapper .form-register img {
+    position: absolute;
+    top: 42px;
+    right: 12px;
+    width: 10px;
+    height: 10px;
+}
+
+.register-business .wapper .form-register input {
+    /* width: 340px; */
+    height: 40px;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #000;
+    padding: 8px 28px 8px 16px;
+    border: none;
+    outline: none !important;
+}
+::placeholder {
+	/* color: #1160ae; */
+    font-size: 12px;
+}
+::-webkit-input-placeholder { /* Edge */
+	/* color: #1160ae; */
+    font-size: 12px;
+}
+  
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+	/* color: #1160ae; */
+    font-size: 12px;
+}
+  
+  
+.text-input-field {
+    margin: 5px 0;
+}
+
+.footer-register {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+.footer-register button {
+    width: 185px;
+    height: 35px;
+    border-radius: 20px;
+}
+.footer-register button:focus {
+    outline: none !important;
+}
+
+.footer-register a {
+    color: #969698;
+    text-decoration: none;
+}
+
+.footer-register a:hover {
+    color:#fff;
+}
+
+

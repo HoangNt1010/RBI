@@ -1,0 +1,135 @@
+{% extends 'BaseUI/BaseFacility/baseInspectionPlan.html' %}
+{% load staticfiles %}
+{% load static %}
+<!-------------- BLOCK MENU ---------------->
+{% block listfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+{% block newfaci %}{% url 'facilitiesNew' siteID %}{% endblock %}
+{% block design %}{% url 'designcodeDisplay' siteID %}{% endblock %}
+{% block manu %}{% url 'manufactureDisplay' siteID %}{% endblock %}
+{% block uploadInsp %}{% url 'upload' siteID %}{% endblock %}
+{% block uploadPlant %}{% url 'uploadPlan' siteID %}{% endblock %}
+{% block manageFile %}{% url 'manageFile' siteID %}{% endblock %}
+{#{% block uploadScada %}{% url 'uploadScada' siteID %}{% endblock %}#}
+{% block inspecPlan %}{% url 'inspectionPlan' siteID %}{% endblock %}
+{% block rbitracking %}{% url 'rbitracking' %}{% endblock %}
+{% block mitigationSite %}{% url 'mitigationSite' siteID%}{% endblock %}
+{% block HelpSite %}{% url 'help' %}{% endblock %}
+{% block forum %}{% url 'forum' %}{% endblock %}
+{% block testSample %}{% url 'testsample' siteID%}{% endblock %}
+{% block settingAccount %}{% url 'settingAccount' siteID %}{% endblock %}
+{% block settingNotification %}{% url 'settingNotification' siteID %}{% endblock %}
+{% block homedetail %}{% url 'homefacility' siteID%}{% endblock %}
+<!----------------- END BLOCK----------------->
+{% block data-content %}
+<style>
+#customers,#searchs {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+#searchstb tr{
+    cursor:pointer;
+}
+#customers td, #customers th,#searchs td,#searchs th {
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+
+#customers,#searchs tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers,#searchs tr:hover {background-color: #ddd;}
+
+#searchs {
+    width: 98%;
+}
+#searchs th {
+    position: sticky;
+    top: -1px;
+}
+#customers,#searchs th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #1c67b2;
+  color: #fff;
+}
+#searchs td {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    cursor: pointer;
+}
+.city{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+.city td, .city th{
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+.city tr:nth-child(even){background-color: #f2f2f2;}
+.city tr:hover {background-color: #ddd;}
+.city th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #1c67b2;
+  color: #fff;
+  font-size: 13px;
+}
+h2 {
+    text-align: center;
+    color: #fff;
+    font-weight: 600;
+}
+</style>
+<form id="inspectionplan" method="post" >
+    {% csrf_token %}
+    <div>
+        <h2>
+            Scheduled or Carried
+        </h2>
+    </div>
+    <br/>
+    <div>
+        <h4 class="color-white">Inspection Plan Detail</h4>
+    </div>
+    <div class="row">
+        <div class="col-md-3 color-white">Inspection/Mitigation Plan:<span style="color: red">*</span></div>
+        <div class="col-md-4"><input type="text" class="form-control" name="InspectionPlan" value="{{name}}" disabled required/></div>
+    </div>
+    <div class="row" style="margin-top: 3px;">
+        <div class="col-md-3 color-white">Inspection/Mitigation Plan Date:<span style="color: red">*</span></div>
+        <div class="col-md-4"><input type="text" class="form-control" name="InspectionDate" value="{{date}}" disabled required/></div>
+    </div>
+    <br>
+    <div style="width: 100%; height: calc(100vh - 420px); overflow-y: auto;">
+        <table class="table-plan" id="searchs">
+            <tr>
+                <!--<th>Site</th>-->
+                <th>Facility</th>
+                <th>Equipment Number</th>
+                <th>Conponent Number</th>
+                <th>Damage Mechanism</th>
+                <th>Inspection Sumary</th>
+                <th>Inspection Effectiveness</th>
+                <th>Carried out</th>
+            </tr>
+            {% for a in data %}
+            <tr>
+                <!--<td align="center">{{ proposal.Site }}</td>-->
+                <td align="center">{{ a.Facility }}</td>
+                <td align="center">{{ a.EquipmentNumber }}</td>
+                <td align="center">{{ a.ComponentNumber }}</td>
+                <td align="center">{{ a.Damage }}</td>
+                <td align="center">{{ a.Sumary }}</td>
+                <td align="center">{{ a.Eff }}</td>
+                <td align="center">{{ a.Carried }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</form>
+{% endblock %}

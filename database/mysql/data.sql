@@ -1,0 +1,201 @@
+-- MySQL dump 10.13  Distrib 8.0.17, for Win64 (x86_64)
+--
+-- Host: localhost    Database: rbi
+-- ------------------------------------------------------
+-- Server version	8.0.17
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `rw_data_chart`
+--
+
+DROP TABLE IF EXISTS `rw_data_chart`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `rw_data_chart` (
+  `ID` int(20) NOT NULL,
+  `risk_age_0` double DEFAULT NULL,
+  `risk_age_1` double DEFAULT NULL,
+  `risk_age_2` double DEFAULT NULL,
+  `risk_age_3` double DEFAULT NULL,
+  `risk_age_4` double DEFAULT NULL,
+  `risk_age_5` double DEFAULT NULL,
+  `risk_age_6` double DEFAULT NULL,
+  `risk_age_7` double DEFAULT NULL,
+  `risk_age_8` double DEFAULT NULL,
+  `risk_age_9` double DEFAULT NULL,
+  `risk_age_10` double DEFAULT NULL,
+  `risk_age_11` double DEFAULT NULL,
+  `risk_age_12` double DEFAULT NULL,
+  `risk_age_13` double DEFAULT NULL,
+  `risk_age_14` double DEFAULT NULL,
+  `risk_age_15` double DEFAULT NULL,
+  `risk_target` double DEFAULT NULL,
+  `risk_age_16` double DEFAULT NULL,
+  `risk_age_17` double DEFAULT NULL,
+  `risk_age_18` double DEFAULT NULL,
+  `risk_age_19` double DEFAULT NULL,
+  `risk_age_20` double DEFAULT NULL,
+  `risk_age_21` double DEFAULT NULL,
+  `risk_age_22` double DEFAULT NULL,
+  `risk_age_23` double DEFAULT NULL,
+  `risk_age_24` double DEFAULT NULL,
+  `risk_age_25` double DEFAULT NULL,
+  `risk_age_26` double DEFAULT NULL,
+  `risk_age_27` double DEFAULT NULL,
+  `risk_age_28` double DEFAULT NULL,
+  `risk_age_29` double DEFAULT NULL,
+  `risk_age_30` double DEFAULT NULL,
+  `risk_age_31` double DEFAULT NULL,
+  `risk_age_32` double DEFAULT NULL,
+  `risk_age_33` double DEFAULT NULL,
+  `risk_age_34` double DEFAULT NULL,
+  `risk_age_35` double DEFAULT NULL,
+  `risk_age_36` double DEFAULT NULL,
+  `risk_age_37` double DEFAULT NULL,
+  `risk_age_38` double DEFAULT NULL,
+  `risk_age_39` double DEFAULT NULL,
+  `risk_age_40` double DEFAULT NULL,
+  `risk_age_41` double DEFAULT NULL,
+  `risk_age_42` double DEFAULT NULL,
+  `risk_age_43` double DEFAULT NULL,
+  `risk_age_44` double DEFAULT NULL,
+  `risk_age_45` double DEFAULT NULL,
+  `risk_age_46` double DEFAULT NULL,
+  `risk_age_47` double DEFAULT NULL,
+  `risk_age_48` double DEFAULT NULL,
+  `risk_age_49` double DEFAULT NULL,
+  `risk_age_50` double DEFAULT NULL,
+  `risk_age_51` double DEFAULT NULL,
+  `risk_age_52` double DEFAULT NULL,
+  `risk_age_53` double DEFAULT NULL,
+  `risk_age_54` double DEFAULT NULL,
+  `risk_age_55` double DEFAULT NULL,
+  `risk_age_56` double DEFAULT NULL,
+  `risk_age_57` double DEFAULT NULL,
+  `risk_age_58` double DEFAULT NULL,
+  `risk_age_59` double DEFAULT NULL,
+  `risk_age_60` double DEFAULT NULL,
+  `risk_age_61` double DEFAULT NULL,
+  `risk_age_62` double DEFAULT NULL,
+  `risk_age_63` double DEFAULT NULL,
+  `risk_age_64` double DEFAULT NULL,
+  `risk_age_65` double DEFAULT NULL,
+  `risk_age_66` double DEFAULT NULL,
+  `risk_age_67` double DEFAULT NULL,
+  `risk_age_68` double DEFAULT NULL,
+  `risk_age_69` double DEFAULT NULL,
+  `risk_age_70` double DEFAULT NULL,
+  `risk_age_71` double DEFAULT NULL,
+  `risk_age_72` double DEFAULT NULL,
+  `risk_age_73` double DEFAULT NULL,
+  `risk_age_74` double DEFAULT NULL,
+  `risk_age_75` double DEFAULT NULL,
+  `risk_age_76` double DEFAULT NULL,
+  `risk_age_77` double DEFAULT NULL,
+  `risk_age_78` double DEFAULT NULL,
+  `risk_age_79` double DEFAULT NULL,
+  `risk_age_80` double DEFAULT NULL,
+  `risk_age_81` double DEFAULT NULL,
+  `risk_age_82` double DEFAULT NULL,
+  `risk_age_83` double DEFAULT NULL,
+  `risk_age_84` double DEFAULT NULL,
+  `risk_age_85` double DEFAULT NULL,
+  `risk_age_86` double DEFAULT NULL,
+  `risk_age_87` double DEFAULT NULL,
+  `risk_age_88` double DEFAULT NULL,
+  `risk_age_89` double DEFAULT NULL,
+  `risk_age_90` double DEFAULT NULL,
+  `risk_age_91` double DEFAULT NULL,
+  `risk_age_92` double DEFAULT NULL,
+  `risk_age_93` double DEFAULT NULL,
+  `risk_age_94` double DEFAULT NULL,
+  `risk_age_95` double DEFAULT NULL,
+  `risk_age_96` double DEFAULT NULL,
+  `risk_age_97` double DEFAULT NULL,
+  `risk_age_98` double DEFAULT NULL,
+  `risk_age_99` double DEFAULT NULL,
+  `risk_age_100` double DEFAULT NULL,
+  `risk_age_101` double DEFAULT NULL,
+  `risk_age_102` double DEFAULT NULL,
+  `risk_age_103` double DEFAULT NULL,
+  `risk_age_104` double DEFAULT NULL,
+  `risk_age_105` double DEFAULT NULL,
+  `risk_age_106` double DEFAULT NULL,
+  `risk_age_107` double DEFAULT NULL,
+  `risk_age_108` double DEFAULT NULL,
+  `risk_age_109` double DEFAULT NULL,
+  `risk_age_110` double DEFAULT NULL,
+  `risk_age_111` double DEFAULT NULL,
+  `risk_age_112` double DEFAULT NULL,
+  `risk_age_113` double DEFAULT NULL,
+  `risk_age_114` double DEFAULT NULL,
+  `risk_age_115` double DEFAULT NULL,
+  `risk_age_116` double DEFAULT NULL,
+  `risk_age_117` double DEFAULT NULL,
+  `risk_age_118` double DEFAULT NULL,
+  `risk_age_119` double DEFAULT NULL,
+  `risk_age_120` double DEFAULT NULL,
+  `risk_age_121` double DEFAULT NULL,
+  `risk_age_122` double DEFAULT NULL,
+  `risk_age_123` double DEFAULT NULL,
+  `risk_age_124` double DEFAULT NULL,
+  `risk_age_125` double DEFAULT NULL,
+  `risk_age_126` double DEFAULT NULL,
+  `risk_age_127` double DEFAULT NULL,
+  `risk_age_128` double DEFAULT NULL,
+  `risk_age_129` double DEFAULT NULL,
+  `risk_age_130` double DEFAULT NULL,
+  `risk_age_131` double DEFAULT NULL,
+  `risk_age_132` double DEFAULT NULL,
+  `risk_age_133` double DEFAULT NULL,
+  `risk_age_134` double DEFAULT NULL,
+  `risk_age_135` double DEFAULT NULL,
+  `risk_age_136` double DEFAULT NULL,
+  `risk_age_137` double DEFAULT NULL,
+  `risk_age_138` double DEFAULT NULL,
+  `risk_age_139` double DEFAULT NULL,
+  `risk_age_140` double DEFAULT NULL,
+  `risk_age_141` double DEFAULT NULL,
+  `risk_age_142` double DEFAULT NULL,
+  `risk_age_143` double DEFAULT NULL,
+  `risk_age_144` double DEFAULT NULL,
+  `risk_age_145` double DEFAULT NULL,
+  `risk_age_146` double DEFAULT NULL,
+  `risk_age_147` double DEFAULT NULL,
+  `risk_age_148` double DEFAULT NULL,
+  `risk_age_149` double DEFAULT NULL,
+  `risk_age_150` double DEFAULT NULL,
+  `risk_age_151` double DEFAULT NULL,
+  `risk_age_152` double DEFAULT NULL,
+  `risk_age_153` double DEFAULT NULL,
+  `risk_age_154` double DEFAULT NULL,
+  `risk_age_155` double DEFAULT NULL,
+  `risk_age_156` double DEFAULT NULL,
+  `risk_age_157` double DEFAULT NULL,
+  `risk_age_158` double DEFAULT NULL,
+  `risk_age_159` double DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2021-01-12 10:54:24

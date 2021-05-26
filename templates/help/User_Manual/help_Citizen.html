@@ -1,0 +1,59 @@
+{% extends 'BaseUI/BaseHelp/baseHelp_content.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block library %}
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Facility Management{% endblock %}
+
+{% block vaco %}
+    <ul>
+        <!-- <h5 style="padding-top: 20px">User Manual</h5> -->
+        <li style="padding-top: 20px"><a href="{% url 'helpUserManualCtizen' %}">for Citizen</a><br></li>
+        <li style="padding-top: 20px"><a href="{% url 'helpUserManualBusiness' %}">for Business</a><br></li>
+        <li style="padding-top: 20px"><a href="{% url 'helpUserManualManager' %}">for Management</a><br></li>
+    </ul>
+{% endblock %}
+{% block data-content %}
+    <div style="padding-left: 30px;padding-right: 100px">
+        <h3>I'm Citizen :</h3>
+        <div class="panel-heading" style="padding-left: 50px;border-bottom: #9d9d9d" >
+            <h4 class="panel-title">
+            <a data-toggle="collapse" href="#collapse1" style="color: #337ab7;size: 50px;">Login Citizen</a>
+            </h4>
+        </div>
+        <div id="collapse1" class="panel-collapse collapse" >
+            <div class="panel-body" style="padding-left: 70px;background-color: #dff0d8">Login Citizen </div>
+            <div class="panel-footer" style="padding-left: 70px">
+                1. Truy cập vào <a href="http://127.0.0.1:8888/">http://127.0.0.1:8888/</a> <br>
+                2. Nhấn login <br>
+                3. Nhập username and Passwork <br>
+                4. Nhấn SignIn <br>
+                >> Khí đó trang chủ của Citizen sẽ suất hiện.
+            </div>
+        </div>
+
+        <div class="panel-heading" style="padding-left: 50px;border-bottom: #9d9d9d" >
+            <h4 class="panel-title">
+            <a data-toggle="collapse" href="#collapse2" style="color: #337ab7;size: 50px;">Views Result Calculations</a>
+            </h4>
+        </div>
+        <div id="collapse2" class="panel-collapse collapse" >
+            <div class="panel-body" style="padding-left: 70px;background-color: #dff0d8">
+                Views Result Calculations
+            </div>
+            <div class="panel-footer" style="padding-left: 70px">
+                1. Nhấn vào mục view của trang <a href="http://127.0.0.1:8888/citizen/">http://127.0.0.1:8888/citizen/</a> <br>
+                2. Nhấn List Facility <br>
+                3. Chọn Proposal thông tin kết quả sẽ hiện ra: <br>
+                &emsp;+ Probability of failure: Kết quả tính toán. <br>
+                &emsp;+ Consequence of failure: kết quả chi tiết. <br>
+                &emsp;+ Risk Matrix: Matran kết quả <br>
+                &emsp;+ Risk Chart: đồ thị kết quả. <br>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

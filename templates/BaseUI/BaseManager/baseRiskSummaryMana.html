@@ -1,0 +1,14 @@
+{% extends 'BaseUI/BaseManager/baseManager.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block title %}Risk Summary{% endblock %}
+
+{% block vertical %}
+    <!-- <a class="active">Risk Summary</a> -->
+    <a href="{% block pof %}{% endblock %}" class="{% if page == 'damageFactor' %}activeLink{% endif %}"><i class="fa fa-bomb">&emsp;Probability of<br>&emsp;&emsp; Failure</i></a>
+    <a href="{% block ca%}{% endblock %}" class="{% if page == 'fullyConse' %}activeLink{% endif %}"><i class="fa fa-money">&emsp;Consequence of<br>&emsp;&emsp; Failure</i></a>
+    <a href="{% block matrix %}{% endblock %}" class="{% if page == 'riskMatrix' %}activeLink{% endif %}"><i class="fa fa-th">&emsp;Risk Matrix</i></a>
+    <a href="{% block chart %}{% endblock %}" class="{% if page == 'riskChart' %}activeLink{% endif %}"><i class="fa fa-bar-chart-o">&emsp;Risk Chart</i></a>
+    <a href="{% block backProposal %}{% endblock %}"><i class="fa fa-arrow-left">&emsp;Back to Proposal</i></a>
+{% endblock %}

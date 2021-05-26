@@ -1,0 +1,207 @@
+{% extends 'BaseUI/BaseFacility/baseInputTestSample.html' %}
+{% load staticfiles %}
+{% load static %}
+
+<!-------------- BLOCK MENU ---------------->
+{% block listfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+{% block newfaci %}{% url 'facilitiesNew' siteID %}{% endblock %}
+{% block design %}{% url 'designcodeDisplay' siteID %}{% endblock %}
+{% block manu %}{% url 'manufactureDisplay' siteID %}{% endblock %}
+{% block uploadInsp %}{% url 'upload' siteID %}{% endblock %}
+{% block uploadPlant %}{% url 'uploadPlan' siteID %}{% endblock %}
+{#{% block uploadScada %}{% url 'uploadScada' siteID %}{% endblock %}#}
+{% block inspecPlan %}{% url 'inspectionPlan' siteID %}{% endblock %}
+{% block manageFile %}{% url 'manageFile' siteID %}{% endblock %}
+{% block rbitracking %}{% url 'rbitracking' %}{% endblock %}
+{% block mitigationSite %}{% url 'mitigationSite' siteID%}{% endblock %}
+{% block testSample %}{% url 'testsample' siteID%}{% endblock %}
+{% block HelpSite %}{% url 'help' %}{% endblock %}
+{% block forum %}{% url 'forum' %}{% endblock %}
+{% block settingAccount %}{% url 'settingAccount' siteID %}{% endblock %}
+{% block homedetail %}{% url 'homefacility' siteID%}{% endblock %}
+<!----------------- END BLOCK----------------->
+{% block data-content %}
+<style>
+a.ex1{
+ color:red;
+}
+a.ex1:hover{
+ color:green
+}
+.alert {
+  padding: 10px;
+  background-color: #ff9800;
+  color: white;
+  opacity: 1;
+  transition: opacity 0.0s;
+  margin-bottom: 15px;
+  font-size: 17px
+}
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 25px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.0s;
+}
+.alert.success {background-color: #4CAF50;}
+.closebtn:hover {
+  color: black;
+}
+</style>
+    <form method="post">
+        {% csrf_token %}
+        <div class="title-verifitcation" >
+          <h1>List Test Sample of Facility</h1>
+        </div>
+        <div style="text-align: right;margin-right: 20px;">
+          <button type="submit" name="_detail" id="detail"style="text-align:left" class="btn btn-primary" disabled><i class="fa fa-info-circle">&emsp;Proposal Input Data</i></button>
+          <button type="submit" name="_risk" id="risk"style="text-align:left" class="btn btn-primary" disabled><i class="fa fa-line-chart">&emsp;Risk Analaysis Data</i></button>
+        </div>
+        <div style="text-align: center;height: calc(100vh - 220px);" class="table-custom">
+            <table class="table" id="mytable" >
+                <thead >
+                    <tr>
+{#                        <th width="50px" style="text-align: center;"><input type="checkbox" id="chkHeader"></th>#}
+                        <th></th>
+                        <th width="200px" style="text-align: left;"><i class="fa fa-tag"></i>&ensp;Proposal</th>
+                        <th width="250px" style="text-align: left;"><i class="fa fa-compass"></i>&ensp;Component Type</th>
+                        <th width="200px" style="text-align: left;"><i class="fa fa-bullseye"></i>&ensp;Equipment Type</th>
+                        <th width="200px" style="text-align: center;"><i class="fa fa-bar-chart-o"></i>&ensp;Risk Summary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% if error.exist %}
+                <div class="alert">
+                    <span class="closebtn">&times;</span>
+                    <strong>Not found!</strong> {{error.exist}}
+                    <h4 style="text-align:left">Recommend:</h4>
+                    <ul style="text-align:left">
+                      <li>Please make sure all words are correctly spelled.</li>
+                      <li>Try other keywords.</li>
+                      <li>Try more general keywords.</li>
+                    </ul>
+                </div>
+                <script>
+                var close = document.getElementsByClassName("closebtn");
+                var i;
+
+                for (i = 0; i < close.length; i++) {
+                  close[i].onclick = function(){
+                    var div = this.parentElement;
+                    div.style.opacity = "0";
+                    setTimeout(function(){ div.style.display = "none"; }, 600);
+                  }
+                }
+                </script>
+                {% else %}
+                    {% if result.data %}
+                    <div class="alert success">
+                        <span class="closebtn">&times;</span>
+                        <strong>Results!</strong>{{result.data}}
+                    </div>
+                    {% endif %}
+                    {% for a in obj %}
+                    <tr >
+                        <td align="center"><input type="checkbox" id="checkbox" name="{{ a.ID }}" class="checkboxClass"></td>
+                        <td align="left"><strong>{{ a.NameProposal }}</strong></td>
+                        <td align="left">{{ a.ComponentType }}</td>
+                        <td align="left">{{ a.EquipmentType }}</td>
+                        <td style="text-align: center;hover:#0000ff"><a class="ex1" href="{% url 'viewexcelproposal' a.ID 'Proposal'  %}" target="_blank"><i class="fa fa-print" style="font-size:20px;"></i></a></td>
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+
+                </tbody>
+            </table>
+
+{#          Pagination div  #}
+            <div>
+                {% if obj.has_other_pages %}
+              <ul class="pagination">
+                {% if obj.has_previous %}
+                  <li><a href="?page={{ obj.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&laquo;</span></li>
+                {% endif %}
+                {% for i in obj.paginator.page_range %}
+                  {% if obj.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                  {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if obj.has_next %}
+                  <li><a href="?page={{ obj.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+              </ul>
+            {% endif %}
+            </div>
+
+{#        Tool div #}
+            <script>
+                $( document ).ready(function() {
+                  setTimeout(() => {
+                    var isDisabledBtn = 0;
+                    $(".checkboxClass").each(function(){
+                    console.log(this.checked);
+                      if(this.checked) {
+                        isDisabledBtn = 1;
+                      }
+                    })
+                    if(isDisabledBtn == 1){
+                        $("#edit").attr("disabled", false);
+                        $("#sub").attr("disabled", false);
+                    } else {
+                        $("#edit").attr("disabled", true);
+                        $("#sub").attr("disabled", true);
+                    }
+                    // $("#checkboxAllNormal").prop("checked", false);
+                  }, 10);
+                });
+
+                $("input[id='checkbox']").change(function (e) {
+                var isChecked = $(this).prop("checked");
+                if (isChecked == false) {
+                    $("#detail").attr("disabled", true);
+                    $("#risk").attr("disabled", true);
+                }
+                else {
+                    $("#detail").attr("disabled", false);
+                    $("#risk").attr("disabled", false);
+                    }
+                });
+
+                $(document).ready(function() {
+                      $("input[type=checkbox]").prop("checked", false);
+                      $("input[type=checkbox]:first").prop("checked", true);
+
+                      $("input[type=checkbox]").click(function(event) {
+                      $("input[type=checkbox]").prop("checked", false);
+                      $(this).prop("checked", true);
+
+                        //event.preventDefault();
+                      });
+                    });
+                window.onload = function() {
+                  document.querySelectorAll("INPUT[type='checkbox']").forEach(function(rd) {
+                    rd.addEventListener("mousedown", function() {
+                      if(this.checked) {
+                        this.onclick=function() {
+                          this.checked=false
+                        }
+                      } else {
+                        this.onclick=null
+                      }
+                    })
+                  })
+                }
+            </script>
+        </div>
+    </form>
+{% endblock %}

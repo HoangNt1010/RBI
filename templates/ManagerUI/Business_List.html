@@ -1,0 +1,81 @@
+{% extends 'BaseUI/BaseManager/ManagerHome.html' %}
+
+<!-------------- BLOCK MENU ---------------->
+{% block homedetail %}{% url 'managerhomedetail' siteID%}{% endblock %}
+{% block listmana %}{% url 'manager' siteID %}{% endblock %}
+{% block calculate %}{% url 'calculatefunctionmanager' siteID %}{% endblock %}
+{% block admin %}{% url 'admin1' siteID %}{% endblock %}
+{% block toolmanage %}{% url 'toolmanager' siteID %}{% endblock %}
+{% block  registeraccount%}{% url 'registerAccount' siteID %}{% endblock %}
+<!--{% block design %}{% url 'designcodeDisplayMana' siteID %}{% endblock %}-->
+<!--{% block manu %}{% url 'manufactureDisplayMana' siteID %}{% endblock %}-->
+<!----------------- END BLOCK----------------->
+
+{% block data-content %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="table-title">
+          <h2><b>List of Management</b></h2>
+        </div>
+        <div style="text-align: center" class="table-custom">
+            <br><br>
+            <table class="table" id="mytable" >
+                <thead >
+                    <tr>
+                     
+                        <th width="10px" style="text-align: left ; font-size: 18.4px ;font-family: initial ; color:#ffffff " class="header-table">Created time</th>
+                        <th width="10px" style="text-align: left ; font-size: 18.4px;font-family: initial; color:#ffffff" class="header-table">Name Company</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in obj %}
+                  
+                    <tr >
+                        
+                        <td align="left"><a href="{% url 'facilitiesDisplayMana' a.ID %}">{{ a.CreatedTime }}</a></td>
+                        <td align="left"><a href="{% url 'facilitiesDisplayMana' a.ID %}">{{ a.SideName }}</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="pagination-custom">
+{#              <div class="to-left">#}
+{#                <a href=""><i class="fas fa-angle-left color-white"></i></a>#}
+{#              </div>#}
+{#              <div class="page color-white">Page 1 of 1</div>#}
+{#              <div class="to-right">#}
+{#                <a href="" class="color-white"><i class="fas fa-angle-right"></i></a>#}
+{#              </div>#}
+            </div>
+
+{# Pagination div #}
+            <div>
+                {% if obj.has_other_pages %}
+              <ul class="pagination">
+                {% if obj.has_previous %}
+                  <li><a href="?page={{ obj.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&laquo;</span></li>
+                {% endif %}
+                {% for i in obj.paginator.page_range %}
+                  {% if obj.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                  {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if obj.has_next %}
+                  <li><a href="?page={{ obj.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+              </ul>
+            {% endif %}
+            </div>
+
+{# Tool div #}
+            <br>
+        </div>
+    </form>
+{% endblock %}

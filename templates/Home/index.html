@@ -1,0 +1,130 @@
+{% extends 'BaseUI/BaseWeb/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block title %}Home{% endblock %}
+
+{% block library %}
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/sign_in.css' %}">
+
+
+<!-- {% endblock %}
+
+{% block navbar %}
+
+    <a id="#signin" class="a-login" data-toggle="modal" style="text-align: center" data-target="#formsignin"><i class="fa fa-user-circle" style="font-size:40px"></i></a>
+
+{#    <a class="" href="{% url 'home' %}" data-toggle="tooltip" data-placement="bottom" title="Home"><i class="fa fa-home"></i></a>#}
+{% endblock %}
+
+{% block content %}
+        <div class="index-normal">
+            <div id="index-text" style="font-family: 'serif'; font-size: 20px;">
+                <img style="width: 25%;height: 25%;text-align: center" src="{% static 'image/logo/ok.jpg' %}">
+                <h2>Language:</h2>
+                <a href="https://eng.cortekrbi.com/" ><img src='/static/image/logo/vietnam.png' style="width:70px;padding-left: 6px;height: 45px;"></a>
+                <a href="https://cortekrbi.com/" ><img src='/static/image/logo/england.png' style="width:70px;padding-left: 6px;height: 45px;"></a>
+                <h1>Fast More. Exactly More.</h1>
+                <h3>Inspection as a Service helps millions of administrators,<br> businesses and users  in monitoring, maintaining<br> and replacing facilities properly</h3><br>
+                <h4>Create your free account</h4>
+            </div>
+            <dv><br><br></dv> -->
+
+            <!--<button class="index-red-btn" onclick="location.href='{% url 'accountcitizen' %}'"><i class="fa fa-group" >&emsp;I'm Citizen</i></button>-->
+            <!-- <button class="index-btn" onclick="location.href='{% url 'accountbusiness' %}'"><i class="fa fa-gear">&emsp;I'm Business</i></button>
+            <button class="index-btn" onclick="location.href='{% url 'accountmanagement' %}'"><i class="fa fa-gear">&emsp;I'm Management</i></button>
+        </div> -->
+
+<!-- The Modal -->
+
+    <div class ="" id ="formsignin">
+        <section id="content">
+            <div>
+<!--<<<<<<< HEAD-->
+                <div class="language">
+                    Language:
+                    <a href="https://cortekrbi.com/" ><img src="{% static '/image/logo/england.png' %} "  /></a>
+                    <a href="https://vi.cortekrbi.com/" ><img src="{% static '/image/logo/vietnam.png' %} " /></a>
+                    <span style="margin: 0 10px 0 10px" class="custom-span" id="datetime"></span>
+                    <script>
+                        var dt = new Date();
+                        setInterval(() => {
+                            var dt = new Date();
+                        document.getElementById("datetime").innerHTML = dt.toLocaleString();
+                        }, 1000);
+                    </script>
+<!--=======-->
+                <!--<div class="language" style="display: flex;">-->
+                    <!--<div>-->
+                        <!--Language: <img src="{% static '/image/logo/england.png' %}" />-->
+                    <!--</div>-->
+                    <!--<div style="margin: 0 10px 0 10px" class="custom-span" id="datetime"></div>-->
+<!--&gt;>>>>>> dev-->
+                </div>
+                <div class="img-form-login">
+                    <img src="../../static/image/logo/name.png" alt="">
+                </div>
+                <h1 class="">WELCOME</h1>
+                <form class="form-login" action="" method="post">
+                   <div>
+                    {% csrf_token %}
+                        <div class="form-input">
+                            <p>User name</p>
+                            <input autofocus autocomplete="off" type="text" name ="txtuser" placeholder="Your account" required="" id="username" />
+                            <i class="far fa-user"></i>
+                        </div>
+                        <div class="form-input">
+                            <p>Password</p>
+                            <input type="password" name ="txtpass" placeholder="Your password" required="" id="password" />
+                            <i id="eye-icon" class="fas fa-eye-slash"></i>
+                        </div>
+                        <div class="form-check-option">
+                            <div class="form-switch">
+                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                                <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                                <span>Remember me</span>
+                            </div>
+                            <a href="{% url 'password' %}">
+                                Forgot password?
+                            </a>
+                        </div>
+                        <div class="btn-form-login">
+                            <button class="btn btn-primary btn-login" type="submit" >Sign in</button>
+                        </div>
+                        <p class="text-center">
+                            <a href="{% url 'accountbusiness' %}">Don't have an account? Free register
+                            </a>
+                        </p>
+                   </div>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <script> {# Notification Account or pass false#}
+        var error ='{{ error }}';
+        let isHide = false;
+        if(error!=''){
+            if (confirm("{{ error }}\nVui lòng đăng nhập lại !")) {
+{#                $("#formsignin").modal();#}
+            }
+        }
+        $(document).ready(() => {
+            $("#eye-icon").click(() => {
+                $("#password").attr("type", isHide ? "password" : "text");
+                if(!isHide) {
+                    $("#eye-icon").removeClass("fa-eye-slash")
+                    $("#eye-icon").addClass("fa-eye")
+                } else {
+                    $("#eye-icon").addClass("fa-eye-slash")
+                    $("#eye-icon").removeClass("fa-eye")
+                }
+                isHide = !isHide
+            });
+        });
+    </script>
+
+<!-- {% endblock %} -->

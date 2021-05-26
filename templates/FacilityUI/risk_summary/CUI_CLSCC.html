@@ -1,0 +1,212 @@
+{% extends 'BaseUI/BaseFacility/baseRiskSummary.html' %}
+
+{% load staticfiles %}
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactor' proposalID %}{% endblock %}
+{% block fcof%}{% url 'fullyConsequence' proposalID %}{% endblock %}
+{% block acof%}{% url 'areaBasedCoF' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrix' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChart' proposalID %}{% endblock %}
+{% block corri %}{% url 'corrision' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'damgeFactor' proposalID%}{% endblock %}
+
+{% block data-content %}
+    <style>
+      .card {
+          background: #ffffff;
+      }
+
+    .scheduler-border {
+        border: none;
+        padding: 0 1.4em 1.4em 1.4em;
+        margin: 0 0 1.5em 0;
+        font-size: 1.1em ;
+        text-align: left ;
+        text-decoration-color: #444444;
+    }
+    .row{
+        text-align: left;
+    }
+    .arrow-down {
+        margin-left: 50%;
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-top: 2px solid;
+        border-right: 2px solid;
+        transform: rotate(135deg);
+      }
+    </style>
+    <!--suppress ALL -->
+    <form id="inspectionplan" method="post" class="card" >
+    {% csrf_token %}
+       <div style=" text-align: center"><caption><b style="font-size: 20px; color: #444444;">External Corrosion Under Insulation Damage Factor</b></caption></div>
+
+                <!-----------BlOCK FULLY QUANTITIVE FCOF AND CATEGORY--------->
+        <fieldset class="scheduler-border">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Assessment General Information</b></legend>
+                    <div class="row">
+                        <div class="col-md-4">Equipment Number</div>
+                        <div class="col-md-6"><form><input  type="text" size="50px" value="{{ a.EquipmentNumber }}"></form></div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Component Number</div>
+                        <div class="col-md-6"><form><input  type="text" size="50px" value="{{ a.ComponentNumber }}"> </form></div>
+                    </div>
+                    <div class="row">
+                         <div class="col-md-4">Assessment Name</div>
+                        <div class="col-md-6"><form><input  type="text" size="50px" value="{{ a.Assessment }}"> </form></div>
+                    </div>
+                </fieldset>
+
+
+        <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Assessment Data Input</b></legend>
+            <div>
+           <a class="arrow-down" data-toggle="collapse" href="#a" aria-expanded="false" >
+              </a></div>
+               <div class="collapse" id="a">
+                    <div class="row">
+                        <div class="col-md-3">Assessment Date</div>
+                        <div class="col-md-3"><form><input type="text" name="assessmentdate"  id="assessmentdate" placeholder="yyyy-mm-dd" value="{{ a.assessmentDate }}">
+                        <script>
+                            $( "#assessmentdate" ).datepicker({
+                            dateFormat: 'yy-mm-dd'
+                        });
+
+                        </script></form>
+                        </div>
+                        <div class="col-md-3">Commission Date</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.CommissionDate }}"> </form></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">Risk Analysis Period</div>
+                        <div class="col-md-3"><form><input  type="text" value="36 months"> </form></div>
+                        <div class="col-md-3">Last Inspection Date</div>
+                        <div class="col-md-3"><form><input  type="text" name="lastInspection"  id="lastInspection" placeholder="yyyy-mm-dd" value="{{ a.CommissionDate }}">
+                        <script>
+                            $( "#lastInspection" ).datepicker({
+                            dateFormat: 'yy-mm-dd'
+                        });
+
+                        </script></form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">Highest Inspection Effectiveness</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.EXTERN_CLSCC_CUI_INSP_EFF }}"> </form></div>
+                        <div class="col-md-3">Number of Inspections</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.EXTERN_CLSCC_CUI_INSP_NUM }}"> </form></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">Max Operating Temperature</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.MAX_OP_TEMP }}"> </form></div>
+                        <div class="col-md-3">Min Operating Temperature</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.MIN_OP_TEMP }}"> </form></div>
+                    </div>
+                   <div class="row">
+                        <div class="col-md-3">External Coating Installation Date</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.ageCoat }}"> </form></div>
+                        <div class="col-md-3">Insulation Contains Chlorides</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.INSULATION_CHLORIDE }}"> </form></div>
+                    </div>
+
+                    <div class="row">
+                            <div class="col-md-3">External Coating Quality</div>
+                            <div class="col-md-3"><form><input  type="text" value="{{ a.EXTERN_COAT_QUALITY }}"> </form></div>
+                    </div>
+                    <div class="row">
+                         <div class="col-md-3">External Environment</div>
+                        <div class="col-md-6"><form><input  type="text" size="70px" value="{{ a.EXTERNAL_EVIRONMENT }}"> </form></div>
+                    </div>
+                    <div class="row">
+                         <div class="col-md-3">Insulation Condition</div>
+                        <div class="col-md-6"><form><input  type="text" size="70px" value="{{ a.INSULATION_CONDITION }}"> </form></div>
+                    </div>
+                   <div class="row">
+                         <div class="col-md-3">External Insulation Type</div>
+                        <div class="col-md-6"><form><input  type="text" size="70px" value="{{ a.EXTERNAL_INSULATION }}"> </form></div>
+                    </div>
+                   <div class="row">
+                         <div class="col-md-3">Complexity of Protrusions</div>
+                        <div class="col-md-6"><form><input  type="text" size="70px" value="{{ a.PIPING_COMPLEXITY }}"> </form></div>
+                    </div>
+               </div>
+            </fieldset>
+            <!-------Khối Intermediate Results------>
+            <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Intermediate Results </b></legend>
+              <div>  <a class="arrow-down" data-toggle="collapse" href="#b" aria-expanded="false" >
+              </a></div>
+               <div class="collapse" id="b">
+
+                    <div class="row">
+                        <div class="col-md-6">Adjustment Factor for Insulation Condition, FIC</div>
+                        <div class="col-md-3"><form><input  type="text" size="10px" value="{{ a.FIC }}"> </form></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">Adjustment for Piping Complexity, FCM</div>
+                        <div class="col-md-3"><form><input  type="text" size="10px" value="{{ a.FCM }}"> </form></div>
+                    </div>
+                   <div class="row">
+                        <div class="col-md-6">Adjustment for Chlorides Free Insulation, FCF</div>
+                        <div class="col-md-3"><form><input  type="text" size="10px" value="{{ a.FCF }}"> </form></div>
+                    </div>
+                   <div class="row">
+                        <div class="col-md-6">Susceptibility to External CUI CLSCC</div>
+                        <div class="col-md-3"><form><input  type="text" size="10px" value="{{ a.Susceptibility }}"> </form></div>
+                    </div>
+                   <div class="row">
+                        <div class="col-md-6">Severity Index, SVI</div>
+                        <div class="col-md-3"><form><input  type="text" size="10px" value="{{ a.SVI }}"> </form></div>
+                    </div>
+
+                    <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-1"><form><input  type="text" style="background-color: #0C5BED; color: white" size="54px"  value="0 months                          36 months                           72 months"> </form></div>
+                    </div>
+                    <div class="row">
+                            <div class="col-md-6">Years Since Last Inspection, age, tk</div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.agetk1 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.agetk2 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.agetk3 }}"> </form></div>
+                    </div>
+                    <div class="row">
+                            <div class="col-md-6">In-service Years, age</div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.AGE_CUI1 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.AGE_CUI2}}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.AGE_CUI3 }}"> </form></div>
+                    </div>
+                   <div class="row">
+                            <div class="col-md-6">Base Value of Damage Factor</div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.base1 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.base2 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.base3 }}"> </form></div>
+                    </div>
+
+               </div>
+            </fieldset>
+            <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Damage Factor </b></legend>
+                <div>
+                <a class="arrow-down" data-toggle="collapse" href="#c" aria-expanded="false" >
+              </a></div>
+               <div class="collapse" id="c">
+                    <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-1"><form><input  type="text" style="background-color: #0C5BED; color: #FFFFFF" size="54px"  value="0 months                          36 months                           72 months"> </form></div>
+                    </div>
+                    <div class="row">
+                            <div class="col-md-6">External CUI CLSCC Damage Factor</div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.CUI_CLSCC1 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.CUI_CLSCC2 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.CUI_CLSCC3 }}"> </form></div>
+                    </div>
+               </div>
+            </fieldset>
+        </fieldset>
+    </form>
+
+{% endblock %}

@@ -1,0 +1,213 @@
+{% extends 'BaseUI/BaseFacility/baseRiskSummary.html' %}
+
+{% load staticfiles %}
+
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactor' proposalID %}{% endblock %}
+{% block fcof%}{% url 'fullyConsequence' proposalID %}{% endblock %}
+{% block acof%}{% url 'areaBasedCoF' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrix' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChart' proposalID %}{% endblock %}
+{% block chartv2 %}{% url 'riskChartv2' proposalID %}{% endblock %}
+{% block corrcontrol %}{% url 'corrosionCotrol' proposalID %}{% endblock %}
+{% block corri %}{% url 'corrision' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'proposalDisplay' ass.componentid_id %}{% endblock %}
+<!---------------END BLOCK--------------->
+{% block data-content %}
+    <!--suppress ALL -->
+    <form method="post">
+    {% csrf_token %}
+    <div class="title-verifitcation" >
+        <h1>FINANCIAL COF</h1>
+      </div>
+        <div class="input-data content-full-df">
+
+                <!-------- BLOCK CONSEQUENCE ------->
+                <h3 class="color-white">Input</h3>
+                <hr class="hr-verification"/>
+                <div class="px-100">
+                    <div class="row">
+                        <div class="col-md-8 color-white">Process unit placement cost for component</div>
+                        <div class="col-md-4 text-value">{{data.process_unit}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">Equipment Outage Multiplier</div>
+                        <div class="col-md-4 text-value">{{data.equip_outage_multiplier}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">Loss of Product Cost</div>
+                        <div class="col-md-4 text-value">{{data.production_cost}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">The unit Population Density of Personal or Employees</div>
+                        <div class="col-md-4 text-value">{{data.personal_density}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">The cost associated with serious injury of fatality of personal</div>
+                        <div class="col-md-4 text-value">{{data.equipment_cost}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">Environmental clean up Cost</div>
+                        <div class="col-md-4 text-value">{{data.evironment_cost}}</div>
+                    </div>
+                </div>
+                <h3 class="color-white">Fully-Quantitative Financial Consequence of Failure and Category</h3>
+                <hr class="hr-verification"/>
+                <div class="px-100">
+                    
+                    <div class="row">
+                        <div class="col-md-8 color-white">Financial Consequence of Falure, $</div>
+                        <div class="col-md-4 text-value">{{ data.fc_total }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">Consequence of Failure Category</div>
+                        <div class="col-md-4 text-value"><b>{{ data.fcof_category }}</b></div>
+                    </div>
+                     <div class="row">
+                        <div class="col-md-8 color-white">Emmua 159 Consequence of Failure Category</div>
+                        <div class="col-md-4 text-value"><b>{{ data.cofemmuacattegory }}</b></div>
+                    </div>
+
+                </div>
+                <!--------BLOCK INTERMEDIATE VALUES------>
+                <h3 class="color-white">Imtermediate Values</h3>
+                <hr class="hr-verification"/>
+                <div class="px-100">
+                    <div class="row">
+                        <div class="col-md-8 color-white">Material Costs Factor</div>
+                        <div class="col-md-4 text-value">{{ data.material_cost }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">Fration of Fluid to Evaporate in 24 Hours </div>
+                        <div class="col-md-4 text-value">{{ data.frac_evap }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 color-white"><b>Release Hole Size</b></div>
+                        <div class="col-md-2 text-value"><b>Small</b></div>
+                        <div class="col-md-2 text-value"><b>Medium</b></div>
+                        <div class="col-md-2 text-value"><b>Large</b></div>
+                        <div class="col-md-2 text-value"><b>Rupture</b></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 color-white">Generic Failure Frequency</div>
+                        <div class="col-md-2 text-value">{{ data.gff_small }}</div>  <!ô chứa giá trị hiển thị -->
+                        <div class="col-md-2 text-value">{{ data.gff_medium }}</div>
+                        <div class="col-md-2 text-value">{{ data.gff_large }}</div>
+                        <div class="col-md-2 text-value">{{ data.gff_rupture }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 color-white">Equipment Repair Cost</div>
+                        <div class="col-md-2 text-value">{{ data.Equiment_cost_small }}</div>  <!ô chứa giá trị hiển thị -->
+                        <div class="col-md-2 text-value">{{ data.Equiment_cost_medium }}</div>
+                        <div class="col-md-2 text-value">{{ data.Equiment_cost_large }}</div>
+                        <div class="col-md-2 text-value">{{ data.Equiment_cost_rupture }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 color-white">No. of Downtime Days to Repair Damage Outage</div>
+                        <div class="col-md-2 text-value">{{ data.Damage_outage_small }}</div>  <!ô chứa giá trị hiển thị -->
+                        <div class="col-md-2 text-value">{{ data.Damage_outage_medium }}</div>
+                        <div class="col-md-2 text-value">{{ data.Damage_outage_large }}</div>
+                        <div class="col-md-2 text-value">{{ data.Damage_outage_rupture }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10 color-white">Financial Consequence of Component Damage</div>
+                        <div class="col-md-2 text-value">{{ data.FC_cmd }}</div>  <!--ô chứa giá trị hiển thị -->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10 color-white">Financial Consequence of Damage to Surrounding Equipment</div>
+                        <div class="col-md-2 text-value">{{ data.FC_affa }}</div>  <!--ô chứa giá trị hiển thị -->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10 color-white">No. of Downtime days to Repair Damage to The Surrounding Equipment</div>
+                        <div class="col-md-2 text-value">{{ data.outage_affa }}</div>  <!--ô chứa giá trị hiển thị -->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10 color-white">Financial Consequence of Lost Production </div>
+                        <div class="col-md-2 text-value">{{ data.FC_prod }}</div>  <!--ô chứa giá trị hiển thị -->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10 color-white">Financial Consequence Serious Injury to Personnel</div>
+                        <div class="col-md-2 text-value">{{ data.FC_inj }}</div>  <!--ô chứa giá trị hiển thị -->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10 color-white">Environmental Cost to Clean Up the Weighted Spill Volume</div>
+                        <div class="col-md-2 text-value">{{ data.FC_env }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10 color-white">No. of Downtime Days to Repair the Specific Piece of Equipment that is being Evaluated </div>
+                        <div class="col-md-2 text-value">{{ data.outage_cmd }}</div>  <!--ô chứa giá trị hiển thị -->
+                    </div>
+                </fieldset>
+            <div class="row">
+                <div class="col-md-12" style="text-align: right"><button type="submit" class="btn btn-primary" name="_viewlv2">View COF in level 2</button></div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+{#    <script >#}
+{#        function myfunction() {#}
+{#            var x = document.getElementById("myselect").value, pro1 = document.getElementById("pro1"), pro2 = document.getElementById("pro2"),#}
+{#                equip1 = document.getElementById("equip1"), equip2 = document.getElementById("equip2"), envi1 = document.getElementById("envi1"),#}
+{#                envi2 = document.getElementById("envi2"), comp1 = document.getElementById("comp1"), comp2 = document.getElementById("comp2"),#}
+{#                area1 = document.getElementById("area1"), area2 = document.getElementById("area2"), inter1 = document.getElementById("inter1"),#}
+{#                inter2 = document.getElementById("inter2"), inju1 = document.getElementById("inju1"), inju2 = document.getElementById("inju2"),#}
+{#                clea1 = document.getElementById("clea1"), clea2 = document.getElementById("clea2"), falu1 = document.getElementById("falu1"),#}
+{#                falu2 = document.getElementById("falu2"),#}
+{#                a1 = "{{ data.production_cost }}", a2 = "{{ data.equipment_cost }}",#}
+{#                a3 = "{{ data.evironment_cost }}", a4 = "{{ data.fc_cmd }}", a5="{{ data.fc_affa }}",a6="{{ data.fc_prod }}",#}
+{#                a7 = "{{ data.fc_inj }}", a8 = "{{ data.fc_envi }}", a9 = "{{ data.fc_total }}";#}
+{#            if(x === "Vnd") {#}
+{#                a1 = a1 * 23507;#}
+{#                a2 = a2 * 23507;#}
+{#                a3 = a3 * 23507;#}
+{#                a4 = a4 * 23507;#}
+{#                a5 = a5 * 23507;#}
+{#                a6 = a6 * 23507;#}
+{#                a7 = a7 * 23507;#}
+{#                a8 = a8 * 23507;#}
+{#                a9 = a9 * 23507;#}
+{#                pro2.innerHTML = a1;#}
+{#                equip2.innerHTML = a2;#}
+{#                envi2.innerHTML = a3;#}
+{#                comp2.innerHTML = a4;#}
+{#                area2.innerHTML = a5;#}
+{#                inter2.innerHTML = a6;#}
+{#                inju2.innerHTML = a7;#}
+{#                clea2.innerHTML = a8;#}
+{#                falu2.innerHTML = a9;#}
+{#                pro1.innerHTML = "Cost of lost production due to downtime to repair equipment, Vnd/day:"#}
+{#                equip1.innerHTML = "Equipment cost, Vnd/m2:"#}
+{#                envi1.innerHTML = "Environmental clean-up cost, Vnd/barrel:"#}
+{#                comp1.innerHTML = "Financial Consequence of Component Damage Costs, Vnd:"#}
+{#                area1.innerHTML = "Financial Consequence of Affected Area, Vnd:"#}
+{#                inter1.innerHTML = "Financial Consequence of Business Interruption Costs, Vnd:"#}
+{#                inju1.innerHTML = "Financial Consequence of Potential Injury Costs, Vnd:"#}
+{#                clea1.innerHTML = "Financial Consequence of Environmental Cleanup Costs, Vnd:"#}
+{#                falu1.innerHTML = "Financial Consequence of Falure, Vnd:"#}
+{##}
+{#                }#}
+{#            else {#}
+{#                pro2.innerHTML = a1;#}
+{#                equip2.innerHTML = a2;#}
+{#                envi2.innerHTML = a3;#}
+{#                comp2.innerHTML = a4;#}
+{#                area2.innerHTML = a5;#}
+{#                inter2.innerHTML = a6;#}
+{#                inju2.innerHTML = a7;#}
+{#                clea2.innerHTML = a8;#}
+{#                falu2.innerHTML = a9;#}
+{#                pro1.innerHTML = "Cost of lost production due to downtime to repair equipment, $/day:"#}
+{#                equip1.innerHTML = "Equipment cost, $/m2:"#}
+{#                envi1.innerHTML = "Environmental clean-up cost, $/barrel:"#}
+{#                comp1.innerHTML = "Financial Consequence of Component Damage Costs, $:"#}
+{#                area1.innerHTML = "Financial Consequence of Affected Area, $:"#}
+{#                inter1.innerHTML = "Financial Consequence of Business Interruption Costs, $:"#}
+{#                inju1.innerHTML = "Financial Consequence of Potential Injury Costs, $:"#}
+{#                clea1.innerHTML = "Financial Consequence of Environmental Cleanup Costs, $:"#}
+{#                falu1.innerHTML = "Financial Consequence of Falure, $:"#}
+{##}
+{#            }#}
+{#        }#}
+{#    </script>#}
+
+

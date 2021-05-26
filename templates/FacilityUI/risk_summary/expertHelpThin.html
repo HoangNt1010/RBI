@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Expert Help</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <style>
+        div {
+            border: solid #89AEB2 1px;
+            display: inline-block;
+            width: 42%;height: 42%;
+        }
+
+    </style>
+</head>
+<body>
+     <div name="left" style="float: left; ">
+    <!--  Day la chart -->
+        <canvas id="myChartNominalThickness" ></canvas>
+     </div>
+     <div name="right" style="float: right">
+    <!--  Day la chart -->
+        <canvas id="myChartCurentThickness" ></canvas>
+     </div>
+
+     <div name="left" style="float: left">
+    <!--  Day la chart -->
+        <canvas id="myChartCorrosionRate" ></canvas>
+     </div>
+     <div name="right" style="float: right">
+    <!--  Day la chart -->
+        <canvas id="myChartMinimunRequiredThickness" ></canvas>
+     </div>
+<script>
+var ctx = document.getElementById('myChartNominalThickness').getContext('2d');
+var lineChartNominalThickness = document.getElementById('myChartNominalThickness');
+var lineChartCurentThickness = document.getElementById('myChartCurentThickness');
+var lineChartCorrosionRate = document.getElementById('myChartCorrosionRate');
+var lineChartMinimunRequiredThickness = document.getElementById('myChartMinimunRequiredThickness');
+var myChartNominalThickness = new Chart(lineChartNominalThickness, {
+            type: 'line',
+            data: {
+                    labels:[{% for x in dataNominalThicknessX %}
+                        {{ x }},
+                    {% endfor %}
+                    ],
+                datasets: [
+                    {
+                        label: 'Thinning DM for 0 months',
+                        data: [{% for x in dataNominalThicknessY0 %}
+                        {{ x }},
+                    {% endfor %}
+                    ],
+                        backgroundColor: 'rgba(0, 128, 128, 0.3)',
+                        borderColor: 'rgba(0, 128, 128, 0.7)',
+                        borderWidth: 1,
+                        fill:false
+                    },
+                    {
+                        label: 'PoF',
+                        data: [{% for x in dataNominalThicknessY1 %}
+                        {{ x }},
+                        {% endfor %}
+                        ],
+                        backgroundColor: 'rgba(128, 0, 128, 0.7)',
+                        borderColor: 'rgba(128, 0, 128, 1)',
+                        borderWidth: 1,
+                        fill:false
+                    },
+                    {
+                        label: 'Risk',
+                        data: [{% for x in dataNominalThicknessY2 %}
+                        {{ x }},
+                        {% endfor %}
+                        ],
+                        backgroundColor: 'rgba(0, 128, 128, 1)',
+                        borderColor: 'rgba(128, 0, 0, 1)',
+                        borderWidth: 1,
+                        fill:false
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:false,
+                            stacked: true
+                        }
+                    }],
+                    xAxes: [{
+                        scaleLabel: {
+                        display: true,
+{#                        fontSize: 14,#}
+                        labelString: "Nominal Thickness (mm)",
+                        }
+                    }]
+
+                },
+            }
+        });
+var myChartCurentThickness = new Chart(lineChartCurentThickness, {
+            type: 'line',
+            data: {
+                    labels:[{% for x in dataCurentThicknessX %}
+                        {{ x }},
+                    {% endfor %}
+                    ],
+                datasets: [
+                    {
+                        label: 'Thinning DM for 0 months',
+                        data: [{% for x in dataCurentThicknessY0 %}
+                        {{ x }},
+                    {% endfor %}
+                    ],
+                        backgroundColor: 'rgba(0, 128, 128, 0.3)',
+                        borderColor: 'rgba(0, 128, 128, 0.7)',
+                        borderWidth: 1,
+                        fill:false
+                    },
+                    {
+                        label: 'PoF',
+                        data: [{% for x in dataCurentThicknessY1 %}
+                        {{ x }},
+                        {% endfor %}
+                        ],
+                        backgroundColor: 'rgba(128, 0, 128, 0.7)',
+                        borderColor: 'rgba(128, 0, 128, 1)',
+                        borderWidth: 1,
+                        fill:false
+                    },
+                    {
+                        label: 'Risk',
+                        data: [{% for x in dataCurentThicknessY2 %}
+                        {{ x }},
+                        {% endfor %}
+                        ],
+                        backgroundColor: 'rgba(0, 128, 128, 1)',
+                        borderColor: 'rgba(128, 0, 0, 1)',
+                        borderWidth: 1,
+                        fill:false
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:false,
+                            stacked: true
+                        }
+                    }],
+                    xAxes: [{
+                        scaleLabel: {
+                        display: true,
+{#                        fontSize: 14,#}
+                        labelString: "Minimum Measured Thickness (mm)",
+                        }
+                    }]
+
+                },
+            }
+        });
+{##}
+var myChartCorrosionRate = new Chart(lineChartCorrosionRate, {
+            type: 'line',
+            data: {
+                    labels:[{% for x in dataCorrosionRateX %}
+                        {{ x }},
+                    {% endfor %}
+                    ],
+                datasets: [
+                    {
+                        label: 'Thinning DM for 0 months',
+                        data: [{% for x in dataCorrosionRateY0 %}
+                        {{ x }},
+                    {% endfor %}
+                    ],
+                        backgroundColor: 'rgba(0, 128, 128, 0.3)',
+                        borderColor: 'rgba(0, 128, 128, 0.7)',
+                        borderWidth: 1,
+                        fill:false
+                    },
+                    {
+                        label: 'PoF',
+                        data: [{% for x in dataCorrosionRateY1 %}
+                        {{ x }},
+                        {% endfor %}
+                        ],
+                        backgroundColor: 'rgba(128, 0, 128, 0.7)',
+                        borderColor: 'rgba(128, 0, 128, 1)',
+                        borderWidth: 1,
+                        fill:false
+                    },
+                    {
+                        label: 'Risk',
+                        data: [{% for x in dataCorrosionRateY2 %}
+                        {{ x }},
+                        {% endfor %}
+                        ],
+                        backgroundColor: 'rgba(0, 128, 128, 1)',
+                        borderColor: 'rgba(128, 0, 0, 1)',
+                        borderWidth: 1,
+                        fill:false
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:false,
+                            stacked: true
+                        }
+                    }],
+                    xAxes: [{
+                        scaleLabel: {
+                        display: true,
+{#                        fontSize: 14,#}
+                        labelString: "Current Corrosion Rate (mm/yr)",
+                        }
+                    }]
+
+                },
+            }
+        });
+{#MinimunRequiredThickness#}
+var myChartMinimunRequiredThickness = new Chart(lineChartMinimunRequiredThickness, {
+            type: 'line',
+            data: {
+                    labels:[{% for x in dataMinimunRequiredThicknessX %}
+                        {{ x }},
+                    {% endfor %}
+                    ],
+                datasets: [
+                    {
+                        label: 'Thinning DM for 0 months',
+                        data: [{% for x in dataMinimunRequiredThicknessY0 %}
+                        {{ x }},
+                    {% endfor %}
+                    ],
+                        backgroundColor: 'rgba(0, 128, 128, 0.3)',
+                        borderColor: 'rgba(0, 128, 128, 0.7)',
+                        borderWidth: 1,
+                        fill:false
+                    },
+                    {
+                        label: 'PoF',
+                        data: [{% for x in dataMinimunRequiredThicknessY1 %}
+                        {{ x }},
+                        {% endfor %}
+                        ],
+                        backgroundColor: 'rgba(128, 0, 128, 0.7)',
+                        borderColor: 'rgba(128, 0, 128, 1)',
+                        borderWidth: 1,
+                        fill:false
+                    },
+                    {
+                        label: 'Risk',
+                        data: [{% for x in dataMinimunRequiredThicknessY2 %}
+                        {{ x }},
+                        {% endfor %}
+                        ],
+                        backgroundColor: 'rgba(0, 128, 128, 1)',
+                        borderColor: 'rgba(128, 0, 0, 1)',
+                        borderWidth: 1,
+                        fill:false
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:false,
+                            stacked: true
+                        }
+                    }],
+                    xAxes: [{
+                        scaleLabel: {
+                        display: true,
+{#                        fontSize: 14,#}
+                        labelString: "Minimum Required Thickness (mm)",
+                        }
+                    }]
+
+                },
+            }
+        });
+</script>
+</body>
+</html>

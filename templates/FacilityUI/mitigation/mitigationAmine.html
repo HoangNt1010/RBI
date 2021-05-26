@@ -1,0 +1,263 @@
+{% extends 'BaseUI/BaseFacility/baseMitigation.html' %}
+{% load staticfiles %}
+{% load static %}
+<!-------------- BLOCK MENU ---------------->
+{% block homedetail %}{% url 'homefacility' siteID%}{% endblock %}
+{% block listfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+{% block newfaci %}{% url 'facilitiesNew' siteID %}{% endblock %}
+{% block design %}{% url 'designcodeDisplay' siteID %}{% endblock %}
+{% block manu %}{% url 'manufactureDisplay' siteID %}{% endblock %}
+{% block uploadInsp %}{% url 'upload' siteID %}{% endblock %}
+{% block uploadPlant %}{% url 'uploadPlan' siteID %}{% endblock %}
+{#{% block uploadScada %}{% url 'uploadScada' siteID %}{% endblock %}#}
+{% block manageFile %}{% url 'manageFile' siteID %}{% endblock %}
+{% block inspecPlan %}{% url 'inspectionPlan' siteID %}{% endblock %}
+{% block rbitracking %}{% url 'rbitracking' %}{% endblock %}
+{% block mitigationSite %}{% url 'mitigationSite' siteID%}{% endblock %}
+{% block data-content %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <style>
+    .card{
+        background: #ffffff;
+    }
+    .bang{
+        width: 50%;
+        height: 50%;
+        background-color: #305680;
+        margin: auto;
+        /*overflow-x: scroll;*/
+    }
+    button{
+        width: 150px;
+        height: 70px;
+        margin-top: 20px;
+        margin-left: 5px;
+        background-color: #FFFFFF;
+    }
+  
+
+    </style>
+    <!-- <a href="{% url 'mitigationSite' siteID %}" title="Back" style="color:black; font-size:20px"><img src='/static/image/loading/back.png' style="padding-bottom: 6px;width:40px;"></a> -->
+    <div class="title-verifitcation">
+      <h1>Prevention / Mitigation</h1>
+  </div>
+    <form id="inspectionplan" method="post">
+      {% csrf_token %}
+        <!-- <div style=" text-align: center"><caption><b style="font-size: 20px; color: #444444;">Prevention / Mitigation 5</b></caption></div> -->
+        <div>
+          <div>
+            <div class="row">
+              <div class="col-sm-4">
+                <select id="type" class="form-control">
+                  <option value="0">PoF</option>
+                  <option value="1">CoF</option>
+                </select>
+              </div>
+              <div class="col-sm-4">
+                <select id="size" name="size" class="form-control">
+                  <option value="thinning">Thinning Damage Factor</option>
+                  <option value="alkaline">Alkaline Carbonate Stress Corrosion Cracking</option>
+                  <option value="caustic">SCC - Caustic Cracking</option>
+                  <option value="amine">SCC - Amine Cracking</option>
+                  <option value="pascc">Polythionic Acid Stress Corrosion Cracking</option>
+                    <option value='all'>All</option>
+                </select>
+              </div>
+            <div class="col-sm-4" style="text-align: right;">
+                 <input type="submit" name="analysis" onclick="AnalysicClick();"value="analysis">
+            </div>
+            </div>
+          </div>
+      </div>
+      <br/>
+      <script type="text/javascript">
+        $(document).ready(function () {
+            document.getElementById('type').selectedIndex=0;
+            document.getElementById('size').selectedIndex=3;
+        $("#type").change(function () {
+        var val = $(this).val();
+        if (val == "0") {
+            $("#size").html("<option value='thinning'>Thinning Damage Factor</option><option value='alkaline'>Alkaline Carbonate Stress Corrosion Cracking</option><option value='caustic'>SCC - Caustic Cracking </option><option value='amine'>SCC - Amine Cracking </option><option value='pascc'>Polythionic Acid Stress Corrosion Cracking</option><option value='all'>All</option>");
+
+        } else if (val == "1") {
+            $("#size").html("<option value='financial'>Finance</option>");
+
+        } 
+    });
+});
+        function AnalysicClick() {
+            var div = document.createElement('div');
+            var img = document.createElement('img');
+            img.src = '{% static 'image/loading/Pacman-1s-100px.gif' %}';
+            div.style.cssText = "position: fixed;left: 50%; top: 30%; width: 300px; text-align: center; background: rgba(54, 25, 25, .00004); border: 0px solid #000;";
+            div.appendChild(img);
+            document.body.appendChild(div);
+            return true;
+        }
+      </script>
+
+    </form>
+
+    <div id='0' name="left" style="float: left;" class="chart-mitigation-50">
+    <!--  Day la chart -->
+        <canvas id="myChartNominalThickness" ></canvas>
+    </div>
+    <div id='1' name="right" style="float: left;" class="chart-mitigation-50">
+<!--  Day la chart -->
+    <canvas id="myChartAMINE_EXPOSED" ></canvas>
+     </div>
+    <div id='2' name="left" style="float: left;" class="chart-mitigation-100">
+    <!--  Day la chart -->
+        <canvas id="myChartAMINESOLUTION" ></canvas>
+     </div>
+{#     <div id='3'name="right" style="float: right;" class="chart-mitigation-50">#}
+{#    <!--  Day la chart -->#}
+{#        <canvas id="myChartHEAT_TRACE" ></canvas>#}
+{#     </div>#}
+
+     <script type="text/javascript">
+
+        var myChartNominalThickness = new Chart("myChartNominalThickness", {
+                type: 'line',
+                data: {
+                        labels:[{% for x in obj.dataMAX_OP_TEMPX %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+                    datasets: [
+                        {
+                            label: 'Amine Cracking',
+                            data: [{% for x in obj.dataMAX_OP_TEMPY0 %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+                            backgroundColor: 'rgba(0, 128, 128, 0.3)',
+                            borderColor: 'rgba(0, 128, 128, 0.7)',
+                            borderWidth: 1,
+                            fill:false
+                        },
+                        {
+                            label: 'PoF',
+                            data: [{% for x in obj.dataMAX_OP_TEMPY1 %}
+                            {{ x }},
+                            {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(128, 0, 128, 0.7)',
+                            borderColor: 'rgba(128, 0, 128, 1)',
+                            borderWidth: 1,
+                            fill:false
+                        },
+                        {
+                            label: 'Risk',
+                            data: [{% for x in obj.dataMAX_OP_TEMPY2 %}
+                            {{ x }},
+                            {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(0, 128, 128, 1)',
+                            borderColor: 'rgba(128, 0, 0, 1)',
+                            borderWidth: 1,
+                            fill:false
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:false,
+                                stacked: true
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                            display: true,
+                            fontSize: 14,
+                            labelString: "Maximum Operating Temperature (Celsius)",
+                            }
+                        }]
+
+                    },
+                }
+            });
+        new Chart(document.getElementById("myChartAMINESOLUTION"), {
+        type: 'bar',
+        data: {
+          labels: ["Diethanolamine DEA", "Diglycolamine DGA", "Disopropanolamine DIPA", "Methyldiethanolamine MDEA","Monoethanolamine MEA","Sulfinol"],
+          datasets: [
+        {
+          label: "Amine Cracking for 0 months",
+          backgroundColor: "rgba(0, 128, 128, 0.3)",
+          data: [{% for x in obj.dataAMINE_SOLUTIONY0 %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+        }, {
+          label: "PoF",
+          backgroundColor: "rgba(128, 0, 128, 0.7)",
+          data: [{% for x in obj.dataAMINE_SOLUTIONY1 %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+        },
+        {
+          label: "Risk",
+          backgroundColor: "rgba(128, 0, 0, 1)",
+          data: [{% for x in obj.dataAMINE_SOLUTIONY2 %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+        }
+      ]
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'The graph shows the dependencies of the parameter Amine Solution Composition'
+          }
+        }
+        });
+{#   AMINE_EXPOSED     #}
+    new Chart(document.getElementById("myChartAMINE_EXPOSED"), {
+        type: 'bar',
+        data: {
+          labels: ["True", "False"],
+          datasets: [
+        {
+          label: "Amine Cracking",
+          backgroundColor: "rgba(0, 128, 128, 0.3)",
+          data: [{% for x in obj.dataAMINE_EXPOSEDY0 %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+        }, {
+          label: "PoF",
+          backgroundColor: "rgba(128, 0, 128, 0.7)",
+          data: [{% for x in obj.dataAMINE_EXPOSEDY1 %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+        },
+        {
+          label: "Risk",
+          backgroundColor: "rgba(128, 0, 0, 1)",
+          data: [{% for x in obj.dataAMINE_EXPOSEDY2 %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+        }
+      ]
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'The graph shows the dependencies of the parameter Exposure to Anime'
+          }
+        }
+        });
+{#        document.getElementById('{{ m }}').style.border='red 2px solid';#}
+         {% for x in medthod %}
+            document.getElementById('{{ x }}').style.border='red 2px solid';
+         {% endfor %}
+         </script>
+{% endblock %}
+<!----------------- END BLOCK----------------->

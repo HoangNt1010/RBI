@@ -1,0 +1,63 @@
+{% extends 'BaseUI/BaseManager/baseManager.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block library %}
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+{% endblock %}
+
+{% block title %}Facility Management{% endblock %}
+
+{% block vertical %}
+    <!--<a class="active">&emsp;HOME</a>-->
+    <a onclick="Click();" href="{% block homedetail %}{% endblock %}" class="{% if page == 'managerHomeDetail' %}activeLink{% endif %}"><i class="fa fa-home"></i><span>Home</span></a>
+    <!-- <a class="dropdown-btn"><i class="fa fa-caret-right"></i><span>Admin</span></a>
+    <div class="dropdown-container">
+        <a class="a-normal" href="{% block admin %}{% endblock %}" class="{% if page == 'admin1' %}activeLink{% endif %}"data-toggle="tooltip" data-placement="bottom" title="Account Management"><i class="glyphicon glyphicon-user">&emsp;<span>Account Management</span></i></a>
+        <a class="a-normal" href="{% block registeraccount %}{% endblock %}" class="{% if page == 'registerAccount' %}activeLink{% endif %}"data-toggle="tooltip" data-placement="bottom" title="Register Account"><i class="fa fa-plus-square">&emsp;<span>Register Account</span></i></a>
+    </div> -->
+
+    <a href="{% block listmana %}{% endblock %}" class="{% if page == 'listManagement' %}activeLink{% endif %}"><i class="fa fa-building"></i><span>List of Facilities</span></a>
+    <a onclick="Click();" href="{% block calculate %}{% endblock %}" class="{% if page == 'calculateFunctionManager' %}activeLink{% endif %}"><i class="fa fa-edit"></i><span>Verification</span></a>
+    <!--<a href="{% block toolmanage %}{% endblock %}" class="{% if page == 'toolManager' %}activeLink{% endif %}"><i class="fa fa-list">&emsp;Tiện ích quản lí</i></a>-->
+    <!-- <a class="dropdown-btn"><i class="fa fa-caret-down"> &emsp;<span>Utility</span></i></a>
+    <div class="dropdown-container">
+        <a class="a-normal" href="{% url 'messagesInbox' %}" data-toggle="tooltip" data-placement="bottom" title="Messages"><i class="fa fa-wechat"></i><span>Message</span></a>
+        <a class="a-normal" href="{% url 'help' %}" data-toggle="tooltip" data-placement="bottom" title="Help"><i class="fa fa-question"></i><span>Help</span></a>
+        <a class="a-normal" href="{% url 'reportmana' %}" data-toggle="tooltip" data-placement="bottom" title="Report"><i class="fa fa-file">&emsp;Report</i></a>
+    </div> -->
+    <!--<a href="{% block design %}{% endblock %}" class="{% if page == 'listDesign' %}activeLink{% endif %}"><i class="fa fa-barcode">&emsp;Design Code</i></a>-->
+    <!--<a href="{% block manu %}{% endblock %}" class="{% if page == 'listManu' %}activeLink{% endif %}"><i class="fa fa-cubes">&emsp;Manufacture</i></a>-->
+    <script>
+        /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+        var dropdown = document.getElementsByClassName("dropdown-btn");
+        var i;
+        for (i = 0; i < dropdown.length; i++) {
+          dropdown[i].addEventListener("click", function() {
+          this.classList.toggle("active");
+          var dropdownContent = this.nextElementSibling;
+          if (dropdownContent.style.display === "block") {
+          dropdownContent.style.display = "none";
+          } else {
+          dropdownContent.style.display = "block";
+          }
+          });
+        }
+        function Click() {
+            ShowLoading();
+            return false;
+        }
+        function ShowLoading() {
+            var div = document.createElement('div');
+            var img = document.createElement('img');
+            img.src = '{% static 'image/loading/Pacman-1s-100px.gif' %}';
+            div.style.cssText = "position: fixed;left: 50%; top: 30%; width: 300px; text-align: center; background: rgba(54, 25, 25, .00004); border: 0px solid #000;";
+            div.appendChild(img);
+            document.body.appendChild(div);
+            return true;
+        }
+
+    </script>
+    <a class="a-logout" href="{% url 'logout' %}" data-toggle="tooltip" data-placement="bottom" title="Sign Out"><i class="fa fa-sign-out"></i><span>Log out</span></a>
+{% endblock %}

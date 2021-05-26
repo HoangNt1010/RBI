@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Expert Help</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <style>
+        div {
+            border: solid #89AEB2 1px;
+            display: inline-block;
+            width: 48%;height: 48%;
+        }
+
+    </style>
+</head>
+<body>
+    <div name="left" style="float: left ">
+    <!--  Day la chart -->
+        <canvas id="myChartNominalThickness" ></canvas>
+     </div>
+    <div name="right" style="float: right; ">
+    <!--  Day la chart -->
+        <canvas id="myChartAMINE_EXPOSED" ></canvas>
+     </div>
+    <div name="right" style="margin-top: 2% ;width: 100%;height: 100%;">
+    <!--  Day la chart -->
+        <canvas id="myChartAMINESOLUTION" ></canvas>
+     </div>
+    <script>
+    //var ctx = document.getElementById('myChartNominalThickness').getContext('2d');
+        var lineChartNominalThickness = document.getElementById('myChartNominalThickness');
+        var myChartNominalThickness = new Chart(lineChartNominalThickness, {
+                type: 'line',
+                data: {
+                        labels:[{% for x in dataMAX_OP_TEMPX %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+                    datasets: [
+                        {
+                            label: 'Amine Cracking for 0 months',
+                            data: [{% for x in dataMAX_OP_TEMPY0 %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+                            backgroundColor: 'rgba(0, 128, 128, 0.3)',
+                            borderColor: 'rgba(0, 128, 128, 0.7)',
+                            borderWidth: 1,
+                            fill:false
+                        },
+                        {
+                            label: 'PoF',
+                            data: [{% for x in dataMAX_OP_TEMPY1 %}
+                            {{ x }},
+                            {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(128, 0, 128, 0.7)',
+                            borderColor: 'rgba(128, 0, 128, 1)',
+                            borderWidth: 1,
+                            fill:false
+                        },
+                        {
+                            label: 'Risk',
+                            data: [{% for x in dataMAX_OP_TEMPY2 %}
+                            {{ x }},
+                            {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(0, 128, 128, 1)',
+                            borderColor: 'rgba(128, 0, 0, 1)',
+                            borderWidth: 1,
+                            fill:false
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:false,
+                                stacked: true
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                            display: true,
+                            fontSize: 14,
+                            labelString: "Maximum Operating Temperature (Celsius)",
+                            }
+                        }]
+
+                    },
+                }
+            });
+        new Chart(document.getElementById("myChartAMINESOLUTION"), {
+        type: 'bar',
+        data: {
+          labels: ["Diethanolamine DEA", "Diglycolamine DGA", "Disopropanolamine DIPA", "Methyldiethanolamine MDEA","Monoethanolamine MEA","Sulfinol"],
+          datasets: [
+        {
+          label: "Amine Cracking for 0 months",
+          backgroundColor: "rgba(0, 128, 128, 0.3)",
+          data: [{% for x in dataAMINE_SOLUTIONY0 %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+        }, {
+          label: "PoF",
+          backgroundColor: "rgba(128, 0, 128, 0.7)",
+          data: [{% for x in dataAMINE_SOLUTIONY1 %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+        },
+        {
+          label: "Risk",
+          backgroundColor: "rgba(128, 0, 0, 1)",
+          data: [{% for x in dataAMINE_SOLUTIONY2 %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+        }
+      ]
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'The graph shows the dependencies of the parameter Amine Solution Composition'
+          }
+        }
+        });
+{#   AMINE_EXPOSED     #}
+    new Chart(document.getElementById("myChartAMINE_EXPOSED"), {
+        type: 'bar',
+        data: {
+          labels: ["True", "False"],
+          datasets: [
+        {
+          label: "Amine Cracking for 0 months",
+          backgroundColor: "rgba(0, 128, 128, 0.3)",
+          data: [{% for x in dataAMINE_EXPOSEDY0 %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+        }, {
+          label: "PoF",
+          backgroundColor: "rgba(128, 0, 128, 0.7)",
+          data: [{% for x in dataAMINE_EXPOSEDY1 %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+        },
+        {
+          label: "Risk",
+          backgroundColor: "rgba(128, 0, 0, 1)",
+          data: [{% for x in dataAMINE_EXPOSEDY2 %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+        }
+      ]
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'The graph shows the dependencies of the parameter Exposure to Anime'
+          }
+        }
+        });
+    </script>
+</body>
+</html>

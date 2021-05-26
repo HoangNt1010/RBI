@@ -1,0 +1,281 @@
+label #sidebar_btn{
+    z-index: 1;
+    color: #fff;
+    position: fixed;
+    cursor: pointer;
+    font-size: 20px;
+    transition: 0.5s;
+    transition-property: color;
+    text-align: center;
+}
+
+label #sidebar_btn:hover{
+    color: #19B3D3;
+}
+
+/* #checkbar:checked ~ .sidebar{
+    background: #861818;
+} */
+
+a#sidebar_btn:hover {
+    background: red;
+    transition: 0.4s;
+}
+
+#searchPlan .btn {
+    border-radius: 5px;
+    width: auto;
+    padding: 8px 10px;
+}
+
+#checkbar:checked ~ .sidebar a{
+    font-size: 20px;
+    margin-left: 170px;
+    width: 80px;
+}
+
+
+#checkbar{
+    display: none;
+}
+/*body {*/
+ /*line-height: 1.254em;*/
+ /*margin: 0;*/
+ /*padding: 0;*/
+/*}*/
+/*#wrapper{*/
+    /*width: auto;*/
+    /*margin: 0px ;*/
+/*}*/
+/*#header {*/
+    /*height: 75px;*/
+    /*border: 1px solid #369ff5;*/
+    /*background: #3276FE ;*/
+    /*position: absolute;*/
+    /*padding: 0;*/
+    /*top: 0;*/
+    /*left: 0;*/
+    /*width: 100%;*/
+    /*overflow: auto;*/
+/*}*/
+/*img{*/
+    /*padding-left: 40px;*/
+    /*padding-top: 40px;*/
+/*}*/
+/*#content{*/
+    /*min-height: 600px;*/
+    /*width: 100%;*/
+    /*top: 75px;*/
+    /*margin: 0 ;*/
+    /*padding: 20px;*/
+    /*text-align: center;*/
+    /*overflow: auto;*/
+/*}*/
+/*#text{*/
+    /*font-family: "Times New Roman";*/
+    /*color: #3276FE;*/
+    /*padding-top: 1px;*/
+    /*font-size: 40px;*/
+/*}*/
+/*a {*/
+    /*font-family: "Times New Roman";*/
+    /*font-size: 20px;*/
+    /*float:right;*/
+    /*padding-top: 25px ;*/
+    /*padding-bottom: 25px;*/
+    /*padding-right: 200px;*/
+    /*text-decoration: none;*/
+    /*display: block;*/
+/*}*/
+
+
+.business-normal {
+  padding: 16px;
+  margin-top: 45px;
+  /* min-height: 500px; */
+  width: 100%;
+  /* margin-bottom: 40px; */
+  overflow: hidden;
+  height: calc(100vh - 54px);
+}
+/* Cai sidenav chinh la vertical-menu cũ, sidebar là mới */
+
+.sidebar.sidebarChange a span {
+    display: none;
+} 
+/* .sidebar.sidebarChange a {
+    background-color: red;
+}  */
+
+/* .main.sidebarChange{
+    background-color: red;
+} */
+
+.sidebar.sidebarChange{
+    width: 50px;
+    transition: 0.5s;
+}
+.sidebar {
+    background: #ffffff4f;
+    padding-top: 0px;
+    position: fixed;
+    left: 0;
+    width: 240px;
+    height: auto;
+    transition: 0.5s;
+    transition-property: left;
+    padding-right: 2px;
+    /* overflow-x: hidden;  */
+    z-index: 1;
+    top: 60px;
+    bottom: 2px;
+    overflow-y: auto;
+    /* margin-bottom: 39px;  */
+    /* font-family: Roboto,Helvetica Neue,sans-serif; */
+  }
+
+  ::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 0;
+}
+/* ::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.5);
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+} */
+  
+  .sidebar a, .dropdown-btn {
+    /* background-color: #00172e; */
+    color: #fff;
+    display: block;
+    width: 100%;
+    line-height: 60px;
+    text-decoration: none;
+    /* padding-left: 40px; */
+    box-sizing: border-box;
+    transition: height 0.5s;
+    transition-property: background;
+    padding: 10px 15px;
+
+    /* padding: 15px 8px 15px 16px; */
+    font-size: 16px;
+    line-height: 1.5;
+    
+    /* box-shadow: rgb(22 31 39 / 42%) 0px 60px 123px -25px, rgb(19 26 32 / 8%) 0px 35px 75px -35px; */
+    /* border-radius: 10px; */
+    /* border: 1px solid;
+    border-color: rgb(213, 220, 226) rgb(213, 220, 226) rgb(184, 194, 204); */
+  }
+
+  .sidebar a:hover,.sidebar a:focus {
+      text-decoration: none;
+  }
+  
+  /* .sidebar a:hover{
+    background: #19B3D3;
+  } */
+
+    .sidebar i{
+    padding-right: 10px;
+    }
+
+
+.sidenav { 
+    height: calc(100vh - 70px);
+    width: 240px;
+    position: fixed;
+    z-index: 1;
+    top: 61px;
+    bottom: 2px;
+    left: 0;
+    background-color: #4f4f60; /*sửa lại thành 00000 thì xuất hiện side bar */
+    overflow-x: hidden;
+    padding-top: 0px;
+    margin-bottom: 39px;
+    /*font-family: "Times New Roman", Times, serif;*/
+    font-family: Roboto,Helvetica Neue,sans-serif;
+}
+
+.sidenav a, .dropdown-btn {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    color: White;
+    display: block;
+    font-size: 20px;
+    /* background-color: #305680; */
+    line-height: 1.5;
+    cursor: pointer;
+    
+}
+
+.sidebar a.active{
+    font-size: 20px;
+}
+
+a:hover, .dropdown-btn:hover {
+    color: #0090ff !important;
+    text-decoration: none !important;
+}
+
+
+.dropdown-container {
+    display: none;
+    padding-left: 8px;
+}
+.main.mainChange{
+    margin-left: 40px;
+    transition: 0.5s;
+}
+.main {
+  /*padding: 10px;*/
+  margin-top: -10px;
+  margin-left: 240px;
+  width: calc(100vw - 272px);
+  /*margin-bottom: 50px;*/
+  height: calc(100vh - 60px);
+  top: 0px;
+  bottom: 0;
+  right: 0;
+  padding: 10px 5px 0 25px;
+  background-color: #ffffff4f;
+  border-radius: 10px;
+  overflow: auto;
+}
+
+.input-data{
+    margin-top: 20px;
+    font-size: 14px !important;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    /* min-height: 400px;
+    height: 100%; */
+    text-decoration: none;
+    display: block;
+    color: black;
+    font-family: "Times New Roman", Times, serif;
+    clear: both;
+    /* overflow: hidden; */
+    /*background-color: #dbb1f5;*/
+}
+
+.input-data .btn-info {
+    box-shadow: none !important;
+}
+
+.input-data div{
+    padding-bottom: 4px;
+}
+
+/* test sample*/
+
+.input-data-test-sample {
+    width: 100% !important;
+    height: calc(100vh - 210px);
+    overflow: auto !important;
+    font-size: 14px !important;
+}
+.validate-input-form::after {
+content: "*";
+color: #ff0000;
+}

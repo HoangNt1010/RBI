@@ -1,0 +1,109 @@
+{% extends 'BaseUI/BaseManager/baseProposalMana.html' %}
+{% load staticfiles %}
+
+<!----------BLOCK MENU----------->
+{% block listProposal %}{% url 'proposalDisplayMana' componentID %}{% endblock %}
+{% block backComp %}{% url 'componentDisplayMana' equipmentID %}{% endblock %}
+<!----------END BLOCK----------->
+
+{% block data-content %}
+    <form method="post" id="listProposal">
+    {% csrf_token %}
+        <div>
+            {% if si %}<a class="color-white" href="{% url 'facilitiesDisplayMana' si.siteid %}">{{ si.sitename }}</a>{% endif %} <span class="fa fa-angle-right color-white"></span>
+            {% if faci %}<a class="color-white" href="{% url 'equipmentDisplayMana' faci.facilityid %}">{{ faci.facilityname }}</a>{% endif %} <span class="fa fa-angle-right color-white"></span>
+            {% if equip %}<a class="color-white" href="{% url 'componentDisplayMana' equip.equipmentid %}">{{ equip.equipmentname }}</a>{% endif %} <span class="fa fa-angle-right color-white"></span>
+            {% if comp %}<a class="color-white" href="{% url 'proposalDisplayMana' comp.componentid %}">{{ comp.componentname }}</a>{% endif %}
+        </div>
+        <div class="table-title">
+          <h2><b>List of Proposals</b></h2>
+        </div>
+        <div style="text-align: center" class="table-custom">
+            <table id="mytable" class="table" style="min-width: 1300px;">
+                <thead>
+                    <tr>
+                        <th width="400px">Proposal Name</th>
+                        <th width="190px">Damage Factor</th>
+                        <th width="180px">Financial Cost</th>
+                        <th width="180px">Risk ($/yr)</th>
+                        <th width="300px">Assessment Date</th>
+                        <th width="200px">Insp Due Date</th>
+                        <th width="100px">InputData</th>
+                        <th width="200px" style="text-align: center;">Risk Summary</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for a in obj %}
+                    <tr>
+                        <td><a href="{% url 'damgeFactorMana' a.id %}">{{ a.name }}</a></td>
+                        <td>{{ a.df }}</td>
+                        <td>{{ a.fc }}</td>
+                        <td>{{ a.risk }}</td>
+                        <td>{{ a.lastinsp }}</td>
+                        <td>{{ a.duedate }}</td>
+                        <td><a href="{% url 'inputdata' a.id %}">Data</a></td>
+                        <td style="text-align: center;"><a href="{% url 'viewexcelproposal' a.id 'Proposal' %}" target="_blank"><i class="fa fa-print"></i></a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+{#            <button style="text-align: center"><b>Recalculation</b></button>#}
+         {#          Pagination div  #}
+            <div>
+                {% if obj.has_other_pages %}
+              <ul class="pagination">
+                {% if obj.has_previous %}
+                  <li><a href="?page={{ obj.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&laquo;</span></li>
+                {% endif %}
+                {% for i in obj.paginator.page_range %}
+                  {% if obj.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                  {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if obj.has_next %}
+                  <li><a href="?page={{ obj.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+              </ul>
+            {% endif %}
+            </div>
+            <script>
+                function RecalClick() {
+                    document.getElementById('listProposal').submit();
+                    ShowLoading();
+                    return false;
+                }
+                function ShowLoading() {
+                    var div = document.createElement('div');
+                    var img = document.createElement('img');
+                    img.src = '{% static 'image/loading/Pacman-1s-100px.gif' %}';
+                    div.style.cssText = "position: fixed;left: 50%; top: 30%; width: 300px; text-align: center; background: rgba(54, 25, 25, .00004); border: 0px solid #000;";
+                    div.appendChild(img);
+                    document.body.appendChild(div);
+                    $("#sub").attr('disabled',true);
+                    $("#recal").attr('disabled',true);
+                    $("#edit").attr('disabled', true);
+                    return true;
+                }
+            </script>
+        </div>
+        
+
+        <div class="pagination-custom">
+          <div class="to-left">
+            <a href=""><i class="fas fa-angle-left color-white"></i></a>
+          </div>
+          <div class="page" style="color: #fff;">Page 1 of 1</div>
+          <div class="to-right">
+            <a href=""><i class="fas fa-angle-right color-white"></i></a>
+          </div>
+        </div>
+    </form>
+{% endblock %}

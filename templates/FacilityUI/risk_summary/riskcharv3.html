@@ -1,0 +1,359 @@
+{% extends 'BaseUI/BaseFacility/baseRiskSummary.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block library %}
+    <link rel='stylesheet' href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>  -->
+    <style>
+        .horizontal-line{
+            height:2px;
+            border-width:0;
+            color:rgb(26, 24, 24);
+            background-color:gray
+        }
+        .red-box{
+            background-color: rgb(194, 70, 70);
+            border: 1px solid rgb(255, 0, 0); 
+            color: beige;
+        }
+        .blue-box{
+            background-color: rgb(97, 117, 197);
+            border: 1px solid rgb(0, 0, 255); 
+            color: beige;    
+        }
+        .green-box{
+            background-color: rgb(97, 197, 114);
+            border: 1px solid rgb(0, 255, 0); 
+            color: beige;    
+        }
+        .box{ 
+            text-align: center;
+            width: 100%;
+            height: 30px;
+            size: 3rem;
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
+
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactor' proposalID %}{% endblock %}
+{% block fcof%}{% url 'fullyConsequence' proposalID %}{% endblock %}
+{% block acof%}{% url 'areaBasedCoF' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrix' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChart' proposalID %}{% endblock %}
+{% block chartv2 %}{% url 'riskChartv2' proposalID %}{% endblock %}
+{% block corrcontrol %}{% url 'corrosionCotrol' proposalID %}{% endblock %}
+{% block corri %}{% url 'corrision' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'proposalDisplay' componentID %}{% endblock %}
+<!---------------END BLOCK--------------->
+
+{% block data-content %}
+
+<div class="container" style="background-color: white;">
+    <form method="post">
+        {% csrf_token %}
+        <div class="row">
+        
+            <div class="col-12">
+                <canvas id="riskChart"></canvas>
+            </div>
+            <script>
+                var ctx = document.getElementById("riskChart").getContext("2d");
+                var myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                    labels: [{% for a in dataLabel %}new Date("{{a}}"),{% endfor %}],
+                    datasets: [
+                    {
+                        label: 'Present Risk',
+                        data: [{% for a in dataPresent %}{t: new Date("{{a.x}}"),y: {{a.y}}},{% endfor %}],
+                        backgroundColor: "#0000BB",
+                        borderColor: "#0000BB",
+                        fill: false,
+                        lineTension:0
+                    },
+                    {
+                    label: 'Risk Target',
+                    backgroundColor: "#CC0000",
+                    borderColor: "#CC0000",
+                    data: [{% for a in Target %}{t: new Date("{{a.x}}"),y: {{a.y}}},{% endfor %}],
+                    fill: false}]
+                    },
+                    options: {
+                            responsive: true,
+                            title: {
+                                display: true,
+                                text: 'Risk of Proposal: {{ proposalname }}'
+                            },
+                            scales: {
+                                xAxes: [{
+                                    display: true,
+                                    type: 'time',
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Years'
+                                    }
+                                }],
+                                yAxes: [{
+                                    display: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Risk ($/year)'
+                                    }
+                                }]
+                            }
+                        }
+                });
+            </script>
+            
+            <div class="col-3">
+                
+            </div>
+                
+            <div class="col-3">
+                <input type="text" class="box red-box" >
+            </div>
+
+            <div class="col-3">
+                <input type="text" class="box blue-box">
+            </div>
+
+            <div class="col-3">
+                
+            </div>
+
+        </div>
+
+    <hr class="horizontal-line">
+
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Time</th>
+                <th scope="col">Period (month)</th>
+                <th scope="col">Total DM</th>
+                <th scope="col">PoF</th>
+                <th scope="col">FC Risk</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for i in listTime %}
+              <tr>
+                <th scope="row" id="index">{{ i.index }}</th>
+                <td>{{ i.x }}</td>
+                <td>{{ i.period }}</td>
+                <td>{{ i.dm }}</td>
+                <td>{{ i.pof }}</td>
+                <td>{{ i.y }}</td>
+      
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table> 
+    </div>
+
+    <hr class="horizontal-line">
+
+    <div class="row" id="chart2">
+        <div class="col-12 container">
+            <canvas id="riskChart2"></canvas>
+        </div>
+        <div class="col-2">
+                
+        </div>
+            
+        <div class="col-2">
+            <input type="text" class="box red-box" >
+        </div>
+
+        <div class="col-3">
+            <input type="text" class="box blue-box">
+        </div>
+
+        <div class="col-3">
+            <input type="text" class="box green-box">
+        </div>
+
+        <div class="col-2">
+            
+        </div>
+        <script>
+            let cof_persent = 0.9;
+            var riskChart2 = document.getElementById("riskChart2").getContext("2d");
+            var predictChart = new Chart(riskChart2, {
+                type: 'line',
+                data: {
+                labels: [{% for a in dataLabel %}new Date("{{a}}"),{% endfor %}],
+                datasets: [
+                {
+                    label: 'Present Risk',
+                    data: [{% for a in dataPresent %}{t: new Date("{{a.x}}"),y: {{a.y}}},{% endfor %}],
+                    backgroundColor: "#0000BB",
+                    borderColor: "#0000BB",
+                    fill: false,
+                    lineTension:0
+                },
+                {
+                    label: 'Adjust Risk',
+                    data: [{% for a in dataPresent %}{t: new Date("{{a.x}}"),y: {{a.y}}*cof_persent},{% endfor %}],
+                    backgroundColor: "#1aff1a",
+                    borderColor: "#1aff1a",
+                    fill: false,
+                    lineTension:0
+                },
+                {
+                label: 'Risk Target',
+                backgroundColor: "#CC0000",
+                borderColor: "#CC0000",
+                data: [{% for a in Target %}{t: new Date("{{a.x}}"),y: {{a.y}}},{% endfor %}],
+                fill: false},]
+                },
+                options: {
+                        responsive: true,
+                        title: {
+                            display: true,
+                            text: 'Risk of Proposal: {{ proposalname }}'
+                        },
+                        scales: {
+                            xAxes: [{
+                                display: true,
+                                type: 'time',
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Years'
+                                }
+                            }],
+                            yAxes: [{
+                                display: true,
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Risk ($/year)'
+                                }
+                            }]
+                        }
+                }
+            });
+        </script>    
+    </div> 
+
+    <hr class="horizontal-line">
+
+    <div class="row" id="predictArea"> 
+        <div class="col-6">
+            <p>Select Adjust COF Factor (%)</p>
+        </div>
+        <div class="col-6">
+            <input type="number" value="{{data.adjustPerCOF}}" name="adjustCOF" id="cofPercent" min='85' max = '100' placeholder="90" style="width: 100%;">
+        </div>
+        <script> 
+            var blueDate = "";
+            var greenDate = "";
+            let _riskTarget = predictChart.data.datasets[2].data[0].y;
+            let values =  predictChart.data.datasets[1].data; 
+            let blue = predictChart.data.datasets[0].data;
+            $("#cofPercent").on("change paste keyup select", function() {
+                cof_persent = $(this).val()/100;
+                let newArray = values.slice();
+                for (var i in blue) {
+                    newArray[i].y = blue[i].y * cof_persent; 
+                }
+                greenDate = calDueDate(newArray);
+                $(".green-box").val(getMonthYear(greenDate));
+                // console.log(predictChart.data.datasets[0].data);
+                predictChart.update();
+            });
+            function calDueDate(arr){
+                var d = new Date();
+                for (var i in arr) {
+                    if(arr[i].y > _riskTarget){
+                        console.log(arr[i-1].y); 
+                        console.log(arr[i-1].t);
+                        d = arr[i-1].t;
+                        break;
+                    }   
+                }
+                return d;
+            }  
+        </script>
+        <div class="col-3">
+            <p>Present Fluid Height (m)</p>
+        </div>
+        <div class="col-3">
+            <input type="number" name="FluidHeight" id="fluid" min="0" style="width: 100%;" value="{{old.fluidHeight}}">
+        </div> 
+        <div class="col-3">
+            <p>Currunt Fluid Leave Dike Percent (%)</p>
+        </div>
+        <div class="col-3">
+            <input type="number" name="PFLD" id="per1" min="0" style="width: 100%;" value="{{old.fluidLeaveDike}}">
+        </div>
+        <div class="col-3">
+            <p>Currunt Fluid Leave Dike Remain On Site Percent (%)</p>
+        </div>
+        <div class="col-3">
+            <form>
+                <input type="number" name="PFLDRS" id="per2" min="0" style="width: 100%;" value="{{old.fluidOnsite}}">
+            </form> 
+        </div>
+        <div class="col-3">
+            <p>Currunt Fluid Go Off Site Percent (%)</p>
+        </div>
+        <div class="col-3">
+            <input type="number" name="PFLDGoffsite" id="per3" min="0" style="width: 100%;" value="{{old.fluidOffsite}}">
+        </div>
+          
+        <div class="col-3">
+            <button type="submit" name = "btn1"> Predict Fluid Height</button>
+            <!-- <input type="button" value="Predict Fluid Height" id = "predict-fluid-height"  style="width: 100%;"> -->
+        </div> 
+
+        <div class="col-8" style="align-items: center;">
+            <!-- {{data.predictFluidHeight}} -->
+            <input type="text" name="demo" id="demo" style="width: 100%; height: 50px;" value=" {{data.predictFluidHeight}}"></textarea>
+        </div>   
+    </div>
+    </form>
+</div>
+<script>
+    let isTank = 1;
+    function getMonthYear(d){
+        return d.getMonth() +" - "+ d.getFullYear() 
+    }
+    $(document).ready(function(){
+        isTank = ({{isTank}});
+        if (isTank == 0) {
+            $('#chart2').hide();
+            $('#predictArea').hide();
+            $('.horizontal-line').hide();
+        }
+        blueDate = calDueDate(blue);
+        greenDate = blueDate;
+        $(".blue-box").val(getMonthYear(blueDate));
+        $(".red-box").val(_riskTarget);
+        $(".green-box").val(getMonthYear(greenDate)); 
+        $("#predict-fluid-height").click(function(){
+            // alert('clicked!');
+            // $.ajax({
+            //     // proposal/'+ {{proposalID}} +'/chartv2/
+            //     url: ' proposal/{{proposalID}}/chartv2',
+            //     type: 'get',
+            //     data: {
+            //         button_text: $(this).text
+            //     },
+            //     success: function(response){
+            //         $("#predict-fluid-height").text(response.second) 
+            //     } 
+            // });
+        });
+    });      
+</script>
+{% endblock %} 

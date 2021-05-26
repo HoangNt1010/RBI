@@ -1,0 +1,306 @@
+{% extends 'BaseUI/BaseFacility/baseProposal.html' %}
+{% load staticfiles %}
+{% block library %}
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <meta http-equiv="refresh" content="{{ t }}" >
+{% endblock %}
+
+<!----------BLOCK MENU----------->
+{% block listProposal %}{% url 'proposalDisplay' componentID %}{% endblock %}
+{% block newsensor %}{% url 'newsensor' componentID %}{% endblock %}
+{% block scada %}{% url 'scada' componentID %}{% endblock %}
+{% block setting %}{% url 'setting' componentID %}{% endblock %}
+{% block backComp %}{% url 'componentDisplay' equipmentID %}{% endblock %}
+<!----------END BLOCK----------->
+{% block data-content %}
+<style>
+.alert {
+  padding: 10px;
+  background-color: #ff9800;
+  color: white;
+  opacity: 1;
+  transition: opacity 0.0s;
+  margin-bottom: 15px;
+  font-size: 17px
+}
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 25px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.0s;
+}
+.alert.success {background-color: #4CAF50;}
+.closebtn:hover {
+  color: black;
+}
+div.a {
+  white-space: nowrap;
+  width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+div.a:hover {
+  overflow: visible;
+}
+#searchs{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+.city{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+#search3{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+#proposal
+{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+#search2{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+#searchs td,#searchs th {
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+.city td, .city th{
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+#search2 th,#search2 td{
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+#search3 th,#search3 td{
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+#proposal th,#proposal td{
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+#searchs tr:nth-child(even){background-color: #f2f2f2;}
+.city tr:nth-child(even){background-color: white;}
+#search2 tr:nth-child(even){background-color: #f2f2f2;}
+#search3 tr:nth-child(even){background-color: #f2f2f2;}
+#proposal tr:nth-child(even){background-color: #f2f2f2;}
+#searchs tr:hover {background-color: #f2f2f2;}
+.city tr:hover {background-color: #f2f2f2;}
+#search2 tr:hover {background-color: #f2f2f2;}
+#search3 tr:hover {background-color: #f2f2f2;}
+#proposal tr:hover {background-color: #f2f2f2;}
+
+#searchs th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #305680;
+  color: white;
+}
+.city th {
+    padding: 5px 0;
+  background-color: #305680;
+  color: white;
+  font-size: 12px;
+}
+.city td {
+    padding: 3px 0;
+    font-size: 12px;
+}
+#search2 th{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #305680;
+  color: white;
+
+}
+#search3 th{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color :#305680;
+  color: white;
+}
+#proposal th{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #305680;
+  color: white;
+}
+
+.containerflex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
+
+    padding: 2px;
+    background: white;
+    min-width: 1250px;
+    height: 230px;
+    margin: auto;
+}
+
+.flexitem {
+    width: 530px;
+    height: 220px;
+    padding: 0px;
+    background: #0AA6DB;
+    margin: 1px;
+    font-weight: bold;
+}
+.title-inscpection-plant {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 25px;
+}
+</style>
+    <form method="post" id="listProposal">
+    {% csrf_token %}
+    <div class="title-verifitcation" >
+        <h1>Scada Connection</h1>
+        <a href="https://docs.google.com/spreadsheets/d/14Nf6l0lX5GV9WaXPZkTWW-6WdrL4JAS6TDK5JoPZ-Rg/edit?usp=sharing" target="_blank"><h3>Link Google Sheet</h3></a>
+    </div>
+    {% if  notify.suscess %}
+        <div class="alert success" style="text-align:center;">
+                <span class="closebtn">&times;</span>
+                <strong>Notify!</strong>{{notify.suscess}}
+            </div>
+            <script>
+            var close = document.getElementsByClassName("closebtn");
+            var i;
+
+            for (i = 0; i < close.length; i++) {
+                close[i].onclick = function(){
+                    var div = this.parentElement;
+                    div.style.opacity = "0";
+                    setTimeout(function(){ div.style.display = "none"; }, 600);
+                }
+            }
+            </script>
+        {% endif %}
+        {% if notify.error %}
+        <div class="alert" style="text-align:center;">
+            <span class="closebtn">&times;</span>
+            <strong>Warning ! </strong>{{ notify.error }}
+        </div>
+        <script>
+            var close = document.getElementsByClassName("closebtn");
+            var i;
+
+            for (i = 0; i < close.length; i++) {
+              close[i].onclick = function(){
+                var div = this.parentElement;
+                div.style.opacity = "0";
+                setTimeout(function(){ div.style.display = "none"; }, 600);
+              }
+            }
+        </script>
+        {% endif %}
+    <div style="text-align: center" class="table-custom">
+        <table id="mytable" class="table" style="min-width: 1300px;">
+            <thead>
+                <tr>
+                    {% for a in th %}
+                    <th width="200px">{{a}}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in listData %}
+                <tr>
+                    {% for b in a %}
+                        <td style="text-align: left">{{ b }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+        <div style="text-align: right">
+        <!--<a id="#search" class="btn btn-primary" data-toggle="modal" data-target="#searchPlan">-->
+            <!--<i class="fa fa-pencil"> Edit Connection </i>-->
+            <!--<p id="demo"></p>-->
+        <!--</a>-->
+
+    </div>
+    </div>
+    <div class="modal" id="searchPlan" style="margin-top: 10%;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content" style="width: 80%; margin: auto">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                    <span aria-hidden="true" style="font-size: 24px;font-weight: bold;color: #444444;font-family: Calibri;font-weight: bold;">Edit Connection</span>
+                    </div>
+                    <!--Body-->
+                    <div class="row">
+                        <div class="col-md-4">Facility Name:</div>
+                        <div class="col-md-8"><input type="text" name="facilityName" class="form-control" value="{{ faci.facilityname }}" placeholder="Input equipment name here!" readonly></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 ">Equipment Name:</div>
+                        <div class="col-md-8"><input type="text" class="form-control" name="equipmentNumber" placeholder="Input equipment number here!" value="{{ equip.equipmentname }}" readonly></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">Component Name:</div>
+                        <div class="col-md-8"><input type="text" name="componentName" class="form-control" value="{{ comp.componentname }}" placeholder="Input equipment name here!" readonly></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">Scada Name:<span style="color: red">*</span></div>
+                        <div class="col-md-8"><input type="text" name="ScadaName" class="form-control" value="{{ comp.componentname }}" placeholder="Input equipment name here!" required></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 ">File Name:<span style="color: red">*</span></div>
+                        <div class="col-md-8"><input type="text" name="filename" class="form-control" value="{{scada_data_load.FileName}}" placeholder="Input file name here!" required></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4    ">Description:</div>
+                        <div class="col-md-8">
+                            <textarea type="text"  class="form-control"  name="description" placeholder="Write file name description here!"></textarea>
+                        </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer" style="text-align: right;">
+                        <button type="submit" name="_edit" class="btn btn-primary" >
+                            <i class="fa fa-save mr-5"></i>Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                    <script> {# Notification Account or pass false#}
+                     var error ='{{ notisuc }}';
+                        if(error!=''){
+                            $.notify("Edit Success", "success");
+                        }
+                    </script>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends 'BaseUI/BaseWeb/basedat.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block content %}
+    <form method="post" id="listProposal">
+    {% csrf_token %}
+        <div class="container" style=" margin-top: 70px">
+            {% if si %}<a href="{% url 'facilitiesDisplayMana' si.siteid %}">{{ si.sitename }}</a>{% endif %} <span class="fa fa-angle-right"></span>
+            {% if faci %}<a href="{% url 'equipmentDisplayMana' faci.facilityid %}">{{ faci.facilityname }}</a>{% endif %} <span class="fa fa-angle-right"></span>
+            {% if equip %}<a href="{% url 'componentDisplayMana' equip.equipmentid %}">{{ equip.equipmentname }}</a>{% endif %} <span class="fa fa-angle-right"></span>
+            {% if comp %}<a href="{% url 'proposalDisplayMana' comp.componentid %}">{{ comp.componentname }}</a>{% endif %}
+        </div>
+        <div style="text-align: center">
+            <caption><b style="font-size: 22px; color: #444444;">List of Proposals</b></caption>
+            <br><br>
+            <table id="mytable" class="table">
+                <thead>
+                    <tr>
+                        <th width="200px" style="text-align: center"><i class="fa fa-tag"></i>&ensp;Proposal Name</th>
+                        <th width="200px" style="text-align: center"><i class="fa fa-bomb"></i>&ensp;Damage Factor</th>
+                        <th width="200px" style="text-align: center"><i class="fa fa-money"></i>&ensp;Financial Cost</th>
+                        <th width="200px" style="text-align: center"><i class="fa fa-bank"></i>&ensp;Risk ($/yr)</th>
+                        <th width="200px" style="text-align: center"><i class="fa fa-calendar-o"></i>&ensp;Assessment Date</th>
+                        <th width="200px" style="text-align: center"><i class="fa fa-calendar-o"></i>&ensp;Insp Due Date</th>
+                        <th width="200px" style="text-align: center"><i class="fa fa-calendar-o"></i>&ensp;InputData</th>
+                        <th width="200px" style="text-align: center"><i class="fa fa-bar-chart-o"></i>&ensp;Risk Summary</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for a in obj %}
+                    <tr>
+                        <td style="text-align: center"><a href="{% url 'damgeFactorMana' a.id %}">{{ a.name }}</a></td>
+                        <td style="text-align: center">{{ a.df }}</td>
+                        <td style="text-align: center">{{ a.fc }}</td>
+                        <td style="text-align: center">{{ a.risk }}</td>
+                        <td style="text-align: center">{{ a.lastinsp }}</td>
+                        <td style="text-align: center">{{ a.duedate }}</td>
+                        <td style="text-align: center"><a href="{% url 'inputdata' a.id %}">Data</a></td>
+                        <td style="text-align: center"><a href="{% url 'exportData' a.id 'Proposal' %}"><i class="fa fa-print"></i></a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+         {#          Pagination div  #}
+            <div>
+                {% if obj.has_other_pages %}
+              <ul class="pagination">
+                {% if obj.has_previous %}
+                  <li><a href="?page={{ obj.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&laquo;</span></li>
+                {% endif %}
+                {% for i in obj.paginator.page_range %}
+                  {% if obj.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                  {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if obj.has_next %}
+                  <li><a href="?page={{ obj.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+              </ul>
+            {% endif %}
+            </div>
+            <script>
+                function RecalClick() {
+                    document.getElementById('listProposal').submit();
+                    ShowLoading();
+                    return false;
+                }
+                function ShowLoading() {
+                    var div = document.createElement('div');
+                    var img = document.createElement('img');
+                    img.src = '{% static 'image/loading/Pacman-1s-100px.gif' %}';
+                    div.style.cssText = "position: fixed;left: 50%; top: 30%; width: 300px; text-align: center; background: rgba(54, 25, 25, .00004); border: 0px solid #000;";
+                    div.appendChild(img);
+                    document.body.appendChild(div);
+                    $("#sub").attr('disabled',true);
+                    $("#recal").attr('disabled',true);
+                    $("#edit").attr('disabled', true);
+                    return true;
+                }
+            </script>
+        </div>
+    </form>
+{% endblock %}

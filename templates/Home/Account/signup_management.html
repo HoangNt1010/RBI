@@ -1,0 +1,177 @@
+<!-- <!DOCTYPE html> -->
+<html lang="en">
+<head>
+    {% load staticfiles %}
+    {% load widget_tweaks %}
+    <title>Sign_in</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/register_management.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        {# specialcharacters #}
+        function blockSpecialChar(e) {
+            var k;
+            document.all ? k = e.keyCode : k = e.which;
+            return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57));
+        }
+        var state = false;
+        {# showpassword #}
+        function toggle() {
+            if (state) {
+                document.getElementById("password").setAttribute("type", "password");
+                document.getElementById("confirm_password").setAttribute("type", "password");
+                state = false;
+            } else {
+                document.getElementById("password").setAttribute("type", "text");
+                document.getElementById("confirm_password").setAttribute("type", "text");
+                state = true;
+            }
+        }
+        {#  confirmpass  #}
+        function onChange() {
+            const password = document.querySelector('input[name=pass_mng]');
+            const confirm = document.querySelector('input[name=repass_mng]');
+            if (confirm.value !== password.value) {
+                confirm.setCustomValidity('Passwords do not match');
+            }
+        }
+    </script>
+
+</head>
+<body>
+<div class="register-management">
+	<div class="language">
+		Language: <img src="{% static '/image/logo/england.png' %}" /> Sun 12 Mar 12:07
+	</div>
+    <div class="wapper">
+		<div class="form-register">
+			<div class="header-form">
+				<!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+				<h3 class="text-center">FREE REGISTER FOR RBI-CORTEK</h3>
+				<h5 class="text-center">Get your free BRI-Cortek account now.</h5>
+			</div>
+			<form action="" method="post" class="signup-form-management" >
+				{% csrf_token %}
+				<div class="row">
+					<div class="col-xs-12 input-register">
+						<div class="">
+							<p class="text-input-field">Organization name</p>
+							<input type="text" placeholder="Organization Name" name="org_name_mng" minlength="3" maxlength="25" onkeypress="return blockSpecialChar(event)" required>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-12 input-register">
+						<div class="">
+							<p class="text-input-field">User name</p>
+							<input type="text" placeholder="User Name" name="username_mng" minlength="3" maxlength="10" onkeypress="return blockSpecialChar(event)" required>
+{#							<img src="{% static '/image/logo/user-icon.png' %}" />#}
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 input-register">
+						<div class="">
+							<p class="text-input-field">First name</p>
+							<input type="text" placeholder="First Name" name="first_name" minlength="3" maxlength="25" onkeypress="return blockSpecialChar(event)" required>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 input-register">
+						<div class="">
+							<p class="text-input-field">Last name</p>
+							<input type="text" placeholder="Last Name" name="last_name" minlength="3" maxlength="25" onkeypress="return blockSpecialChar(event)" required>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 input-register">
+						<div class="">
+							<p class="text-input-field">Password
+                                <span>
+                                    <i class="fa fa-eye" aria-hidden="true" id="eye" onclick="toggle()">Show</i>
+                                </span>
+                            </p>
+							<input type="text" name="pass_mng" id="password" onChange="onChange()" minlength="8" maxlength="20" placeholder="Password (8 characters minimum)" required>
+{#							<img src="{% static '/image/logo/eye-hidden.png' %}" />#}
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 input-register">
+						<div class="">
+							<p class="text-input-field">Retype Password</p>
+							<input type="text" name="repass_mng" id="confirm_password" onChange="onChange()" minlength="8" maxlength="20" placeholder="Retype Password" required>
+{#							<img src="{% static '/image/logo/eye-hidden.png' %}" />#}
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 input-register">
+						<div class="">
+							<p class="text-input-field">Phone Number</p>
+							<input type="number" name="phone_mng" placeholder="Phone Number" minlength="10" maxlength="12" required>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-12 input-register">
+						<div class="">
+							<p class="text-input-field">Email</p>
+							<input type="email"  name="email_mng" placeholder="E-Mail" required>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-12 input-register">
+						<div class="">
+							<p class="text-input-field">Website</p>
+							<input  name="web_mng" placeholder="Website" required>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 input-register">
+						<div class="">
+							<p class="text-input-field">Organization Address</p>
+							<input  name="addr_mng" placeholder="Organization Address" required>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 input-register">
+						<div class="">
+							<p class="text-input-field">Organization detail</p>
+							<input name="desc" placeholder="Organization detail" id="datepicker" required>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 input-register">
+						<div class="footer-register">
+							<button type="submit" class="btn btn-primary" class="button"> Sign Up </button>
+						</div>
+						<div class="footer-register">
+							<a href="{% url 'logout' %}">Already have an account? Login</a>
+						</div>
+					</div>
+					<!-- <div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div> -->
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

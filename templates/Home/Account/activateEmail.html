@@ -1,0 +1,8 @@
+{% autoescape off %}
+Activate your account
+Hi {{ user.name }}, you just sign up to our RBI service.
+You must click on the following link to activate account.
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+Thank you
+--The RBI team
+{% endautoescape %}

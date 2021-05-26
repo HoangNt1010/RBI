@@ -1,0 +1,270 @@
+{% extends 'BaseUI/BaseFacility/baseProposal.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+<!----------BLOCK MENU----------->
+
+<!----------END BLOCK----------->
+
+{% block data-content %}
+
+
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="{% static 'css/d3j/whhg.css' %}" >
+	<link rel="stylesheet" href="{% static 'css/d3j/grid.css' %}">
+	<link rel="stylesheet" href="{% static 'css/d3j/styles.css' %}">
+	
+
+    <!-- Lib dependencies -->
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.12/d3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/underscore@1.12.0/underscore-min.js"></script>
+
+  <!-- Slick styles-->
+    <link rel="stylesheet" href="{% static 'css/d3j/slick-default-theme.css' %}">
+    <link rel="stylesheet" href="{% static 'css/d3j/slick.grid.css' %}">
+    
+    <!-- Slick dependencies -->
+	<script src="http://code.jquery.com/jquery-1.7.min.js"></script>
+	<script src="{% static 'js/d3j_js/jquery-ui-1.8.16.custom.min.js' %}"></script>
+    <script src="{% static 'js/d3j_js/jquery.event.drag-2.2.js' %}"></script>
+
+    <!-- Slick core-->
+    <script src="https://dl.dropboxusercontent.com/u/103327358/slick.grid.js"></script>		
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/6pac-slickgrid/2.4.32/slick.core.min.js"></script>	
+    <script src="{% static 'js/d3j_js/slick.grid.js' %}"></script>
+    
+
+    <!-- JS scripts -->
+    <script src="{% static 'js/d3j_js/DataTable.js' %}"></script>
+    <script src="{% static 'js/d3j_js/ParallelCoordinatesPlot.js' %}"></script>
+    <!-- Charts CSS -->
+    <link rel="stylesheet" href="{% static 'css/d3j/charts.css' %}">
+	
+
+	<!-- CONTENT -->
+		<div class="row padding" >
+			<div class="col span_24">
+				<h3 class="align-center">Parallel Coordinates Plot</h3>
+				<div class="pcp-plot">
+					<div id="selector">
+						
+					
+					<div id="pcp"> </div>
+				</div>		
+			</div>
+		</div> <!-- end of row -->
+		
+		<div class="row padding">
+			<div class="col span_24">
+				<h3 class="align-center">Detailed infomation</h3>
+				<div id="data-table" style="text-align: center;"> </div>
+			</div>
+		</div> <!-- end of row -->
+
+	</div>
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript">	
+
+		var contains = function(needle) {
+			// Per spec, the way to identify NaN is that it is not equal to itself
+			var findNaN = needle !== needle;
+			var indexOf;
+
+			if(!findNaN && typeof Array.prototype.indexOf === 'function') {
+				indexOf = Array.prototype.indexOf;
+			} else {
+				indexOf = function(needle) {
+					var i = -1, index = -1;
+
+					for(i = 0; i < this.length; i++) {
+						var item = this[i];
+
+						if((findNaN && item !== item) || item === needle) {
+							index = i;
+							break;
+						}
+					}
+
+            		return index;
+        			};
+    				}
+
+    	return indexOf.call(this, needle) > -1;
+		};
+
+// add attribute to dimensions list if they havent already exist
+function on_select_attr(string) {
+    // add to array if not exist
+    if (!contains.call(self._dimensions_selected, string)) {
+        self._dimensions_selected.push(string);
+    } else {
+        // remove from array
+        for(var i = self._dimensions_selected.length - 1; i >= 0; i--) {
+            if(self._dimensions_selected[i] === string) {
+               self._dimensions_selected.splice(i, 1);
+            }
+        }
+    }
+    
+    self._pcp = parallelCoordinatesChart("pcp", self._data, self._colors, self._dimensions_selected, self.callback_applyBrushFilter);
+        
+    // console.log(self._dimensions_selected);
+}
+
+function Main(){
+    // reset page, uncheck everything
+    $('input:checkbox').removeAttr('checked');
+
+    self._dimensions_selected = ['make', 'fuel-type', 'compression-ratio', 'city-mpg', 'num-of-cylinders', 'weight', 'engine-size', 'length', 'horsepower', 'width', 'cof'];
+
+    // tick checkbox for default dimension
+    for (var i = 0; i < self._dimensions_selected.length; i++) {
+        $('#' + self._dimensions_selected[i]).prop('checked', true);
+    }
+
+    self = this;
+
+    // Data
+    self._data = []
+    self._data_selected = []
+    
+    
+    // Charts
+    self._pcp = null;
+    self._dataTable = null;
+    
+
+    // Other
+    self._colors = {
+        "selected": "#97a4bc",
+        "un-selected":  "#e8eefd",
+        "0" : '#0a72ff',
+        "1" : '#1eff06',
+        "2" : '#ff1902',
+        "3" : '#2dfefe',
+        "4" : '#827c01',
+        "5" : '#fe07a6',
+        "6" : '#a8879f',
+        "7" : '#fcff04',
+        "8" : '#c602fe',
+        "9" : '#16be61',
+        "10" : '#ff9569',
+        "11" : '#05b3ff',
+        "12" : '#8ffec2',
+        "13" : '#3f8670',
+        "14" : '#e992ff',
+        "15" : '#ffb209',
+        "16" : '#e72955',
+        "17" : '#83bf02',
+        "18" : '#bba67b',
+        "19" : '#fe7eb1',
+        "20" : '#7570c1',
+        "21" : "#85bfd1"
+    }
+
+    // self._dimensions_selected = ['make', 'fuel-type', 'length', 'width'];
+    self._dimensions_selected = ['make', 'fuel-type', 'compression-ratio', 'city-mpg', 'num-of-cylinders', 'weight', 'engine-size', 'length', 'horsepower', 'width', 'cof'];
+
+
+    self.init();
+}
+
+	Main.prototype = {
+    	init : function(csvFile){
+        console.debug("Main: init");
+        // d3.csv("./data/imports-85.csv", function(d) {
+		d3.csv("{% static 'lib/imports-85.csv' %}", function(d) {
+        	return {
+            //get a full collumn of data
+            'make': d['make'],
+            'fuel-type' : d['fuel-type'],
+            // plus sign : read metric data
+            'length' : +d['length'],
+            'width' :+d['width'],
+            'weight': +d['curb-weight'],
+            'height' : +d['num-of-cylinders'],
+            'engine-size' : +d['engine-size'],
+            'fuel-system': d['fuel-system'],
+            'min-temp' : +d['compression-ratio'],
+            'max-temp' : +d['horsepower'],
+            'city-mpg' : +d['city-mpg'],
+            'cof' : +d['price'],
+            // improvement, add extra dimensions
+            'symboling': d['symboling'],
+            'normalized-losses': +d['normalized-losses'],
+            'aspiration': d['aspiration'],
+            'num-of-doors': d['num-of-doors'],
+            'body-style': d['body-style'],
+            'drive-wheels': d['drive-wheels'],
+            'engine-location': d['engine-location'],
+            'wheel-base': +d['wheel-base'],
+            'engine-type': d['engine-type'],
+            'bore': +d['bore'],
+            'stroke': +d['stroke'],
+            'peak-rpm': +d['peak-rpm'],
+            'highway-mpg': +d['highway-mpg'],
+        	};
+        }, function(data) {
+            self._data = data;
+            self._data_selected = self._data.slice();
+            self.setupCharts();
+        	});    
+        
+    },
+
+		setupCharts : function(){
+			var dimensions = ['fuel-type', 'min-temp', 'max-temp' , 'height', 'weight', 'engine-size','length','width', 'cof'];
+			// self._stats = stats(self._data);
+			self._pcp = parallelCoordinatesChart("pcp", self._data, self._colors, dimensions, self.callback_applyBrushFilter);
+			// self._legend = legendChart("legend", self._data_selected, self._colors, self.callback_applyGroupFilter)
+			// self._donutMakes = donutChartGrouped("pie-groups", self._data_selected, "make",  self._colors, self._pcp.highlight_group);
+			// self._donutTotals = donutChartTotals("pie-totals", self._data_selected, self._colors);
+			self._dataTable = dataTable("data-table", self._data_selected, dimensions, self._colors, self._pcp.highlight_single)
+			// self._scatter = scatter("scatter", self._data_selected, "width", "length", self._pcp.highlight_single);
+		},
+    
+		callback_applyBrushFilter : function(brushed_data){
+			self._data_selected = brushed_data;
+			// self._scatter = scatter("scatter", self._data_selected, "width", "length", self._pcp.highlight_single);
+
+			self.refreshCharts();
+		},
+
+		refreshCharts : function() {
+			// self._donutTotals.update(self._data_selected);
+			// self._donutMakes.update(self._data_selected);
+			self._pcp.update(self._data_selected);
+			self._dataTable.update(self._data_selected);
+			self._pcp = parallelCoordinatesChart("pcp", self._data, self._colors, dimensions, self.callback_applyBrushFilter);
+			// self._scatter = scatter("scatter", self._data_selected, "width", "length", self._pcp.highlight_single);
+			
+		},
+    
+
+		callback_applyGroupFilter : function(groupFilter){
+			var hide = false;
+			var index = self._data_visible_groups.indexOf(groupFilter);
+			if (index == -1){   // Index does not exist
+				hide = false;
+				// Add group as a visible group
+				self._data_visible_groups.push(groupFilter);
+			}else { // Index does exist    
+				hide = true;
+				// Remove group as visible
+				self._data_visible_groups.splice(index,1);
+			}
+			self.refreshCharts();
+			return hide;
+		},
+	} 
+
+		function capitalize(string) { 
+			return string.charAt(0).toUpperCase() + string.slice(1); 
+		}
+		  var main = new Main();
+		  
+	</script>
+</html>
+
+{% endblock %}

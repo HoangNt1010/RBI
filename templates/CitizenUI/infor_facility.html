@@ -1,0 +1,34 @@
+{% extends 'CitizenUI/Citizen_list_facility.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block library %}
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Facility Management{% endblock %}
+
+{% block data-content %}
+    <h1 style="text-align: center">Name Company : {{ site.sitename }}</h1>
+    <div style="padding-left:50px; width: 1050px">
+        <h3>{{ si.compainfor }}</h3>
+        <table>
+            <tr>
+                <td><h4>Director</h4></td>
+                <td>{{ name.name }}</td>
+            </tr>
+            <tr>
+                <td style="width: 100px"><h4>Phone</h4></td>
+                <td style="width: 700px">{{ name.phone }}</td>
+            </tr>
+            <tr>
+                <td><h4>Email</h4></td>
+                <td><a>{{ name.email }}</a></td>
+            </tr>
+            <tr>
+                <td><h4>Website : </h4></td>
+                <td><a href="http://hust.edu.vn">hust.edu.vn</a></td>
+            </tr>
+        </table>
+    </div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'BaseUI/BaseManager/baseManufactureMana.html' %}
+
+<!----------- BLOCK MENU ------------->
+{% block listmanu %}{% url 'manufactureDisplayMana' siteID %}{% endblock %}
+{% block backfaci %}{% url 'manager' siteID %}{% endblock %}
+<!----------- END BLOCK ------------->
+
+{% block data-content %}
+    <form method="post">
+    {% csrf_token %}
+        <div class="table-title">
+          <h2><b>List of Manufactures</b></h2>
+        </div>
+        <div style="text-align: center" class="table-custom">
+            <table class="table" id="mytable">
+                <thead>
+                    <tr>
+                        <th width="200px" style="text-align: center">Manufacture</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for a in obj %}
+                    <tr>
+                        <td style="text-align: center">{{ a.manufacturername }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+         {#          Pagination div  #}
+            <div>
+                {% if obj.has_other_pages %}
+              <ul class="pagination">
+                {% if obj.has_previous %}
+                  <li><a href="?page={{ obj.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&laquo;</span></li>
+                {% endif %}
+                {% for i in obj.paginator.page_range %}
+                  {% if obj.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                  {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if obj.has_next %}
+                  <li><a href="?page={{ obj.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+              </ul>
+            {% endif %}
+            </div>
+        </div>
+    </form>
+{% endblock %}

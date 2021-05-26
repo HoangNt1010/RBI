@@ -1,0 +1,770 @@
+{% extends 'BaseUI/BaseManager/ManagerHome.html' %}
+{% load staticfiles %}
+{% load static %}
+<!-------------- BLOCK MENU ---------------->
+{% block homedetail %}{% url 'managerhomedetail' siteID%}{% endblock %}
+{% block listmana %}{% url 'manager' siteID %}{% endblock %}
+{% block calculate %}{% url 'calculatefunctionmanager' siteID %}{% endblock %}
+{% block admin %}{% url 'admin1' siteID %}{% endblock %}
+{% block toolmanage %}{% url 'toolmanager' siteID %}{% endblock %}
+{% block  registeraccount%}{% url 'registerAccount' siteID %}{% endblock %}
+<!----------------- END BLOCK----------------->
+{% block data-content %}
+<style>
+fieldset {
+  background-color: White;
+}
+
+legend {
+  background-color: gray;
+  color: white;
+  padding: 5px 10px;
+}
+.riskmatrix {
+    width: 530px;
+    height: 580px;
+    background: #fff;
+    float:left;
+}
+.showtable{
+    width: 600px;
+    float: right;
+}
+div.a {
+  white-space: nowrap;
+  /* width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis; */
+}
+#searchs{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+.city{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+#search3{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+#proposal
+{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+#search2{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+#searchs td,#searchs th {
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+.city td, .city th{
+  border-top: 1px solid #ddd;
+  /* border-bottom: 1px solid #ddd; */
+  padding: 5px;
+  text-align: center;
+  font-size: 13px;
+}
+#search2 th,#search2 td{
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+#search3 th,#search3 td{
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+#proposal th,#proposal td{
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+#searchs tr:nth-child(even){background-color: #f2f2f2;}
+.city tr:nth-child(even){background-color: white;}
+#search2 tr:nth-child(even){background-color: #f2f2f2;}
+#search3 tr:nth-child(even){background-color: #f2f2f2;}
+#proposal tr:nth-child(even){background-color: #f2f2f2;}
+#searchs tr:hover {background-color: #f2f2f2;}
+.city tr:hover {background-color: #f2f2f2;}
+#search2 tr:hover {background-color: #f2f2f2;}
+#search3 tr:hover {background-color: #f2f2f2;}
+#proposal tr:hover {background-color: #f2f2f2;}
+
+#searchs th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #305680;
+  color: white;
+}
+.city th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #1c67b2;
+  color: #fff;
+}
+#search2 th{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #305680;
+  color: white;
+}
+#search3 th{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color :#305680;
+  color: white;
+}
+#proposal th{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #305680;
+  color: white;
+}
+</style>
+<form method="post" id="homemanage" enctype="multipart/form-data" style="width: 100%;height: 100%">
+    {% csrf_token %}
+    <div class="dashboard-title color-white">rbi-cortek dashboard</div>
+    <div class="contain-custom">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="item-custom column-hight">
+                    <img class="ml-16" src="{% static 'image/Sensor/sites.png'%}" alt="">
+                    <div class="mr-16">
+                        <div class="f-36">{{ num_site }}</div>
+                        <div class="f-18">Sites</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="item-custom column-medium">
+                    <img class="ml-16" src="{% static 'image/Sensor/factory.png'%}" alt="">
+                    <div class="mr-16">
+                        <div class="f-36">{{ num_faci }}</div>
+                        <div class="f-18">Facility</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="item-custom column-low">
+                    <img class="ml-16" src="{% static 'image/Sensor/equipment.png'%}" alt="">
+                    <div class="mr-16">
+                        <div class="f-36">{{ num_eq }}</div>
+                        <div class="f-18">Equipment</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="item-custom column-normal">
+                    <img class="ml-16" src="{% static 'image/Sensor/engineering.png'%}" alt="">
+                    <div class="mr-16">
+                        <div class="f-36">{{ num_com }}</div>
+                        <div class="f-18">Component</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<h3  class="color-white">Verification</h3>
+<hr class="hr-verification"/>
+<form id="function" method="post" >
+    {% csrf_token %}
+    <div>
+        <ul class="nav nav-pills" style="margin-bottom: 20px;">
+            <li class="btn btn-primary active" style="border-radius: 10px 0 0 0; height: 42px; font-size: 20px;" data-toggle="pill" href="#menu0" type="button">
+                Process Plan
+              </li>
+              <li style="border-radius: 0 10px 0 0; height: 42px;font-size: 20px;margin: 0; padding: 6px 45px;" data-toggle="pill" href="#menu1" type="button" class="btn btn-primary">
+                Tank
+              </li>
+        </ul>
+
+        <div class="tab-content vertical-chart" style="padding-bottom: 20px;">
+            <!---------------- Process Plant------------------>
+            <div id="menu0" class="tab-pane fade in active" >
+                <div class="riskmatrix">
+                    <canvas id="myCanvas" width="550" height="550"></canvas>
+                    <script>
+                        //Lấy đối tượng Canvas
+                        var canvas = document.getElementById('myCanvas');
+                        // Chọn đối tượng vẽ 2D
+                        var ctx = canvas.getContext('2d');
+                        var i = 100;
+                        // Tiến hành vẽ
+                        ctx.strokeStyle = 'black';
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(0+i, 80, 80, 80);
+                        ctx.strokeRect(0+i, 80, 80, 80);
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(80+i ,80,80,80);
+                        ctx.strokeRect(80+i,80,80,80)
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(160+i,80,80,80);
+                        ctx.strokeRect(160+i,80,80,80)
+                        ctx.fillStyle = 'red';
+                        ctx.fillRect(240+i,80,80,80);
+                        ctx.strokeRect(240+i,80,80,80)
+                        ctx.fillStyle = 'red';
+                        ctx.fillRect(320+i,80,80,80);
+                        ctx.strokeRect(320+i,80,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(0+i,160,80,80);
+                        ctx.strokeRect(0+i,160,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(80+i,160,80,80);
+                        ctx.strokeRect(80+i,160,80,80)
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(160+i,160,80,80);
+                        ctx.strokeRect(160+i,160,80,80);
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(240+i,160,80,80);
+                        ctx.strokeRect(240+i,160,80,80)
+                        ctx.fillStyle = 'red';
+                        ctx.fillRect(320+i,160,80,80);
+                        ctx.strokeRect(320+i,160,80,80)
+                        ctx.fillStyle = 'green';
+                        ctx.fillRect(0+i,240,80,80);
+                        ctx.strokeRect(0+i,240,80,80)
+                        ctx.fillStyle = 'green';
+                        ctx.fillRect(80+i,240,80,80);
+                        ctx.strokeRect(80+i,160,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(160+i,240,80,80);
+                        ctx.strokeRect(160+i,240,80,80)
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(240+i,240,80,80);
+                        ctx.strokeRect(240+i,240,80,80)
+                        ctx.fillStyle = 'red';
+                        ctx.fillRect(320+i,240,80,80);
+                        ctx.strokeRect(320+i,240,80,80)
+                        ctx.fillStyle = 'green';
+                        ctx.fillRect(0+i,320,80,80);
+                        ctx.strokeRect(0+i,320,80,80)
+                        ctx.fillStyle = 'green';
+                        ctx.fillRect(80+i,320,80,80);
+                        ctx.strokeRect(80+i,320,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(160+i,320,80,80);
+                        ctx.strokeRect(160+i,320,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(240+i,320,80,80);
+                        ctx.strokeRect(240+i,320,80,80);
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(320+i,320,80,80);
+                        ctx.strokeRect(320+i,320,80,80)
+                        ctx.fillStyle = 'green';
+                        ctx.fillRect(0+i,400,80,80);
+                        ctx.strokeRect(0+i,400,80,80)
+                        ctx.fillStyle = 'green';
+                        ctx.fillRect(80+i,400,80,80);
+                        ctx.strokeRect(80+i,400,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(160+i,400,80,80);
+                        ctx.strokeRect(160+i,400,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(240+i,400,80,80);
+                        ctx.strokeRect(240+i,400,80,80)
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(320+i,400,80,80);
+                        ctx.strokeRect(320+i,400,80,80);
+                        {% for a in APINormal %}
+                            ctx.beginPath();
+                            ctx.fillStyle="Blue";
+                            ctx.fillRect({{ a.API2.x }}-15,{{ a.API2.y }}-15,30,30);
+
+                            ctx.beginPath();
+                            ctx.arc({{ a.API1.x }},{{ a.API1.y }},15,0,2 * Math.PI, true);
+                            ctx.fillStyle="LightGray";
+                            ctx.fill();
+
+                            ctx.beginPath();
+                            ctx.fillStyle="Purple";
+                            ctx.fillRect({{ a.API3.x }}-15,{{ a.API3.y }}-10,30,20);
+                        {% endfor %}
+
+                        ctx.beginPath();
+                        ctx.arc(120,35,15,0,2 * Math.PI, true);
+                        ctx.fillStyle="LightGray";
+                        ctx.fill();
+                        ctx.beginPath();
+                        ctx.fillStyle="Blue";
+                        ctx.fillRect(250,20,30,30);
+                        ctx.font = "15px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText(": API1", 150, 45);
+                        ctx.fillText(": API2", 300, 45);
+
+                        ctx.beginPath();
+                        ctx.fillStyle="Purple";
+                        ctx.fillRect(400,30,30,20);
+                        ctx.font = "15px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText(": API3", 450, 45);
+
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("A", 30+i, 520);
+
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("B", 110+i, 520);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("C", 190+i, 520);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("D", 270+i, 520);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("E", 350+i, 520);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("1", 60, 445);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("2", 60, 365);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("3", 60, 285);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("4", 60, 205);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("5", 60, 125);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("Consequense", 250, 550);
+
+                        ctx.font = '20px Georgia';
+                        ctx.save();
+                        ctx.translate(35,330);
+                        ctx.rotate(-0.5*Math.PI);
+
+                        var rText = 'Probability';
+                        ctx.fillText(rText , 0, 0);
+                        ctx.restore();
+
+                        var rWidth = ctx.measureText(rText).width;
+                    </script>
+                </div>
+                <div class="city" style="font-size: 13px;margin-left: 10px; color: #444444;background-color:white" class="showtable">
+                    <div>
+                        <div class="table-responsive" style="height: 550px;">
+                        <table width=100% class="testing">
+                            <thead>
+                            <tr>
+                                <!------- Proposal-------->
+                                <th>Site</th>
+                                <th>Facility</th>
+                                <th >Equipment Number</th>
+                                <th>Conponent Number</th>
+                                <th>AP1</th>
+                                <th>AP2</th>
+                                <th>AP3</th>
+                                <th >RLI9(months)</th>
+                                <th>Assessment Name</th>
+                                <th>Assessment Date</th>
+                                <th>Commission Date</th>
+                                <th style="overflow: auto; white-space: nowrap;">Risk Analysis<br> Period</th>
+                                <th>Equipment Type</th>
+                                <th >Component Type</th>
+                                <th style="overflow: auto;white-space: nowrap;">Inspection Due<br>Date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for a in APINormal %}
+                                <tr>
+                                    <td><div class="a">{{a.Site}}</div></td>
+                                    <td><div class="a">{{a.Facility}}</div></td>
+                                    <td><div class="a">{{a.EquipmentNumber}}</div></td>
+                                    <td><div class="a">{{a.ComponentNumber}}</div></td>
+                                    <td><div class="a">{{a.POFAPI1}}</div></td>
+                                    <td><div class="a">{{a.POFAPI2}}</div></td>
+                                    <td><div class="a">{{a.POFAPI3}}</div></td>
+                                    <td><div class="a">{{a.RLI}}</div></td>
+                                    <td><div class="a">{{a.AssessmentName}}</div></td>
+                                    <td><div class="a">{{a.AssessmentDate}}</div></td>
+                                    <td><div class="a">{{a.CommissionDate}}</div></td>
+                                    <td><div class="a">{{a.RiskAnalysisPeriod}}</div></td>
+                                    <td><div class="a">{{a.EquipmentType}}</div></td>
+                                    <td><div class="a">{{a.ComponentType}}</div></td>
+                                    <td><div class="a">{{a.InspectionDueDate}}</div></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        </div>
+{#                        <div class="modal" id="viewHis" style="margin-top: 10%">#}
+{#                            <div class="modal-dialog modal-lg">#}
+{#                                <div class="modal-content" style="width: 80%; margin: auto">#}
+{##}
+{#                                <!-- Modal Header -->#}
+{#                            <div class="modal-header">#}
+{#                                  <span aria-hidden="true" style="font-size: 24px;font-weight: bold;color: #444444;font-family: Calibri;">List of verification</span>#}
+{#                                  <button type="button" class="close" data-dismiss="modal" style="color: white">&times;</button>#}
+{#                                </div>#}
+{##}
+{#                                <!-- Modal body -->#}
+{#                                <div class="modal-body" style="width: 90%;margin: auto">#}
+{#                                    <table id="searchs">#}
+{#                                        <tr>#}
+{#                                            <th>Facility Name</th>#}
+{#                                            <th>Equipment Name</th>#}
+{#                                            <th>Component Name</th>#}
+{#                                            <th>Proposal Name</th>#}
+{#                                            <th>Date</th>#}
+{#                                            <th>Content</th>#}
+{#                                            <th>Status</th>#}
+{#                                        </tr>#}
+{#                                        {% for a in veri %}#}
+{#                                            <tr>#}
+{#                                                <td align="center">{{ a.facility }}</td>#}
+{#                                                <td align="center">{{ a.equipment }}</td>#}
+{#                                                <td align="center">{{ a.component }}</td>#}
+{#                                                <td align="center">{{ a.proposal }}</td>#}
+{#                                                <td align="center">{{ a.date }}</td>#}
+{#                                                <td align="center">#}
+{#                                                {% for b in vericontent %}#}
+{#                                                    {% if b.veriID == a.id %}#}
+{#                                                        {{ b.content }}#}
+{#                                                    {% endif %}#}
+{#                                                {% endfor %}#}
+{#                                                </td>#}
+{#                                                <td align="center">Success</td>#}
+{#                                            </tr>#}
+{#                                            {% endfor %}#}
+{#                                    </table>#}
+{#                            </div>#}
+{##}
+{#                                    <!-- Modal footer -->#}
+{#                            <div class="modal-footer" style="margin: auto; width: 90%">#}
+{#                                        <button type="button" class="btn btn-success"  style="background-color: #4575B7; border: 1px solid #204d74" data-dismiss="modal">Close</button>#}
+{#                                    </div>#}
+{#                                  </div>#}
+{#                            </div>#}
+{#                        </div>#}
+                        <script>
+                            $("input[id='checkbox']").change(function (e) {
+                            var isChecked = $(this).prop("checked");
+                            if (isChecked == false) {
+                                $("#detail").attr("disabled", true);
+                            }
+                            else {
+                                $("#detail").attr("disabled", false);
+                                }
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <!---------------- Tank------------------>
+            <div id="menu1" class="tab-pane fade">
+            <div class="city" style="font-size: 15px; color: #444444;">
+                    <div  class="riskmatrix">
+                    <canvas id="myCanvas1" width="550" height="550"></canvas>
+                    <script>
+                        //Lấy đối tượng Canvas
+                        var canvas = document.getElementById('myCanvas1');
+                        // Chọn đối tượng vẽ 2D
+                        var ctx = canvas.getContext('2d');
+                        var i = 100;
+                        // Tiến hành vẽ
+                        ctx.strokeStyle = 'black';
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(0+i, 80, 80, 80);
+                        ctx.strokeRect(0+i, 80, 80, 80);
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(80+i ,80,80,80);
+                        ctx.strokeRect(80+i,80,80,80)
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(160+i,80,80,80);
+                        ctx.strokeRect(160+i,80,80,80)
+                        ctx.fillStyle = 'red';
+                        ctx.fillRect(240+i,80,80,80);
+                        ctx.strokeRect(240+i,80,80,80)
+                        ctx.fillStyle = 'red';
+                        ctx.fillRect(320+i,80,80,80);
+                        ctx.strokeRect(320+i,80,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(0+i,160,80,80);
+                        ctx.strokeRect(0+i,160,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(80+i,160,80,80);
+                        ctx.strokeRect(80+i,160,80,80)
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(160+i,160,80,80);
+                        ctx.strokeRect(160+i,160,80,80);
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(240+i,160,80,80);
+                        ctx.strokeRect(240+i,160,80,80)
+                        ctx.fillStyle = 'red';
+                        ctx.fillRect(320+i,160,80,80);
+                        ctx.strokeRect(320+i,160,80,80)
+                        ctx.fillStyle = 'green';
+                        ctx.fillRect(0+i,240,80,80);
+                        ctx.strokeRect(0+i,240,80,80)
+                        ctx.fillStyle = 'green';
+                        ctx.fillRect(80+i,240,80,80);
+                        ctx.strokeRect(80+i,160,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(160+i,240,80,80);
+                        ctx.strokeRect(160+i,240,80,80)
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(240+i,240,80,80);
+                        ctx.strokeRect(240+i,240,80,80)
+                        ctx.fillStyle = 'red';
+                        ctx.fillRect(320+i,240,80,80);
+                        ctx.strokeRect(320+i,240,80,80)
+                        ctx.fillStyle = 'green';
+                        ctx.fillRect(0+i,320,80,80);
+                        ctx.strokeRect(0+i,320,80,80)
+                        ctx.fillStyle = 'green';
+                        ctx.fillRect(80+i,320,80,80);
+                        ctx.strokeRect(80+i,320,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(160+i,320,80,80);
+                        ctx.strokeRect(160+i,320,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(240+i,320,80,80);
+                        ctx.strokeRect(240+i,320,80,80);
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(320+i,320,80,80);
+                        ctx.strokeRect(320+i,320,80,80)
+                        ctx.fillStyle = 'green';
+                        ctx.fillRect(0+i,400,80,80);
+                        ctx.strokeRect(0+i,400,80,80)
+                        ctx.fillStyle = 'green';
+                        ctx.fillRect(80+i,400,80,80);
+                        ctx.strokeRect(80+i,400,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(160+i,400,80,80);
+                        ctx.strokeRect(160+i,400,80,80)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fillRect(240+i,400,80,80);
+                        ctx.strokeRect(240+i,400,80,80)
+                        ctx.fillStyle = 'orange';
+                        ctx.fillRect(320+i,400,80,80);
+                        ctx.strokeRect(320+i,400,80,80);
+                        {% for a in APITank %}
+                            ctx.beginPath();
+                            ctx.fillStyle="Blue";
+                            ctx.fillRect({{ a.API2.x }}-15,{{ a.API2.y }}-15,30,30);
+
+                            ctx.beginPath();
+                            ctx.arc({{ a.API1.x }},{{ a.API1.y }},15,0,2 * Math.PI, true);
+                            ctx.fillStyle="LightGray";
+                            ctx.fill();
+
+                            ctx.beginPath();
+                            ctx.fillStyle="Purple";
+                            ctx.fillRect({{ a.API3.x }}-15,{{ a.API3.y }}-10,30,20);
+                        {% endfor %}
+
+                        ctx.beginPath();
+                        ctx.arc(120,35,15,0,2 * Math.PI, true);
+                        ctx.fillStyle="LightGray";
+                        ctx.fill();
+                        ctx.beginPath();
+                        ctx.fillStyle="Blue";
+                        ctx.fillRect(250,20,30,30);
+                        ctx.font = "15px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText(": API1", 150, 45);
+                        ctx.fillText(": API2", 300, 45);
+
+                        ctx.beginPath();
+                        ctx.fillStyle="Purple";
+                        ctx.fillRect(400,30,30,20);
+                        ctx.font = "15px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText(": API3", 450, 45);
+
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("A", 30+i, 520);
+
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("B", 110+i, 520);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("C", 190+i, 520);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("D", 270+i, 520);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("E", 350+i, 520);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("1", 60, 445);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("2", 60, 365);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("3", 60, 285);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("4", 60, 205);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("5", 60, 125);
+                        ctx.font = "20px Georgia";
+                        ctx.fillStyle = "Black";
+                        ctx.fillText("Consequense", 250, 550);
+
+                        ctx.font = '20px Georgia';
+                        ctx.save();
+                        ctx.translate(35,330);
+                        ctx.rotate(-0.5*Math.PI);
+
+                        var rText = 'Probability';
+                        ctx.fillText(rText , 0, 0);
+                        ctx.restore();
+
+                        var rWidth = ctx.measureText(rText).width;
+                    </script>
+                    </div>
+                    <div class="city" style="height: 579px;margin-left: 10px;overflow-y: auto;font-size: 13px; color: #444444;background-color:white" class="showtable">
+                        <div>
+                            <div class="table-responsive" style="height: 550px;">
+                            <table width=100% class="testing">
+                                <thead>
+                                <tr>
+                                    <!------- Proposal-------->
+                                    <th>Site</th>
+                                    <th>Facility</th>
+                                    <th >Equipment Number</th>
+                                    <th>Conponent Number</th>
+                                    <th>AP1</th>
+                                    <th>AP2</th>
+                                    <th>AP3</th>
+                                    <th >RLI9(months)</th>
+                                    <th>Assessment Name</th>
+                                    <th>Assessment Date</th>
+                                    <th>Commission Date</th>
+                                    <th style="overflow: auto; white-space: nowrap;">Risk Analysis<br> Period</th>
+                                    <th>Equipment Type</th>
+                                    <th >Component Type</th>
+                                    <th style="overflow: auto;white-space: nowrap;">Inspection Due<br>Date</th>
+                                    <th>Design Code</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for a in APITank %}
+                                    <tr>
+                                        <td><div class="a">{{a.Site}}</div></td>
+                                        <td><div class="a">{{a.Facility}}</div></td>
+                                        <td><div class="a">{{a.EquipmentNumber}}</div></td>
+                                        <td><div class="a">{{a.ComponentNumber}}</div></td>
+                                        <td><div class="a">{{a.POFAPI1}}</div></td>
+                                        <td><div class="a">{{a.POFAPI2}}</div></td>
+                                        <td><div class="a">{{a.POFAPI3}}</div></td>
+                                        <td><div class="a">{{a.RLI}}</div></td>
+                                        <td><div class="a">{{a.AssessmentName}}</div></td>
+                                        <td><div class="a">{{a.AssessmentDate}}</div></td>
+                                        <td><div class="a">{{a.CommissionDate}}</div></td>
+                                        <td><div class="a">{{a.RiskAnalysisPeriod}}</div></td>
+                                        <td><div class="a">{{a.EquipmentType}}</div></td>
+                                        <td><div class="a">{{a.ComponentType}}</div></td>
+                                        <td><div class="a">{{a.InspectionDueDate}}</div></td>
+                                        <td><div>{{a.DesignCode}}</div></td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            </div>
+{#                            <div class="modal" id="viewHis1" style="margin-top: 10%">#}
+{#                                <div class="modal-dialog modal-lg">#}
+{#                                    <div class="modal-content" style="width: 80%; margin: auto">#}
+{##}
+{#                                    <!-- Modal Header -->#}
+{#                                <div class="modal-header">#}
+{#                                      <span aria-hidden="true" style="font-size: 24px;font-weight: bold;color: #444444;font-family: Calibri;font-weight: bold;">List of verification</span>#}
+{#                                      <button type="button" class="close" data-dismiss="modal" style="color: white">&times;</button>#}
+{#                                    </div>#}
+{##}
+{#                                    <!-- Modal body -->#}
+{#                                    <div class="modal-body" style="width: 90%;margin: auto">#}
+{#                                        <table id="searchs">#}
+{#                                            <tr>#}
+{#                                                <th>Facility Name</th>#}
+{#                                                <th>Equipment Name</th>#}
+{#                                                <th>Component Name</th>#}
+{#                                                <th>Proposal Name</th>#}
+{#                                                <th>Date</th>#}
+{#                                                <th>Content</th>#}
+{#                                                <th>Status</th>#}
+{#                                            </tr>#}
+{#                                            {% for a in veri %}#}
+{#                                            <tr>#}
+{#                                                <td align="center">{{ a.facility }}</td>#}
+{#                                                <td align="center">{{ a.equipment }}</td>#}
+{#                                                <td align="center">{{ a.component }}</td>#}
+{#                                                <td align="center">{{ a.proposal }}</td>#}
+{#                                                <td align="center">{{ a.date }}</td>#}
+{#                                                <td align="center">#}
+{#                                                {% for b in vericontent %}#}
+{#                                                    {% if b.veriID == a.id %}#}
+{#                                                        {{ b.content }}#}
+{#                                                    {% endif %}#}
+{#                                                {% endfor %}#}
+{#                                                </td>#}
+{#                                                <td align="center">Success</td>#}
+{#                                            </tr>#}
+{#                                            {% endfor %}#}
+{#                                        </table>#}
+{#                                </div>#}
+{##}
+{#                                        <!-- Modal footer -->#}
+{#                                <div class="modal-footer" style="margin: auto; width: 90%">#}
+{#                                            <button type="button" class="btn btn-success"  style="background-color: #4575B7; border: 1px solid #204d74" data-dismiss="modal">Close</button>#}
+{#                                        </div>#}
+{#                                      </div>#}
+{#                                </div>#}
+{#                            </div>#}
+                            <script>
+                            $("input[id='checkboxT']").change(function (e) {
+                            var isChecked = $(this).prop("checked");
+                            if (isChecked == false) {
+                                $("#detailT").attr("disabled", true);
+                            }
+                            else {
+                                $("#detailT").attr("disabled", false);
+                                }
+                            });
+                            </script>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+
+
+    </div>
+
+</form>
+</form>
+{% endblock %}

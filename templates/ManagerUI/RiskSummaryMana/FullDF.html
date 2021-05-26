@@ -1,0 +1,242 @@
+{% extends 'BaseUI/BaseManager/baseRiskSummaryMana.html' %}
+
+{% load staticfiles %}
+
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactorMana' proposalID %}{% endblock %}
+{% block ca%}{% url 'fullyConsequenceMana' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrixMana' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChartMana' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'proposalDisplayMana' assess.componentid_id %}{% endblock %}
+<!---------------END BLOCK--------------->
+
+{% block data-content %}
+<form method="post" id="fullDF">
+    {% csrf_token %}
+    {% if thongbao %}
+    <div class="alert" style="background-color:#28a745;text-align:center">
+        <p style="color:#fff"><b>Bạn đã yêu cầu kiểm định thành công</b></p>
+    </div>
+    {% endif %}
+    <div class="title-verifitcation" >
+        <h1>PROBABILITY OF FAILURE</h1>
+    </div>
+    <div class="header-verification">
+      <div class="row left-header-verification">
+        <div class="col-md-5 column-element column-hight">
+          <img class="ml-16" src="{% static 'image/Sensor/sites.png'%}" alt="">
+          <div class="mr-16">
+            <p>{{ num_site }}</p>
+            <p>Sites</p>
+          </div>
+        </div>
+        <div class="col-md-5 column-element column-medium">
+          <img class="ml-16" src="{% static 'image/Sensor/factory.png'%}" alt="">
+          <div class="mr-16">
+            <p>{{ num_faci }}</p>
+            <p>Facility</p>
+          </div>
+        </div>
+        <div class="col-md-5 column-element column-low">
+          <img class="ml-16" src="{% static 'image/Sensor/equipment.png'%}" alt="">
+          <div class="mr-16">
+            <p>{{ num_eq }}</p>
+            <p>Equipment</p>
+          </div>
+        </div>
+        <div class="col-md-5 column-element column-normal">
+          <img class="ml-16" src="{% static 'image/Sensor/engineering.png'%}" alt="">
+          <div class="mr-16">
+            <p>{{ num_com }}</p>
+            <p>Component</p>
+          </div>
+        </div>
+      </div>
+      <div class="right-header-verification">
+        <!-- <p>Troubleshooting Process</p> -->
+        <div class="content-right-header">
+            <div class="step-content-header">
+                <div class="step-element">
+                  <button class="btn-step">Step 1</button>
+                  <span></span>
+                </div>
+              <p>View List Proposal</p>
+            </div>
+            <div class="step-content-header">
+              <div class="step-element">
+                <button class="btn-step active-btn-step">Step 2</button>
+                <span></span>
+              </div>
+              <p style="padding-left: 18px;">View Risk</p>
+            </div>
+            <div class="step-content-header">
+              <div class="step-element">
+                <button class="btn-step">Step 3</button>
+              </div>
+              <p style="padding-left: 5px;">Verification Requirements</p>
+            </div>
+        </div>
+      </div>
+    </div>
+    <hr class="hr-verification"/>
+      <!-----------BLOCK DATA GENERAL FACTOR---------->
+    <div class="input-data content-full-df">
+        <h3 class="color-white">Initial Factor</h3>
+        <hr class="hr-verification"/>
+        <div class="content-initial-factor">
+            <div class="element-content-initial">
+            <div class="row">
+                <div class="col-md-6 color-white">Thinning Type:</div>
+                <div class="col-md-6">
+                    <select class="form-control" style="height: 30px !important; margin-top: -5px;" id="thinningType" name="thinningType" disabled>
+                        <option>Local</option>
+                        <option>General</option>
+                    </select>
+                </div>
+                <script>
+                    $("#thinningType").val("{{ obj.thinningType }}");
+                </script>
+            </div>
+        </div>
+        <div class="element-content-initial">
+            <div class="row">
+                <div class="col-md-6 color-white">Total Generic Frequence:</div>
+                <div class="col-md-6 color-white text-value">{{ obj.gfftotal }}</div>
+            </div>
+        </div>
+        <div class="element-content-initial">
+            <div class="row">
+                <div class="col-md-6 color-white">Factor of Management System:</div>
+                <div class="col-md-6 color-white text-value">{{ obj.fms }}</div>
+            </div>
+        </div>
+    </div>
+            <!----------------END BLOCK----------------->
+            <!-------------- BLOCK DETAIL DAMAGE FACTOR ------------>
+<div>
+        <h3 class="color-white">Damage Factors and Probability of Failure</h3>
+        <hr class="hr-verification"/>
+</div>
+<div class="px-100">
+    <div class="row">
+        <div class="col-md-6 color-white">Assessment Periods</div>
+        <div class="col-md-2 text-value">0 months</div>
+        <div class="col-md-2 text-value">36 months</div>
+        <div class="col-md-2 text-value">72 months</div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 color-white">Governing Thinning Damage Factor:</div>
+        <div class="col-md-2 text-value">{{ obj.thinningap1 }}</div>
+        <div class="col-md-2 text-value">{{ obj.thinningap2 }}</div>
+        <div class="col-md-2 text-value">{{ obj.thinningap3 }}</div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 color-white">Governing Stress Corrosion Cracking Damage Factor:</div>
+        <div class="col-md-2 text-value">{{ obj.sccap1 }}</div>
+        <div class="col-md-2 text-value">{{ obj.sccap2 }}</div>
+        <div class="col-md-2 text-value">{{ obj.sccap3 }}</div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 color-white">Governing External Damage Factor:</div>
+        <div class="col-md-2 text-value">{{ obj.externalap1 }}</div>
+        <div class="col-md-2 text-value">{{ obj.externalap2 }}</div>
+        <div class="col-md-2 text-value">{{ obj.externalap3 }}</div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 color-white">High Temperature Hydrogen Attack Damage Factor:</div>
+        <div class="col-md-2 text-value">{{ obj.htha_ap1 }}</div>
+        <div class="col-md-2 text-value">{{ obj.htha_ap2 }}</div>
+        <div class="col-md-2 text-value">{{ obj.htha_ap3 }}</div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 color-white">Governing Brittle Fracture Damage Factor:</div>
+        <div class="col-md-2 text-value">{{ obj.brittleap1 }}</div>
+        <div class="col-md-2 text-value">{{ obj.brittleap2 }}</div>
+        <div class="col-md-2 text-value">{{ obj.brittleap3 }}</div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 color-white">Piping Mechanical Fatigue Damage Factor:</div>
+        <div class="col-md-2 text-value">{{ obj.fatigueap1 }}</div>
+        <div class="col-md-2 text-value">{{ obj.fatigueap2 }}</div>
+        <div class="col-md-2 text-value">{{ obj.fatigueap3 }}</div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 color-white">Other Damage Factor:</div>
+        <div class="col-md-2 text-value">0.0</div>
+        <div class="col-md-2 text-value">0.0</div>
+        <div class="col-md-2 text-value">0.0</div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 color-white">Total Damage Factor with General Thinning:</div>
+        <div class="col-md-2 text-value">{{ obj.thinninggeneralap1 }}</div>
+        <div class="col-md-2 text-value">{{ obj.thinninggeneralap2 }}</div>
+        <div class="col-md-2 text-value">{{ obj.thinninggeneralap3 }}</div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 color-white">Total Damage Factor with Local Thinning:</div>
+        <div class="col-md-2 text-value">{{ obj.thinninglocalap1 }}</div>
+        <div class="col-md-2 text-value">{{ obj.thinninglocalap2 }}</div>
+        <div class="col-md-2 text-value">{{ obj.thinninglocalap3 }}</div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 color-white">Final Total Damage Factor:</div>
+        <div class="col-md-2 text-value">{{ obj.totaldfap1 }}</div>
+        <div class="col-md-2 text-value">{{ obj.totaldfap2 }}</div>
+        <div class="col-md-2 text-value">{{ obj.totaldfap3 }}</div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 color-white">Probability of Failure:</div>
+        <div class="col-md-2 text-value">{{ obj.pofap1 }}</div>
+        <div class="col-md-2 text-value">{{ obj.pofap2 }}</div>
+        <div class="col-md-2 text-value">{{ obj.pofap3 }}</div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 color-white">Probability of Failure Category:</div>
+        <div class="col-md-2 text-value"><b>{{ obj.pofap1category }}</b></div>
+        <div class="col-md-2 text-value"><b>{{ obj.pofap2category }}</b></div>
+        <div class="col-md-2 text-value"><b>{{ obj.pofap3category }}</b></div>
+    </div>
+</div>
+                
+            <!----------------END BLOCK ------------------------->
+        <br>
+       <div class="px-100">
+        <div class="row">
+          <div class="col-md-12" style="text-align: right"><button name="verification" type="submit" class="btn btn-primary btn-custom-by-thc" onclick="btnChangeClick()">Verification Requirements</button></div>
+{#            <div class="col-md-12" style="text-align: right"><button href="{% url %}" type="submit">Save</button></div>#}
+      </div>
+       </div>
+    </div>
+    <script>
+        function btnChangeClick() {
+            document.getElementById("fullDF").submit();
+            ShowLoading();
+            return false;
+        }
+        function ShowLoading() {
+            var div = document.createElement('div');
+            var img = document.createElement('img');
+            img.src = '{% static 'image/loading/Pacman-1s-100px.gif' %}';
+            div.style.cssText = "position: fixed;left: 50%; top: 30%; width: 300px; text-align: center; background: rgba(54, 25, 25, .00004); border: 0px solid #000;";
+            div.appendChild(img);
+            document.body.appendChild(div);
+            $("#changeThinning").attr('disabled',true);
+            return true;
+        }
+    </script>
+
+
+</form>
+{% endblock %}

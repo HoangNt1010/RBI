@@ -1,0 +1,61 @@
+{% extends 'BaseUI/BaseFacility/baseProposal.html' %}
+{% load staticfiles %}
+
+{% block library %}
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+<!----------BLOCK MENU----------->
+{% block listProposal %}{% url 'proposalDisplay' componentID %}{% endblock %}
+{% block newsensor %}{% url 'newsensor' componentID %}{% endblock %}
+{% block scada %}{% url 'scada' componentID %}{% endblock %}
+{% block setting %}{% url 'setting' componentID %}{% endblock %}
+{% block backComp %}{% url 'componentDisplay' equipmentID %}{% endblock %}
+<!----------END BLOCK----------->
+
+{% block data-content %}
+    <form method="post" id="listProposal">
+    {% csrf_token %}
+    <div class="title-verifitcation" >
+        <h1>Facility Information</h1>
+    </div>
+    <div class="input-data">
+        <div class="row">
+            <div class="col-md-4 color-white">Facility Name:</div>
+            <div class="col-md-8"><input type="text" name="facilityName" class="form-control" value="{{ faci.facilityname }}" placeholder="Input equipment name here!" readonly></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 color-white">Equipment Name:</div>
+            <div class="col-md-8"><input type="text" class="form-control" name="equipmentNumber" placeholder="Input equipment number here!" value="{{ equip.equipmentname }}" readonly></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 color-white">Component Name:</div>
+            <div class="col-md-8"><input type="text" name="componentName" class="form-control" value="{{ comp.componentname }}" placeholder="Input equipment name here!" readonly></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 color-white">Sensor Name:<span style="color: red">*</span></div>
+            <div class="col-md-8"><input type="text" name="sensorName" class="form-control" value="{{ comp.componentname }}" placeholder="Input equipment name here!" required></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 color-white">Access Token:<span style="color: red">*</span></div>
+            <div class="col-md-8"><input type="text" name="accessToken" class="form-control" value="{{ data.equipmentname }}" placeholder="Input equipment name here!" required></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 color-white">Description:</div>
+            <div class="col-md-8">
+                <textarea type="text"  class="form-control"  name="description" placeholder="Write equipment description here!"></textarea>
+            </div>
+        </div>
+
+        <div class="row"></div>
+        <div class="row">
+            <div class="col-md-12" style="text-align: right"><button type="submit" class="btn btn-primary">Submit</button></div>
+        </div>
+    </div>
+    </form>
+{% endblock %}

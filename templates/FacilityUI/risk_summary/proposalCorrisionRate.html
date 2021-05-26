@@ -1,0 +1,189 @@
+{% extends 'BaseUI/BaseFacility/baseRiskSummary.html' %}
+
+{% load staticfiles %}
+
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactor' proposalID %}{% endblock %}
+{% block fcof%}{% url 'fullyConsequence' proposalID %}{% endblock %}
+{% block acof%}{% url 'areaBasedCoF' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrix' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChart' proposalID %}{% endblock %}
+{% block chartv2 %}{% url 'riskChartv2' proposalID %}{% endblock %}
+{% block corrcontrol %}{% url 'corrosionCotrol' proposalID %}{% endblock %}
+{% block corri %}{% url 'corrision' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'proposalDisplay' componentID %}{% endblock %}
+<!---------------END BLOCK--------------->
+
+{% block data-content %}
+<style>
+#customers {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+
+#customers td, #customers th {
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #4CAF50;
+  color: white;
+}
+</style>
+
+<form id="tanktank" method="post" >
+    {% csrf_token %}
+    <div class="title-verifitcation">
+        <h1>Corrosion Rate</h1>
+    </div>
+    <table id="customers">
+
+        <tr>
+            <!--<th>Corrision Number</th>-->
+            <th>Soil Side Corrosion Rate</th>
+            <th>Product Side Corrosion Rate</th>
+            <th>Potential Corrosion</th>
+            <th>Tank Pad Material</th>
+            <th>Tank Drainage Type</th>
+            <th>Cathodic Protection Type</th>
+            <th>Tank Bottom Type</th>
+            <th>Soil Side Temperature</th>
+            <th>Product Condition</th>
+            <th>Product Side Temp</th>
+            <th>Steam Coil</th>
+            <th>Water Draw Off</th>
+            <th>Product Side Bottom</th>
+            <th>Modified SoilSide Corrosion Rate</th>
+            <th>Modified ProductSide Corrosion Rate</th>
+            <th>Final Estimated Corrosion Rate</th>
+        </tr>
+                {% for a in list %}
+                <tr >
+                    <td align="center">{{ a.soilsidecorrosionrate }}</td>
+                    <td align="center">{{ a.productsidecorrosionrate }}</td>
+                    <td align="center">{{ a.potentialcorrosion }}</td>
+                    <td align="center">{{ a.tankpadmaterial }}</td>
+                    <td align="center">{{ a.tankdrainagetype }}</td>
+                    <td align="center">{{ a.cathodicprotectiontype }}</td>
+                    <td align="center">{{ a.tankbottomtype }}</td>
+                    <td align="center">{{ a.soilsidetemperature }}</td>
+                    <td align="center">{{ a.productcondition }}</td>
+                    <td align="center">{{ a.productsidetemp }}</td>
+                    <td align="center">{{ a.steamcoil }}</td>
+                    <td align="center">{{ a.waterdrawoff }}</td>
+                    <td align="center">{{ a.productsidebottom }}</td>
+                    <td align="center">{{ a.modifiedsoilsidecorrosionrate }}</td>
+                    <td align="center">{{ a.modifiedproductsidecorrosionrate }}</td>
+                    <td align="center">{{ a.finalestimatedcorrosionrate }}</td>
+                </tr>
+                {% endfor %}
+            <td>
+                <input type="number" min="0.1" class="form-control" name="SoilSideCorrosionRate" placeholder="Input here!" required/>
+            </td>
+            <td >
+                <input type="number" min="0.1" class="form-control" name="ProductSideCorrosionRate" placeholder="Input here!" required/>
+            </td>
+            <td>
+                <select name="PotentialCorrosion" style="width: 50px">
+                    <option >Very Corrosive (<500 &Omega;-centimeter)</option>
+                    <option >Corrosive (500-1000 &Omega;-cm)</option>
+                    <option >Moderetly Corrosive (1000-2000 &Omega;-cm)</option>
+                    <option >Mildly Corrosive (2000-10000 &Omega;-cm)</option>
+                    <option >Progressively Less Corrosive (>10000 &Omega;-cm)</option>
+                </select>
+            </td>
+            <td>
+                <select name="TankPadMaterial" style="width: 50px">
+                    <option>Soil With High Salt</option>
+                    <option>Crushed Limestone</option>
+                    <option>Native Soil</option>
+                    <option>Contruction Grade Sand</option>
+                    <option>Continuous Asphat</option>
+                    <option>Continuous Concrete</option>
+                    <option>Oil Sand</option>
+                    <option>High Resistivity Low Chioride Sand</option>
+                </select>
+            </td>
+            <td>
+                <select name="TankDrainageType" style="width: 50px">
+                    <option>One Third Frequently UnderWater</option>
+                    <option>Stom Water Collects At AST Base</option>
+                    <option>Stom Water Does Not Collects At AST Base</option>
+                </select>
+            </td>
+            <td>
+                <select name="CathodicProtectionType" style="width: 50px">
+                    <option>None</option>
+                    <option>Yes Not  Per API 651</option>
+                    <option>Yes Per API 651</option>
+                </select>
+            </td>
+            <td>
+                <select name="TankBottomType" style="width: 50px">
+                    <option>RPB Not Per API 650</option>
+                    <option>RPB Per API 650</option>
+                    <option>Single Bottom</option>
+                </select>
+            </td>
+            <td>
+                <select name="SoilSideTemperature" style="width: 50px">
+                    <option>Temp &le; 24</option>
+                    <option>24 < Temp &le; 66</option>
+                    <option>66 < Temp &le; 93</option>
+                    <option>92 < Temp &le; 121</option>
+                    <option> > 121 </option>
+                </select>
+            </td>
+            <td>
+                <select name="ProductCondition" style="width: 50px">
+                    <option>Wet</option>
+                    <option>Dry</option>
+                </select>
+            </td>
+            <td>
+                <select name="ProductSideTemp" style="width: 50px">
+                    <option>Temp &le; 24</option>
+                    <option>24 < Temp &le; 66</option>
+                    <option>66 < Temp &le; 93</option>
+                    <option>92 < Temp &le; 121</option>
+                    <option> > 121 </option>
+                </select>
+            </td>
+            <td>
+                <select name="SteamCoil" style="width: 50px">
+                    <option>Yes</option>
+                    <option>No</option>
+                </select>
+            </td>
+            <td>
+                <select name="WaterDrawOff" style="width: 50px">
+                    <option>Yes</option>
+                    <option>No</option>
+                </select>
+            </td>
+            <td>
+                <select name="ProductSideBottom" style="width: 50px">
+                    <option>Localised</option>
+                    <option>Widespread</option>
+                </select>
+            </td>
+            <td name="ModifiedSoilSideCorrosionRate"></td>
+            <td name="ModifiedProductSideCorrosionRate"></td>
+            <td name="FinalEstimatedCorrosionRate"></td>
+        </tr>
+    </table>
+    <div style="margin-top: 5px; text-align: right;">
+        <button  class="btn btn-primary" type="submit" value="Submit"><i class="fa fa-pencil">Calculate</i></button>
+    </div>
+</form>
+{% endblock %}

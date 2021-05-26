@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #000000;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #ffffff;
+}
+td,th {
+    text-align:left;
+    vertical-align:middle;
+}
+table {
+    border-collapse: collapse;
+    border: 1px solid;
+}
+caption, th, td {
+    padding: .2em .8em;
+    border: 1px solid #000000;
+}
+caption {
+    background: #D3D3D3;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+th {
+    font-weight: bold;
+    background: #000000;
+    color: white;
+}
+td {
+    background: #FFFFFF;
+}
+</style>
+</head>
+<body>
+
+<h2 style="text-align: center; font-size: 50px">Bảng Tracking yêu cầu hạng mục RBI</h2>
+
+<table>
+  <tr>
+    <th>STT</th>
+    <th>Tên sản phẩm</th>
+    <th>Yêu cầu khoa học cần đạt</th>
+    <th>Trạng thái</th>
+    <th>Ghi chú</th>
+  </tr>
+  <tr>
+    <td rowspan="17">1</td>
+    <td rowspan="17">Hệ thống dịch vụ trực tuyển hỗ trợ giám sát, phân tích, <br>đánh giá, kiểm định, xử lý và quản lý rủi ro dựa trên phương pháp RBI </td>
+    <td>Cơ sở dữ liệu các thông số kỹ thuật của các thiết bị phổ biến trong công nghiệp lọc hóa dầu </td>
+    <td>Hoàn thành 100% </td>
+    <td>- Theo chuẩn API 581</a> <br>
+
+        - Cơ sở dữ liệu tại: <a href="#" data-toggle="modal" data-target="#assessment" ><u>[rbi].[dbo].[RW_ASSESSMENT]</u></a>  ,<a href="#" data-toggle="modal" data-target="#equipment" ><u>[rbi].[dbo].[RW_EQUIPMENT]</u></a> ,<a href="#" data-toggle="modal" data-target="#coating" ><u>[rbi].[dbo].[RW_COATING]</u></a> <br>
+
+        - Giao diện người dùng tại tabpage: Equipment Properties, Component Properties, Stream, Material, Coating.<br>
+
+        - Báo cáo khoa học <a href="https://www.dropbox.com/s/x4jcxi8z01posqw/N%E1%BB%99i%20dung%204.2.pdf?dl=0" target="_blank"><u>4.2</u></a>
+    </td>
+
+  </tr>
+  <tr>
+    <td>
+        Cơ sở dữ liệu các điều kiện vận hành của máy móc, thiết bị
+    </td>
+    <td>Hoàn thành 100% </td>
+    <td>- Giao diện người dùng: operating Condition.<br>
+    - Cơ sở dữ liệu tại <a href="#" data-toggle="modal" data-target="#extortemperature" ><u>[rbi].[dbo].[RW_EXTCOR_TEMPERATURE]</u></a> </td>
+  </tr>
+  <tr>
+    <td>Cơ sở dữ liệu tốc độ ăn mòn cho phép của thiết bị theo thiết kế </td>
+    <td>Hoàn thành (100%) </td>
+    <td>- Giao diện người dùng Corrosion Rate <br>
+
+        - Cơ sở dữ liệu tại <a href="#" data-toggle="modal" data-target="#corrosionratetank" ><u> [rbi].[dbo].[RW_CORROSION_RATE_TANK]</u></a> <br>
+
+        - Báo cáo khoa học số
+        <a href="https://www.dropbox.com/s/mnqa9zl90e19duk/N%E1%BB%99i%20dung%204.3.1.3.pdf?dl=0" target="_blank"><u>4.3.1.1,</u></a>
+        <a href="https://www.dropbox.com/s/ihvhgev5wpl7z81/N%E1%BB%99i%20dung%204.3.1.2%20.pdf?dl=0" target="_blank"><u>4.3.1.2,</u></a>
+        <a href="https://www.dropbox.com/s/mnqa9zl90e19duk/N%E1%BB%99i%20dung%204.3.1.3.pdf?dl=0" target="_blank"><u>4.3.1.3,</u></a>
+        <a href="https://www.dropbox.com/s/e9fxm3bf3cevxvr/N%E1%BB%99i%20dung%204.3.1.4.pdf?dl=0" target="_blank"><u> 4.3.1.4,</u></a>
+        <a href="https://www.dropbox.com/s/sk1usedfrfsp55e/N%E1%BB%99i%20dung%204.3.1.5.pdf?dl=0" target="_blank"><u> 4.3.1.5,</u></a> </td>
+  </tr>
+  <tr>
+    <td>Cơ sở dữ liệu các thông số khác như: độ tin cậy (RCM), tốc độ, tần suất hư hỏng (GFF), <br>
+        xác suất hư hỏng (POF), hậu quả hư hỏng (COF), tần suất rò rỉ, tốc độ ăn mòn thiết bị, các hệ số quản lý rủi ro chung cho các thiết bị công nghiệp </td>
+    <td>Hoàn thành (100%) <br>
+
+        - GFF(100%) <br>
+
+        - POF(100%) <br>
+
+        - COF(100%) <br>
+
+        - tốc độ ăn mòn thiết bị, các hệ số quản lý rủi ro chung cho các thiết bị công nghiệp (100%) </td>
+    <td>Cơ sở dữ liệu GFF: <a href="#" data-toggle="modal" data-target="#apicomponenttype" ><u> [rbi].[dbo].[API_COMPONENT_TYPE]</u></a> <br>
+
+        Cơ sở dữ liệu POF: <a href="#" data-toggle="modal" data-target="#fullpof" ><u> [rbi].[dbo].[RW_FULL_POF]</u></a>  <br>
+
+        Cơ sở dữ liệu COF: <a href="#" data-toggle="modal" data-target="#fullfcof" ><u> [rbi].[dbo].[RW_FULL_FCOF]</u></a> <br>
+        Thông số độ tin cậy (RCM) được tích hợp trong module inspection plan.
+
+        7 bước của quy trình RCM như sau: <br>
+
+        1. Xác định các thiết bị / thành được phân tích; <br>
+        2. Xác định chức năng của nó trong hệ thống (cái chỉ dừng lại ở việc phân loại thiết bị) ; <br>
+        3. Xác định nguyên nhân tạo nên xác suất thất bại thành phần thiết bị (tính toán PoF) <br>
+        4. Xác định các chế độ hư hỏng gây ra các thất bại của thành phần thiết bị đó (là đại lượng tính toán damage factor); <br>
+        5. Xác định tác động hoặc ảnh hưởng của sự xuất hiện của những hư hỏng đó (xác định thiệt hại về tài chính và diện tích khu vực , (đại lượng CoF)) <br>
+        6. Sử dụng logic RCM để lựa chọn các chiến thuật bảo trì thích hợp (tích hợp trong module inspection plan) <br>
+        7. Ghi lại chương trình bảo trì cuối cùng và tinh chỉnh nó khi có thêm dữ liệu từ kinh nghiệm vận hành
+    </td>
+  </tr>
+  <tr>
+    <td>Cơ sở dữ liệu các phương pháp kiểm soát ăn mòn, kiểm soát rủi ro cho thiết bị. </td>
+    <td>Hoàn thành 100% </td>
+    <td> - Báo cáo khoa học 4.3.1.1, 4.3.1.2, 4.3.1.3, 4.3.1.4, 4.3.1.5  </td>
+  </tr>
+  <tr>
+    <td>Dịch vụ trực tuyến tuân thủ định chuẩn phân tích API 580, 581 trong ngành dầu khí. <br>Ngoài ra cũng tuân thủ các định chuẩn công nghiệp phổ biến khác như EEMUA 159, ASME PCC-3. </td>
+    <td>Phần mềm đã được xây dựng theo các chuẩn ở trên  </td>
+    <td>- API 581 (2016) là phiên bản mở rộng, cập nhật của API 580 (2008) <br>
+
+        - Công thức tính toán cho thiết bị tank roof (Fixed roof và Floating roof) được xây dựng dựa trên chuẩn EEMUA 159 <br>
+
+        - ASME PCC-3 (2007) là tài liệu tổng quan về phương pháp RBI. Không đề cập về mặt thuật toán. Phần nội dung của tài liệu này đã được tài liệu API 580 và API 581 đề cập lại.  <br>
+    </td>
+  </tr>
+  <tr>
+    <td>Dịch vụ trực tuyến phân tích dữ liệu tự động ở Level 1.  </td>
+    <td>Đã xong 100%   </td>
+    <td>- Tính toán thiệt hại về mặt diện tích và thiệt hại về mặt tài chính nếu thiết bị xảy ra rủi ro.  <br>
+
+    -Cơ sở dữ liệu tại <a href="#" data-toggle="modal" data-target="#calevel1" ><u> [rbi].[dbo].[RW_CA_LEVEL1]</u></a>   <br>
+    </td>
+  </tr>
+  <tr>
+    <td>Dịch vụ trực tuyến tự động lập lịch tái kiểm định  </td>
+    <td>Hoàn thành 100% </td>
+    <td>-Thuật toán và kết quả liên quan thể hiện tại báo cáo khoa học <a href="https://www.dropbox.com/s/ugp1gvet1rq8yhg/N%E1%BB%99i%20dung%205.2.1%20.pdf?dl=0" target="_blank"><u>5.2.1</u></a>  <br>
+        -Đã demo kịch bản như sau: Sau một khoảng thời gian t cho trước, các sensor sẽ tự động gửi dữ liệu gửi lên gateway. <br>Sau đó dữ liệu dc đẩy lên thingsboad. Dữ liệu đó sẽ là đầu vào của phần mềm web.  </td>
+  </tr>
+    <tr>
+    <td>Dịch vụ trực tuyến cung cấp công cụ cho chuyên gia ở Level 2.  </td>
+    <td>100%  </td>
+    <td> Level 2 chỉ viết cho thiết bị thường, ko có ở thiết bị tank </td>
+  </tr>
+    <tr>
+    <td>Cơ sở dữ liệu các phương pháp kiểm soát ăn mòn, kiểm soát rủi ro cho thiết bị. </td>
+    <td>Hoàn thành 100% </td>
+    <td>Tạo tiện ích cho chuyên gia, chứ không phải phần mềm tự tính ra các tham số ở level 2. Ví dụ, hint, bảng  tra cứu...  </td>
+  </tr>
+    <tr>
+    <td>Dịch vụ trực tuyến định lượng tính toán được trên 1000 thông số.  </td>
+    <td>Đã có (100%)  </td>
+    <td>Số tham số đầu vào và các tham số tính toán trung gian >1000 (cụ thể đếm dc 1076 đại lượng)) <a href="https://husteduvn-my.sharepoint.com/:x:/g/personal/dung_ttt140704_sis_hust_edu_vn/EVP8Wka2-3xCqDhy7A18q7cBxiYDAYzs4N1RG86CFy-vkg?e=vTyZtj">Link</a></td>
+  </tr>
+  <tr>
+    <td>Dịch vụ trực tuyến hoạt động với ngành công nghiệp điển hình là dầu khí.  </td>
+    <td>Đã xây dựng (100%)  </td>
+    <td>- Đã xây dựng tên miền đã người dùng có thể truy cập.<br>
+        - Phân loại người dùng: người dân có khả năng vào xem, quản lý cấp cao có khả năng chỉnh sửa, chính phủ có yếu cầu phải kiểm định  </td>
+  </tr>
+  <tr>
+    <td>Dịch vụ trực tuyến trình bày kết quả kiểm định một cách trực quan. </td>
+    <td>Đã xây dựng (100%)  </td>
+    <td>Thể hiện ma trận rủi ro (Risk Matrix)  </td>
+  </tr>
+    <tr>
+    <td>Dịch vụ trực tuyến thu thập, quản lý dữ liệu phục vụ kiểm định thiết bị công nghiệp thông qua tích hợp và liên thông với các hệ thống thông tin quản lý nhà máy công nghiệp <br>
+        --> kết nối SCADA/DCS  </td>
+    <td>100%  </td>
+    <td>- Hướng nghiên cứu: Xây dựng phương án và công cụ thu thập dữ liệu từ các nguồn tại cơ sở nhà máy DCS, SCADA, ERP.<br> TÌm hiểu mô hình hệ thống SCADA, DCS và ERP; tìm hiểu format dữ liệu để xây dựng kênh nhập dữ liệu tương ứng.
+        - Báo cáo khoa học <a href="https://www.dropbox.com/s/w5nfssyh1gclmr7/N%E1%BB%99i%20dung%205.2.4%20.pdf?dl=0" target="_blank"><u>5.2.4.</u></a>    </td>
+  </tr>
+    <tr>
+    <td>Dịch vụ trực tuyến xử lý và quản lý rủi ro dựa trên phương pháp RBI theo tiêu chuẩn API 580 và 581 phù hợp với điều kiện khai thác và vận hành ở Việt Nam với các chức năng chính sau:  <br>
+
+        + Đánh giá được các tham số POF và COF của thiết bị  <br>
+
+        + Xác định được các cơ chế phá hủy <br>
+
+        + Đánh giá, quản lý toàn bộ rủi ro cho các thiết bị công nghiệp <br>
+
+        + Có xem xét ảnh hưởng của nhân tố con người: trình độ và kỹ năng vận hành của kỹ thuật viên.
+
+    </td>
+    <td>Hoàn thành 100%   </td>
+    <td>- Đã đánh giá được tham số POF cho mọi loại thiết bị <br>
+
+        - Đã đánh giá được COF cho thiết bị Tank Botom (còn thiếu thiết bị nomal, TankShell) (thuật toán thể hiện ở báo cáo <a href="https://www.dropbox.com/s/rf0fifgo7uphti9/N%E1%BB%99i%20dung%204.3.2.3.pdf?dl=0" target="_blank"><u>4.3.2.3</u></a> ) <br>
+
+        - Đã xem xét ảnh hưởng của nhân tố con người: trình độ và kỹ năng vận hành của kỹ thuật viên. (thể thiên chi tiết ở báo cáo khoa học 4.3.4). <br>
+        - Đã đánh giá, quản lý toàn bộ rủi ro cho các thiết bị công nghiệp (tham số Risk)<br>
+
+        - Xác định được các cơ chế phá hủy (21 cơ chế) (thể hiện Module phần mềm phân tích và tính toán các yếu tố phá hủy căn cứ vào thuộc tính kỹ thuật của máy móc thiết bị) (thuật toán thể hiên ở báo cáo <a href="https://www.dropbox.com/s/x4jcxi8z01posqw/N%E1%BB%99i%20dung%204.2.pdf?dl=0" target="_blank"><u>4.2</u></a> )   </td>
+  </tr>
+    <tr>
+    <td>Dịch vụ trực tuyến hỗ trợ xây dựng kế hoạch kiểm định thiết bị dựa trên phương pháp RBI nhằm đảm bảo tối ưu quy trình bảo dưỡng thiết bị và nâng cao hiệu quả sản xuất.  </td>
+    <td>Đã xây dựng (100%)  </td>
+    <td>- Lập kế hoạch kiểm định (module inspection plan)   </td>
+  </tr>
+    <tr>
+    <td>Dịch vụ hỗ trợ xây dựng phương án xử lý để giảm thiểu rủi ro.  </td>
+    <td>Đã xây dựng (100%)  </td>
+    <td>Phương pháp kiểm soát:
+
+        -  Tính toán  dự  báo tốc độ  ăn mòn; <br>
+
+        -  Cảnh báo  khi ăn  mòn vượt  ngưỡng; <br>
+
+        -  Phương  pháp chống ăn mòn được  áp dụng ảnh hưởng đến  tốc  độ ăn mòn.  <br>
+
+        - Thể hiện chi tiết ở báo cáo khoa học <a href="https://www.dropbox.com/s/8akmwswvtkh3vsy/N%E1%BB%99i%20dung%204.4.pdf?dl=0" target="_blank"><u>4.4</u></a>    </td>
+  </tr>
+    <tr>
+    <td >2</td>
+    <td >Dự thảo quy trình kiểm định thiết bị công nghiệp dựa trên phương pháp RBI  </td>
+    <td>Bộ quy trình gồm tiêu chuẩn kỹ thuật, các phương pháp đánh giá trong công tác kiểm định thiết bị công nghiệp dựa trên 2 tiêu chuẩn API 580 và 581, trình Bộ công thương xem xét áp dụng  </td>
+    <td></td>
+    <td></td>
+    </tr>
+    <tr>
+    <td rowspan="2">3</td>
+    <td rowspan="2">Bộ tài liệu hướng dẫn quản lý, vận hành, khai thác và sử dụng hệ thống dịch vụ trực tuyến trợ giúp công tác kiểm định theo phương pháp RBI </td>
+    <td>Tài liệu hướng dẫn sử dụng dễ hiểu, dễ áp dụng  </td>
+    <td>BK làm </td>
+    <td>Yêu cầu: phải hoàn thiện 100% phần mềm</td>
+    </tr>
+    <tr>
+    <td>
+        Được lưu trữ trực tuyến, đi kèm công cụ tìm kiếm.
+    </td>
+    <td></td>
+    <td><a href="https://husteduvn-my.sharepoint.com/:w:/g/personal/dung_ttt140704_sis_hust_edu_vn/Eb54Ir5PyABFqqvJoJa4kfIB0ZIDI5NBZbXO-KdccTFCnQ?e=hE56lv" target="_blank"><u>Link báo cáo</u></a> </td>
+    </tr>
+    <tr>
+    <td rowspan="2">4</td>
+    <td rowspan="2">Bộ tài liệu hướng dẫn đảm bảo an toàn lao động, vận hành tin cậy các thiết bị công nghiệp; tối ưu quy trình bảo dưỡng, tiết kiệm chi phí và nâng cao hiệu quả sản xuất  </td>
+    <td>Tài liệu hướng dẫn sử dụng dễ hiểu, dễ áp dụng  </td>
+    <td> </td>
+    <td></td>
+    </tr>
+    <tr>
+    <td>Được lưu trữ trực tuyến, đi kèm công cụ tìm kiếm.
+    </td>
+    <td></td>
+    <td></td>
+    </tr>
+    <tr>
+    <td rowspan="2">5 BK làm</td>
+    <td rowspan="2">Bộ tài liệu phân tích, thiết kế tổng thể dịch vụ trực tuyến phục vụ công tác kiểm định thiết bị dựa trên phân tích, đánh giá rủi ro RBI   </td>
+    <td>Phân tích yêu cầu và thiết kế tổng thể của hệ thống sản phẩm phần mềm.   </td>
+    <td> </td>
+    <td> <a href="https://husteduvn-my.sharepoint.com/:w:/g/personal/dung_ttt140704_sis_hust_edu_vn/EQlyet8TUxJFsiX39FsYhNgBBTHPuPjdwJhVfE4Cwf3qzw?e=a7kEBa" target="_blank"><u>Link báo cáo</u></a> </td>
+    </tr>
+    <tr>
+    <td>Tài liệu thiết kế chi tiết các gói phần mềm.
+    </td>
+    <td></td>
+    <td></td>
+    </tr>
+    <tr>
+        <td>6</td>
+        <td>Bộ tài liệu kết quả thử nghiệm, đánh giá toàn bộ hệ thống dịch vụ trực tuyến tại cơ quan quản lý nhà nước chuyên ngành và áp dụng với 01 nhà máy quy mô nhỏ </td>
+        <td>Tài liệu báo cáo kết quả thử nghiệm tại Cục kỹ thuật an toàn và môi trường công nghiệp thuộc Bộ Công thương và tại một trong các nhà máy: tổ hợp lọc hóa dầu Nghi Sơn/ nhà máy lọc dầu Dung Quất. </td>
+        <td></td>
+        <td><a href="https://husteduvn-my.sharepoint.com/:w:/g/personal/dung_ttt140704_sis_hust_edu_vn/EWzXcd01holNiqAqxwibjjsBVuHPQlmz_aqJeTujdg0rTA?e=ciMFAY" target="_blank"><u>Link báo cáo</u></a> </td>
+    </tr>
+</table>
+    <div class="modal fade" id="assessment" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">[rbi].[dbo].[RW_ASSESSMENT]</h4>
+            </div>
+            <div class="modal-body" >
+                <table style="width:100%"><caption>Table: rw_component </caption>
+<tr><td>Table Comments</td><td colspan="6"></td></tr>
+<tr><td colspan="7">Columns</td></tr>
+        <tr>
+        <th>Name</th>
+        <th>Data Type</th>
+        <th>Nullable</th>
+        <th>PK</th>
+        <th>FK</th>
+        <th>Default</th>
+        <th>Comment</th>
+        </tr>
+<tr><td>ID</td><td>INT(11)</td><td>Yes</td><td>Yes</td><td>No</td><td></td><td></td></tr>
+<tr><td>NominalDiameter</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>NominalThickness</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>CurrentThickness</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>MinReqThickness</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>CurrentCorrosionRate</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>BranchDiameter</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>BranchJointType</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>BrinnelHardness</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ChemicalInjection</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>HighlyInjectionInsp</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ComplexityProtrusion</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>CorrectiveAction</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>CracksPresent</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>CyclicLoadingWitin15_25m</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>DamageFoundInspection</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>DeltaFATT</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>NumberPipeFittings</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>PipeCondition</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>PreviousFailures</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ShakingAmount</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ShakingDetected</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ShakingTime</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>SeverityOfVibration</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ReleasePreventionBarrier</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ConcreteFoundation</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ShellHeight</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>AllowableStress</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>WeldJointEfficiency</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ComponentVolume</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ConfidenceCorrosionRate</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>MinimumStructuralThicknessGoverns</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>StructuralThickness</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>CracksCurrentCondition</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>FabricatedSteel</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>EquipmentSatisfied</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>NominalOperatingConditions</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>CETGreaterOrEqual</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>CyclicServiceFatigueVibration</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>EquipmentCircuitShock</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>HTHADamageObserved</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>BrittleFractureThickness</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+</table>
+            </div>
+            <div class="modal-footer">
+              <button onclick="window.location.href={% url 'databasereport' %};">View all</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+<div class="modal fade" id="equipment" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">[rbi].[dbo].[RW_EQUIPMENT]</h4>
+            </div>
+            <div class="modal-body" >
+                <table style="width:100%"><caption>Table: rw_equipment </caption>
+<tr><td>Table Comments</td><td colspan="6"></td></tr>
+<tr><td colspan="7">Columns</td></tr>
+        <tr>
+        <th>Name</th>
+        <th>Data Type</th>
+        <th>Nullable</th>
+        <th>PK</th>
+        <th>FK</th>
+        <th>Default</th>
+        <th>Comment</th>
+        </tr>
+<tr><td>ID</td><td>INT(11)</td><td>Yes</td><td>Yes</td><td>Yes</td><td></td><td></td></tr>
+<tr><td>CommissionDate</td><td>DATETIME(6)</td><td>Yes</td><td>No</td><td>No</td><td></td><td></td></tr>
+<tr><td>AdminUpsetManagement</td><td>SMALLINT(6)</td><td>Yes</td><td>No</td><td>No</td><td></td><td></td></tr>
+<tr><td>ContainsDeadlegs</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>CyclicOperation</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>HighlyDeadlegInsp</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>DowntimeProtectionUsed</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ExternalEnvironment</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>HeatTraced</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>InterfaceSoilWater</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>LinerOnlineMonitoring</td><td>SMALLINT(6)</td><td>Yes</td><td>No</td><td>No</td><td></td><td></td></tr>
+<tr><td>MaterialExposedToClExt</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>MinReqTemperaturePressurisation</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>OnlineMonitoring</td><td>VARCHAR(100)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>PresenceSulphidesO2</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>PresenceSulphidesO2Shutdown</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>PressurisationControlled</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>PWHT</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>SteamOutWaterFlush</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ManagementFactor</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ThermalHistory</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>YearLowestExpTemp</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Volume</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>TypeOfSoil</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>EnvironmentSensitivity</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>DistanceToGroundWater</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>AdjustmentSettle</td><td>VARCHAR(100)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ComponentIsWelded</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>TankIsMaintained</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+</table>
+            </div>
+            <div class="modal-footer">
+              <button onclick="window.location.href={% url 'databasereport' %};">View all</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+<div class="modal fade" id="coating" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">[rbi].[dbo].[RW_COATING]</h4>
+            </div>
+            <div class="modal-body" >
+                <table style="width:100%"><caption>Table: rw_coating </caption>
+<tr><td>Table Comments</td><td colspan="6"></td></tr>
+<tr><td colspan="7">Columns</td></tr>
+        <tr>
+        <th>Name</th>
+        <th>Data Type</th>
+        <th>Nullable</th>
+        <th>PK</th>
+        <th>FK</th>
+        <th>Default</th>
+        <th>Comment</th>
+        </tr>
+<tr><td>ID</td><td>INT(11)</td><td>Yes</td><td>Yes</td><td>No</td><td></td><td></td></tr>
+<tr><td>ExternalCoating</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ExternalInsulation</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>InternalCladding</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>InternalCoating</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>InternalLining</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ExternalCoatingDate</td><td>DATETIME(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ExternalCoatingQuality</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ExternalInsulationType</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>InsulationCondition</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>InsulationContainsChloride</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>InternalLinerCondition</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>InternalLinerType</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>CladdingThickness</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>CladdingCorrosionRate</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>SupportConfigNotAllowCoatingMaint</td><td>SMALLINT(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>CreatedBy</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Modified</td><td>DATETIME(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ModifiedBy</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>AuditingID</td><td>VARCHAR(64)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+</table>
+            </div>
+            <div class="modal-footer">
+              <button onclick="window.location.href={% url 'databasereport' %};">View all</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+<div class="modal fade" id="extortemperature" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">[rbi].[dbo].[RW_EXTCOR_TEMPERATURE]</h4>
+            </div>
+            <div class="modal-body" >
+                <table style="width:100%"><caption>Table: rw_extcor_temperature </caption>
+<tr><td>Table Comments</td><td colspan="6"></td></tr>
+<tr><td colspan="7">Columns</td></tr>
+        <tr>
+        <th>Name</th>
+        <th>Data Type</th>
+        <th>Nullable</th>
+        <th>PK</th>
+        <th>FK</th>
+        <th>Default</th>
+        <th>Comment</th>
+        </tr>
+<tr><td>ID</td><td>INT(11)</td><td>Yes</td><td>Yes</td><td>No</td><td></td><td></td></tr>
+<tr><td>Minus12ToMinus8</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Minus8ToPlus6</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Plus6ToPlus32</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Plus32ToPlus71</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Plus71ToPlus107</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Plus107ToPlus121</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Plus121ToPlus135</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Plus135ToPlus162</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Plus162ToPlus176</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>MoreThanPlus176</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>rw_extcor_temperaturecol</td><td>VARCHAR(45)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+</table>
+            </div>
+            <div class="modal-footer">
+              <button onclick="window.location.href={% url 'databasereport' %};">View all</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+<div class="modal fade" id="corrosionratetank" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">[rbi].[dbo].[RW_CORROSION_RATE_TANK]</h4>
+            </div>
+            <div class="modal-body" >
+                <table style="width:100%"><caption>Table: rw_corrosion_rate_tank </caption>
+<tr><td>Table Comments</td><td colspan="6"></td></tr>
+<tr><td colspan="7">Columns</td></tr>
+        <tr>
+        <th>Name</th>
+        <th>Data Type</th>
+        <th>Nullable</th>
+        <th>PK</th>
+        <th>FK</th>
+        <th>Default</th>
+        <th>Comment</th>
+        </tr>
+<tr><td>ID</td><td>INT(11)</td><td>Yes</td><td>No</td><td>No</td><td></td><td></td></tr>
+<tr><td>CorrosionID</td><td>INT(11)</td><td>Yes</td><td>Yes</td><td>No</td><td></td><td></td></tr>
+<tr><td>SoilSideCorrosionRate</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ProductSideCorrosionRate</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>PotentialCorrosion</td><td>VARCHAR(100)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>TankPadMaterial</td><td>VARCHAR(100)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>TankDrainageType</td><td>VARCHAR(100)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>CathodicProtectionType</td><td>VARCHAR(100)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>TankBottomType</td><td>VARCHAR(100)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>SoilSideTemperature</td><td>VARCHAR(100)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ProductCondition</td><td>VARCHAR(100)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ProductSideTemp</td><td>VARCHAR(100)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>SteamCoil</td><td>VARCHAR(100)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>WaterDrawOff</td><td>VARCHAR(100)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ProductSideBottom</td><td>VARCHAR(100)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ModifiedSoilSideCorrosionRate</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ModifiedProductSideCorrosionRate</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>FinalEstimatedCorrosionRate</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Created</td><td>TIMESTAMP</td><td>No</td><td>No</td><td>No</td><td>CURRENT_TIMESTAMP</td><td></td></tr>
+<tr><td>CreatedBy</td><td>VARCHAR(100)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Modified</td><td>DATETIME</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ModifiedBy</td><td>VARCHAR(100)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>AuditingID</td><td>VARCHAR(100)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+</table>
+            </div>
+            <div class="modal-footer">
+              <button onclick="window.location.href={% url 'databasereport' %};">View all</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+<div class="modal fade" id="apicomponenttype" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">[rbi].[dbo].[API_COMPONENT_TYPE]</h4>
+            </div>
+            <div class="modal-body" >
+                <table style="width:100%"><caption>Table: api_component_type </caption>
+<tr><td>Table Comments</td><td colspan="6"></td></tr>
+<tr><td colspan="7">Columns</td></tr>
+        <tr>
+        <th>Name</th>
+        <th>Data Type</th>
+        <th>Nullable</th>
+        <th>PK</th>
+        <th>FK</th>
+        <th>Default</th>
+        <th>Comment</th>
+        </tr>
+<tr><td>APIComponentTypeID</td><td>INT(11)</td><td>Yes</td><td>Yes</td><td>No</td><td></td><td></td></tr>
+<tr><td>APIComponentTypeName</td><td>VARCHAR(50)</td><td>Yes</td><td>No</td><td>No</td><td></td><td></td></tr>
+<tr><td>AliasAPIComponentType</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>GFFSmall</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>GFFMedium</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>GFFLarge</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>GFFRupture</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>GFFTotal</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>HoleCostSmall</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>HoleCostMedium</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>HoleCostLarge</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>HoleCostRupture</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>OutageSmall</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>OutageMedium</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>OutageLarge</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>OutageRupture</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Created</td><td>TIMESTAMP</td><td>No</td><td>No</td><td>No</td><td>CURRENT_TIMESTAMP</td><td></td></tr>
+</table>
+            </div>
+            <div class="modal-footer">
+              <button onclick="window.location.href={% url 'databasereport' %};">View all</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+<div class="modal fade" id="fullpof" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">[rbi].[dbo].[RW_FULL_POF]</h4>
+            </div>
+            <div class="modal-body" >
+                <table style="width:100%"><caption>Table: rw_full_pof </caption>
+<tr><td>Table Comments</td><td colspan="6"></td></tr>
+<tr><td colspan="7">Columns</td></tr>
+        <tr>
+        <th>Name</th>
+        <th>Data Type</th>
+        <th>Nullable</th>
+        <th>PK</th>
+        <th>FK</th>
+        <th>Default</th>
+        <th>Comment</th>
+        </tr>
+<tr><td>ID</td><td>INT(11)</td><td>Yes</td><td>Yes</td><td>Yes</td><td></td><td></td></tr>
+<tr><td>ThinningAP1</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ThinningAP2</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ThinningAP3</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>SCCAP1</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>SCCAP2</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>SCCAP3</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ExternalAP1</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ExternalAP2</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ExternalAP3</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>BrittleAP1</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>BrittleAP2</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>BrittleAP3</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>HTHA_AP1</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>HTHA_AP2</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>HTHA_AP3</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>FatigueAP1</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>FatigueAP2</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>FatigueAP3</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>FMS</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ThinningType</td><td>VARCHAR(7)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>GFFTotal</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ThinningLocalAP1</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ThinningLocalAP2</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ThinningLocalAP3</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ThinningGeneralAP1</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ThinningGeneralAP2</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ThinningGeneralAP3</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>TotalDFAP1</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>TotalDFAP2</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>TotalDFAP3</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>PoFAP1</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>PoFAP2</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>PoFAP3</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>MatrixPoFAP1</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>MatrixPoFAP2</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>MatrixPoFAP3</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>RLI</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>SemiAP1</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>SemiAP2</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>SemiAP3</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>PoFAP1Category</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>PoFAP2Category</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>PoFAP3Category</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>CoFValue</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>CoFCategory</td><td>VARCHAR(2)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>CoFMatrixValue</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+</table>
+            </div>
+            <div class="modal-footer">
+              <button onclick="window.location.href={% url 'databasereport' %};">View all</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+<div class="modal fade" id="fullfcof" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">[rbi].[dbo].[RW_FULL_FCOF]</h4>
+            </div>
+            <div class="modal-body" >
+                <table style="width:100%"><caption>Table: rw_full_fcof </caption>
+<tr><td>Table Comments</td><td colspan="6"></td></tr>
+<tr><td colspan="7">Columns</td></tr>
+        <tr>
+        <th>Name</th>
+        <th>Data Type</th>
+        <th>Nullable</th>
+        <th>PK</th>
+        <th>FK</th>
+        <th>Default</th>
+        <th>Comment</th>
+        </tr>
+<tr><td>ID</td><td>INT(11)</td><td>Yes</td><td>Yes</td><td>Yes</td><td></td><td></td></tr>
+<tr><td>FCoFValue</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>FCoFCategory</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>AIL</td><td>TINYINT(1)</td><td>No</td><td>No</td><td>No</td><td>'0'</td><td></td></tr>
+<tr><td>EquipOutageMultiplier</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>envcost</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>equipcost</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>prodcost</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>popdens</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>injcost</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>FCoFMatrixValue</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Created</td><td>TIMESTAMP</td><td>No</td><td>No</td><td>No</td><td>CURRENT_TIMESTAMP</td><td></td></tr>
+<tr><td>CreatedBy</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Modified</td><td>DATETIME(6)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>ModifiedBy</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>AuditingID</td><td>VARCHAR(64)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+</table>
+            </div>
+            <div class="modal-footer">
+              <button onclick="window.location.href={% url 'databasereport' %};">View all</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+<div class="modal fade" id="calevel1" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">[rbi].[dbo].[RW_CA_LEVEL1]</h4>
+            </div>
+            <div class="modal-body" >
+                <table style="width:100%"><caption>Table: rw_input_ca_level1 </caption>
+<tr><td>Table Comments</td><td colspan="6"></td></tr>
+<tr><td colspan="7">Columns</td></tr>
+        <tr>
+        <th>Name</th>
+        <th>Data Type</th>
+        <th>Nullable</th>
+        <th>PK</th>
+        <th>FK</th>
+        <th>Default</th>
+        <th>Comment</th>
+        </tr>
+<tr><td>ID</td><td>INT(11)</td><td>Yes</td><td>Yes</td><td>No</td><td></td><td></td></tr>
+<tr><td>API_FLUID</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Release_Duration</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Detection_Type</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Equipment_Cost</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Injure_Cost</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Evironment_Cost</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Toxic_Percent</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Personal_Density</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Material_Cost</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Production_Cost</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Mass_Inventory</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Mass_Component</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Stored_Pressure</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Stored_Temp</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>created</td><td>DATETIME</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Model_Fluid</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Toxic_Fluid</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Primary_Fluid</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Volatile_Fluid</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Mitigation</td><td>VARCHAR(200)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Process_Unit_Component</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Outage_Multiplier</td><td>DOUBLE</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+<tr><td>Isolation_Type</td><td>VARCHAR(50)</td><td>No</td><td>No</td><td>No</td><td>NULL</td><td></td></tr>
+</table><
+            </div>
+            <div class="modal-footer">
+              <button onclick="window.location.href={% url 'databasereport' %};">View all</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+</body>
+</html>

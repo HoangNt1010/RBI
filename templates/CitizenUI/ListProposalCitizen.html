@@ -1,0 +1,45 @@
+{% extends 'CitizenUI/Citizen_list_facility.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block library %}
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Facility Management{% endblock %}
+
+{% block data-content %}
+    <form method="post">
+        {% csrf_token %}
+        <div style="text-align: center">
+            <caption><b style="font-size: 22px; color: #444444;">List of Proposal</b></caption>
+            <br><br>
+            <table class="table" id="mytable" >
+                <thead >
+                    <tr>
+                        <th width="200px" style="text-align: center"><i class="fa fa-tag"></i>&ensp;Proposal Name</th>
+                        <th width="200px" style="text-align: center"><i class="fa fa-bomb"></i>&ensp;Damage Factor</th>
+                        <th width="200px" style="text-align: center"><i class="fa fa-money"></i>&ensp;Financial Cost</th>
+                        <th width="200px" style="text-align: center"><i class="fa fa-bank"></i>&ensp;Risk ($/yr)</th>
+                        <th width="200px" style="text-align: center"><i class="fa fa-calendar-o"></i>&ensp;Assessment Date</th>
+                        <th width="200px" style="text-align: center"><i class="fa fa-calendar-o"></i>&ensp;Insp Due Date</th>
+                        <th width="200px" style="text-align: center"><i class="fa fa-bar-chart-o"></i>&ensp;Risk Summary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in obj %}
+                    <tr>
+                        <td style="text-align: center"><a href="{% url 'damgeFactorCitizen' a.id %}">{{ a.name }}</a></td>
+                        <td style="text-align: center">{{ a.df }}</td>
+                        <td style="text-align: center">{{ a.fc }}</td>
+                        <td style="text-align: center">{{ a.risk }}</td>
+                        <td style="text-align: center">{{ a.lastinsp }}</td>
+                        <td style="text-align: center">{{ a.duedate }}</td>
+                        <td style="text-align: center"><a href="{% url 'exportData' a.id 'Proposal' %}"><i class="fa fa-print"></i></a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </form>
+{% endblock %}

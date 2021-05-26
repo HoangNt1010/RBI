@@ -1,0 +1,50 @@
+{% extends 'BaseUI/BaseAdmin/baseAdmin.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block library %}
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+{% endblock %}
+
+{% block title %}Facility Management{% endblock %}
+
+{% block vertical %}
+    <!--<a class="active">&emsp;HOME</a>-->
+    <a href="{% url 'admindetail' siteID %}" class="{% if page == 'admindetail' %}activeLink{% endif %}"><i class="fa fa-home"></i><span>Home</span></a>
+{#    <a class="dropdown-btn"><i class="fa fa-caret-right"> &emsp; Admin</i></a>#}
+{#    <div class="dropdown-container">#}
+    <a href="{% block admin %}{% endblock %}" class="{% if page == 'admin1' %}activeLink{% endif %}"data-toggle="tooltip" data-placement="bottom" title="Account Management"><i class="glyphicon glyphicon-user"></i><span>Account Management</span></a>
+    <a  href="{% block registeraccount %}{% endblock %}" class="{% if page == 'registerAccount' %}activeLink{% endif %}"data-toggle="tooltip" data-placement="bottom" title="Register Account"><i class="fa fa-check-square"></i><span>Account Approval</span></a>
+{#    </div>#}
+
+{#     <a href="{% block testSample %}{% endblock %}" class="{% if page == 'testsample' %}activeLink{% elif page == 'inputdataTestSample'%}activeLink{% endif %}"><i class="fa fa-list-alt">&emsp;<span>Test Sample</span></i></a>#}
+{#    <a href="{% block forum %}{% endblock %}" class="{% if page == 'forum' %} activeLink{% endif %}"><i class="fa fa-dedent">&emsp;<span>Forum</span></i></a>#}
+
+    <!--<a class="dropdown-btn"><i class="fa fa-caret-right"> &emsp; <span>Setting</span></i></a>-->
+    <!--<div class="dropdown-container">-->
+        <!--<a class="a-normal" href="{% block settingAccount %}{% endblock %}" class="{% if page == 'settingaccount' %}activeLink{% endif %}" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-wrench" style="padding-left: 4%;opacity:0.6;">&emsp;<span>Account setting</span></i></a>-->
+ <!--{#        <a class="a-normal" href="{% block Re-verificationSite %}{% endblock %}" class="{% if page == 'Re-verificationSite' %}activeLink{% endif %}" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-cogs" style="padding-left: 4%;opacity:0.6;">&emsp;<span>Auto Re-verification Setup</span></i></a>  #}-->
+    <!--</div>-->
+    <a href="{% url 'messagesInbox' %}"><i class="fa fa-wechat"></i><span>Email</span></a>
+    <a href="{% block HelpSite %}{% endblock %}" class="{% if page == 'help' %} activeLink{% endif %}"><i class="fa fa-question-circle"></i><span>Help</span></a>
+    <a class="a-logout" href="/logout" data-toggle="tooltip" data-placement="bottom" title="Sign Out"><i class="fa fa-sign-out"></i><span>Log out</span></a>
+    <!--<a href="{% block design %}{% endblock %}" class="{% if page == 'listDesign' %}activeLink{% endif %}"><i class="fa fa-barcode">&emsp;Design Code</i></a>-->
+    <!--<a href="{% block manu %}{% endblock %}" class="{% if page == 'listManu' %}activeLink{% endif %}"><i class="fa fa-cubes">&emsp;Manufacture</i></a>-->
+    <script>
+        /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+        var dropdown = document.getElementsByClassName("dropdown-btn");
+        var i;
+        for (i = 0; i < dropdown.length; i++) {
+          dropdown[i].addEventListener("click", function() {
+          this.classList.toggle("active");
+          var dropdownContent = this.nextElementSibling;
+          if (dropdownContent.style.display === "block") {
+          dropdownContent.style.display = "none";
+          } else {
+          dropdownContent.style.display = "block";
+          }
+          });
+        }
+    </script>
+{% endblock %}

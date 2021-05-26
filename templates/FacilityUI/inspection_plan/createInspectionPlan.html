@@ -1,0 +1,183 @@
+{% extends 'BaseUI/BaseFacility/baseInspectionPlan.html' %}
+
+<!-------------- BLOCK MENU ---------------->
+{% block listfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+{% block newfaci %}{% url 'facilitiesNew' siteID %}{% endblock %}
+{% block design %}{% url 'designcodeDisplay' siteID %}{% endblock %}
+{% block manu %}{% url 'manufactureDisplay' siteID %}{% endblock %}
+{% block uploadInsp %}{% url 'upload' siteID %}{% endblock %}
+{% block uploadPlant %}{% url 'uploadPlan' siteID %}{% endblock %}
+{% block inspecPlan %}{% url 'inspectionPlan' siteID %}{% endblock %}
+{% block manageFile %}{% url 'manageFile' siteID %}{% endblock %}
+{% block rbitracking %}{% url 'rbitracking' %}{% endblock %}
+{% block mitigationSite %}{% url 'mitigationSite' siteID%}{% endblock %}
+{% block settingAccount %}{% url 'settingAccount' siteID %}{% endblock %}
+{% block settingNotification %}{% url 'settingNotification' siteID %}{% endblock %}
+{% block homedetail %}{% url 'homefacility' siteID%}{% endblock %}
+<!----------------- END BLOCK----------------->
+{% block data-content %}
+<style>
+.alert {
+  padding: 10px;
+  background-color: #ff9800;
+  color: white;
+  opacity: 1;
+  transition: opacity 0.0s;
+  margin-bottom: 15px;
+  font-size: 17px
+}
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 25px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.0s;
+}
+.alert.success {background-color: #4CAF50;}
+.closebtn:hover {
+  color: black;
+}
+</style>
+        <form method="post" >
+        {% csrf_token %}
+        <div class="title-verifitcation" >
+            <h1>INSPECTION/MITIGATION PLAN</h1>
+          </div>
+          <h3 class="color-white">New Inspection/Mitigation Plan</h3>
+          <div class="input-data content-full-df">
+
+            <div class="px-100">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-5 color-white">Plan Name:<span style="color: red">*</span></div>
+                            <div class="col-md-7"><input type="text" name="InspectionPlan" class="form-control" placeholder="Input Plan name here!" value=""></div>
+                        </div>
+                        {% if error.exist %}
+                        <div class="row">
+                            <div class="col-md-5 color-white"></div>
+                            <div class="col-md-7"><span style="color: red; font-size: 16px">{{ error.exist }}</span></div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-5 color-white">Plan Date:<span style="color: red">*</span></div>
+                            <div class="col-md-7">
+                                <input type="text" name="InspectionDate" class="form-control" id="inspectiondate" value="{{ data.inspectionplandate }}" placeholder="yyyy-mm-dd" required>
+                            </div>
+                            <script>
+                                $( "#inspectiondate" ).datepicker({
+                                    dateFormat: 'yy-mm-dd'
+                                });
+                                $("#inspectiondate").datepicker('setDate', new Date());
+                            </script>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+
+            <div class="px-100">
+                <div class="row" style="margin-right: 15px;">
+                    <div class="col-md-12" style="text-align:right">
+                        <button type="submit" name="_creat" class="btn btn-primary"/>Create</button>
+                        <a class="btn btn-primary" href="{% url 'inspectionPlan' siteID %}">Back</a>
+                    </div>
+                </div>
+            </div>
+          </div>
+            {% if error.sucess %}
+            <div class="alert success" style="text-align:center;">
+                <span class="closebtn">&times;</span>
+                <strong>{{error.sucess}}</strong>
+            </div>
+            <script>
+            var close = document.getElementsByClassName("closebtn");
+            var i;
+
+            for (i = 0; i < close.length; i++) {
+                close[i].onclick = function(){
+                    var div = this.parentElement;
+                    div.style.opacity = "0";
+                    setTimeout(function(){ div.style.display = "none"; }, 600);
+                }
+            }
+            </script>
+            {% endif %}
+            {% if error.warning %}
+                <div class="alert" style="text-align:center;">
+                    <span class="closebtn">&times;</span>
+                    <strong>{{error.warning }}</strong>
+                </div>
+                <script>
+                var close = document.getElementsByClassName("closebtn");
+                var i;
+
+                for (i = 0; i < close.length; i++) {
+                  close[i].onclick = function(){
+                    var div = this.parentElement;
+                    div.style.opacity = "0";
+                    setTimeout(function(){ div.style.display = "none"; }, 600);
+                  }
+                }
+                </script>
+            {% endif %}
+        <div class="table-title">
+          <h2><b>List of Inspection Plans</b></h2>
+        </div>
+        <div class="btn-group-table-bottom">
+          <div>
+            <button type="submit" name="_delete" class="btn btn-warning" id="sub" onclick="return confirm('Are you sure you want to delete this facilites?');" disabled><i class="fa fa-trash-o">&emsp;Delete Selected</i></button>
+          </div>
+        </div>
+        <div style="text-align: center;" class="table-custom">
+            <table class="table" id="mytable" style="min-width: 1200px;">
+                <thead >
+                    <th width="50px"></th>
+                    <th width="600px" style="text-align: left"><i class="fa fa-tag"></i>&ensp;Plan Name</th>
+                    <th width="700px" style="text-align: left"><i class="fa fa-tag"></i>&ensp;Plan Date</th>
+                </thead>
+                <tbody>
+                    {% for a in inspectionplan %}
+                    <tr >
+                        <td align="left"><input type="checkbox"  class="checkbox" name="{{ a.id }}"></td>
+                        <td align="left">{{ a.inspectionplanname }}</td>
+                        <td align="left">{{ a.inspectionplandate }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <script>
+            $( document ).ready(function() {
+              setTimeout(() => {
+                var isDisabledBtn = 0;
+                $(".checkboxClass").each(function(){
+                console.log(this.checked);
+                  if(this.checked) {
+                    isDisabledBtn = 1;
+                  }
+                })
+                if(isDisabledBtn == 1){
+                    $("#edit").attr("disabled", false);
+                    $("#sub").attr("disabled", false);
+                } else {
+                    $("#edit").attr("disabled", true);
+                    $("#sub").attr("disabled", true);
+                }
+                // $("#checkboxAllNormal").prop("checked", false);
+              }, 10);
+            });
+            $(function() {
+                $(".checkbox").click(function(){
+                    $('#sub').prop('disabled',$('input.checkbox:checked').length == 0);
+                });
+            });
+        </script>
+        </form>
+{% endblock %}

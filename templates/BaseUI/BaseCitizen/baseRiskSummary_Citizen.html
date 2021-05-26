@@ -1,0 +1,14 @@
+{% extends 'BaseUI/BaseCitizen/baseCitizen.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block title %}Risk Summary{% endblock %}
+
+{% block vertical %}
+    <a class="active"><span>Risk Summary</span></a>
+    <a href="{% block pof %}{% endblock %}" class="{% if page == 'damageFactor' %}activeLink{% endif %}"><i class="fa fa-bomb">&emsp;<span>Probability of<br>&emsp;&emsp; Failure</span></i></a>
+    <a href="{% block ca%}{% endblock %}" class="{% if page == 'fullyConse' %}activeLink{% endif %}"><i class="fa fa-money">&emsp;<span>Consequence of<br>&emsp;&emsp; Failure</span></i></a>
+    <a href="{% block matrix %}{% endblock %}" class="{% if page == 'riskMatrix' %}activeLink{% endif %}"><i class="fa fa-th">&emsp;<span>Risk Matrix</span></i></a>
+    <a href="{% block chart %}{% endblock %}" class="{% if page == 'riskChart' %}activeLink{% endif %}"><i class="fa fa-bar-chart-o">&emsp;<span>Risk Chart</span></i></a>
+    <a href="{% block backProposal %}{% endblock %}"><i class="fa fa-arrow-left">&emsp;<span>Back to Proposal</span></i></a>
+{% endblock %}

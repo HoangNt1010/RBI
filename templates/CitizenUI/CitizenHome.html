@@ -1,0 +1,44 @@
+{% extends 'BaseUI/BaseCitizen/baseCitizenHome.html' %}
+{% load staticfiles %}
+
+{% block data-content %}
+    <div class="people-normal">
+        <table border="1px " style="width: 1180px; margin-left: 100px;" >
+            <caption style="font-size: 32px; text-align: center; color: black">Site List is Calculated</caption>
+            <thead>
+                <th style="text-align: center;width: 50px">ID</th>
+                <th style="text-align: center;width: 150px">Factory Name</th>
+                <th style="text-align: center;width: 700px">Describe</th>
+                <th style="text-align: center;width: 200px">Contact Address</th>
+                <th style="text-align: center;width: 100px">Check Result</th>
+            </thead>
+            <tbody>
+                {% for com in risk %}
+                <tr>
+                    <td style="padding-left: 15px;padding-right: 5px">{{ com.id }}</td>
+                    <td style="padding-left: 15px;padding-right: 5px">{{ com.namecompany }}</td>
+                    <td style="padding-left: 15px;padding-right: 5px"><br>{{ com.compainfor }}<br><br>
+                        <table>
+                            <tr>
+                                <td><h5>Director</h5></td>
+                                <td>{{ com.name }}</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 100px"><h5>Phone</h5></td>
+                                <td style="width: 700px">{{ com.phone }}</td>
+                            </tr>
+                            <tr>
+                                <td><h5>Email</h5></td>
+                                <td><a>{{ com.email }}</a></td>
+                            </tr>
+                            <tr>
+                                <td><h5>Website : </h5></td>
+                                <td><a href="http://hust.edu.vn">hust.edu.vn</a></td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="padding-left: 15px;padding-right: 5px">{{ com.add }}</td>
+                    <td style="padding-left: 15px;padding-right: 5px"><a href="{% url 'facilityCitizen' com.siteID %}" > View</a></td>
+                </tr>
+                {% endfor %}
+{% endblock %}

@@ -1,0 +1,133 @@
+{% extends 'BaseUI/BaseAdmin/AdminHome.html' %}
+
+<!-------------- BLOCK MENU ---------------->
+{% block homedetail %}{% url 'admindetail' siteID%}{% endblock %}
+{% block listmana %}{% url 'manager' siteID %}{% endblock %}
+{% block calculate %}{% url 'calculatefunctionmanager' siteID %}{% endblock %}
+{% block admin %}{% url 'admin1' siteID %}{% endblock %}
+{% block toolmanage %}{% url 'toolmanager' siteID %}{% endblock %}
+{% block  registeraccount%}{% url 'registerAccount' siteID %}{% endblock %}
+{% block HelpSite %}{% url 'help' %}{% endblock %}
+{#{% block forum %}{% url 'forum' %}{% endblock %}#}
+{% block settingAccount %}{% url 'settingAccount' siteID %}{% endblock %}
+
+<!----------------- END BLOCK----------------->
+{% block data-content %}
+<style>
+.row {
+    margin: 0;
+}
+fieldset {
+  background-color: White;
+}
+
+legend {
+  background-color: gray;
+  color: white;
+  padding: 5px 10px;
+}
+.card-custom {
+    text-align: center;
+    padding: 10px 0;
+    transition: 0.5s;
+    border-radius: 8px;
+}
+.card-custom:hover {
+    transform: scale(1.1);
+}
+.card-custom a {
+    color: #000;
+}
+.card-custom a:hover {
+    text-decoration: none;
+}
+</style>
+<form method="post" id="homemanage" enctype="multipart/form-data" style="width: 100%;">
+    {% csrf_token %}
+    <div>
+        <h2 style="color: #fff; padding-left: 5px;">Admi&emsp;Quản trị viênn</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card-custom" style="background-color: #e8453e;">
+                    <a href="{% url 'admin1' siteID %}">
+                        <p><i class="glyphicon glyphicon-user" style="font-size:70px;" ></i></p>
+                        <h3>Account Management</h3>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div  class="card-custom" style="background-color: #fed943;">
+                    <a href="{% url 'registerAccount' siteID %}">
+                        <p><i class="fa fa-check-square" style="font-size:70px;" ></i></p>
+                        <h3>Account Approval</h3>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{#        <h2 class=" mt-10" style="color: #fff; padding-left: 5px;">Utility tools</h2>#}
+{#        <div class="row">#}
+{#            <div class="col-md-4">#}
+{#                <div class="card-custom" style="background-color: #99be4d;">#}
+{#                    <a href="{% url 'forum' %}">#}
+{#                        <p><i class="fa fa-dedent" style="font-size:70px;" ></i></p>#}
+{#                        <h3>Forum</h3>#}
+{#                    </a>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-md-4">#}
+{#                <div class="card-custom" style="background-color: #9f809f;">#}
+{#                    <a href="{% url 'messagesInbox' %}">#}
+{#                        <p><i class="fa fa-wechat" style="font-size:70px;" ></i></p>#}
+{#                        <h3>Email</h3>#}
+{#                    </a>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-md-4">#}
+{#                <div class="card-custom" style="background-color: #72b2cd;">#}
+{#                    <a href="{% url 'help' %}">#}
+{#                        <p><i class="fa fa-question" style="font-size:70px;" ></i></p>#}
+{#                        <h3>Help</h3>#}
+{#                    </a>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#=======#}
+    </div>
+{#    <div class="container" style="background-color: rgba(192, 192,192, 0.5);margin-top: 5%;" >#}
+{#        <h2 style="font-size:30px;">&emsp;Utility tools</h2>#}
+{#        <div class="columnafter">#}
+{#            <a href="{% url 'forum' %}" style="color:white">#}
+{#                <div class="carda" >#}
+{#                    <p title="Diễn đàn hỏi đáp"><i class="fa fa-dedent" style="font-size:70px;" ></i></p>#}
+{#                    <h3 align="center">Forum</h3>#}
+{#                </div>#}
+{#            </a>#}
+{#        </div>#}
+{#        <div class="columnafter">#}
+{#            <a href="{% url 'messagesInbox' %}" style="color:white">#}
+{#                <div class="carda">#}
+{#                    <p title="Message"><i class="fa fa-wechat" style="font-size:70px;" ></i></p>#}
+{#                    <h3 align="center">Email</h3>#}
+{#                </div>#}
+{#            </a>#}
+{#        </div>#}
+{#        <div class="columnafter">#}
+{#            <a href="{% url 'help' %}" style="color:white">#}
+{#                <div class="carda">#}
+{#                    <p title="Trợ giúp"><i class="fa fa-question" style="font-size:70px;" ></i></p>#}
+{#                    <h3 align="center">Help</h3>#}
+{#                </div>#}
+{#            </a>#}
+{#        </div>#}
+        <!--<div class="columnafter">-->
+            <!--<a href="{% url 'mitigation' siteID%}" style="color:white">-->
+                <!--<div class="carda">-->
+                    <!--<p title="Phương pháp giảm nhẹ"><i class="fa fa-question" style="font-size:70px;" ></i></p>-->
+                    <!--<h3 align="center">Phương pháp giảm nhẹ</h3>-->
+                <!--</div>-->
+            <!--</a>-->
+        <!--</div>-->
+    </div>
+</form>
+{% endblock %}

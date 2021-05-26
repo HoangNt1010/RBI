@@ -1,0 +1,923 @@
+{% extends 'BaseUI/BaseFacility/baseInputTestSample.html' %}
+{% load staticfiles %}
+{% load static %}
+<!-------------- BLOCK MENU ---------------->
+{% block listfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+{% block newfaci %}{% url 'facilitiesNew' siteID %}{% endblock %}
+{% block design %}{% url 'designcodeDisplay' siteID %}{% endblock %}
+{% block manu %}{% url 'manufactureDisplay' siteID %}{% endblock %}
+{% block uploadInsp %}{% url 'upload' siteID %}{% endblock %}
+{% block uploadPlant %}{% url 'uploadPlan' siteID %}{% endblock %}
+{% block manageFile %}{% url 'manageFile' siteID %}{% endblock %}
+{#{% block uploadScada %}{% url 'uploadScada' siteID %}{% endblock %}#}
+{% block inspecPlan %}{% url 'inspectionPlan' siteID %}{% endblock %}
+{% block rbitracking %}{% url 'rbitracking' %}{% endblock %}
+{% block mitigationSite %}{% url 'mitigationSite' siteID%}{% endblock %}
+{% block HelpSite %}{% url 'help' %}{% endblock %}
+{% block forum %}{% url 'forum' %}{% endblock %}
+{% block testSample %}{% url 'testsample' siteID%}{% endblock %}
+{% block settingAccount %}{% url 'settingAccount' siteID %}{% endblock %}
+{% block settingNotification %}{% url 'settingNotification' siteID %}{% endblock %}
+{% block homedetail %}{% url 'homefacility' siteID%}{% endblock %}
+<!----------------- END BLOCK----------------->
+{% block data-content %}
+<style>
+div.a {
+  white-space: nowrap;
+  width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+div.a:hover {
+  overflow: visible;
+}
+#searchs{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+.city{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 98%;
+  font-size: 13px;
+}
+#search3{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+#proposal
+{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+#search2{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+#searchs td,#searchs th {
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+.city td, .city th{
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+#search2 th,#search2 td{
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+#search3 th,#search3 td{
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+#proposal th,#proposal td{
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+#searchs tr:nth-child(even){background-color: #f2f2f2;}
+.city tr:nth-child(even){background-color: white;}
+#search2 tr:nth-child(even){background-color: #f2f2f2;}
+#search3 tr:nth-child(even){background-color: #f2f2f2;}
+#proposal tr:nth-child(even){background-color: #f2f2f2;}
+#searchs tr:hover {background-color: #ddd;}
+.city tr:hover {background-color: #ddd;}
+#search2 tr:hover {background-color: #f2f2f2;}
+#search3 tr:hover {background-color: #f2f2f2;}
+#proposal tr:hover {background-color: #f2f2f2;}
+
+#searchs th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #305680;
+  color: white;
+}
+.city th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #305680;
+  color: white;
+}
+#search2 th{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #305680;
+  color: white;
+}
+#search3 th{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color :#305680;
+  color: white;
+}
+#proposal th{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #305680;
+  color: white;
+}
+
+.containerflex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
+
+    padding: 2px;
+    background: white;
+    min-width: 1250px;
+    height: 230px;
+    margin: auto;
+}
+
+.flexitem {
+    width: 530px;
+    height: 220px;
+    padding: 0px;
+    background: #0AA6DB;
+    margin: 1px;
+    font-weight: bold;
+}
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+    background: none !important;
+    border: none !important;
+    color: #000;
+}
+#myChart {
+    background-color: #fff;
+}
+h3 {
+    padding-left:5px ;
+}
+</style>
+<form method="post" id="fileUpload" name="fileUpload" enctype="multipart/form-data" style="width: 100%">
+    {% csrf_token %}
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#menu5">Fully-Quantitative PoF</a></li>
+        {% if not isTank %}
+            <li><a data-toggle="tab" href="#menu0">Area-based CoF</a></li>
+        {% endif %}
+        <li><a data-toggle="tab" href="#menu6">Financial CoF</a></li>
+        <li><a data-toggle="tab" href="#menu7">Risk Matrix</a></li>
+        <li><a data-toggle="tab" href="#menu8">Risk Chart</a></li>
+    </ul>
+    <div class="tab-content" style="border: 1px solid #fff;height: calc(100vh - 170px);overflow: auto;">
+
+        <!-------------- Bảng1 ---------------->
+        <div id="menu5" class="tab-pane fade in active" >
+            <div class="input-data content-full-df">
+                <h3 class="color-white">Initial Factor</h3>
+                <hr class="hr-verification">
+                <div class="px-100 color-white">
+                    <div class="row">
+                        <div class="col-md-6">Thinning Type:</div>
+                        <div class="col-md-6">
+                            <select class="form-control" id="thinningType" name="thinningType">
+                                <option>Local</option>
+                                <option>General</option>
+                            </select>
+                        </div>
+                        <script>
+                            $("#thinningType").val("{{ obj.thinningType }}");
+                        </script>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">Total Generic Frequence:</div>
+                        <div class="col-md-6 text-value">{{ obj.gfftotal }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">Factor of Management System:</div>
+                        <div class="col-md-6 text-value">{{ obj.fms }}</div>
+                    </div>
+                </div>
+                    <!----------------END BLOCK----------------->
+
+                    <!-------------- BLOCK DETAIL DAMAGE FACTOR ------------>
+                <h3 class="color-white">Damage Factors and Probability of Failure</h3>
+                <hr class="hr-verification">
+                <div class="px-100 color-white">
+                    <div class="row">
+                        <div class="col-md-6">Assessment Periods</div>
+                        <div class="col-md-2">0 months</div>
+                        <div class="col-md-2">36 months</div>
+                        <div class="col-md-2">72 months</div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-md-6">Governing Thinning Damage Factor:</div>
+                        <div class="col-md-2">{{ obj.thinningap1 }}</div>
+                        <div class="col-md-2">{{ obj.thinningap2 }}</div>
+                        <div class="col-md-2">{{ obj.thinningap3 }}</div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-md-6">Governing Stress Corrosion Cracking Damage Factor:</div>
+                        <div class="col-md-2">{{ obj.sccap1 }}</div>
+                        <div class="col-md-2">{{ obj.sccap2 }}</div>
+                        <div class="col-md-2">{{ obj.sccap3 }}</div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-md-6">Governing External Damage Factor:</div>
+                        <div class="col-md-2">{{ obj.externalap1 }}</div>
+                        <div class="col-md-2">{{ obj.externalap2 }}</div>
+                        <div class="col-md-2">{{ obj.externalap3 }}</div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-md-6">High Temperature Hydrogen Attack Damage Factor:</div>
+                        <div class="col-md-2">{{ obj.htha_ap1 }}</div>
+                        <div class="col-md-2">{{ obj.htha_ap2 }}</div>
+                        <div class="col-md-2">{{ obj.htha_ap3 }}</div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-md-6">Governing Brittle Fracture Damage Factor:</div>
+                        <div class="col-md-2">{{ obj.brittleap1 }}</div>
+                        <div class="col-md-2">{{ obj.brittleap2 }}</div>
+                        <div class="col-md-2">{{ obj.brittleap3 }}</div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-md-6">Piping Mechanical Fatigue Damage Factor:</div>
+                        <div class="col-md-2">{{ obj.fatigueap1 }}</div>
+                        <div class="col-md-2">{{ obj.fatigueap2 }}</div>
+                        <div class="col-md-2">{{ obj.fatigueap3 }}</div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-md-6">Other Damage Factor:</div>
+                        <div class="col-md-2">0.0</div>
+                        <div class="col-md-2">0.0</div>
+                        <div class="col-md-2">0.0</div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-md-6">Total Damage Factor with General Thinning:</div>
+                        <div class="col-md-2">{{ obj.thinninggeneralap1 }}</div>
+                        <div class="col-md-2">{{ obj.thinninggeneralap2 }}</div>
+                        <div class="col-md-2">{{ obj.thinninggeneralap3 }}</div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-md-6">Total Damage Factor with Local Thinning:</div>
+                        <div class="col-md-2">{{ obj.thinninglocalap1 }}</div>
+                        <div class="col-md-2">{{ obj.thinninglocalap2 }}</div>
+                        <div class="col-md-2">{{ obj.thinninglocalap3 }}</div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-md-6">Final Total Damage Factor:</div>
+                        <div class="col-md-2">{{ obj.totaldfap1 }}</div>
+                        <div class="col-md-2">{{ obj.totaldfap2 }}</div>
+                        <div class="col-md-2">{{ obj.totaldfap3 }}</div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-md-6">Probability of Failure:</div>
+                        <div class="col-md-2">{{ obj.pofap1 }}</div>
+                        <div class="col-md-2">{{ obj.pofap2 }}</div>
+                        <div class="col-md-2">{{ obj.pofap3 }}</div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-md-6">Probability of Failure Category:</div>
+                        <div class="col-md-2"><b>{{ obj.pofap1category }}</b></div>
+                        <div class="col-md-2"><b>{{ obj.pofap2category }}</b></div>
+                        <div class="col-md-2"><b>{{ obj.pofap3category }}</b></div>
+                    </div>
+                </div>
+                    <!----------------END BLOCK ------------------------->
+                <!-- <br>
+                <div style="text-align:center;">
+                    <button type="submit" name="_back" class="btn btn-primary"><i class="fa fa-arrow-circle-left">&emsp;Back to List Test Sample</i></button>
+                    <button type="submit" name="_detail" style="text-align:left" class="btn btn-primary"><i class="fa fa-info-circle">&emsp;Proposal Input Data</i></button>
+                </div> -->
+            </div>
+        </div>
+         <!-------------- Bảng0 ---------------->
+        {% if not isTank %}
+            <div id="menu0" class="tab-pane fade">
+               <div style="font-size: 13px; color: #444444;background-color:white">
+                     <div class="container">
+                         <p>bảng 0</p>
+                     </div>
+               </div>
+            </div>
+        {% endif %}
+        <!-------------- Bảng2 ---------------->
+        <div id="menu6" class="tab-pane fade">
+            {% if isBottom %}
+                <div class="input-data content-full-df">
+                    <h3 class="color-white">Fully-Quantitative Financial Cosequense of Failure and Category</h3>
+                    <hr class="hr-verification">
+                    <div class="px-100 color-white">
+                        <!------------ BLOCK 1-------------->
+                        <div class="row">
+                            <div class="col-md-8">The hydraulic conductivity for water, m/day:</div>
+                            <div class="col-md-4 text-value">{{ dataCoF.hydraulic_water }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The hydraulic conductivity for fluid, m/day:</div>
+                            <div class="col-md-4 text-value">{{ dataCoF.hydraulic_fluid }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The product seepage velocity, m/day:</div>
+                            <div class="col-md-4 text-value">{{ dataCoF.seepage_velocity }}</div>
+                        </div>
+                        <!------------ BLOCK 2-------------->
+                        <div class="row"></div>
+                        <div class="row">
+                            <div class="col-md-8"></div>
+                            <div class="col-md-2"><b>D1</b></div>
+                            <div class="col-md-2"><b>D4</b></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">Flow Rate, bbls/day:</div>
+                            <div class="col-md-2">{{ dataCoF.flow_rate_d1 }}</div>
+                            <div class="col-md-2">{{ dataCoF.flow_rate_d4 }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">Leak duration, days:</div>
+                            <div class="col-md-2">{{ dataCoF.leak_duration_d1 }}</div>
+                            <div class="col-md-2">{{ dataCoF.leak_duration_d4 }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">Release volume from leakage, barrels:</div>
+                            <div class="col-md-2">{{ dataCoF.release_volume_leak_d1 }}</div>
+                            <div class="col-md-2">{{ dataCoF.release_volume_leak_d4 }}</div>
+                        </div>
+                        <!------------ block 3------------>
+                        <div class="row"></div>
+                        <div class="row">
+                            <div class="col-md-8">Realease volume from rupture, barrels:</div>
+                            <div class="col-md-4 text-value">{{ dataCoF.release_volume_rupture }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The time to initate leakage to the ground water, days:</div>
+                            <div class="col-md-4 text-value">{{ dataCoF.time_leak_ground }}</div>
+                        </div>
+                        <!------------ block 4------------>
+                        <div class="row"></div>
+                        <div class="row">
+                            <div class="col-md-8"></div>
+                            <div class="col-md-2"><b>D1</b></div>
+                            <div class="col-md-2"><b>D4</b></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The volume of the product in the subsoil from leakage, barrels:</div>
+                            <div class="col-md-2">{{ dataCoF.volume_subsoil_leak_d1 }}</div>
+                            <div class="col-md-2">{{ dataCoF.volume_subsoil_leak_d4 }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The volume of the product in the ground water from leakage, barrels:</div>
+                            <div class="col-md-2">{{ dataCoF.volume_ground_water_leak_d1 }}</div>
+                            <div class="col-md-2">{{ dataCoF.volume_ground_water_leak_d4 }}</div>
+                        </div>
+                        <!------------ block 5------------>
+                        <div class="row"></div>
+                        <div class="row">
+                            <div class="col-md-8">The total barrels of fluid within the dike from rupture, barrels:</div>
+                            <div class="col-md-4 text-value">{{ dataCoF.barrel_dike_rupture }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The total barrels of fluid in the on-site surface soil from a rupture, barrels:</div>
+                            <div class="col-md-4 text-value">{{ dataCoF.barrel_onsite_rupture }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The total barrels of fluid in the off-site surface soil from a rupture, barrels:</div>
+                            <div class="col-md-4 text-value">{{ dataCoF.barrel_offsite_rupture }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The total barrels of fluid that reach water from a rupture, barrels:</div>
+                            <div class="col-md-4 text-value">{{ dataCoF.barrel_water_rupture }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The financial environmental cost from leakage, $:</div>
+                            <div class="col-md-4 text-value">{{ dataCoF.fc_environ_leak }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The financial environmental cost from rupture, $:</div>
+                            <div class="col-md-4 text-value">{{ dataCoF.fc_environ_rupture }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The financial environmental cost, $:</div>
+                            <div class="col-md-4 text-value">{{ dataCoF.fc_environ }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The material factor:</div>
+                            <div class="col-md-4 text-value">{{ dataCoF.material_factor }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The component damage cost, $:</div>
+                            <div class="col-md-4 text-value">{{ dataCoF.component_damage_cost }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The cost of business interruption, $:</div>
+                            <div class="col-md-4 text-value">{{ dataCoF.business_cost }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The total consequence, $:</div>
+                            <div class="col-md-4 text-value">{{ dataCoF.consequence }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">Consequence Category:</div>
+                            <div class="col-md-4 text-value"><b>{{ dataCoF.consequencecategory }}</b></div>
+                        </div>
+                    </div>
+                </div>
+            {% elif isShell %}
+                <div class="input-data content-full-df">
+                    <h3 class="color-white">Fully-Quantitative Financial Cosequense of Failure and Category</h3>
+                    <hr class="hr-verification">
+                        <!---------- BLOCK DATA--------------->
+                        <!-------- block 1------------->
+                    <div class="px-100 color-white">
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-2"><b>D1</b></div>
+                            <div class="col-md-2"><b>D2</b></div>
+                            <div class="col-md-2"><b>D3</b></div>
+                            <div class="col-md-2"><b>D4</b></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">Flow Rate, bbls/day:</div>
+                            <div class="col-md-2">{{ dataCoF.flow_rate_d1 }}</div>
+                            <div class="col-md-2">{{ dataCoF.flow_rate_d2 }}</div>
+                            <div class="col-md-2">{{ dataCoF.flow_rate_d3 }}</div>
+                            <div class="col-md-2">{{ dataCoF.flow_rate_d4 }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">Leak duration, days:</div>
+                            <div class="col-md-2">{{ dataCoF.leak_duration_d1 }}</div>
+                            <div class="col-md-2">{{ dataCoF.leak_duration_d2 }}</div>
+                            <div class="col-md-2">{{ dataCoF.leak_duration_d3 }}</div>
+                            <div class="col-md-2">{{ dataCoF.leak_duration_d4 }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">Release volume from leakage, m<sup>3</sup>:</div>
+                            <div class="col-md-2">{{ dataCoF.release_volume_leak_d1 }}</div>
+                            <div class="col-md-2">{{ dataCoF.release_volume_leak_d2 }}</div>
+                            <div class="col-md-2">{{ dataCoF.release_volume_leak_d3 }}</div>
+                            <div class="col-md-2">{{ dataCoF.release_volume_leak_d4 }}</div>
+                        </div>
+                            <!-------------- block 2 ------------->
+                        <div class="row">
+                            <div class="col-md-8">Realease volume from rupture, barrels:</div>
+                            <div class="col-md-4">{{ dataCoF.release_volume_rupture }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The time to initate leakage to the ground water, days:</div>
+                            <div class="col-md-4">{{ dataCoF.time_leak_ground }}</div>
+                        </div>
+                            <!-------------- block 3 ----------->
+                        <div class="row"></div>
+                        <div class="row">
+                            <div class="col-md-8"></div>
+                            <div class="col-md-2"><b>D1</b></div>
+                            <div class="col-md-2"><b>D4</b></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The volume of the product in the subsoil from lakage, barrels:</div>
+                            <div class="col-md-2">{{ dataCoF.volume_subsoil_leak_d1 }}</div>
+                            <div class="col-md-2">{{ dataCoF.volume_subsoil_leak_d4 }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The volume of the product in the ground water from leakage, m<sup>3</sup>:</div>
+                            <div class="col-md-2">{{ dataCoF.volume_ground_water_leak_d1 }}</div>
+                            <div class="col-md-2">{{ dataCoF.volume_ground_water_leak_d4 }}</div>
+                        </div>
+                            <!------------ block 4 ---------->
+                        <div class="row"></div>
+                        <div class="row">
+                            <div class="col-md-8">The total barrels of fluid within the dike from rupture, barrels:</div>
+                            <div class="col-md-4">{{ dataCoF.barrel_dike_rupture }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The total barrels of fluid in the on-site surface soil from a rupture, barrels:</div>
+                            <div class="col-md-4">{{ dataCoF.barrel_onsite_rupture }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The total barrels of fluid in the off-site surface soil from a rupture, barrels:</div>
+                            <div class="col-md-4">{{ dataCoF.barrel_offsite_rupture }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The total barrels of fluid that reach water from a rupture, barrels:</div>
+                            <div class="col-md-4">{{ dataCoF.barrel_water_rupture }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The financial environmental cost from leakage, $:</div>
+                            <div class="col-md-4">{{ dataCoF.fc_environ_leak }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The financial environmental cost from rupture, $:</div>
+                            <div class="col-md-4">{{ dataCoF.fc_environ_rupture }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The total financial environmental cost, $:</div>
+                            <div class="col-md-4">{{ dataCoF.fc_environ }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The component damage cost, $:</div>
+                            <div class="col-md-4">{{ dataCoF.component_damage_cost }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The cost of business interruption, $:</div>
+                            <div class="col-md-4">{{ dataCoF.business_cost }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">The total consequence, $:</div>
+                            <div class="col-md-4">{{ dataCoF.consequence }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">Consequence Category, $:</div>
+                            <div class="col-md-4"><b>{{ dataCoF.consequencecategory }}</b></div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="input-data content-full-df">
+                    <h3 class="color-white">Fully-Quantitative Financial Cosequense of Failure and Category</h3>
+                    <hr class="hr-verification">
+                        <!----------- BLOCK INPUT ---------->
+
+                    <div class="px-100 color-white">
+                        <div class="row">
+                            <div class="col-md-8">Cost of lost production due to downtime to repair equipment, $/day:</div>
+                            <div class="col-md-4 text-value">{{ dataCoF.production_cost }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">Equipment cost, $/m2:</div>
+                            <div class="col-md-4 text-value">{{ dataCoF.equipment_cost }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">Population density of personal or employees in the unit, personal/m2:</div>
+                            <div class="col-md-4 text-value">{{ dataCoF.personal_density }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">Environmental clean-up cost, $/barrel:</div>
+                            <div class="col-md-4 text-value">{{ dataCoF.evironment_cost }}</div>
+                        </div>
+                    </div>
+
+                        <!-------- BLOCK CONSEQUENCE ------->
+                    <h3 class="color-white">Consequence of Failure and Category</h3>
+                    <hr class="hr-verification">
+                    <div class="px-100 color-white">
+                        <div class="row">
+                            <div class="col-md-8">Financial Consequence Area of Component Damage Flamable, m<sup>2</sup>:</div>
+                            <div class="col-md-4 text-value">{{ dataCoF.ca_cmd }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">Financial Consequence Area of Personnel Injury Flamable, m<sup>2</sup>:</div>
+                            <div class="col-md-4 text-value">{{ dataCoF.ca_inj_flame }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">Financial Consequence of Component Damage Costs, $:</div>
+                            <div class="col-md-4 text-value">{{ dataCoF.fc_cmd }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">Financial Consequence of Affected Area, $:</div>
+                            <div class="col-md-4 text-value">{{ dataCoF.fc_affa }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">Financial Consequence of Business Interruption Costs, $:</div>
+                            <div class="col-md-4 text-value">{{ data.fc_prod }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">Financial Consequence of Potential Injury Costs, $:</div>
+                            <div class="col-md-4 text-value">{{ data.fc_inj }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">Financial Consequence of Environmental Cleanup Costs, $:</div>
+                            <div class="col-md-4 text-value">{{ data.fc_envi }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">Financial Consequence of Falure, $:</div>
+                            <div class="col-md-4 text-value">{{ data.fc_total }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">Consequence of Failure Category:</div>
+                            <div class="col-md-4 text-value"><b>{{ data.fcof_category }}</b></div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            <!-- <br>
+            <div style="text-align:center;">
+                <button type="submit" name="_back" class="btn btn-primary"><i class="fa fa-arrow-circle-left">&emsp;Back to List Test Sample</i></button>
+                <button type="submit" name="_detail" style="text-align:left" class="btn btn-primary"><i class="fa fa-info-circle">&emsp;Proposal Input Data</i></button>
+            </div> -->
+        </div>
+        <!-------------- Bảng3 ---------------->
+        <div id="menu7" class="tab-pane fade">
+            <div style="text-align: center; margin-top: 5px;">
+                <canvas id="myCanvas" width="800" height="600"></canvas>
+                <script>
+                    //Lấy đối tượng Canvas
+                    var canvas = document.getElementById('myCanvas');
+                    // Chọn đối tượng vẽ 2D
+                    var ctx = canvas.getContext('2d');
+                    var i = 100;
+                    // Tiến hành vẽ
+                    ctx.strokeStyle = 'black';
+                    ctx.fillStyle = 'orange';
+                    ctx.fillRect(0+i, 0, 100, 100);
+                    ctx.strokeRect(0+i, 0, 100, 100);
+                    ctx.fillStyle = 'orange';
+                    ctx.fillRect(100+i ,0,100,100);
+                    ctx.strokeRect(100+i,0,100,100)
+                    ctx.fillStyle = 'orange';
+                    ctx.fillRect(200+i,0,100,100);
+                    ctx.strokeRect(200+i,0,100,100)
+                    ctx.fillStyle = 'red';
+                    ctx.fillRect(300+i,0,100,100);
+                    ctx.strokeRect(300+i,0,100,100)
+                    ctx.fillStyle = 'red';
+                    ctx.fillRect(400+i,0,100,100);
+                    ctx.strokeRect(400+i,0,100,100)
+                    ctx.fillStyle = 'yellow';
+                    ctx.fillRect(0+i,100,100,100);
+                    ctx.strokeRect(0+i,100,100,100)
+                    ctx.fillStyle = 'yellow';
+                    ctx.fillRect(100+i,100,100,100);
+                    ctx.strokeRect(100+i,100,100,100)
+                    ctx.fillStyle = 'orange';
+                    ctx.fillRect(200+i,100,100,100);
+                    ctx.strokeRect(200+i,100,100,100);
+                    ctx.fillStyle = 'orange';
+                    ctx.fillRect(300+i,100,100,100);
+                    ctx.strokeRect(300+i,100,100,100)
+                    ctx.fillStyle = 'red';
+                    ctx.fillRect(400+i,100,100,100);
+                    ctx.strokeRect(400+i,100,100,100)
+                    ctx.fillStyle = 'green';
+                    ctx.fillRect(0+i,200,100,100);
+                    ctx.strokeRect(0+i,200,100,100)
+                    ctx.fillStyle = 'green';
+                    ctx.fillRect(100+i,200,100,100);
+                    ctx.strokeRect(100+i,200,100,100)
+                    ctx.fillStyle = 'yellow';
+                    ctx.fillRect(200+i,200,100,100);
+                    ctx.strokeRect(200+i,200,100,100)
+                    ctx.fillStyle = 'orange';
+                    ctx.fillRect(300+i,200,100,100);
+                    ctx.strokeRect(300+i,200,100,100)
+                    ctx.fillStyle = 'red';
+                    ctx.fillRect(400+i,200,100,100);
+                    ctx.strokeRect(400+i,200,100,100)
+                    ctx.fillStyle = 'green';
+                    ctx.fillRect(0+i,300,100,100);
+                    ctx.strokeRect(0+i,300,100,100)
+                    ctx.fillStyle = 'green';
+                    ctx.fillRect(100+i,300,100,100);
+                    ctx.strokeRect(100+i,300,100,100)
+                    ctx.fillStyle = 'yellow';
+                    ctx.fillRect(200+i,300,100,100);
+                    ctx.strokeRect(200+i,300,100,100)
+                    ctx.fillStyle = 'yellow';
+                    ctx.fillRect(300+i,300,100,100);
+                    ctx.strokeRect(300+i,300,100,100);
+                    ctx.fillStyle = 'orange';
+                    ctx.fillRect(400+i,300,100,100);
+                    ctx.strokeRect(400+i,300,100,100)
+                    ctx.fillStyle = 'green';
+                    ctx.fillRect(0+i,400,100,100);
+                    ctx.strokeRect(0+i,400,100,100)
+                    ctx.fillStyle = 'green';
+                    ctx.fillRect(100+i,400,100,100);
+                    ctx.strokeRect(100+i,400,100,100)
+                    ctx.fillStyle = 'yellow';
+                    ctx.fillRect(200+i,400,100,100);
+                    ctx.strokeRect(200+i,400,100,100)
+                    ctx.fillStyle = 'yellow';
+                    ctx.fillRect(300+i,400,100,100);
+                    ctx.strokeRect(300+i,400,100,100)
+                    ctx.fillStyle = 'orange';
+                    ctx.fillRect(400+i,400,100,100);
+                    ctx.strokeRect(400+i,400,100,100);
+
+                    ctx.beginPath();
+                    ctx.fillStyle="Blue";
+                    ctx.fillRect({{ API2.x }}-15,{{ API2.y }}-15,30,30);
+
+                    ctx.beginPath();
+                    ctx.arc({{ API1.x }},{{ API1.y }},15,0,2 * Math.PI, true);
+                    ctx.fillStyle="LightGray";
+                    ctx.fill();
+
+                    ctx.beginPath();
+                    ctx.fillStyle="Purple";
+                    ctx.fillRect({{ API3.x }}-15,{{ API3.y }}-10,30,20);
+
+                    ctx.beginPath();
+                    ctx.fillStyle="Red";
+                    ctx.fillRect(635,100,150,25);
+                    ctx.strokeRect(635,100,150,25);
+                    ctx.font = "18px Georgia";
+                    ctx.fillStyle = "Black";
+                    ctx.fillText("High", 685, 120);
+                    ctx.fillStyle="orange";
+                    ctx.fillRect(635,125,150,25);
+                    ctx.strokeRect(635,125,150,25);
+                    ctx.font = "18px Georgia";
+                    ctx.fillStyle = "Black";
+                    ctx.fillText("Medium High", 650, 145);
+                    ctx.fillStyle="yellow";
+                    ctx.fillRect(635,150,150,25);
+                    ctx.strokeRect(635,150,150,25);
+                    ctx.font = "18px Georgia";
+                    ctx.fillStyle = "Black";
+                    ctx.fillText("Medium ", 680, 170);
+                    ctx.fillStyle="green";
+                    ctx.fillRect(635,175,150,25);
+                    ctx.strokeRect(635,175,150,25);
+                    ctx.font = "18px Georgia";
+                    ctx.fillStyle = "Black";
+                    ctx.fillText("Low ", 690, 195);
+                    ctx.font = "20px Georgia";
+                    ctx.fillStyle = "Black";
+                    ctx.fillText("RISK ", 690, 90);
+
+                    ctx.beginPath();
+                    ctx.arc(650,300,15,0,2 * Math.PI, true);
+                    ctx.fillStyle="LightGray";
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.fillStyle="Blue";
+                    ctx.fillRect(635,335,30,30);
+                    ctx.font = "15px Georgia";
+                    ctx.fillStyle = "Black";
+                    ctx.fillText(": API1", 670, 305);
+                    ctx.fillText(": API2", 670, 355);
+
+                    ctx.beginPath();
+                    ctx.fillStyle="Purple";
+                    ctx.fillRect(635,390,30,20);
+                    ctx.font = "15px Georgia";
+                    ctx.fillStyle = "Black";
+                    ctx.fillText(": API3", 670, 405);
+
+                    ctx.font = "25px Georgia";
+                    ctx.fillStyle = "Black";
+                    ctx.fillText("A", 50+i, 540);
+
+                    ctx.font = "25px Georgia";
+                    ctx.fillStyle = "Black";
+                    ctx.fillText("B", 150+i, 540);
+                    ctx.font = "25px Georgia";
+                    ctx.fillStyle = "Black";
+                    ctx.fillText("C", 250+i, 540);
+                    ctx.font = "25px Georgia";
+                    ctx.fillStyle = "Black";
+                    ctx.fillText("D", 350+i, 540);
+                    ctx.font = "25px Georgia";
+                    ctx.fillStyle = "Black";
+                    ctx.fillText("E", 450+i, 540);
+                    ctx.font = "25px Georgia";
+                    ctx.fillStyle = "Black";
+                    ctx.fillText("1", 60, 450);
+                    ctx.font = "25px Georgia";
+                    ctx.fillStyle = "Black";
+                    ctx.fillText("2", 60, 350);
+                    ctx.font = "25px Georgia";
+                    ctx.fillStyle = "Black";
+                    ctx.fillText("3", 60, 250);
+                    ctx.font = "25px Georgia";
+                    ctx.fillStyle = "Black";
+                    ctx.fillText("4", 60, 150);
+                    ctx.font = "25px Georgia";
+                    ctx.fillStyle = "Black";
+                    ctx.fillText("5", 60, 50);
+                    ctx.font = "25px Georgia";
+                    ctx.fillStyle = "Black";
+                    ctx.fillText("Consequense", 280, 570);
+
+                    ctx.font = '25px Georgia';
+                    ctx.save();
+                    ctx.translate(35,300);
+                    ctx.rotate(-0.5*Math.PI);
+
+                    var rText = 'Probability';
+                    ctx.fillText(rText , 0, 0);
+                    ctx.restore();
+
+                    var rWidth = ctx.measureText(rText).width;
+                </script>
+            </div>
+            <div class="input-data">
+                <div style="text-align: center">
+                    <br>
+                    <caption><b style="font-size: 18px; color: darkblue;">Proposal Risk Details</b></caption>
+                    <br>
+                </div>
+                <table class="table table-condensed">
+                    <thead>
+                        <th></th>
+                        <th>API1</th>
+                        <th>API2</th>
+                        <th>API3</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>DamageFactor</b></td>
+                            <td>{{ DF1 }}</td>
+                            <td>{{ DF2 }}</td>
+                            <td>{{ DF3 }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>FinancialCost ,$</b></td>
+                            <td>{{ ca }}</td>
+                            <td>{{ ca }}</td>
+                            <td>{{ ca }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- <div style="text-align:center;">
+                    <button type="submit" name="_back" class="btn btn-primary"><i class="fa fa-arrow-circle-left">&emsp;Back to List Test Sample</i></button>
+                    <button type="submit" name="_detail" style="text-align:left" class="btn btn-primary"><i class="fa fa-info-circle">&emsp;Proposal Input Data</i></button>
+                </div> -->
+            </div>
+        </div>
+        <!-------------- Bảng4 ---------------->
+        <div id="menu8" class="tab-pane fade">
+            <div style="text-align: center;">
+                <canvas id="myChart" height="131"></canvas>
+                <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+
+                <script>
+                    var ctx = document.getElementById("myChart");
+                    var myLineChart = new Chart(ctx,{
+                        type: 'line',
+                        data: {
+                            labels: [{% for label in label %}"{{ label }}",{% endfor %}"{{ endLabel }}"],
+                            datasets:[{
+                                label: 'Risk',
+                                backgroundColor: "#0000BB",
+                                borderColor: "#0000BB",
+                                data: [{% for data in data %}{{ data }},{% endfor %}],
+                                fill: false,
+                                lineTension:0.2
+                            },{
+                                label: 'Risk Target',
+                                backgroundColor: "#CC0000",
+                                borderColor: "#CC0000",
+                                data: [{% for data in target %}{{ data }},{% endfor %}],
+                                fill: false}]
+                        },
+                        options: {
+                            responsive: true,
+                            title: {
+                                display: true,
+                                text: 'Risk of Proposal: {{ proposalname }}'
+                            },
+                            tooltips: {
+                                mode: 'index',
+                                intersect: false
+                            },
+                            hover: {
+                                mode: 'nearest',
+                                intersect: true
+                            },
+                            scales: {
+                                xAxes: [{
+                                    display: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Years'
+                                    }
+                                }],
+                                yAxes: [{
+                                    display: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Risk ($/year)'
+                                    }
+                                }]
+                            }
+                        }
+                    })
+                </script>
+            </div>
+        </div>
+    </div>
+    <div style="text-align: right; margin-top: 5px;">
+        <button type="submit" name="_back" class="btn btn-primary"><i class="fa fa-arrow-circle-left">&emsp;Back to List Test Sample</i></button>
+        <button type="submit" name="_detail" style="text-align:left" class="btn btn-primary"><i class="fa fa-info-circle">&emsp;Proposal Input Data</i></button>
+    </div>
+</form>
+{% endblock %}

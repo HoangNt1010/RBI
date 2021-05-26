@@ -1,0 +1,72 @@
+{% extends 'BaseUI/BaseFacility/baseRiskSummary.html' %}
+
+{% load staticfiles %}
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactor' proposalID %}{% endblock %}
+{% block fcof%}{% url 'fullyConsequence' proposalID %}{% endblock %}
+{% block acof%}{% url 'areaBasedCoF' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrix' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChart' proposalID %}{% endblock %}
+{% block corri %}{% url 'corrision' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'damgeFactor' proposalID %}{% endblock %}
+
+{% block data-content %}
+    <style>
+    .card{
+        background: #ffffff;
+    }
+    .bang{
+        width: 600px;
+        height: 300px;
+        background-color: #305680;
+        margin: auto;
+    }
+    button{
+        width: 150px;
+        height: 70px;
+        margin-top: 20px;
+        margin-left: 5px;
+        background-color: #FFFFFF;
+    }
+    </style>
+
+
+    <form id="inspectionplan" method="post" class="card" >
+    {% csrf_token %}
+       <div style=" text-align: center"><caption><b style="font-size: 20px; color: #444444;">Governing Stress Corrosion Cracking Damange Factor</b></caption></div>
+        <br>
+    <fieldset class="bang">
+        <script>
+            var i=0;
+            if (i!== 0){
+                document.getElementById('myelement').style.display='block'
+            }
+
+        </script>
+        <div class="row" id="myelement">
+
+            <div id="myelement" class="col-md-4">
+{#                name="_anime" type="submit" #}
+{#                <a href="{% url 'anime' %}">#}
+                    <button  type="submit" style="color: black; font-family: Arial" name="_anime" value=""> Anime</button>
+{#                </a>#}
+
+            </div>
+            <div id="myelement" class="col-md-4"><button type="submit" name="_caustic" style="color: black;font-family: Arial"  value="">Caustic</button> </div>
+            <div id="myelement" class="col-md-4"><button type="submit" name="_sulphide" style="color: black;font-family: Arial"  value="">SSC</button> </div>
+            <div id="myelement" class="col-md-4"><button type="submit" name="_hicsohich2s" style="color: black;font-family: Arial"  value="">HIC/SOHIC-H2S</button> </div>
+            <div id="myelement" class="col-md-4"><button type="submit" name="_alkaline" style="color: black;font-family: Arial" value="">ACSCC</button> </div>
+            <div id="myelement" class="col-md-4"><button type="submit" name="_PASCC" style="color: black;font-family: Arial" value="">PASCC</button> </div>
+            <div id="myelement" class="col-md-4"><button type="submit" name="_CLSCC" style="color: black;font-family: Arial" value="">CLSCC</button> </div>
+            <div id="myelement" class="col-md-4"><button type="submit" name="_HSCHF" style="color: black;font-family: Arial" value="">HSC-HF</button> </div>
+            <div id="myelement" class="col-md-4"><button type="submit" name="_HICSOHICHF" style="color: black;font-family: Arial" value="">HIC/SOHIC-HF</button> </div>
+
+        </div>
+        </fieldset>
+        </form>
+            <br>
+        <form>
+        <img src="{% static 'image/proposal/chooseGoverningStressCorrosion.PNG' %}" style="width: 100%">
+    </form>
+
+{% endblock %}

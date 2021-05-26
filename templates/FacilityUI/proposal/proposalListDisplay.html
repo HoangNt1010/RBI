@@ -1,0 +1,381 @@
+{% extends 'BaseUI/BaseFacility/baseProposal.html' %}
+{% load staticfiles %}
+
+{% block library %}
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+<!----------BLOCK MENU----------->
+{% block listProposal %}{% url 'proposalDisplay' componentID %}{% endblock %}
+{% block newProposal %}
+    {% if istank %}
+        {% url 'tankNew' componentID %}
+    {% else %}
+        {% url 'proposalNew' componentID %}
+    {% endif %}
+{% endblock %}
+{% block newsensor %}{% url 'newsensor' componentID %}{% endblock %}
+{% block scada %}{% url 'scada' componentID %}{% endblock %}
+{% block setting %}{% url 'setting' componentID %}{% endblock %}
+{% block backComp %}{% url 'componentDisplay' equipmentID %}{% endblock %}
+<!----------END BLOCK----------->
+
+{% block data-content %}
+<style>
+.alert {
+  padding: 10px;
+  background-color: #ff9800;
+  color: white;
+  opacity: 1;
+  transition: opacity 0.0s;
+  margin-bottom: 15px;
+  font-size: 17px
+}
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 25px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.0s;
+}
+.alert.success {background-color: #4CAF50;}
+.closebtn:hover {
+  color: black;
+}
+</style>
+    <form method="post" id="listProposal" enctype="multipart/form-data">
+    {% csrf_token %}
+        <div class="search-table-group-custom">
+            <input type="text" class="search-field"  id="myInput" onkeyup="myFunction()" placeholder="Search Proposal..." value="" name='searchProposal'>
+            <button type="submit" name="_search" id="search" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i></button></div>
+        <div class="step-link">
+            <a href="{% url 'facilitiesDisplay' siteID %}">Fatories </a><span class="fa fa-angle-right"></span>
+            {% if faci %}<a href="{% url 'equipmentDisplay' faci.facilityid %}">{{ faci.facilityname }}</a>{% endif %} <span class="fa fa-angle-right"></span>
+            {% if equip %}<a href="{% url 'componentDisplay' equip.equipmentid %}">{{ equip.equipmentname }}</a>{% endif %} <span class="fa fa-angle-right"></span>
+            {% if comp %}<a href="{% url 'proposalDisplay' comp.componentid %}">{{ comp.componentname }}</a>{% endif %}
+        </div>
+        <div class="table-title">
+          <h2><b>List of Proposals </b></h2>
+        </div>
+        {% if  notice.scada %}
+        <div class="alert success" style="text-align:center;">
+                <span class="closebtn">&times;</span>
+                <strong>Notify!</strong>{{notice.scada}}
+            </div>
+            <script>
+            var close = document.getElementsByClassName("closebtn");
+            var i;
+
+            for (i = 0; i < close.length; i++) {
+                close[i].onclick = function(){
+                    var div = this.parentElement;
+                    div.style.opacity = "0";
+                    setTimeout(function(){ div.style.display = "none"; }, 600);
+                }
+            }
+            </script>
+        {% endif %}
+        {% if notify.error %}
+        <div class="alert" style="text-align:center;">
+            <span class="closebtn">&times;</span>
+            <strong>Warning ! </strong>{{ notify.error }}
+        </div>
+        <script>
+            var close = document.getElementsByClassName("closebtn");
+            var i;
+
+            for (i = 0; i < close.length; i++) {
+              close[i].onclick = function(){
+                var div = this.parentElement;
+                div.style.opacity = "0";
+                setTimeout(function(){ div.style.display = "none"; }, 600);
+              }
+            }
+        </script>
+        {% endif %}
+        <div class="btn-group-table-bottom">
+          <button type="submit" name="_new" id="new" class="btn btn-primary"><i class="fa fa-pencil">&emsp;New Proposal</i></button>
+          <div>
+            <button type="submit" name="_edit" id="edit" class="btn btn-primary" disabled><i class="fa fa-pencil">&emsp;Edit Selected</i></button>
+            <button type="submit" name="_delete" class="btn btn-warning" id="sub" onclick="return confirm('Are you sure you want to delete this proposal?');"  disabled><i class="fa fa-trash-o">&emsp;Delete Selected</i></button>
+          </div>
+
+        </div>
+
+        <div style="text-align: center" class="table-custom">
+            <table id="mytable" class="table" style="min-width: 1300px;">
+                <thead>
+                    <tr>
+
+                        <th width="50px" style="text-align: left"></th>
+                        <th width="400px" style="text-align: left">Proposal Name</th>
+                        <th width="180px" style="text-align: left">Damage Factor</th>
+                        <th width="150px" style="text-align: left">Financial Cost</th>
+                        <th width="150px" style="text-align: left">Risk ($/yr)</th>
+                        <th width="200px" style="text-align: left">Last Insp Date</th>
+                        <th width="200px" style="text-align: left">Insp Due Date</th>
+                        <th width="200px" style="text-align: center">Risk Summary</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% if error.exist %}
+                <div class="alert">
+                    <span class="closebtn">&times;</span>
+                    <strong>Not found!</strong> {{error.exist}}
+                    <h4 style="text-align:left">Recommend:</h4>
+                    <ul style="text-align:left">
+                      <li>Please make sure all words are correctly spelled.</li>
+                      <li>Try other keywords.</li>
+                      <li>Try more general keywords.</li>
+                    </ul>
+                </div>
+                <script>
+                var close = document.getElementsByClassName("closebtn");
+                var i;
+
+                for (i = 0; i < close.length; i++) {
+                  close[i].onclick = function(){
+                    var div = this.parentElement;
+                    div.style.opacity = "0";
+                    setTimeout(function(){ div.style.display = "none"; }, 600);
+                  }
+                }
+                </script>
+                <script>
+                    var close = document.getElementsByClassName("closebtn");
+                    var i;
+
+                    for (i = 0; i < close.length; i++) {
+                        close[i].onclick = function(){
+                            var div = this.parentElement;
+                            div.style.opacity = "0";
+                            setTimeout(function(){ div.style.display = "none"; }, 600);
+                        }
+                    }
+                </script>
+                {% else %}
+                    {% if result.data %}
+                    <div class="alert success">
+                        <span class="closebtn">&times;</span>
+                        <strong>Results!</strong>{{result.data}}
+                    </div>
+                    {% endif %}
+                    {% for a in obj %}
+                    <tr>
+                        <td style="text-align: left"><input id="checkbox" type="checkbox" name="{{ a.id }}" class="checkboxClass"></td>
+                        {% if a.fc %}
+                        <td style="text-align: left" ><a href="{% url 'damgeFactor' a.id %}">{{ a.name }}</a></td>
+                        {% else %}
+                        <td style="text-align: left">{{ a.name }}</td>
+                        {% endif %}
+                        <td style="text-align: left">{{ a.df }}</td>
+                        <td style="text-align: left">{{ a.fc }}</td>
+                        <td style="text-align: left">{{ a.risk }}</td>
+                        <td style="text-align: left">{{ a.lastinsp }}</td>
+                        <td style="text-align: left">{{ a.duedate }}</td>
+                        <td style="text-align: center"><a href="{% url 'viewexcelproposal' a.id 'Proposal'  %}" target="_blank"><i class="fa fa-print"></i></a></td>
+                    </tr>
+                    {% endfor %}
+                    {% if not risk %}
+                    <!-- <div class="alert" style="position: sticky; left: 0;">
+                    <span class="closebtn">&times;</span>
+                    <strong>Warning!</strong> You need to run Calculate or Edit-Selected to calculate risk analysis
+                </div> -->
+                    {% endif %}
+                {% endif %}
+                </tbody>
+            </table>
+
+         {#          Pagination div  #}
+            <div>
+                {% if obj.has_other_pages %}
+              <ul class="pagination">
+                {% if obj.has_previous %}
+                  <li><a href="?page={{ obj.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&laquo;</span></li>
+                {% endif %}
+                {% for i in obj.paginator.page_range %}
+                  {% if obj.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                  {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if obj.has_next %}
+                  <li><a href="?page={{ obj.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+              </ul>
+            {% endif %}
+            </div>
+
+
+{#            tool div #}
+            <br>
+            <script>
+                    $( document ).ready(function() {
+                      setTimeout(() => {
+                        var isDisabledBtn = 0;
+                        $(".checkboxClass").each(function(){
+                        console.log(this.checked);
+                          if(this.checked) {
+                            isDisabledBtn = 1;
+                          }
+                        })
+                        if(isDisabledBtn == 1){ 
+                            $("#edit").attr("disabled", false);
+                            $("#sub").attr("disabled", false);
+                            $("#cal").attr("disabled", false);
+                            $("#recal").attr("disabled", false);
+                            $("#exportPDF").attr("disabled", false);
+                            $("#myexcelFile").attr("disabled", false);
+                            $("#submitFile").attr("disabled", false);
+                        } else {
+                            $("#edit").attr("disabled", true);
+                            $("#sub").attr("disabled", true);
+                            $("#cal").attr("disabled", true);
+                            $("#recal").attr("disabled", true);
+                            $("#exportPDF").attr("disabled", true);
+                            $("#myexcelFile").attr("disabled", true);
+                            $("#submitFile").attr("disabled", true);
+                        }
+                        // $("#checkboxAllNormal").prop("checked", false);
+                      }, 10);
+                    });
+                function RecalClick() {
+                    document.getElementById('listProposal').submit();
+                    ShowLoading();
+                    window.onload=function(){
+                    alert("done");
+                    };
+                    return false;
+                }
+                function ShowLoading() {
+                    var div = document.createElement('div');
+                    var img = document.createElement('img');
+                    img.src = '{% static 'image/loading/Pacman-1s-100px.gif' %}';
+                    div.style.cssText = "position: fixed;left: 50%; top: 30%; width: 300px; text-align: center; background: rgba(54, 25, 25, .00004); border: 0px solid #000;";
+                    div.appendChild(img);
+                    document.body.appendChild(div);
+                    $("#sub").attr('disabled',true);
+                    $("#edit").attr('disabled', true);
+                    $("#recal").attr('disabled', true);
+                    $("#cal").attr('disabled', true);
+                    $("#exportPDF").attr('disabled', true);
+                    $("#submitFile").attr('disabled', true);
+                    return true;
+                }
+                $("input[id='checkbox']").change(function (e) {
+                    var isChecked = $(this).prop("checked");
+                    if (isChecked == false) {
+                        $("#submitFile").prop('disabled', true);
+                        $("#File").attr("disabled", true);
+                        $("#myexcelFile").prop('disabled', true);
+                        $("#edit").attr("disabled", true);
+                        $("#sub").attr("disabled", true);
+                        $("#recal").attr("disabled", true);
+                        $("#cal").attr("disabled", true);
+                        $("#exportPDF").attr("disabled", true);
+                        $("#submitFile").attr("disabled", true);
+                    }
+                    else {
+{#                      $("#submitFile").prop('disabled', false);#}
+                        $("#File").attr("disabled", false);
+                        $("#myexcelFile").prop('disabled', false);
+                        $("#edit").attr("disabled", false);
+                        $("#sub").attr("disabled", false);
+                        $("#recal").attr("disabled", false);
+                        $("#cal").attr("disabled", false);
+                        $("#exportPDF").attr("disabled", false);
+                        $("#submitFile").attr("disabled", false);
+                    }
+                });
+
+                $("input[id='myexcelFile']").change(function (e) {
+                    var $this = $(this);
+                    var filename = $this.val().split('\\').pop();
+                    if(filename.endsWith(".csv") || filename.endsWith(".xls") || filename.endsWith(".xlsx") || filename.endsWith(".XLS")){
+                        $("#filestatus").text("File selected: " +filename);
+                        $("#filestatus").css("color", "green");
+                        $("#submitFile").prop("disabled",false);
+                    }
+                    else {
+                        $("#filestatus").text("File isn't supported! Please select *.xls | *.xlsx | *.csv file");
+                        $("#filestatus").css("color", "red");
+                        $("#submitFile").prop("disabled",true);
+                    }
+                });
+                $(document).ready(function() {
+                      $("input[type=checkbox]").prop("checked", false);
+                      $("input[type=checkbox]:first").prop("checked", true);
+
+                      $("input[type=checkbox]").click(function(event) {
+                        $("input[type=checkbox]").prop("checked", false);
+                        $(this).prop("checked", true);
+
+                        //event.preventDefault();
+                      });
+                    });
+                    window.onload = function() {
+                      document.querySelectorAll("INPUT[type='checkbox']").forEach(function(rd) {
+                        rd.addEventListener("mousedown", function() {
+                          if(this.checked) {
+                            this.onclick=function() {
+                              this.checked=false
+                            }
+                          } else {
+                            this.onclick=null
+                          }
+                        })
+                      })
+                    }
+
+            </script>
+            </div>
+
+            
+            
+            <div style="text-align: center; margin-top: 5px;">
+              <input type="file" id="" name="myexcelFile" accept="text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" style="display: none" disabled>
+              {% if not risk %}
+              <button type="submit" class="btn btn-success" id="cal" name="_recal" onclick="RecalClick();"  disabled><i class="fa fa-recycle">&emsp;Calculate</i></button>
+              {% else %}
+              <button type="submit" class="btn btn-success" id="recal" name="_recal" onclick="RecalClick();"  disabled><i class="fa fa-recycle">&emsp;Re-Calculate</i></button>
+              {% endif %}
+              <button type="submit" name="_export" id="exportPDF" class="btn btn-primary" disabled><i class="fa fa-document">Export PDF</i> </button>
+              <!-- <a style="text-align: center">---------------------------------------------------------------------------------</a> -->
+              <!--<label for="myexcelFile" id="File" class="btn btn-primary" disabled><i class="fa fa-cloud-upload" >&emsp;Import excel file from Dcada/Dcs</i></label>-->
+              <input type="file" id="myexcelFile" name="myexcelFile" accept="text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" style="display: none" disabled>
+              <!-- <span id="filestatus" style="font-family: 'Times New Roman'; font-size: 16px;">None file selected...</span> -->
+              <button type="submit" name="_newscada" id="submitFile" class="btn btn-primary" disabled><i class="fa fa-cloud-upload">&emsp;Import excel file from Dcada/Dcs</i></button>
+          </div>
+        </div>
+        <script>
+            function myFunction() {
+              var input, filter, table, tr,trTank, td,td4, i, txtValue;
+              input = document.getElementById("myInput");
+              filter = input.value.toUpperCase();
+              table = document.getElementById("mytable");
+              tr = table.getElementsByTagName("tr");
+              for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                td4 = tr[i].getElementsByTagName("td")[4];
+                if (td) {
+                  txtValue = td.textContent || td.innerText;
+                  if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                  } else {
+                    tr[i].style.display = "none";
+                  }
+                }
+              }
+            }
+        </script>
+    </form>
+{% endblock %}

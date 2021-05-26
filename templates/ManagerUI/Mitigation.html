@@ -1,0 +1,172 @@
+{% extends 'BaseUI/BaseManager/ManagerHome.html' %}
+<!-------------- BLOCK MENU ---------------->
+{% block homedetail %}{% url 'managerhomedetail' siteID%}{% endblock %}
+{% block listmana %}{% url 'manager' siteID %}{% endblock %}
+{% block calculate %}{% url 'calculatefunctionmanager' siteID %}{% endblock %}
+{% block toolmanage %}{% url 'toolmanager' siteID %}{% endblock %}
+<!----------------- END BLOCK----------------->
+{% block data-content%}
+    <style>
+        main {display: flex;}
+        main > * {border: 1px solid;}
+        table {border-collapse: collapse; font-family: helvetica}
+        td, th {border:  1px solid;
+              padding: 10px;
+              min-width: 200px;
+              background: white;
+              box-sizing: border-box;
+              text-align: left;
+        }
+        .table-container {
+          position: relative;
+          max-height:  600px;
+
+          overflow: scroll;
+        }
+
+        thead th {
+          position: -webkit-sticky;
+          position: sticky;
+          top: 0;
+          z-index: 2;
+          background: hsl(20, 50%, 70%);
+        }
+
+        thead th:first-child {
+          left: 0;
+          z-index: 3;
+        }
+
+        tfoot {
+          position: -webkit-sticky;
+          bottom: 0;
+          z-index: 2;
+        }
+
+        tfoot td {
+          position: sticky;
+          bottom: 0;
+          z-index: 2;
+          background: hsl(20, 50%, 70%);
+        }
+
+        tfoot td:first-child {
+          z-index: 3;
+        }
+
+        tbody {
+          overflow: scroll;
+          height: 200px;
+        }
+
+        /* MAKE LEFT COLUMN FIXEZ */
+        tr > :first-child {
+          position: -webkit-sticky;
+          position: sticky;
+          background: hsl(180, 50%, 70%);
+          left: 0;
+        }
+        /* don't do this */
+        tr > :first-child {
+          box-shadow: inset 0px 1px black;
+        }
+    </style>
+<!----------------- bosung---------------->
+<form id="mitigation" method="post" >
+    {% csrf_token %}
+    <div class="container">
+        <ul class="nav nav-pills">
+            <li class="active"><a data-toggle="pill" href="#menu0" style="padding-top: 10px;padding-bottom: 10px;background-color: #DB812D;color: white;">Design</a></li>
+            <li><a data-toggle="pill" style="padding-top: 10px;padding-bottom: 10px;background-color: #DB812D;color: white;" href="#menu1">Materials Selection</a></li>
+            <li><a data-toggle="pill" style="padding-top: 10px;padding-bottom: 10px;background-color: #DB812D;color: white;" href="#menu2">Protective Coatings</a></li>
+            <li><a data-toggle="pill" style="padding-top: 10px;padding-bottom: 10px;background-color: #DB812D;color: white;" href="#menu3">Cathadic Protective</a></li>
+            <li><a data-toggle="pill" style="padding-top: 10px;padding-bottom: 10px;background-color: #DB812D;color: white;" href="#menu4">Modification of Environment</a></li>
+        </ul>
+        <div class="tab-content">
+            <!-------------- Bảng1 ---------------->
+            <div id="menu0" class="tab-pane fade in active" >
+                <div style="font-size: 15px; color: #444444;background-color:white">
+                    <p>bảng 1</p>
+                    <div class="table-container">
+                        <div class="table-horizontal-container">
+                            <table class="unfixed-table">
+                                <thead>
+                                    <tr><th>Method</th><th>Materials Selection</th><th>Process Parameters</th><th>Contruction Parameters</th><th>Geometry for Drainage</th><th>Dissimilar Metals</th><th>Operating Lifetime</th><th>Maintenance and Inspection</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><th>Column one</th><td>Column two</td><td>Column three</td><td>Column four</td><td>Column firve</td><td>Column six</td><td>Column seven</td><td>Column eight</td></tr>
+                                    <tr><th>Column one</th><td>Column two</td><td>Column three</td><td>Column four</td><td>Column firve</td><td>Column six</td><td>Column seven</td><td>Column eight</td></tr>
+                                    <tr><td>Column one</td><td>Column two</td><td>Column three</td><td>Column four</td><td>Column firve</td><td>Column six</td><td>Column seven</td><td>Column eight</td></tr>
+                                    <tr><td>Column one</td><td>Column two</td><td>Column three</td><td>Column four</td><td>Column firve</td><td>Column six</td><td>Column seven</td><td>Column eight</td></tr>
+                                    <tr><td>Column one</td><td>Column two</td><td>Column three</td><td>Column four</td><td>Column firve</td><td>Column six</td><td>Column seven</td><td>Column eight</td></tr>
+                                    <tr><td>Column one</td><td>Column two</td><td>Column three</td><td>Column four</td><td>Column firve</td><td>Column six</td><td>Column seven</td><td>Column eight</td></tr>
+                                    <tr><td>Column one</td><td>Column two</td><td>Column three</td><td>Column four</td><td>Column firve</td><td>Column six</td><td>Column seven</td><td>Column eight</td></tr>
+                                    <tr><td>Column one</td><td>Column two</td><td>Column three</td><td>Column four</td><td>Column firve</td><td>Column six</td><td>Column seven</td><td>Column eight</td></tr>
+                                    <tr><td>Column one</td><td>Column two</td><td>Column three</td><td>Column four</td><td>Column firve</td><td>Column six</td><td>Column seven</td><td>Column eight</td></tr>
+                                    <tr><td>Column one</td><td>Column two</td><td>Column three</td><td>Column four</td><td>Column firve</td><td>Column six</td><td>Column seven</td><td>Column eight</td></tr>
+                                    <tr><td>Column one</td><td>Column two</td><td>Column three</td><td>Column four</td><td>Column firve</td><td>Column six</td><td>Column seven</td><td>Column eight</td></tr>
+                                    <tr><td>Column one</td><td>Column two</td><td>Column three</td><td>Column four</td><td>Column firve</td><td>Column six</td><td>Column seven</td><td>Column eight</td></tr>
+                                    <tr><td>Column one</td><td>Column two</td><td>Column three</td><td>Column four</td><td>Column firve</td><td>Column six</td><td>Column seven</td><td>Column eight</td></tr>
+                                    <tr><td>Column one</td><td>Column two</td><td>Column three</td><td>Column four</td><td>Column firve</td><td>Column six</td><td>Column seven</td><td>Column eight</td></tr>
+                                    <tr><td>Column one</td><td>Column two</td><td>Column three</td><td>Column four</td><td>Column firve</td><td>Column six</td><td>Column seven</td><td>Column eight</td></tr>
+                                    <tr><td>Column one</td><td>Column two</td><td>Column three</td><td>Column four</td><td>Column firve</td><td>Column six</td><td>Column seven</td><td>Column eight</td></tr>
+                                    <tr><td>Column one</td><td>Column two</td><td>Column three</td><td>Column four</td><td>Column firve</td><td>Column six</td><td>Column seven</td><td>Column eight</td></tr>
+                                    <tr><td>Column one</td><td>Column two</td><td>Column three</td><td>Column four</td><td>Column firve</td><td>Column six</td><td>Column seven</td><td>Column eight</td></tr>
+                                    <tr><td>Column one</td><td>Column two</td><td>Column three</td><td>Column four</td><td>Column firve</td><td>Column six</td><td>Column seven</td><td>Column eight</td></tr>
+                                    <tr><td>Column one</td><td>Column two</td><td>Column three</td><td>Column four</td><td>Column firve</td><td>Column six</td><td>Column seven</td><td>Column eight</td></tr>
+                                    <tr><td>Column one</td><td>Column two</td><td>Column three</td><td>Column four</td><td>Column firve</td><td>Column six</td><td>Column seven</td><td>Column eight</td></tr>
+                                    <tr><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td></tr>
+                                    <tr><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td></tr>
+                                    <tr><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td></tr>
+                                    <tr><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td></tr>
+                                    <tr><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td></tr>
+                                    <tr><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td></tr>
+                                    <tr><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td></tr>
+                                    <tr><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td></tr>
+                                    <tr><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td></tr>
+                                    <tr><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td></tr>
+                                    <tr><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td></tr>
+                                    <tr><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td></tr>
+                                    <tr><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td></tr>
+                                    <tr><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td></tr>
+                                    <tr><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td><td>Column</td></tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr><td>Footer</td><td>Footer</td><td>Footer</td><td>Footer</td><td>Footer</td><td>Footer</td><th>Footer</th><th>Footer</th></tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    </object>
+                    </article>
+                </div>
+            </div>
+            <!-------------- Bảng2 ---------------->
+            <div id="menu1" class="tab-pane fade">
+               <div style="font-size: 15px; color: #444444;background-color:white">
+                    <p>bảng 2</p>
+                </div>
+            </div>
+            <!-------------- Bảng3 ---------------->
+            <div id="menu2" class="tab-pane fade">
+               <div style="font-size: 15px; color: #444444;background-color:white">
+                    <p>bảng 3</p>
+                </div>
+            </div>
+            <!-------------- Bảng4 ---------------->
+            <div id="menu3" class="tab-pane fade">
+               <div style="font-size: 15px; color: #444444;background-color:white">
+                    <p>bảng 4</p>
+                </div>
+            </div>
+            <!-------------- Bảng5 ---------------->
+            <div id="menu4" class="tab-pane fade">
+               <div style="font-size: 15px; color: #444444;background-color:white">
+                    <p>bảng 5</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!----------------- END bosung---------------->
+{% endblock %}

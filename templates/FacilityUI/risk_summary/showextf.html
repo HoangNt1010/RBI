@@ -1,0 +1,583 @@
+{% extends 'BaseUI/BaseFacility/baseRiskSummary.html' %}
+
+{% load staticfiles %}
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactor' proposalID %}{% endblock %}
+{% block fcof%}{% url 'fullyConsequence' proposalID %}{% endblock %}
+{% block acof%}{% url 'areaBasedCoF' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrix' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChart' proposalID %}{% endblock %}
+{% block corri %}{% url 'corrision' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'damgeFactor' proposalID%}{% endblock %}
+
+{% block data-content %}
+    <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+      .card {
+          background: #ffffff;
+      }
+
+    .scheduler-border {
+        border: none;
+        padding: 0 1.4em 1.4em 1.4em;
+        margin: 0 0 1.5em 0;
+        font-size: 1.1em ;
+        text-align: left ;
+        text-decoration-color: #444444;
+    }
+    .row{
+        text-align: left;
+    }
+    .arrow-down {
+        margin-left: 50%;
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-top: 2px solid;
+        border-right: 2px solid;
+        transform: rotate(135deg);
+      }
+    </style>
+    <!--suppress ALL -->
+    <form id="inspectionplan" method="post" class="card" >
+    {% csrf_token %}
+       <div style=" text-align: center"><caption><b style="font-size: 20px; color: #444444;">External Corrosion Damage Factor</b></caption></div>
+
+                <!-----------BlOCK FULLY QUANTITIVE FCOF AND CATEGORY--------->
+        <fieldset class="scheduler-border">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Assessment General Information</b></legend>
+                    <div class="row">
+                        <div class="col-md-4">Equipment Number</div>
+                        <div class="col-md-6"><form><input  type="text" size="50px" value="{{ a.EquipmentNumber }}"></form></div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Component Number</div>
+                        <div class="col-md-6"><form><input  type="text" size="50px" value="{{ a.ComponentNumber }}"> </form></div>
+                    </div>
+                    <div class="row">
+                         <div class="col-md-4">Assessment Name</div>
+                        <div class="col-md-6"><form><input  type="text" size="50px" value="{{ a.Assessment }}"> </form></div>
+                    </div>
+                </fieldset>
+
+
+        <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Assessment Data Input</b></legend>
+            <div>
+           <a class="arrow-down" data-toggle="collapse" href="#c" aria-expanded="false" >
+              </a></div>
+               <div class="collapse" id="c">
+                    <div class="row">
+                        <div class="col-md-3">Assessment Date</div>
+                        <div class="col-md-3"><form><input type="text" name="assessmentdate"  id="assessmentdate" placeholder="yyyy-mm-dd" value="{{ a.assessmentDate }}">
+                        <script>
+                            $( "#assessmentdate" ).datepicker({
+                            dateFormat: 'yy-mm-dd'
+                        });
+
+                        </script></form>
+                        </div>
+                        <div class="col-md-3">Commission Date</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.CommissionDate }}"> </form></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">Risk Analysis Period</div>
+                        <div class="col-md-3"><form><input  type="text" value="36 months"> </form></div>
+                        <div class="col-md-3">Last Inspection Date</div>
+                        <div class="col-md-3"><form><input  type="text" name="lastInspection"  id="lastInspection" placeholder="yyyy-mm-dd" value="{{ a.CommissionDate }}">
+                        <script>
+                            $( "#lastInspection" ).datepicker({
+                            dateFormat: 'yy-mm-dd'
+                        });
+
+                        </script></form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">Number of A Effectiveness Inspections</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.NA_EXTERNAL }}"> </form></div>
+                        <div class="col-md-3">Number of B Effectiveness Inspections</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.NB_EXTERNAL }}"> </form></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">Number of C Effectiveness Inspections</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.NC_EXTERNAL }}"> </form></div>
+                        <div class="col-md-3">Number of D Effectiveness Inspections</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.ND_EXTERNAL }}"> </form></div>
+                    </div>
+                   <div class="row">
+                        <div class="col-md-3">Nominal Thickness</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.NomalThick }}"> </form></div>
+                        <div class="col-md-3">Minimum Measured Thickness</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.CurrentThick }}"> </form></div>
+                    </div>
+                   <div class="row">
+                        <div class="col-md-3">Design Pressure</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.Pressure }}"> </form></div>
+                        <div class="col-md-3">Minimun Required Thickness</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.MinimunRequiredThickness }}"> </form></div>
+                    </div>
+                   <div class="row">
+                        <div class="col-md-3">Level of Confidence in Corrosion Sources</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.CR_Confidents_Level }}"> </form></div>
+                        <div class="col-md-3">Diameter</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.Diametter }}"> </form></div>
+                    </div>
+                   <div class="row">
+                        <div class="col-md-3">External Coating Quality</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.EXTERN_COAT_QUALITY }}"> </form></div>
+                        <div class="col-md-3">External Coating Installation Date</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.ExternalCoatingInstallationDate }}"> </form></div>
+                    </div>
+                   <div class="row">
+                        <div class="col-md-3">Support Configuration Does Not Allow Coating Maintenance</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.SUPPORT_COATING }}"> </form></div>
+                        <div class="col-md-3">Interface to Soil or Water</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.INTERFACE_SOIL_WATER }}"> </form></div>
+                    </div>
+                   <div class="row">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3">External Environment</div>
+                        <div class="col-md-3"><form><input  type="text" value="{{ a.EXTERNAL_EVIRONMENT }}"> </form></div>
+                    </div>
+               </div>
+            </fieldset>
+            <!-------Khối Intermediate Results------>
+            <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Intermediate Results </b></legend>
+                 <div>
+                <a class="arrow-down" data-toggle="collapse" href="#b" aria-expanded="false" >
+              </a></div>
+               <div class="collapse" id="b">
+                    <div class="row">
+                        <div class="col-md-6">Shape</div>
+                        <div class="col-md-3"><form><input  type="text" size="10px" value="{{ a.shape }}"> </form></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">Shape Factor <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                        <div class="col-md-3"><form><input  type="text" size="10px" value="{{ a.ShapeFactor }}"> </form></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">Flow Stress <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal3">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                        <div class="col-md-3"><form><input  type="text" size="10px" value="{{ a.flowStress }}"> </form></div>
+                    </div>
+                   <div class="row">
+                        <div class="col-md-6">Strength Ratio- Internal Pressure/Hoop Stress <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal4">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                        <div class="col-md-3"><form><input  type="text" size="10px" value="{{ a.strengthRatioIn }}"> </form></div>
+                    </div>
+                   <div class="row">
+                        <div class="col-md-6">Strength Ratio- Minimum Structural Thickness Governs <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal5">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                        <div class="col-md-3"><form><input  type="text" size="10px" value="{{ a.strengthRatioMin }}"> </form></div>
+                    </div>
+                   <div class="row">
+                        <div class="col-md-6">Corrosion Rate Adjustment Factor for Pipe Supports, FPS <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal6">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                        <div class="col-md-3"><form><input  type="text" size="10px" value="{{ a.FPS }}"> </form></div>
+                    </div>
+                   <div class="row">
+                        <div class="col-md-6">Corrosion Rate Adjustment Factor for Interface for Soil or Water, FIP <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal7">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                        <div class="col-md-3"><form><input  type="text" size="10px" value="{{ a.FIP }}"> </form></div>
+                    </div>
+                   <div class="row">
+                        <div class="col-md-6">Corrosion Rate <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal8">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                        <div class="col-md-3"><form><input  type="text" size="10px" value="{{ a.CR }}"> </form></div>
+                    </div>
+
+               </div>
+            </fieldset>
+            <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Structural Reliability Theory Parameters </b></legend>
+                <div>
+                <a class="arrow-down" data-toggle="collapse" href="#a" aria-expanded="false" >
+              </a></div>
+               <div class="collapse" id="a">
+                    <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-1"><form><input  type="text" style="background-color: #0C5BED; color: #FFFFFF" size="54px"  value="0 months                    36 months               72 months"> </form></div>
+                    </div>
+                    <div class="row">
+                            <div class="col-md-6">Prior Probability of Corrosion Rate Data Confidence <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal8">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.priorProbabilities1 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.priorProbabilities2 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.priorProbabilities3 }}"> </form></div>
+                    </div>
+                   <div class="row">
+                            <div class="col-md-6">Inspection Effectiveness Factor <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal8">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.inspectioneffectivenessfactors1 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.inspectioneffectivenessfactors2 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.inspectioneffectivenessfactors3 }}"> </form></div>
+                    </div>
+                   <div class="row">
+                            <div class="col-md-6">Posterior Probability <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal8">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.posteriorProbabilities1 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.posteriorProbabilities2 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.posteriorProbabilities3 }}"> </form></div>
+                    </div>
+                   <div class="row">
+                            <div class="col-md-6">The Beta Reliability Indices at 0AP <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal8">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.beta11 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.beta12 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.beta13 }}"> </form></div>
+                    </div>
+                   <div class="row">
+                            <div class="col-md-6">The Beta Reliability Indices at 1AP <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal8">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.beta21 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.beta22 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.beta23 }}"> </form></div>
+                    </div>
+                   <div class="row">
+                            <div class="col-md-6">The Beta Reliability Indices at 2AP <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal8">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.beta31 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.beta32 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.beta33 }}"> </form></div>
+                    </div>
+                   <br><br>
+                    <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-1"><form><input  type="text" style="background-color: #0C5BED; color: #FFFFFF" size="54px"  value="0 months                    36 months               72 months"> </form></div>
+                    </div>
+
+                   <div class="row">
+                            <div class="col-md-6">Years Since Last Inspection, age, tk <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal8">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.ageIns1 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.ageIns2 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.ageIns3 }}"> </form></div>
+                    </div>
+                   <div class="row">
+                            <div class="col-md-6">Year Since Coating Has Been Ineffective, age, coat <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal8">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.ageCoat1 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.ageCoat2 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.ageCoat3 }}"> </form></div>
+                    </div>
+                   <div class="row">
+                            <div class="col-md-6">Year in Service, Age <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal8">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.age1 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.age2 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.age3 }}"> </form></div>
+                    </div>
+                   <div class="row">
+                            <div class="col-md-6">Wall Loss Fraction <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal8">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.WallLossFraction1 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.WallLossFraction2 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.WallLossFraction3 }}"> </form></div>
+                    </div>
+                    <br>
+                   <div class="row">
+                            <div class="col-md-6">External Corrosion Damage Factor <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal8">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.extf1 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.extf2 }}"> </form></div>
+                            <div class="col-md-2"><form><input  type="text" size="10px" value="{{ a.extf3 }}"> </form></div>
+                    </div>
+               </div>
+
+                <div id="myModal2" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+                            <img src="{% static 'image/help/shapeFactor.PNG' %}">
+                          <br>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal3" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+                          <p>The Flow Stress <img src="{% static 'image/proposal/extcorrosion_flowstress.JPG' %}"> can be calculated by:</p>
+                          <img src="{% static 'image/proposal/extcorrosion_flowstress_equation.JPG' %}">
+                          <br>
+                          <p>Meanwhile:</p>
+                          <p style="padding-left: 100px">YS: the Yield Strength</p>
+                          <p style="padding-left: 100px">TS: the Tensile Strength</p>
+                          <p style="padding-left: 100px">E:  the weld joint efficiency or quality code from the original construction code</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal4" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+                          <p>Strength Ratio: <img src="{% static 'image/proposal/strengthcorr_ratio.JPG' %}"> Internal Pressure/Hoop Stress</p>
+                          <img src="{% static 'image/proposal/extcorr_strength1.JPG' %}">
+                          <p>Meanwhile:</p>
+                          <p style="padding-left: 100px"><img src="{% static 'image/proposal/extcorrosion_flowstress.JPG' %}">: the Flow Stress </p>
+                          <p style="padding-left: 100px"><b>P</b>: the Pressure (operating, design, PRD overpressure, etc.) used to calculate the limit state
+function for POF</p>
+                          <p style="padding-left: 100px"><img src="{% static 'image/proposal/extcorr_strength_t.JPG' %}">: the measured thickness reading form prevous inspection with respect to wall loss associated
+with external corrosion</p>
+                          <p style="padding-left: 100px"><b>D</b>:  the component inside diameter</p>
+                          <p style="padding-left: 100px"><img src="{% static 'image/proposal/extcorr_anpha.JPG' %}">: the component geometry shape factor</p>
+                          <br>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal5" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+                          <p>Strength Ratio: <img src="{% static 'image/proposal/strengthcorr_ratio.JPG' %}"> Minimum Structural Thickness Governs </p>
+                          <img src="{% static 'image/proposal/extcorr_strength2.JPG' %}">
+                          <p>Meanwhile:</p>
+                          <p style="padding-left: 100px"><img src="{% static 'image/proposal/extcorrosion_flowstress.JPG' %}">: the Flow Stress </p>
+                          <p style="padding-left: 100px"><b>E</b>: the weld joint efficiency or quality code from the original construction code</p>
+                          <p style="padding-left: 100px"><img src="{% static 'image/proposal/extcorr_strength_t.JPG' %}">: the measured thickness reading form prevous inspection with respect to wall loss associated
+with external corrosion</p>
+                          <p style="padding-left: 100px"><b>S</b>: the allowable stress</p>
+                          <p style="padding-left: 100px"><img src="{% static 'image/proposal/extcorr_tmin.JPG' %}">: the minimum required thickness based on applicable construction code</p>
+                          <p style="padding-left: 100px"><img src="{% static 'image/proposal/extcorr_tc.JPG' %}">: the minimum structural thickness of the component base material</p>
+                          <br>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal6" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+                          <p>Corrosion Rate Adjustment Factor for Equipment Design or Fabrication, FEQ (Pipe Supports, FPS)</p>
+                          <p>If the equipment has a design which allows water
+                              to pool and increase metal loss rates, such as piping supported directly on beams, vessel stiffening rings or
+                              insulation supports or other such configuration that does not allow water egress and/or does not allow for
+                              proper coating maintenance, then FEQ = 2 ; otherwise, FEQ = 1.</p>
+                          <br>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal7" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+                          <p>Corrosion Rate Adjustment Factor for Interface for Soil or Water, FIP</p>
+                          <p>FIF – If the piping has an interface where it enters either soil or water, then FIF = 2; otherwise, FIF = 1.</p>
+                          <br>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal8" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+                          <p>Corrosion Rate: Cr</p>
+                          <img src="{% static 'image/proposal/extcorr_corrrate.JPG' %}">
+                          <br>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal9" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+
+                          <br>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal10" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+
+                          <br>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal11" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+
+                          <br>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal12" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+
+                          <br>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal13" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+
+                          <br>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal14" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+
+                          <br>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal15" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+
+                          <br>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal16" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+
+                          <br>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal17" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+
+                          <br>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal18" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+
+                          <br>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal19" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+
+                          <br>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </fieldset>
+        </fieldset>
+    </form>
+
+{% endblock %}

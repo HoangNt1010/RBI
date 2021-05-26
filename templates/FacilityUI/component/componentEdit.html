@@ -1,0 +1,79 @@
+{% extends 'BaseUI/BaseFacility/baseComponent.html' %}
+
+<!--------------- BLOCK MENU ------------>
+{% block listcomp %}{% url 'componentDisplay' equipmentID %}{% endblock %}
+{% block newcomp %}{% url 'componentNew' equipmentID %}{% endblock %}
+{% block backeq %}{% url 'equipmentDisplay' facilityID %}{% endblock %}
+<!-------------- END BLOCK ------------->
+
+{% block data-content %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="input-data">
+            <div class="title-verifitcation" >
+                <h1>Edit Component</h1>
+            </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        {% if data.link %}
+                        <input type="checkbox" id="comRisk" name="comRisk" checked>
+                        {% else %}
+                        <input type="checkbox" id="comRisk" name="comRisk">
+                        {% endif %}
+                        <label class="color-white" style="font-weight: lighter;" for="comRisk">Component Risk Links to Component Risk</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 color-white">Component Number:<span style="color: red">*</span></div>
+                    <div class="col-md-8"><input class="form-control" type="text" value="{{ data.componentnumber }}"  name="componentNumer" placeholder="Input component number here!" required></div>
+                </div>
+
+                {% if error.exist %}
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-8"><span style="color: red; font-size: 16px">{{ error.exist }}</span></div>
+                </div>
+                {% endif %}
+
+                <div class="row">
+                    <div class="col-md-4 color-white">Component Type:<span style="color: red">*</span></div>
+                    <div class="col-md-8">
+                        <select class="form-control" name="componentType" id="componentType" required>
+                            <option selected>{{ data.componenttype }}</option>
+                        </select>
+                    </div>
+                </div>
+                    <div class="row">
+                    <div class="col-md-4 color-white">Risk Target ($/year):<span style="color: red">*</span></div>
+                    <div class="col-md-8"><input class="form-control" type="text"  name="riskTarget" value="{{ data.risktarget }}" placeholder="Input risk target here!" required></div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">API Component Type:<span style="color: red">*</span></div>
+                    <div class="col-md-8">
+                        <select class="form-control" id="apiComponentType" name="apiComponentType" required>
+                            <option selected>{{ data.apicomponenttype }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 color-white">Component Name:<span style="color: red">*</span></div>
+                    <div class="col-md-8"><input class="form-control" type="text"  value="{{ data.componentname }}" name="componentName" placeholder="Input component name here!" required></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 color-white">Description:</div>
+                    <div class="col-md-8">
+                        <textarea class="form-control" type="text" name="decription" placeholder="Write component description here!">{{ data.description }}</textarea>
+                    </div>
+                </div>
+
+            <div  style="text-align:center">
+                <button type="submit" class="btn btn-primary mr-16">Submit</button>
+                <a class="btn btn-default" href="{% url 'componentDisplay' equipmentID %}">Cancel</a>
+            </div>
+        </div>
+    </form>
+{% endblock %}

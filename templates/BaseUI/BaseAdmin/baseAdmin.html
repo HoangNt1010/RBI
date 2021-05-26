@@ -1,0 +1,220 @@
+{% extends 'BaseUI/BaseWeb/base.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block library %}
+    <style>
+         fieldset.scheduler-border {
+            border: solid 1px #DDDDDD !important;
+            padding: 0 10px 10px 10px;
+            border-bottom: none;
+        }
+
+        legend.scheduler-border {
+            width: auto !important;
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            color: blue;
+        }
+    </style>
+    <script>
+        $(document).ready(function() {
+            $('#chkHeader').click(function() {
+                var isChecked = $(this).prop("checked");
+                $('#mytable tr:has(td)').find('input[type="checkbox"]').prop('checked', isChecked);
+            });
+
+            $('#mytable tr:has(td)').find('input[type="checkbox"]').click(function() {
+                var isChecked = $(this).prop("checked");
+                var isHeaderChecked = $("#chkHeader").prop("checked");
+                if (isChecked == false && isHeaderChecked) {
+                    $("#chkHeader").prop('checked', isChecked);
+                }
+                else {
+                    $('#mytable tr:has(td)').find('input[type="checkbox"]').each(function() {
+                        if ($(this).prop("checked") == false)
+                            isChecked = false;
+                     });
+                    $("#chkHeader").prop('checked', isChecked);
+                }
+            });
+        });
+         function Sub(){
+	        var Status;
+	        if (confirm("Are you sure want to delete this item?")) {
+                Status = '_delete';
+                document.getElementById("sub").name = Status;
+            }
+	        else {
+                Status = '_cancel';
+                document.getElementById("sub").name = Status;
+            }
+        }
+    </script>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Business{% endblock %}
+
+{% block navbar %}
+    <span style="margin: 0 10px 0 10px" class="custom-span" id="datetime"></span>
+    <script>
+        var dt = new Date();
+        document.getElementById("datetime").innerHTML = dt.toLocaleString();
+        setInterval(() => {
+            dt = new Date();
+            document.getElementById("datetime").innerHTML = dt.toLocaleString();
+        }, 1000);
+    </script>
+    <a class="a-logout" href="{% url 'logout' %}" data-toggle="tooltip" data-placement="bottom" title="Sign Out"><i class="fa fa-sign-out"></i></a>
+    <span class="custom-span"><img src='/static/image/logo/england.png' style="padding-left: 6px;height: 15px; margin-top: 5px;"></span>
+    <!--<a class="a-normal" href="{% url 'help' %}" data-toggle="tooltip" data-placement="bottom" title="Help"><i class="fa fa-question"></i></a>-->
+    <a class="a-normal" href="" data-toggle="modal" data-target="#notiModal"  data-placement="bottom" title="Notification" onclick="hidenoti()" style="position: relative"><i class="fa fa-bell">{% if countnoti %}<span id="countnoti" class="forum-notification">{{ countnoti }}</span>{% endif %}</i></a>
+    <a class="a-normal" href="" data-toggle="modal" data-target="#myModal" data-placement="bottom" title="Profile"><i class="fa fa-user"></i></a>
+    <!-- <a class="a-normal" href="{% url 'messagesInbox' %}" data-toggle="tooltip" data-placement="bottom" title="Messages"><i class="fa fa-wechat"><span class="badge red" style="color: red">{% if count %}{{ count }}{% endif %}</span></i></a>
+    <a class="a-normal" href="{% url 'forum' %}" data-toggle="tooltip" data-placement="bottom" title="Forum"><i class="fa fa-dedent"></i></a>
+    <a class="a-normal" href="{% url 'calculatefunctionmanager' siteID %}" data-toggle="tooltip" data-placement="bottom" title="Verification"><i class="fa fa-exclamation-triangle"></i></a>
+    <a class="a-normal" href="" data-toggle="modal" data-target="#LanguageModal" data-placement="bottom"><i class="fa fa-language"></i></a>
+    <a class="a-normal active" href="{% url 'managerhomedetail' siteID %}" data-toggle="tooltip" data-placement="bottom" title="Home"><i class="fa fa-home"></i></a> -->
+{% endblock %}
+
+{% block content %}
+    <div class="business-normal">
+        <div class="sidebar" id="sidebar">
+            {% block vertical %}{% endblock %}
+            <a id="sidebar_btn"><label for="checkbar"><i class="fas fa-bars" > &ensp; <span>Collapse</span></i> </label></a>
+        </div>
+        <article class="main" id="main">
+            {% block data-content %}{% endblock %}
+        </article>
+    </div>
+
+    <!-- Modal notification-->
+  <div class="modal" id="notiModal">
+      <div class="modal-content" style="margin-left: 60%;margin-top:60px;width: 40%;border-radius: 0px; font-size: 14px;">
+        <div class="modal-header">
+            Notification
+        </div>
+        <div class="modal-body">
+            {% for noti in noti %}
+                {% if noti.content == " deleted facility " %}
+                    <div class="noti{{ noti.state }}" style="border-bottom: 1px solid #e3e3e3;border-top: 1px solid #e3e3e3;width: 100%;text-align: left;padding-left: 15px;padding-top: 15px;padding-bottom: 10px; font-family: Arial;">
+                    <a href="{% url 'facilitiesDisplayMana' noti.link %}">
+                        <span style="color: #204d74">{{ noti.subject }}</span><span style="color: black"> {{ noti.content }} </span><span style="color: #204d74">{{ noti.object }}</span>
+                    </a>
+                    </div>
+                {% endif %}
+                {% if noti.content == " have responsed to the post " %}
+                    <div class="noti{{ noti.state }}" style="border-bottom: 1px solid #e3e3e3;border-top: 1px solid #e3e3e3;width: 100%;text-align: left;padding-left: 15px;padding-top: 15px;padding-bottom: 10px; font-family: Arial">
+                    <a href="{% url 'posts' noti.link %}">
+                        <span style="color: #204d74">{{ noti.subject }}</span><span style="color: black"> {{ noti.content }} </span><span style="color: #204d74">{{ noti.object }}</span>
+                    </a>
+                    </div>
+                {% endif %}
+                {% if noti.content == " added facility " %}
+                    <div class="noti{{ noti.state }}" style="border-bottom: 1px solid #e3e3e3;border-top: 1px solid #e3e3e3;width: 100%;text-align: left;padding-left: 15px;padding-top: 15px;padding-bottom: 10px; font-family: Arial">
+                    <a href="{% url 'facilitiesDisplayMana' noti.link %}">
+                        <span style="color: #204d74">{{ noti.subject }}</span><span style="color: black"> {{ noti.content }} </span><span style="color: #204d74">{{ noti.object }}</span>
+                    </a>
+                    </div>
+                {% endif %}
+                {% if noti.content == " added equipment " %}
+                    <div class="noti{{ noti.state }}" style="border-bottom: 1px solid #e3e3e3;border-top: 1px solid #e3e3e3;width: 100%;text-align: left;padding-left: 15px;padding-top: 15px;padding-bottom: 10px; font-family: Arial">
+                    <a href="{% url 'equipmentDisplayMana' noti.link %}">
+                        <span style="color: #204d74">{{ noti.subject }}</span><span style="color: black"> {{ noti.content }} </span><span style="color: #204d74">{{ noti.object }}</span>
+                    </a>
+                    </div>
+                {% endif %}
+                {% if noti.content == " deleted equipment " %}
+                    <div class="noti{{ noti.state }}" style="border-bottom: 1px solid #e3e3e3;border-top: 1px solid #e3e3e3;width: 100%;text-align: left;padding-left: 15px;padding-top: 15px;padding-bottom: 10px; font-family: Arial">
+                    <a href="{% url 'equipmentDisplayMana' noti.link %}">
+                        <span style="color: #204d74">{{ noti.subject }}</span><span style="color: black"> {{ noti.content }} </span><span style="color: #204d74">{{ noti.object }}</span>
+                    </a>
+                    </div>
+                {% endif %}
+                {% if noti.content == " added component " %}
+                    <div class="noti{{ noti.state }}" style="border-bottom: 1px solid #e3e3e3;border-top: 1px solid #e3e3e3;width: 100%;text-align: left;padding-left: 15px;padding-top: 15px;padding-bottom: 10px; font-family: Arial">
+                    <a href="{% url 'componentDisplayMana' noti.link %}">
+                        <span style="color: #204d74">{{ noti.subject }}</span><span style="color: black"> {{ noti.content }} </span><span style="color: #204d74">{{ noti.object }}</span>
+                    </a>
+                    </div>
+                {% endif %}
+                {% if noti.content == " deleted component " %}
+                    <div class="noti{{ noti.state }}" style="border-bottom: 1px solid #e3e3e3;border-top: 1px solid #e3e3e3;width: 100%;text-align: left;padding-left: 15px;padding-top: 15px;padding-bottom: 10px; font-family: Arial">
+                    <a href="{% url 'componentDisplayMana' noti.link %}">
+                        <span style="color: #204d74">{{ noti.subject }}</span><span style="color: black"> {{ noti.content }} </span><span style="color: #204d74">{{ noti.object }}</span>
+                    </a>
+                    </div>
+                {% endif %}
+                {% if notiVerificationmana %}
+                {% for i in notiVerificationmana %}
+                        <div style="border-bottom: 1px solid #e3e3e3;border-top: 1px solid #e3e3e3;width: 100%;text-align: left;padding-left: 15px;padding-top: 15px;padding-bottom: 10px; font-family: Arial"><a href="{% url 'historyrequest' i.facility %}">State Authority request send report request for component:{{ i.com }}, equipment:{{ i.eq }}</a></div>
+
+                {% endfor %}
+            {% endif %}
+            {% endfor %}
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn" style="color: white;background-color: #4575B7;" data-dismiss="modal">Close</button>
+        </div> -->
+      </div>
+  </div>
+
+    <!-- Modal -->
+  <div class="modal" id="myModal">
+
+      <div class="modal-content" style="margin-left: 60%;margin-top:60px;width: 40%;border-radius: 0px">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><i class="fa fa-user"></i></a> Profile</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-5"><span style="font-weight: bold; width: 40%">Name:</span></div>
+                <div class="col-md-7">{{ info.name }}</div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-5"><span style="font-weight: bold; width: 40%">Email:</span></div>
+                <div class="col-md-7">{{ info.email }}</div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-5"><span style="font-weight: bold; width: 40%">Phone number:</span></div>
+                <div class="col-md-7">{{ info.phone }}</div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-5"><span style="font-weight: bold; width: 40%">Address:</span></div>
+                <div class="col-md-7">{{ info.address }}</div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-5"><span style="font-weight: bold; width: 40%">Account:</span></div>
+                <div class="col-md-7">{{ info.kind }}</div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" style="color: white;background-color: #4575B7;" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+  <!--Language Modal-->
+  </div>
+      <div class="modal" id="LanguageModal">
+      <div class="modal-content" style="margin-left: 60%;margin-top:60px;width: 40%;border-radius: 0px">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><i class="fa fa-language"></i></a> Select language you want:</h4>
+        </div>
+        <div class="modal-body">
+            <a href="https://eng.cortekrbi.com/" ><img src='/static/image/logo/vietnam.png' style="width:70px;padding-left: 6px;height: 45px;"></a>
+            <a href="https://cortekrbi.com/" ><img src='/static/image/logo/england.png' style="width:70px;padding-left: 6px;height: 45px;"></a>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" style="color: white;background-color: #4575B7;" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,151 @@
+{% extends 'BaseUI/BaseManager/baseRiskSummaryMana.html' %}
+
+{% load staticfiles %}
+
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactorMana' proposalID %}{% endblock %}
+{% block ca%}{% url 'fullyConsequenceMana' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrixMana' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChartMana' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'proposalDisplayMana' ass.componentid_id %}{% endblock %}
+<!---------------END BLOCK--------------->
+
+{% block data-content %}
+    <form method="post">
+    {% csrf_token %}
+    {% if thongbao %}
+    <div class="alert" style="background-color:#28a745;text-align:center">
+        <p style="color:#fff"><b>Bạn đã yêu cầu kiểm định thành công</b></p>
+    </div>
+    {% endif %}
+        <div class="input-data">
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border"><b>Fully-Quantitative Financial Cosequense of Failure and Category</b></legend>
+                <!---------- BLOCK DATA--------------->
+                <!-------- block 1------------->
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-2"><b>D1</b></div>
+                    <div class="col-md-2"><b>D2</b></div>
+                    <div class="col-md-2"><b>D3</b></div>
+                    <div class="col-md-2"><b>D4</b></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">Flow Rate, bbls/day:</div>
+                    <div class="col-md-2">{{ data.flow_rate_d1 }}</div>
+                    <div class="col-md-2">{{ data.flow_rate_d2 }}</div>
+                    <div class="col-md-2">{{ data.flow_rate_d3 }}</div>
+                    <div class="col-md-2">{{ data.flow_rate_d4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">Leak duration, days:</div>
+                    <div class="col-md-2">{{ data.leak_duration_d1 }}</div>
+                    <div class="col-md-2">{{ data.leak_duration_d2 }}</div>
+                    <div class="col-md-2">{{ data.leak_duration_d3 }}</div>
+                    <div class="col-md-2">{{ data.leak_duration_d4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">Release volume from leakage, m<sup>3</sup>:</div>
+                    <div class="col-md-2">{{ data.release_volume_leak_d1 }}</div>
+                    <div class="col-md-2">{{ data.release_volume_leak_d2 }}</div>
+                    <div class="col-md-2">{{ data.release_volume_leak_d3 }}</div>
+                    <div class="col-md-2">{{ data.release_volume_leak_d4 }}</div>
+                </div>
+                <!-------------- block 2 ------------->
+                <div class="row"></div>
+                <div class="row">
+                    <div class="col-md-8">Realease volume from rupture, barrels:</div>
+                    <div class="col-md-4">{{ data.release_volume_rupture }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">The time to initate leakage to the ground water, days:</div>
+                    <div class="col-md-4">{{ data.time_leak_ground }}</div>
+                </div>
+                <!-------------- block 3 ----------->
+                <div class="row"></div>
+                <div class="row">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-2"><b>D1</b></div>
+                    <div class="col-md-2"><b>D4</b></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">The volume of the product in the subsoil from lakage, barrels:</div>
+                    <div class="col-md-2">{{ data.volume_subsoil_leak_d1 }}</div>
+                    <div class="col-md-2">{{ data.volume_subsoil_leak_d4 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">The volume of the product in the ground water from leakage, m<sup>3</sup>:</div>
+                    <div class="col-md-2">{{ data.volume_ground_water_leak_d1 }}</div>
+                    <div class="col-md-2">{{ data.volume_ground_water_leak_d4 }}</div>
+                </div>
+                <!------------ block 4 ---------->
+                <div class="row"></div>
+                <div class="row">
+                    <div class="col-md-8">The total barrels of fluid within the dike from rupture, barrels:</div>
+                    <div class="col-md-4">{{ data.barrel_dike_rupture }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">The total barrels of fluid in the on-site surface soil from a rupture, barrels:</div>
+                    <div class="col-md-4">{{ data.barrel_onsite_rupture }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">The total barrels of fluid in the off-site surface soil from a rupture, barrels:</div>
+                    <div class="col-md-4">{{ data.barrel_offsite_rupture }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">The total barrels of fluid that reach water from a rupture, barrels:</div>
+                    <div class="col-md-4">{{ data.barrel_water_rupture }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">The financial environmental cost from leakage, $:</div>
+                    <div class="col-md-4">{{ data.fc_environ_leak }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">The financial environmental cost from rupture, $:</div>
+                    <div class="col-md-4">{{ data.fc_environ_rupture }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">The total financial environmental cost, $:</div>
+                    <div class="col-md-4">{{ data.fc_environ }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">The component damage cost, $:</div>
+                    <div class="col-md-4">{{ data.component_damage_cost }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">The cost of business interruption, $:</div>
+                    <div class="col-md-4">{{ data.business_cost }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">The total consequence, $:</div>
+                    <div class="col-md-4">{{ data.consequence }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">Consequence Category, $:</div>
+                    <div class="col-md-4"><b>{{ data.consequencecategory }}</b></div>
+                </div>
+            </fieldset>
+            <br>
+            <div class="row">
+                <div class="col-md-12" style="text-align: right"><button type="submit" class="btn btn-primary" id="changeThinning" onclick="btnChangeClick()">Verification Requirements</button></div>
+            </div>
+        </div>
+    <script>
+        function btnChangeClick() {
+            document.getElementById("fullDF").submit();
+            ShowLoading();
+            return false;
+        }
+        function ShowLoading() {
+            var div = document.createElement('div');
+            var img = document.createElement('img');
+            img.src = '{% static 'image/loading/Pacman-1s-100px.gif' %}';
+            div.style.cssText = "position: fixed;left: 50%; top: 30%; width: 300px; text-align: center; background: rgba(54, 25, 25, .00004); border: 0px solid #000;";
+            div.appendChild(img);
+            document.body.appendChild(div);
+            $("#changeThinning").attr('disabled',true);
+            return true;
+        }
+    </script>
+    </form>
+{% endblock %}

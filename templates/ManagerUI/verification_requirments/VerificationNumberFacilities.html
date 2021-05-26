@@ -1,0 +1,86 @@
+{% extends 'ManagerUI/verification_requirments/VerificationHome.html' %}
+{% load staticfiles %}
+{% load static %}
+
+
+{% block library %}
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Verification requirments{% endblock %}
+<style>
+
+{##}
+{#.city{#}
+{#  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;#}
+{#  border-collapse: collapse;#}
+{#  width: 100%;#}
+{#  font-size: 13px;#}
+{#}#}
+{##}
+{##}
+{#.city td, .city th{#}
+{#  border: 1px solid #ddd;#}
+{#  padding: 0px;#}
+{#  text-align: center;#}
+{#}#}
+{##}
+{##}
+{##}
+{##}
+.city th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #305680;
+  color: white;
+}
+{##}
+{##proposal th{#}
+{#  padding-top: 10px;#}
+{#  padding-bottom: 10px;#}
+{#  background-color: #305680;#}
+{#  color: white;#}
+{#}#}
+</style>
+{% block content %}
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <form method="post" style="padding-top: 90px;padding-bottom: 90px">
+        {% csrf_token %}
+    <div class="city" >
+        <div class="container">
+            <div class="table-responsive">
+                <p style="color:#adf">Click to the name of facility to view Inspection requests</p>
+                <table width=100% class="testing" >
+                    <thead>
+                    <tr>
+                        <th style="background-color:#305680;font-size: 20px;font-family: 'Spartan', sans-serif; color:White; text-align: center" colspan="3">List of Facilities</th>
+                    </tr>
+                    <tr>
+                        <!------- Proposal-------->
+                        <th><b>Name Facilities</b></th>
+                        <th><b>Status</b></th>
+                        <th style="text-align: center"><b>Number of Inspection Request</b></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for faci in counts %}
+                            <tr>
+
+                                <td><a href="{% url 'VerificationHome' faci.name.facilityid %}">{{ faci.name.facilityname }}</a></td>
+                                <td>Working</td>
+{#                                {% for c in count %}#}
+                                <td name='numReques'style="text-align: center">{{ faci.count }}</td>
+{#                                {% endfor %}#}
+                            </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+
+    </form>
+{% endblock %}

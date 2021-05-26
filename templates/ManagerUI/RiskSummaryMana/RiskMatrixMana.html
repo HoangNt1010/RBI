@@ -1,0 +1,240 @@
+{% extends 'BaseUI/BaseManager/baseRiskSummaryMana.html' %}
+
+{% load staticfiles %}
+
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactorMana' proposalID %}{% endblock %}
+{% block ca%}{% url 'fullyConsequenceMana' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrixMana' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChartMana' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'proposalDisplayMana' ass.componentid_id %}{% endblock %}
+<!---------------END BLOCK--------------->
+
+{% block data-content %}
+<form method="post">
+    {% csrf_token %}
+    <div style="text-align: center">
+        <canvas id="myCanvas" width="800" height="600"></canvas>
+        <script>
+            //Lấy đối tượng Canvas
+            var canvas = document.getElementById('myCanvas');
+            // Chọn đối tượng vẽ 2D
+            var ctx = canvas.getContext('2d');
+            var i = 100;
+            // Tiến hành vẽ
+            ctx.strokeStyle = 'black';
+            ctx.fillStyle = 'orange';
+            ctx.fillRect(0+i, 0, 100, 100);
+            ctx.strokeRect(0+i, 0, 100, 100);
+            ctx.fillStyle = 'orange';
+            ctx.fillRect(100+i ,0,100,100);
+            ctx.strokeRect(100+i,0,100,100)
+            ctx.fillStyle = 'orange';
+            ctx.fillRect(200+i,0,100,100);
+            ctx.strokeRect(200+i,0,100,100)
+            ctx.fillStyle = 'red';
+            ctx.fillRect(300+i,0,100,100);
+            ctx.strokeRect(300+i,0,100,100)
+            ctx.fillStyle = 'red';
+            ctx.fillRect(400+i,0,100,100);
+            ctx.strokeRect(400+i,0,100,100)
+            ctx.fillStyle = 'yellow';
+            ctx.fillRect(0+i,100,100,100);
+            ctx.strokeRect(0+i,100,100,100)
+            ctx.fillStyle = 'yellow';
+            ctx.fillRect(100+i,100,100,100);
+            ctx.strokeRect(100+i,100,100,100)
+            ctx.fillStyle = 'orange';
+            ctx.fillRect(200+i,100,100,100);
+            ctx.strokeRect(200+i,100,100,100);
+            ctx.fillStyle = 'orange';
+            ctx.fillRect(300+i,100,100,100);
+            ctx.strokeRect(300+i,100,100,100)
+            ctx.fillStyle = 'red';
+            ctx.fillRect(400+i,100,100,100);
+            ctx.strokeRect(400+i,100,100,100)
+            ctx.fillStyle = 'green';
+            ctx.fillRect(0+i,200,100,100);
+            ctx.strokeRect(0+i,200,100,100)
+            ctx.fillStyle = 'green';
+            ctx.fillRect(100+i,200,100,100);
+            ctx.strokeRect(100+i,200,100,100)
+            ctx.fillStyle = 'yellow';
+            ctx.fillRect(200+i,200,100,100);
+            ctx.strokeRect(200+i,200,100,100)
+            ctx.fillStyle = 'orange';
+            ctx.fillRect(300+i,200,100,100);
+            ctx.strokeRect(300+i,200,100,100)
+            ctx.fillStyle = 'red';
+            ctx.fillRect(400+i,200,100,100);
+            ctx.strokeRect(400+i,200,100,100)
+            ctx.fillStyle = 'green';
+            ctx.fillRect(0+i,300,100,100);
+            ctx.strokeRect(0+i,300,100,100)
+            ctx.fillStyle = 'green';
+            ctx.fillRect(100+i,300,100,100);
+            ctx.strokeRect(100+i,300,100,100)
+            ctx.fillStyle = 'yellow';
+            ctx.fillRect(200+i,300,100,100);
+            ctx.strokeRect(200+i,300,100,100)
+            ctx.fillStyle = 'yellow';
+            ctx.fillRect(300+i,300,100,100);
+            ctx.strokeRect(300+i,300,100,100);
+            ctx.fillStyle = 'orange';
+            ctx.fillRect(400+i,300,100,100);
+            ctx.strokeRect(400+i,300,100,100)
+            ctx.fillStyle = 'green';
+            ctx.fillRect(0+i,400,100,100);
+            ctx.strokeRect(0+i,400,100,100)
+            ctx.fillStyle = 'green';
+            ctx.fillRect(100+i,400,100,100);
+            ctx.strokeRect(100+i,400,100,100)
+            ctx.fillStyle = 'yellow';
+            ctx.fillRect(200+i,400,100,100);
+            ctx.strokeRect(200+i,400,100,100)
+            ctx.fillStyle = 'yellow';
+            ctx.fillRect(300+i,400,100,100);
+            ctx.strokeRect(300+i,400,100,100)
+            ctx.fillStyle = 'orange';
+            ctx.fillRect(400+i,400,100,100);
+            ctx.strokeRect(400+i,400,100,100);
+
+            ctx.beginPath();
+            ctx.fillStyle="Blue";
+            ctx.fillRect({{ API2.x }}-15,{{ API2.y }}-15,30,30);
+
+            ctx.beginPath();
+            ctx.arc({{ API1.x }},{{ API1.y }},15,0,2 * Math.PI, true);
+            ctx.fillStyle="LightGray";
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.fillStyle="Purple";
+            ctx.fillRect({{ API3.x }}-15,{{ API3.y }}-10,30,20);
+
+            ctx.beginPath();
+            ctx.fillStyle="Red";
+            ctx.fillRect(635,100,150,25);
+            ctx.strokeRect(635,100,150,25);
+            ctx.font = "18px Georgia";
+            ctx.fillStyle = "Black";
+            ctx.fillText("High", 685, 120);
+            ctx.fillStyle="orange";
+            ctx.fillRect(635,125,150,25);
+            ctx.strokeRect(635,125,150,25);
+            ctx.font = "18px Georgia";
+            ctx.fillStyle = "Black";
+            ctx.fillText("Medium High", 650, 145);
+            ctx.fillStyle="yellow";
+            ctx.fillRect(635,150,150,25);
+            ctx.strokeRect(635,150,150,25);
+            ctx.font = "18px Georgia";
+            ctx.fillStyle = "Black";
+            ctx.fillText("Medium ", 680, 170);
+            ctx.fillStyle="green";
+            ctx.fillRect(635,175,150,25);
+            ctx.strokeRect(635,175,150,25);
+            ctx.font = "18px Georgia";
+            ctx.fillStyle = "Black";
+            ctx.fillText("Low ", 690, 195);
+            ctx.font = "20px Georgia";
+            ctx.fillStyle = "Black";
+            ctx.fillText("RISK ", 690, 90);
+
+            ctx.beginPath();
+            ctx.arc(650,300,15,0,2 * Math.PI, true);
+            ctx.fillStyle="LightGray";
+            ctx.fill();
+            ctx.beginPath();
+            ctx.fillStyle="Blue";
+            ctx.fillRect(635,335,30,30);
+            ctx.font = "15px Georgia";
+            ctx.fillStyle = "Black";
+            ctx.fillText(": API1", 670, 305);
+            ctx.fillText(": API2", 670, 355);
+
+            ctx.beginPath();
+            ctx.fillStyle="Purple";
+            ctx.fillRect(635,390,30,20);
+            ctx.font = "15px Georgia";
+            ctx.fillStyle = "Black";
+            ctx.fillText(": API3", 670, 405);
+
+            ctx.font = "25px Georgia";
+            ctx.fillStyle = "Black";
+            ctx.fillText("A", 50+i, 540);
+
+            ctx.font = "25px Georgia";
+            ctx.fillStyle = "Black";
+            ctx.fillText("B", 150+i, 540);
+            ctx.font = "25px Georgia";
+            ctx.fillStyle = "Black";
+            ctx.fillText("C", 250+i, 540);
+            ctx.font = "25px Georgia";
+            ctx.fillStyle = "Black";
+            ctx.fillText("D", 350+i, 540);
+            ctx.font = "25px Georgia";
+            ctx.fillStyle = "Black";
+            ctx.fillText("E", 450+i, 540);
+            ctx.font = "25px Georgia";
+            ctx.fillStyle = "Black";
+            ctx.fillText("1", 60, 450);
+            ctx.font = "25px Georgia";
+            ctx.fillStyle = "Black";
+            ctx.fillText("2", 60, 350);
+            ctx.font = "25px Georgia";
+            ctx.fillStyle = "Black";
+            ctx.fillText("3", 60, 250);
+            ctx.font = "25px Georgia";
+            ctx.fillStyle = "Black";
+            ctx.fillText("4", 60, 150);
+            ctx.font = "25px Georgia";
+            ctx.fillStyle = "Black";
+            ctx.fillText("5", 60, 50);
+            ctx.font = "25px Georgia";
+            ctx.fillStyle = "Black";
+            ctx.fillText("Consequense", 280, 570);
+
+            ctx.font = '25px Georgia';
+            ctx.save();
+            ctx.translate(35,300);
+            ctx.rotate(-0.5*Math.PI);
+
+            var rText = 'Probability';
+            ctx.fillText(rText , 0, 0);
+            ctx.restore();
+
+            var rWidth = ctx.measureText(rText).width;
+        </script>
+    </div>
+    <div class="input-data">
+        <div style="text-align: center">
+            <br>
+            <caption><b style="font-size: 20px; color: #fff;">Proposal Risk Details</b></caption>
+            <br>
+        </div>
+        <table class="table table-condensed">
+            <thead>
+                <th></th>
+                <th>API1</th>
+                <th>API2</th>
+                <th>API3</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>DamageFactor</b></td>
+                    <td>{{ DF1 }}</td>
+                    <td>{{ DF2 }}</td>
+                    <td>{{ DF3 }}</td>
+                </tr>
+                <tr>
+                    <td><b>FinancialCost ,$</b></td>
+                    <td>{{ ca }}</td>
+                    <td>{{ ca }}</td>
+                    <td>{{ ca }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</form>
+{% endblock %}

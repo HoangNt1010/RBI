@@ -1,0 +1,65 @@
+{% extends 'BaseUI/BaseWeb/basedat.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="container" style=" margin-top: 70px">
+            {% if si %}<a href="{% url 'reportequipment' si.siteid %}">{{ si.sitename }}</a>{% endif %}
+        </div>
+        <div style="text-align: center">
+            <caption><b style="font-size: 22px; color: #444444;">List of Facilities</b></caption>
+            <br><br>
+            <table class="table" id="mytable" >
+                <thead >
+                    <tr>
+                        <th width="50px" style="text-align: left"><input type="checkbox" id="chkHeader"></th>
+                        <th width="300px" style="text-align: left"><i class="fa fa-tag"></i>&ensp;Created time</th>
+                        <th width="200px" style="text-align: left"><i class="fa fa-tag"></i>&ensp;Facility</th>
+                        <th width="250px" style="text-align: left"><i class="fa fa-compass"></i>&ensp;Facility Management Factor</th>
+                        <th width="200px" style="text-align: left"><i class="fa fa-bullseye"></i>&ensp;Facility Risk Target</th>
+                        <th width="200px" style="text-align: left"><i class="fa fa-bar-chart-o"></i>&ensp;Risk Summary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in obj %}
+                    <tr >
+                        <td align="left"><input type="checkbox" name="{{ a.ID }}"></td>
+                        <td align="left"><a href="{% url 'reportequipment' a.ID %}">{{ a.CreatedTime }}</a></td>
+                        <td align="left"><a href="{% url 'reportequipment' a.ID %}">{{ a.FacilitiName }}</a></td>
+                        <td align="left">{{ a.ManagementFactor }}</td>
+                        <td align="left">{{ a.RiskTarget }}</td>
+                        <td align="left"><a href="{% url 'exportData' a.ID 'Facility' %}"><i class="fa fa-print" ></i></a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+{#          Pagination div  #}
+            <div>
+                {% if obj.has_other_pages %}
+              <ul class="pagination">
+                {% if obj.has_previous %}
+                  <li><a href="?page={{ obj.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&laquo;</span></li>
+                {% endif %}
+                {% for i in obj.paginator.page_range %}
+                  {% if obj.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                  {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if obj.has_next %}
+                  <li><a href="?page={{ obj.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                  <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+              </ul>
+            {% endif %}
+            </div>
+        </div>
+    </form>
+{% endblock %}

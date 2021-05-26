@@ -1,0 +1,161 @@
+{% extends 'BaseUI/BaseFacility/baseComponent.html' %}
+
+<!--------------- BLOCK MENU ------------>
+{% block listcomp %}{% url 'componentDisplay' equipmentID %}{% endblock %}
+{% block newcomp %}{% url 'componentNew' equipmentID %}{% endblock %}
+{% block backeq %}{% url 'equipmentDisplay' facilityID %}{% endblock %}
+<!-------------- END BLOCK ------------->
+
+{% block data-content %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="input-data">
+            <div class="title-verifitcation" >
+                <h1>New Component</h1>
+            </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        {% if data.link %}
+                        <input type="checkbox" id="comRisk" name="comRisk" checked>
+                        {% else %}
+                        <input type="checkbox" id="comRisk" name="comRisk">
+                        {% endif %}
+                        <label class="color-white" style="font-weight: lighter;" for="comRisk">Component Risk Links to Component Risk</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 color-white">Component Number:<span style="color: red">*</span></div>
+                    <div class="col-md-8"><input class="form-control" type="text"  name="componentNumber" value="{{ data.componentNumber }}" placeholder="Input component number here!" required></div>
+                </div>
+
+                {% if error.exist %}
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-8"><span style="color: red; font-size: 16px">{{ error.exist }}</span></div>
+                </div>
+                {% endif %}
+
+                <div class="row">
+                    <div class="col-md-4 color-white">Component Type:<span style="color: red">*</span></div>
+                    <div class="col-md-8">
+                        <select class="form-control" name="componentType" id="componentType" onchange="visiblehidden(this)" required>
+                            <option value="" disabled selected>Please select component type..</option>
+                            {% if isTank %}
+                                {% for a in dataAPItank %}
+                                <option>{{ a.componenttypename }}</option>
+                                {% endfor %}
+                            {% else %}
+                                {% for a in dataAPInormal %}
+                                    <option>{{ a.componenttypename }}</option>
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+                </div>
+              <div class="row">
+                <div class="col-md-4 color-white">Risk Target ($/year):<span style="color: red">*</span></div>
+                <div class="col-md-8"><input class="form-control" type="number"  name="riskTarget" value="{{ a.risktaget }}" placeholder="Input risk target here!" required></div>
+
+              </div>
+                <div class="row" id="showva">
+                    <div class="col-md-4 color-white" id="contentprd" style="visibility: hidden" >PRD Type:<span style="...">*</span></div>
+                    <div class="col-md-8">
+                        <select class="form-control" name="prdType" id="prdType" style="visibility: hidden" required>
+                            <option disabled selected>Please select PRD type..</option>
+                        {% for b in prdtype %}
+                            <option selected>{{ b.prdtypename }}</option>
+                        {% endfor %}
+                        </select>
+                        <!-- làm đến đây -->
+                    </div>
+                </div>
+            <!--------------------------------------------------->
+                <script>
+                    function visiblehidden (sender){
+                        var getvalueselec = document.getElementById("prdType");
+                            getcontentprd = document.getElementById("contentprd");
+                            getdivshow = document.getElementById("showva");
+                        if (sender.value == "Pressure Relief Device"){
+                            getvalueselec.style.visibility = "visible";
+                            getcontentprd.style.visibility = "visible";
+                            getdivshow.style.visibility = "visible";
+
+                        }
+                        else {
+                            getvalueselec.style.visibility = "hidden";
+                            getcontentprd.style.visibility = "hidden";
+                            getdivshow.style.visibility = "hidden";
+                        }
+                    }
+                </script>
+            <!-------------------------------------------------->
+
+                <div class="row">
+                    <div class="col-md-4 color-white">API Component Type:<span style="color: red">*</span></div>
+                    <div class="col-md-8">
+                        <select class="form-control" id="apiComponentType" name="apiComponentType" required>
+                            <option disabled selected>Please select api component type..</option>
+                            {% for a in api %}
+                                {% if a.apicomponenttypename == data.apicomponenttype %}
+                                <option selected>{{ a.apicomponenttypename }}</option>
+                                {% else %}
+                                <option>{{ a.apicomponenttypename }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <!---------------- Component type change ---------------->
+                <script>
+                            $(document).ready(function () {
+                                $("#componentType").change(function () {
+                                    $("#apiComponentType").empty();
+                                    var componenttype = $("#componentType").val();
+                                    if( componenttype == "Shell"){
+                                        $("#apiComponentType").html("<option value ='COURSE-1'>COURSE-1</option>"+
+                                        "<option value='COURSE-2'>COURSE-2</option><option value='COURSE-3'>COURSE-3</option>"+
+                                        "<option value='COURSE-4'>COURSE-4</option><option value='COURSE-5'>COURSE-5</option>"+
+                                        "<option value='COURSE-6'>COURSE-6</option><option value='COURSE-7'>COURSE-7</option>"+
+                                        "<option value='COURSE-8'>COURSE-8</option><option value='COURSE-9'>COURSE-9</option>"+
+                                        "<option value='COURSE-10'>COURSE-10</option>");
+                                    }
+                                    else if(componenttype == "Tank Bottom"){
+                                        $("#apiComponentType").html("<option value ='TANKBOTTOM'>TANKBOTTOM</option>");
+                                    }
+                                    else if(componenttype == "Fixed Roof"){
+                                        $("#apiComponentType").html("<option value ='TANKROOFFIXED'>TANKROOFFIXED</option>");
+                                    }
+                                    else if(componenttype == "Floating Roof") {
+                                        $("#apiComponentType").html("<option value ='TANKROOFFLOAT'>TANKROOFFLOAT</option>");
+                                    }
+                                    else {
+                                        $("#apiComponentType").html("{%  for a in other %}"+
+                                                                        "<option>{{ a.apicomponenttypename }}</option>"+
+                                                                    "{% endfor %}");
+                                    }
+                                })
+                            })
+                </script>
+            <!------------------------------------------------>
+
+                <div class="row">
+                    <div class="col-md-4 color-white">Component Name:<span style="color: red">*</span></div>
+                    <div class="col-md-8"><input class="form-control" type="text"  value="{{ data.componentname }}" name="componentName" placeholder="Input component name here!" required></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 color-white">Description:</div>
+                    <div class="col-md-8">
+                        <textarea class="form-control" type="text" name="description" placeholder="Write component description here!">{{ data.description }}</textarea>
+                    </div>
+                </div>
+            <div  style="text-align:center">
+                <button type="submit" class="btn btn-primary mr-16">Submit</button>
+                <a class="btn btn-default" href="{% url 'componentDisplay' equipmentID %}">Cancel</a>
+            </div>
+
+        </div>
+    </form>
+{% endblock %}

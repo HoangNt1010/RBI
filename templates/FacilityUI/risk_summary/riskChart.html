@@ -1,0 +1,219 @@
+{% extends 'BaseUI/BaseFacility/baseRiskSummary.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block library %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <link rel='stylesheet' href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <meta http-equiv="refresh" content="10">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactor' proposalID %}{% endblock %}
+{% block fcof%}{% url 'fullyConsequence' proposalID %}{% endblock %}
+{% block acof%}{% url 'areaBasedCoF' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrix' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChart' proposalID %}{% endblock %}
+{% block corri %}{% url 'corrision' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'proposalDisplay' componentID %}{% endblock %}
+<!---------------END BLOCK--------------->
+
+{% block data-content %}
+<style>
+#searchs {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+
+#searchs td,#searchs th {
+  border: 1px solid #ddd;
+  padding: 0px;
+  text-align: center;
+}
+
+#searchs tr:nth-child(even){background-color: #f2f2f2;}
+
+#searchs tr:hover {background-color: #ddd;}
+
+#searchs th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #25476a;
+  color: white;
+}
+</style>
+    <form method="post">
+    {% csrf_token %}
+        <div style="text-align: center">
+            <canvas id="myChart" width="700" height="300" ></canvas>
+            <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+
+            <script>
+                var ctx = document.getElementById("myChart");
+                var myLineChart = new Chart(ctx,{
+                    type: 'line',
+                    data: {
+                        labels: [{% for label in label %}"{{ label }}",{% endfor %}"{{ endLabel }}"],
+                        datasets:[{
+                            label: 'Old Risk',
+                            backgroundColor: "#0000BB",
+                            borderColor: "#0000BB",
+                            data: [{% for data in data %}{{ data }},{% endfor %}],
+                            fill: false,
+                            lineTension:0.2,
+                        },{
+                            label: 'Present Risk',
+                            backgroundColor: "#3FBF63",
+                            borderColor: "#3FBF63",
+                            data: [{% for data in data1 %}{{ data }},{% endfor %}],
+                            fill: false,
+                            lineTension:0.2
+                        },{
+                            label: 'Thining Total',
+                            backgroundColor: "#8B8D06",
+                            borderColor: "#8B8D06",
+                            data: [{% for data in thiningToTal %}{{ data }},{% endfor %}],
+                            fill: false,
+                            lineTension:0.2,
+                            showLine:false,
+                            pointRadius:0
+                        },{
+                            label: 'SCC',
+                            backgroundColor: "#F4BA5C",
+                            borderColor: "#F4BA5C",
+                            data: [{% for data in scc %}{{ data }},{% endfor %}],
+                            fill: false,
+                            lineTension:0.2,
+                            showLine:false,
+                            pointRadius:0
+                        },{
+                            label: 'HTHA',
+                            backgroundColor: "#47041E",
+                            borderColor: "#47041E",
+                            data: [{% for data in htha %}{{ data }},{% endfor %}],
+                            fill: false,
+                            lineTension:0.2,
+                            showLine:false,
+                            pointRadius:0
+                        },{
+                            label: 'BRIT',
+                            backgroundColor: "#F46D5C",
+                            borderColor: "#F46D5C",
+                            data: [{% for data in brit %}{{ data }},{% endfor %}],
+                            fill: false,
+                            lineTension:0.2,
+                            showLine:false,
+                            pointRadius:0
+                        },{
+                            label: 'PIPE',
+                            backgroundColor: "#EAF759",
+                            borderColor: "#EAF759",
+                            data: [{% for data in pipe %}{{ data }},{% endfor %}],
+                            fill: false,
+                            lineTension:0.2,
+                            showLine:false,
+                            pointRadius:0
+                        },{
+                            label: 'External Total',
+                            backgroundColor: "#4AF6DF",
+                            borderColor: "#4AF6DF",
+                            data: [{% for data in ext %}{{ data }},{% endfor %}],
+                            fill: false,
+                            lineTension:0.2,
+                            showLine:false,
+                            pointRadius:0
+                        },{
+                            label: 'Risk Target',
+                            backgroundColor: "#CC0000",
+                            borderColor: "#CC0000",
+                            data: [{% for data in target %}{{ data }},{% endfor %}],
+                            fill: false}]
+                    },
+                    options: {
+                        responsive: true,
+                        title: {
+                            display: true,
+                            text: 'Risk of Proposal: {{ proposalname }}'
+                        },
+                        tooltips: {
+                            mode: 'index',
+                            intersect: false
+                        },
+                        hover: {
+                            mode: 'nearest',
+                            intersect: true
+                        },
+                        scales: {
+                            xAxes: [{
+                                display: true,
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Years'
+                                }
+                            }],
+                            yAxes: [{
+                                display: true,
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Risk ($/year)'
+                                }
+                            }]
+                        }
+                    }
+                })
+            </script>
+        </div>
+        <div style="text-align:center;">
+            <a id="#search" class="btn btn-primary" data-toggle="modal" data-target="#searchPlan"><i class="fa fa-compress" aria-hidden="true">&emsp;Compare Benchmark Data</i></a>
+            <div class="modal" id="searchPlan" style="margin-top: 10%">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="width: 100%; margin: auto">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                  <span aria-hidden="true" style="font-size: 24px;font-weight: bold;color: #444444;font-family: Calibri;font-weight: bold;">List of Benchmarks</span>
+                  <button type="button" class="close" data-dismiss="modal" style="color: white">&times;</button>
+                </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body" style="width: 90%;margin: auto">
+                        <table id="searchs">
+                            <tr>
+                                <th>Proposal Name</th>
+                                <th>Damage Factor</th>
+                                <th>Financial Cost</th>
+                                <th>Risk9($/yr)</th>
+                                <th>Last Insp Date</th>
+                                <th>Insp Due Date</th>
+                            </tr>
+                            {% for a in dataBM %}
+                            <tr>
+                                <td align="center"><a href="{% url 'testBenchMark' a.id proposalID %}">{{a.name}}</a></td>
+                                <td align="center">{{a.df}}</td>
+                                <td align="center">{{a.fc}}</td>
+                                <td align="center">{{a.risk}}</td>
+                                <td align="center">{{a.lastinsp}}</td>
+                                <td align="center">{{a.duedate}}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer" style="margin: auto; width: 90%">
+                        <!--<button name="_delete" type="submit" class="btn btn-warning" id="sub" onclick="Sub()" ><i class="fa fa-trash-o">&emsp;Delete Selected</i></button>-->
+                        <!--<button name="_select" class="btn btn-primary" type="submit" href=""><i class="fa fa-pencil">Select</i></button>-->
+                        <button type="button" class="btn btn-success"  style="background-color: #4575B7; border: 1px solid #204d74" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

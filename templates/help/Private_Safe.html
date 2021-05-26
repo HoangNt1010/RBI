@@ -1,0 +1,55 @@
+{% extends 'BaseUI/BaseHelp/baseHelp_content.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block library %}
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Facility Management{% endblock %}
+
+{% block vaco %}
+    <ul>
+        <li style="padding-top: 20px"><a href="{% url 'PrivateSafe' %}">Private and Safe</a><br></li>
+    </ul>
+{% endblock %}
+{% block data-content %}
+    <h3>Private and Safe</h3>
+        <div class="panel-heading" style="padding-left: 50px;border-bottom: #9d9d9d" >
+            <h4 class="panel-title">
+            <a data-toggle="collapse" href="#collapse1" style="color: #337ab7;size: 50px;">Login Manager</a>
+            </h4>
+        </div>
+        <div id="collapse1" class="panel-collapse collapse" >
+            <div class="panel-body" style="padding-left: 70px;background-color: #dff0d8">Login Business </div>
+            <div class="panel-footer" style="padding-left: 70px">
+                1. Truy cập vào <a href="http://127.0.0.1:8888/">http://127.0.0.1:8888/. </a> <br>
+                2. Nhấn login. <br>
+                3. Nhập username and Passwork Manager. <br>
+                4. Nhấn SignIn. <br>
+                >> Khí đó trang chủ của manager sẽ suất hiện.
+            </div>
+        </div>
+
+        <div class="panel-heading" style="padding-left: 50px;border-bottom: #9d9d9d">
+            <h4 class="panel-title">
+            <a data-toggle="collapse" href="#collapse2" style="color: #337ab7;size: 50px;">Views</a>
+            </h4>
+        </div>
+        <div id="collapse2" class="panel-collapse collapse" >
+            <div class="panel-body" style="padding-left: 70px;background-color: #dff0d8">
+                Hiển thị kết quả tính toán
+            </div>
+            <div class="panel-footer" style="padding-left: 70px">
+                1. Đăng nhập với tài khoản manager.
+                2. Chọn Facility >  Equipments > Component >  Proposals.<br>
+                3. Chọn Proposal thông tin kết quả sẽ hiện ra: <br>
+                &emsp;+ Probability of failure: Kết quả tính toán. <br>
+                &emsp;+ Consequence of failure: kết quả chi tiết. <br>
+                &emsp;+ Risk Matrix: Matran kết quả <br>
+                &emsp;+ Risk Chart: đồ thị kết quả. <br>
+                <p style="color: red">LUU Ý: cơ quan quản lí có thể xem kết quả đàu vào của mỗi Proposals</p>
+            </div>
+        </div>
+{% endblock %}
+

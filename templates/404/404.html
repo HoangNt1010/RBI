@@ -1,0 +1,29 @@
+{% extends 'BaseUI/BaseWeb/base.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block library %}
+    <link rel="stylesheet" href="{% static '/css/404.css' %}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block title %}404 Error!{% endblock %}
+
+{#{% block navbar %}#}
+{#    <a class="active" href="{% url 'home' %}" data-toggle="tooltip" data-placement="bottom" title="Home"><i class="fa fa-home"></i></a>#}
+{#{% endblock %}#}
+
+{% block content %}
+        <div class="img-div">
+            <br><br>
+            <img src="{% static 'image/404/Isov.gif' %}" class="img">
+        </div>
+        <br>
+
+        <div style="margin-left: auto;margin-right: auto;text-align: center">
+            <span style="text-align: center; color: red; font-family: 'Times New Roman'; font-size: 17px">* Note: Please check validity of file and data</span>
+            <br>
+            <br>
+            <a href="/"><span style="text-align: center; color: #0204ff; font-family: 'Times New Roman'; font-size: 17px;">[go back to homepage]</span></a>
+        </div>
+{% endblock %}

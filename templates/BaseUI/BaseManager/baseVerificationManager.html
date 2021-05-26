@@ -1,0 +1,204 @@
+{% extends 'BaseUI/BaseWeb/base.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block library %}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="{% static 'css/email.css' %}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+{% endblock %}
+
+{% block navbar %}
+    <a class="a-logout" href="{% url 'logout' %}" data-toggle="tooltip" data-placement="bottom" title="Sign Out"><i class="fa fa-sign-out"></i></a>
+    <a class="a-normal" href="" data-toggle="modal" data-target="#myModal" data-placement="bottom" title="Profile"><i class="fa fa-user"></i></a>
+    {% if info.kind == "factory" %}<a class="a-normal" href="{% url 'help' %}" data-toggle="tooltip" data-placement="bottom" title="Help"><i class="fa fa-question"></i></a>{% endif %}
+    <a class="a-normal" href="" data-toggle="modal" data-target="#notiModal"  data-placement="bottom" title="Notification" onclick="hidenoti()" style="position: relative"><i class="fa fa-bell">{% if countnoti %}<span id="countnoti" class="forum-notification">{{ countnoti }}</span>{% endif %}</i></a>
+    <a class="a-normal " href="{% url 'messagesInbox' %}" data-toggle="tooltip" data-placement="bottom" title="Messages"><i class="fa fa-wechat">{% if count %}<span class="badge red" style="color: red">{{ count }}</span>{% endif %}</i></a>
+    {% if info.kind == "factory" %}<a class="a-normal" href="{% url 'forum' %}" data-toggle="tooltip" data-placement="bottom" title="Forum"><i class="fa fa-dedent"></i></a>{% endif %}
+    {% if info.kind == "factory" %} <a class="a-normal" href="{% url 'VerificationFaci' %}" data-toggle="tooltip" data-placement="bottom" title="Verificaton"><i class="fa fa-exclamation-triangle">{% if countveri %}<span class="badge red" style="color: red">{{ countveri }}</span>{% endif %}</i></a> {% endif %}
+    {% if info.kind == "manager" %} <a class="a-normal active" href="{% url 'calculatefunctionmanager' siteID %}" data-toggle="tooltip" data-placement="bottom" title="Verification"><i class="fa fa-exclamation-triangle"></i></a>{% if countveri %}<span class="badge red" style="color: red">{{ countveri }}</span>{% endif %}</i></a> {% endif %}
+    <a class="a-normal" href="" data-toggle="modal" data-target="#LanguageModal" data-placement="bottom"><i class="fa fa-language"></i></a>
+    <a class="a-normal" href="{% url 'home' %}" data-toggle="tooltip" data-placement="bottom" title="Home"><i class="fa fa-home"></i></a>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+{% csrf_token %}
+    <div class="business-normal">
+        <div class="sidenav">
+            <a class="active">Email<br>-Messages-</a>
+            <a id="Messagesnew" class="Messagesnew" data-toggle="dropdown" ><i class="far fa-envelope">&emsp;New Messages</i></a>
+            <a href="{% url 'messagesInbox' %}" class="{% if page == 'messagesInbox' %}activeLink{% endif %}"><i class="fa fa-building">&emsp;Inbox</i></a>
+            <a href="{% url 'messagesSent' %}" class="{% if page == 'messagesSent' %}activeLink{% endif %}"><i class="fa fa-building">&emsp;The letter was sent</i></a>
+            <a><i class="fa fa-building">&emsp;Draft Message</i></a>
+        </div>
+        <article class="main">
+            {% block data-content %}{% endblock %}
+        </article>
+    </div>
+{# -------------------gui email --------------------- #}
+
+    <div class="modal fade" id="showmessages" style="width: 700px;height:700px;margin-right: auto;margin-left: auto" >
+            <!-- Modal content-->
+            <div class="modal-content" style="margin-left:5px">
+                <div class="modal-header">
+                    <button type="button" class="close" name="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Email</h4>
+                </div>
+                <div class="modal-body">
+                    <nav class="navbar navbar-inverse">
+                        <div class="container-fluid">
+                            <div class="navbar-header">
+                                <a class="navbar-brand" href="#">Management Email</a>
+                            </div>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="label label-pill label-danger count" style="border-radius:10px;"></span> <span class="glyphicon glyphicon-envelope" style="font-size:18px;"></span></a>
+                                    <ul class="dropdown-menu"></ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label>Sent To</label>
+                            <input type="text" name="sentto" id="sentto" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Enter Subject</label>
+                            <input type="text" name="subject" id="subject" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Enter Comment</label>
+                            <textarea name="content" id="content" class="form-control" rows="5"></textarea>
+                        </div>
+                        <div>
+                            <label class="filebutton">
+                                <i class="glyphicon glyphicon-paperclip" style="font-size:20px;"></i>
+                                <span><input type="file" id="myfile1" name="myfile"></span>
+                            </label>
+                            <label class="filebutton">
+                                <i class="glyphicon glyphicon-picture" style="font-size:20px;"></i>
+                                <span><input type="file" id="myfile2" name="myfile"></span>
+                            </label>
+                            <label class="filebutton">
+                                <i class="fa fa-jsfiddle" style="font-size:20px;"></i>
+                                <span><input type="file" id="myfile3" name="myfile"></span>
+                            </label>
+{#                            <a id="Messages" class="Messages" data-toggle="dropdown" data-placement="" title="tep"><i class="fa fa-list"></i></a>#}
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" name="post" id="post" class="btn btn-info" >post</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    </div>
+
+<!-- Modal notification-->
+  <div class="modal" id="notiModal">
+      <div class="modal-content" style="margin-left: 60%;margin-top:60px;width: 40%;border-radius: 0px; font-size: 14px;">
+        <div class="modal-header">
+            Notification
+        </div>
+        <div class="modal-body">
+            {% for noti in noti %}
+                {% if noti.content == " deleted facility " %}
+                    <div class="noti{{ noti.state }}" style="border-bottom: 1px solid #e3e3e3;border-top: 1px solid #e3e3e3;width: 100%;text-align: left;padding-left: 15px;padding-top: 15px;padding-bottom: 10px; font-family: Arial">
+                    <a href="{% url 'facilitiesDisplay' noti.link %}" >
+                        <span style="color: #204d74">{{ noti.subject }}</span><span style="color: black"> {{ noti.content }} </span><span style="color: #204d74">{{ noti.object }}</span>
+                    </a>
+                    </div>
+                {% endif %}
+                {% if noti.content == "  have responsed to the post  " %}
+                    <div class="noti{{ noti.state }}" style="border-bottom: 1px solid #e3e3e3;border-top: 1px solid #e3e3e3;width: 100%;text-align: left;padding-left: 15px;padding-top: 15px;padding-bottom: 10px; font-family: Arial">
+                    <a href="{% url 'posts' noti.link %}">
+                        <span style="color: #204d74">{{ noti.subject }}</span><span style="color: black"> {{ noti.content }} </span><span style="color: #204d74">{{ noti.object }}</span>
+                    </a>
+                    </div>
+                {% endif %}
+                {% if noti.content == " added facility " %}
+                    <div class="noti{{ noti.state }}" style="border-bottom: 1px solid #e3e3e3;border-top: 1px solid #e3e3e3;width: 100%;text-align: left;padding-left: 15px;padding-top: 15px;padding-bottom: 10px; font-family: Arial">
+                    <a href="{% url 'facilitiesDisplay' noti.link %}">
+                        <span style="color: #204d74">{{ noti.subject }}</span><span style="color: black"> {{ noti.content }} </span><span style="color: #204d74">{{ noti.object }}</span>
+                    </a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn" style="color: white;background-color: #4575B7;" data-dismiss="modal">Close</button>
+        </div> -->
+      </div>
+  </div>
+
+    <!-- Modal -->
+  <div class="modal" id="myModal">
+
+      <div class="modal-content" style="margin-left: 60%;margin-top:60px;width: 40%;border-radius: 0px">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><a href=""><i class="fa fa-user"></i></a> Profile</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-5"><span style="font-weight: bold; width: 40%">Name:</span></div>
+                <div class="col-md-7">{{ info.name }}</div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-5"><span style="font-weight: bold; width: 40%">Email:</span></div>
+                <div class="col-md-7">{{ info.email }}</div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-5"><span style="font-weight: bold; width: 40%">Phone number:</span></div>
+                <div class="col-md-7">{{ info.phone }}</div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-5"><span style="font-weight: bold; width: 40%">Address:</span></div>
+                <div class="col-md-7">{{ info.address }}</div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-5"><span style="font-weight: bold; width: 40%">Account:</span></div>
+                <div class="col-md-7">{{ info.kind }}</div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" style="color: white;background-color: #4575B7;" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+  </div>
+    <!--Modal Language-->
+  <div class="modal" id="LanguageModal">
+      <div class="modal-content" style="margin-left: 60%;margin-top:60px;width: 40%;border-radius: 0px">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><i class="fa fa-language"></i></a> Select language you want:</h4>
+        </div>
+        <div class="modal-body">
+            <a href="https://cortekrbi.com/" ><img src='/static/image/logo/vietnam.png' style="width:70px;padding-left: 6px;height: 45px;"></a>
+            <a href="https://cortekrbi.com/" ><img src='/static/image/logo/england.png' style="width:70px;padding-left: 6px;height: 45px;"></a>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" style="color: white;background-color: #4575B7;" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+  </div>
+  <script>
+    $(document).ready(function(){
+        $("#Messagesnew").click(function(){
+            $("#showmessages").modal("toggle");
+            });
+        });
+  </script>
+</form>
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends 'BaseUI/BaseFacility/baseFacility.html' %}
+{% load staticfiles %}
+{% load static %}
+<!-------------- BLOCK MENU ---------------->
+{% block listfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+{% block newfaci %}{% url 'facilitiesNew' siteID %}{% endblock %}
+{% block design %}{% url 'designcodeDisplay' siteID %}{% endblock %}
+{% block manu %}{% url 'manufactureDisplay' siteID %}{% endblock %}
+{% block uploadInsp %}{% url 'upload' siteID %}{% endblock %}
+{#{% block uploadScada %}{% url 'uploadScada' siteID %}{% endblock %}#}
+{% block uploadPlant %}{% url 'uploadPlan' siteID %}{% endblock %}
+<!----------------- END BLOCK----------------->
+{% block library %}
+    <script src="{% static 'js/vietnamlocalselector.js' %}"></script>
+{% endblock %}
+
+{% block data-content %}
+        <form method="post" >
+        {% csrf_token %}
+            <div class="input-data">
+                <div class="title-verifitcation" >
+                    <h1>New Facility</h1>
+                </div>
+                <div class="mb-10">
+                    <b class="color-white">Facility Information</b>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="color-white">
+                            Facility Name:<span style="color: red">*</span>
+                        </div>
+                        <div>
+                            <input type="text" name="FacilityName" class="form-control" placeholder="Input Facility name here!" value="{{ data.facilityname }}" required/>
+                        </div>
+                        {% if error.exist %}
+                            <div>
+                                <span style="color: red; font-size: 16px">{{ error.exist }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4">
+                        <div class="color-white">Site:</div>
+                        <div><input type="text"  name="site" list="site" class="form-control" value="{{ site.sitename }}" readonly></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="color-white">Management System Factor:<span style="color: red">*</span></div>
+                        <div><input type="number"  name="ManagementSystemFactor" min="0.01" max="10" placeholder="Input management system fator here!" step="0.01" value="0.01" class="form-control" required/></div>
+                    </div>
+                </div>
+                <div class="mb-10">
+                    <b class="color-white">Fully-quantitave CoF and FCoF Risk Target</b>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 class-inline-custom">
+                        <div class="color-white" style="width: 190px;">
+                            Area (m<sup>2</sup>/year):<span style="color: red">*</span>
+                        </div>
+                        <input type="number" step="0.01" name="Area" size="40" min="0" max="1000000" class="form-control" value="{{ data.targetAC }}" placeholder="Input maximum area target!" required/>
+                    </div>
+                    <div class="col-md-6 class-inline-custom">
+                        <div class="color-white" style="width: 225px;">
+                            Financial ($/year):<span style="color: red">*</span>
+                        </div>
+                        <input type="number" step="0.01" name="Financial" size="40" min="0" max="1000000000" class="form-control" value="{{ data.targetFC }}" placeholder="Input maximum financial target!" required/>
+                    </div>
+                </div>
+                <div class="mb-10">
+                    <b class="color-white">Address</b>
+                </div>
+                <div class="row">
+                    <script>
+                        var localpicker = new LocalPicker({
+                            province: "ls_province",
+                            district: "ls_district",
+                            ward: "ls_ward"
+                            });
+                     </script>
+                    <div class="col-md-4">
+                        <div class="color-white">
+                            Province Name:<span style="color: red">*</span>
+                        </div>
+                        <div>
+                            <select name="ls_province" required></select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="color-white">District:</div>
+                        <div><select name="ls_district" required></select></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="color-white">Ward:</div>
+                        <div><select name="ls_ward"></select></div>
+                    </div>
+                </div>
+
+            <div class="row">
+            </div>
+            <div style="text-align:center;margin-top: calc(100vh - 480px);">
+                <button type="submit" class="btn btn-primary mr-16">Submit</button>
+                <button type="submit" name="_helpfms" class="btn btn-primary mr-16"><i class="fa fa-pencil mr-5"></i>Help</button>
+               <a class="btn btn-default" href="{% url 'facilitiesDisplay' siteID %}">Cancel</a>
+             </div>
+            </div>
+        </form>
+{% endblock %}

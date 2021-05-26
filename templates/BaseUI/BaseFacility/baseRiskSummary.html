@@ -1,0 +1,21 @@
+{% extends 'BaseUI/BaseFacility/baseBusiness.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block title %}Risk Summary{% endblock %}
+
+{% block vertical %}
+    {#<a class="vertical">Risk Summary</a>#}
+    <!-- <a class="active">Risk Summary</a> -->
+    <a href="{% block pof %}{% endblock %}" class="{% if page == 'damageFactor' %}activeLink{% endif %}"><i class="fa fa-bomb">&emsp;Probability of<br>&emsp;&emsp; Failure</i></a>
+    <a href="{% block fcof%}{% endblock %}" class="{% if page == 'fullyConse' %}activeLink{% endif %}"><i class="fa fa-money">&emsp;Financial CoF</i></a>
+    {% if isTank == 0 and isShell == 0 %}<a href="{% block acof%}{% endblock %}" class="{% if page == 'areaBasedCoF' %}activeLink{% endif %}"><i class="fa fa-money">&emsp;Area-based CoF</i></a>{% endif %}
+    <a href="{% block matrix %}{% endblock %}" class="{% if page == 'riskMatrix' %}activeLink{% endif %}"><i class="fa fa-th">&emsp;Risk Matrix</i></a>
+    {% if 1 %}
+{#        <a href="{% block chart %}{% endblock %}" class="{% if page == 'riskChart' %}activeLink{% endif %}"><i class="fa fa-bar-chart-o">&emsp;Risk Chart</i></a>#}
+        <a href="{% block chartv2 %}{% endblock %}" class="{% if page == 'riskChartv2' %}activeLink{% endif %}"><i class="fa fa-bar-chart-o">&emsp;Risk Chart</i></a>
+        <a href="{% block  corrcontrol%}{% endblock %}" class="{% if page == 'corrosionControl' %}activeLink{% endif %}"><i class="fa fa-plus-square">&emsp;Remaining Life</i></a>
+    {% endif %}
+    {% if isTank or isShell %}<a href="{% block corri %}{% endblock %}" class="{% if page == 'corrsionRate' %}activeLink{% endif %}"><i class="fa fa-bomb">&emsp;Corrosion Rate</i></a>{% endif %}
+    <a href="{% block backProposal %}{% endblock %}"><i class="fa fa-arrow-left">&emsp;Back to Proposal</i></a>
+{% endblock %}

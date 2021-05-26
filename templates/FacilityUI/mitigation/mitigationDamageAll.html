@@ -1,0 +1,830 @@
+{% extends 'BaseUI/BaseFacility/baseMitigation.html' %}
+{% load staticfiles %}
+{% load static %}
+<!-------------- BLOCK MENU ---------------->
+{% block homedetail %}{% url 'homefacility' siteID%}{% endblock %}
+{% block listfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+{% block newfaci %}{% url 'facilitiesNew' siteID %}{% endblock %}
+{% block design %}{% url 'designcodeDisplay' siteID %}{% endblock %}
+{% block manu %}{% url 'manufactureDisplay' siteID %}{% endblock %}
+{% block uploadInsp %}{% url 'upload' siteID %}{% endblock %}
+{% block uploadPlant %}{% url 'uploadPlan' siteID %}{% endblock %}
+{#{% block uploadScada %}{% url 'uploadScada' siteID %}{% endblock %}#}
+{% block manageFile %}{% url 'manageFile' siteID %}{% endblock %}
+{% block inspecPlan %}{% url 'inspectionPlan' siteID %}{% endblock %}
+{% block rbitracking %}{% url 'rbitracking' %}{% endblock %}
+{% block mitigationSite %}{% url 'mitigationSite' siteID%}{% endblock %}
+{% block data-content %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <style>
+    .card{
+        background: #ffffff;
+    }
+    .bang{
+        width: 50%;
+        height: 50%;
+        background-color: #305680;
+        margin: auto;
+        /*overflow-x: scroll;*/
+    }
+    button{
+        width: 150px;
+        height: 70px;
+        margin-top: 20px;
+        margin-left: 5px;
+        background-color: #FFFFFF;
+    }
+        #searchs td,#searchs th {
+      border: 1px solid #ddd;
+      padding: 0px;
+      text-align: center;
+    }
+    .city td, .city th{
+      border: 1px solid #ddd;
+      padding: 0px;
+      text-align: center;
+      font-size: 13px;
+    }
+    #search2 th,#search2 td{
+      border: 1px solid #ddd;
+      padding: 0px;
+      text-align: center;
+    }
+    #search3 th,#search3 td{
+      border: 1px solid #ddd;
+      padding: 0px;
+      text-align: center;
+    }
+    #proposal th,#proposal td{
+      border: 1px solid #ddd;
+      padding: 0px;
+      text-align: center;
+    }
+    #searchs tr:nth-child(even){background-color: #f2f2f2;}
+    .city tr:nth-child(even){background-color: white;}
+    #search2 tr:nth-child(even){background-color: #f2f2f2;}
+    #search3 tr:nth-child(even){background-color: #f2f2f2;}
+    #proposal tr:nth-child(even){background-color: #f2f2f2;}
+    #searchs tr:hover {background-color: #ddd;}
+    .city tr:hover {background-color: #ddd;}
+    #search2 tr:hover {background-color: #f2f2f2;}
+    #search3 tr:hover {background-color: #f2f2f2;}
+    #proposal tr:hover {background-color: #f2f2f2;}
+
+    #searchs th {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      background-color: #305680;
+      color: white;
+    }
+    .city th {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      background-color: #305680;
+      color: white;
+    }
+    #search2 th{
+      padding-top: 10px;
+      padding-bottom: 10px;
+      background-color: #305680;
+      color: white;
+    }
+    #search3 th{
+      padding-top: 10px;
+      padding-bottom: 10px;
+      background-color :#305680;
+      color: white;
+    }
+    #proposal th{
+      padding-top: 10px;
+      padding-bottom: 10px;
+      background-color: #305680;
+      color: white;
+    }
+
+    .containerflex {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: flex-start;
+        align-content: flex-start;
+
+        padding: 2px;
+        background: white;
+        min-width: 1250px;
+        height: 230px;
+        margin: auto;
+    }
+
+    .flexitem {
+        width: 530px;
+        height: 220px;
+        padding: 0px;
+        background: #0AA6DB;
+        margin: 1px;
+        font-weight: bold;
+    }
+
+    </style>
+    <!-- <a href="{% url 'mitigationSite' siteID %}" title="Back" style="color:black; font-size:20px"><img src='/static/image/loading/back.png' style="padding-bottom: 6px;width:40px;"></a> -->
+    <div class="title-verifitcation">
+        <h1>Prevention / Mitigation</h1>
+    </div>
+    <form id="inspectionplan" method="post">
+      {% csrf_token %}
+        <!-- <div style=" text-align: center"><caption><b style="font-size: 20px; color: #444444;">Prevention / Mitigation 7</b></caption></div> -->
+        <br>
+        <div>
+          <div>
+            <div class="row">
+              <div class="col-sm-4">
+                <select id="type" class="form-control">
+                  <option value="0">PoF</option>
+                  <option value="1">CoF</option>
+                </select>
+              </div>
+              <div class="col-sm-4">
+                <select id="size" name='size' class="form-control">
+                  <option value="thinning">Thinning Damage Factor</option>
+                  <option value="alkaline">Alkaline Carbonate Stress Corrosion Cracking</option>
+                  <option value="caustic">SCC - Caustic Cracking </option>
+                  <option value="amine">SCC - Amine Cracking </option>
+                  <option value="pascc">Polythionic Acid Stress Corrosion Cracking</option>
+                    <option value='all'>All</option>
+                </select>
+              </div>
+            <div class="col-sm-4" style="text-align: right;">
+                 <input type="submit" name="analysis" onclick="AnalysicClick();"value="analysis">
+            </div>
+            </div>
+          </div>
+      </div>
+      <br/>
+      <script type="text/javascript">
+        $(document).ready(function () {
+            document.getElementById('type').selectedIndex=0;
+            document.getElementById('size').selectedIndex=5;
+        $("#type").change(function () {
+        var val = $(this).val();
+        if (val == "0") {
+            $("#size").html("<option value='thinning'>Thinning Damage Factor</option><option value='alkaline'>Alkaline Carbonate Stress Corrosion Cracking</option><option value='caustic'>SCC - Caustic Cracking </option><option value='amine'>SCC - Amine Cracking </option><option value='pascc'>Polythionic Acid Stress Corrosion Cracking</option><option value='all'>All</option>");
+
+        } else if (val == "1") {
+            $("#size").html("<option value='financial'>Finance</option>");
+
+        }
+    });
+});
+        function AnalysicClick() {
+            var div = document.createElement('div');
+            var img = document.createElement('img');
+            img.src = '{% static 'image/loading/Pacman-1s-100px.gif' %}';
+            div.style.cssText = "position: fixed;left: 50%; top: 30%; width: 300px; text-align: center; background: rgba(54, 25, 25, .00004); border: 0px solid #000;";
+            div.appendChild(img);
+            document.body.appendChild(div);
+            return true;
+        }
+      </script>
+        <div id="menu0" class="tab-pane fade in active" >
+                <div class="city" style="font-size: 13px; color: #444444;background-color:white">
+                    <div class="container">
+                        <div class="table-responsive">
+                            <table width=100% id="testingTable1">
+                                <tr>
+                                    <th rowspan="2">Priority</th>
+                                    <th rowspan="2">Parameters</th>
+                                    <th rowspan="2">Increase/Reduction</th>
+                                    <th colspan="3">Now</th>
+                                    <th colspan="3">If Change</th>
+                                </tr>
+                                <tr>
+                                    <th>Value</th>
+                                    <th>PoF</th>
+                                    <th>Risk</th>
+                                    <th>Value</th>
+                                    <th>PoF</th>
+                                    <th>Risk</th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+    </div>
+
+    </form>
+
+    <div id='0' name="left" style="float: left;" class="chart-mitigation-50">
+    <!--  Day la chart -->
+        <canvas id="myChartNominalThickness" ></canvas>
+    </div>
+    <div id='1' name="right" style="float: left;" class="chart-mitigation-50">
+<!--  Day la chart -->
+    <canvas id="myChartCurentThickness" ></canvas>
+     </div>
+    <div id='2' name="left" style="float: left;" class="chart-mitigation-50">
+    <!--  Day la chart -->
+        <canvas id="myChartCorrosionRate" ></canvas>
+     </div>
+     <div id='3'name="right" style="float: right;" class="chart-mitigation-50">
+    <!--  Day la chart -->
+        <canvas id="myChartMinimunRequiredThickness" ></canvas>
+     </div>
+    <div id='4' name="left" style="float: left;" class="chart-mitigation-50">
+    <!--  Day la chart -->
+        <canvas id="myChartCO3" ></canvas>
+    </div>
+    <div id='5' name="right" style="float: left;" class="chart-mitigation-50">
+<!--  Day la chart -->
+        <canvas id="myChartph" ></canvas>
+     </div>
+    <div id='6' name="left" style="float: left;" class="chart-mitigation-50">
+    <!--  Day la chart -->
+        <canvas id="myChartMAX_OP_TEMP" ></canvas>
+    </div>
+    <div id='7' name="right" style="float: left;" class="chart-mitigation-50">
+<!--  Day la chart -->
+    <canvas id="myChartNaOHConcentration" ></canvas>
+     </div>
+    <div id='8' name="left" style="float: left;" class="chart-mitigation-50">
+    <!--  Day la chart -->
+        <canvas id="myChartCRACK_PRESENT" ></canvas>
+     </div>
+     <div id='9'name="right" style="float: right;" class="chart-mitigation-50">
+    <!--  Day la chart -->
+        <canvas id="myChartHEAT_TRACE" ></canvas>
+     </div>
+{#    #}
+
+    <div id='10' name="right" style="float: left;" class="chart-mitigation-50">
+<!--  Day la chart -->
+    <canvas id="myChartAMINE_EXPOSED" ></canvas>
+     </div>
+     <div style="float: right;" class="chart-mitigation-50"></div>
+    <div id='11' name="left" style="float: left;" class="chart-mitigation-100">
+    <!--  Day la chart -->
+        <canvas id="myChartAMINESOLUTION" ></canvas>
+     </div>
+     <script type="text/javascript">
+         var lineChartNominalThickness = document.getElementById('myChartNominalThickness');
+         var myChartNominalThickness = new Chart(lineChartNominalThickness, {
+                type: 'line',
+                data: {
+                        labels:[{% for x in obj.dataNominalThicknessX %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+                    datasets: [
+
+                        {
+                            label: 'PoF',
+                            data: [{% for x in obj.dataNominalThicknessY1 %}
+                            {{ x }},
+                            {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(128, 0, 128, 0.7)',
+                            borderColor: 'rgba(128, 0, 128, 1)',
+                            borderWidth: 1,
+                            fill:false
+                        },
+                        {
+                            label: 'Risk',
+                            data: [{% for x in obj.dataNominalThicknessY2 %}
+                            {{ x }},
+                            {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(0, 128, 128, 1)',
+                            borderColor: 'rgba(128, 0, 0, 1)',
+                            borderWidth: 1,
+                            fill:false
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:false,
+                                stacked: true
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                            display: true,
+    {#                        fontSize: 14,#}
+                            labelString: "Nominal Thickness (mm)",
+                            }
+                        }]
+
+                    },
+                }
+            });
+{#         #}
+            var lineChartCurentThickness = document.getElementById('myChartCurentThickness');
+            var myChartCurentThickness = new Chart(lineChartCurentThickness, {
+            type: 'line',
+            data: {
+                    labels:[{% for x in obj.dataCurentThicknessX %}
+                        {{ x }},
+                    {% endfor %}
+                    ],
+                datasets: [
+
+                    {
+                        label: 'PoF',
+                        data: [{% for x in obj.dataCurentThicknessY1 %}
+                        {{ x }},
+                        {% endfor %}
+                        ],
+                        backgroundColor: 'rgba(128, 0, 128, 0.7)',
+                        borderColor: 'rgba(128, 0, 128, 1)',
+                        borderWidth: 1,
+                        fill:false
+                    },
+                    {
+                        label: 'Risk',
+                        data: [{% for x in obj.dataCurentThicknessY2 %}
+                        {{ x }},
+                        {% endfor %}
+                        ],
+                        backgroundColor: 'rgba(0, 128, 128, 1)',
+                        borderColor: 'rgba(128, 0, 0, 1)',
+                        borderWidth: 1,
+                        fill:false
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:false,
+                            stacked: true
+                        }
+                    }],
+                    xAxes: [{
+                        scaleLabel: {
+                        display: true,
+{#                        fontSize: 14,#}
+                        labelString: "Minimum Measured Thickness (mm)",
+                        }
+                    }]
+
+                },
+            }
+        });
+         var lineChartCorrosionRate = document.getElementById('myChartCorrosionRate');
+        var myChartCorrosionRate = new Chart(lineChartCorrosionRate, {
+            type: 'line',
+            data: {
+                    labels:[{% for x in obj.dataCorrosionRateX %}
+                        {{ x }},
+                    {% endfor %}
+                    ],
+                datasets: [
+
+                    {
+                        label: 'PoF',
+                        data: [{% for x in obj.dataCorrosionRateY1 %}
+                        {{ x }},
+                        {% endfor %}
+                        ],
+                        backgroundColor: 'rgba(128, 0, 128, 0.7)',
+                        borderColor: 'rgba(128, 0, 128, 1)',
+                        borderWidth: 1,
+                        fill:false
+                    },
+                    {
+                        label: 'Risk',
+                        data: [{% for x in obj.dataCorrosionRateY2 %}
+                        {{ x }},
+                        {% endfor %}
+                        ],
+                        backgroundColor: 'rgba(0, 128, 128, 1)',
+                        borderColor: 'rgba(128, 0, 0, 1)',
+                        borderWidth: 1,
+                        fill:false
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:false,
+                            stacked: true
+                        }
+                    }],
+                    xAxes: [{
+                        scaleLabel: {
+                        display: true,
+{#                        fontSize: 14,#}
+                        labelString: "Current Corrosion Rate (mm/yr)",
+                        }
+                    }]
+
+                },
+            }
+        });
+        var lineChartMinimunRequiredThickness = document.getElementById('myChartMinimunRequiredThickness');
+        var myChartMinimunRequiredThickness = new Chart(lineChartMinimunRequiredThickness, {
+            type: 'line',
+            data: {
+                    labels:[{% for x in obj.dataMinimunRequiredThicknessX %}
+                        {{ x }},
+                    {% endfor %}
+                    ],
+                datasets: [
+
+                    {
+                        label: 'PoF',
+                        data: [{% for x in obj.dataMinimunRequiredThicknessY1 %}
+                        {{ x }},
+                        {% endfor %}
+                        ],
+                        backgroundColor: 'rgba(128, 0, 128, 0.7)',
+                        borderColor: 'rgba(128, 0, 128, 1)',
+                        borderWidth: 1,
+                        fill:false
+                    },
+                    {
+                        label: 'Risk',
+                        data: [{% for x in obj.dataMinimunRequiredThicknessY2 %}
+                        {{ x }},
+                        {% endfor %}
+                        ],
+                        backgroundColor: 'rgba(0, 128, 128, 1)',
+                        borderColor: 'rgba(128, 0, 0, 1)',
+                        borderWidth: 1,
+                        fill:false
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:false,
+                            stacked: true
+                        }
+                    }],
+                    xAxes: [{
+                        scaleLabel: {
+                        display: true,
+{#                        fontSize: 14,#}
+                        labelString: "Minimum Required Thickness (mm)",
+                        }
+                    }]
+
+                },
+            }
+        });
+        var lineChartCO3 = document.getElementById('myChartCO3');
+        var myChartCO3 = new Chart(lineChartCO3, {
+                type: 'line',
+                data: {
+                        labels:[{% for x in obj.dataCO3X %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+                    datasets: [
+
+                        {
+                            label: 'PoF',
+                            data: [{% for x in obj.dataCO3Y1 %}
+                            {{ x }},
+                            {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(128, 0, 128, 0.7)',
+                            borderColor: 'rgba(128, 0, 128, 1)',
+                            borderWidth: 1,
+                            fill:false
+                        },
+                        {
+                            label: 'Risk',
+                            data: [{% for x in obj.dataCO3Y2 %}
+                            {{ x }},
+                            {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(0, 128, 128, 1)',
+                            borderColor: 'rgba(128, 0, 0, 1)',
+                            borderWidth: 1,
+                            fill:false
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:false,
+                                stacked: true
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                            display: true,
+    {#                        fontSize: 14,#}
+                            labelString: "CO3 Concentration in Water (ppm)",
+                            }
+                        }]
+
+                    },
+                }
+            });
+{#        #}
+        var lineChartph = document.getElementById('myChartph');
+        var myChartph = new Chart(lineChartph, {
+                type: 'line',
+                data: {
+                        labels:[{% for x in obj.dataphX %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+                    datasets: [
+
+                        {
+                            label: 'PoF',
+                            data: [{% for x in obj.dataphY1 %}
+                            {{ x }},
+                            {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(128, 0, 128, 0.7)',
+                            borderColor: 'rgba(128, 0, 128, 1)',
+                            borderWidth: 1,
+                            fill:false
+                        },
+                        {
+                            label: 'Risk',
+                            data: [{% for x in obj.dataphY2 %}
+                            {{ x }},
+                            {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(0, 128, 128, 1)',
+                            borderColor: 'rgba(128, 0, 0, 1)',
+                            borderWidth: 1,
+                            fill:false
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:false,
+                                stacked: true
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                            display: true,
+    {#                        fontSize: 14,#}
+                            labelString: "pH of Water",
+                            }
+                        }]
+
+                    },
+                }
+            });
+        var lineChartMAX_OP_TEMP = document.getElementById('myChartMAX_OP_TEMP');
+        var myChartMAX_OP_TEMP = new Chart(lineChartMAX_OP_TEMP, {
+                type: 'line',
+                data: {
+                        labels:[{% for x in obj.dataMAX_OP_TEMPX %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+                    datasets: [
+
+                        {
+                            label: 'PoF',
+                            data: [{% for x in obj.dataMAX_OP_TEMPY1 %}
+                            {{ x }},
+                            {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(128, 0, 128, 0.7)',
+                            borderColor: 'rgba(128, 0, 128, 1)',
+                            borderWidth: 1,
+                            fill:false
+                        },
+                        {
+                            label: 'Risk',
+                            data: [{% for x in obj.dataMAX_OP_TEMPY2 %}
+                            {{ x }},
+                            {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(0, 128, 128, 1)',
+                            borderColor: 'rgba(128, 0, 0, 1)',
+                            borderWidth: 1,
+                            fill:false
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:false,
+                                stacked: true
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                            display: true,
+                            fontSize: 14,
+                            labelString: "Maximum Operating Temperature (Celsius)",
+                            }
+                        }]
+
+                    },
+                }
+            });
+        var lineChartNaOHConcentration = document.getElementById('myChartNaOHConcentration');
+        var myChartNaOHConcentration = new Chart(lineChartNaOHConcentration, {
+                type: 'line',
+                data: {
+                        labels:[{% for x in obj.dataNaOHConcentrationX %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+                    datasets: [
+
+                        {
+                            label: 'PoF',
+                            data: [{% for x in obj.dataNaOHConcentrationY1 %}
+                            {{ x }},
+                            {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(128, 0, 128, 0.7)',
+                            borderColor: 'rgba(128, 0, 128, 1)',
+                            borderWidth: 1,
+                            fill:false
+                        },
+                        {
+                            label: 'Risk',
+                            data: [{% for x in obj.dataNaOHConcentrationY2 %}
+                            {{ x }},
+                            {% endfor %}
+                            ],
+                            backgroundColor: 'rgba(0, 128, 128, 1)',
+                            borderColor: 'rgba(128, 0, 0, 1)',
+                            borderWidth: 1,
+                            fill:false
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:false,
+                                stacked: true
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                            display: true,
+                            fontSize: 14,
+                            labelString: "NaOH Concentration (%)",
+                            }
+                        }]
+
+                    },
+                }
+            });
+        new Chart(document.getElementById("myChartCRACK_PRESENT"), {
+        type: 'bar',
+        data: {
+          labels: ["True", "False"],
+          datasets: [
+         {
+          label: "PoF",
+          backgroundColor: "rgba(128, 0, 128, 0.7)",
+          data: [{% for x in obj.dataCRACK_PRESENTY1 %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+        },
+        {
+          label: "Risk",
+          backgroundColor: "rgba(128, 0, 0, 1)",
+          data: [{% for x in obj.dataCRACK_PRESENTY2 %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+        }
+      ]
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'The graph shows the dependencies of the parameter Presence of Cracks'
+          }
+        }
+        });
+{#        #}
+        new Chart(document.getElementById("myChartHEAT_TRACE"), {
+        type: 'bar',
+        data: {
+          labels: ["True", "False"],
+          datasets: [
+        {
+          label: "PoF",
+          backgroundColor: "rgba(128, 0, 128, 0.7)",
+          data: [{% for x in obj.dataHEAT_TRACEY1 %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+        },
+        {
+          label: "Risk",
+          backgroundColor: "rgba(128, 0, 0, 1)",
+          data: [{% for x in obj.dataHEAT_TRACEY2 %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+        }
+      ]
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'The graph shows the dependencies of the parameter Heat Traced'
+          }
+        }
+        });
+        new Chart(document.getElementById("myChartAMINESOLUTION"), {
+        type: 'bar',
+        data: {
+          labels: ["Diethanolamine DEA", "Diglycolamine DGA", "Disopropanolamine DIPA", "Methyldiethanolamine MDEA","Monoethanolamine MEA","Sulfinol"],
+          datasets: [
+        {
+          label: "PoF",
+          backgroundColor: "rgba(128, 0, 128, 0.7)",
+          data: [{% for x in obj.dataAMINE_SOLUTIONY1 %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+        },
+        {
+          label: "Risk",
+          backgroundColor: "rgba(128, 0, 0, 1)",
+          data: [{% for x in obj.dataAMINE_SOLUTIONY2 %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+        }
+      ]
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'The graph shows the dependencies of the parameter Amine Solution Composition'
+          }
+        }
+        });
+{#   AMINE_EXPOSED     #}
+    new Chart(document.getElementById("myChartAMINE_EXPOSED"), {
+        type: 'bar',
+        data: {
+          labels: ["True", "False"],
+          datasets: [
+        {
+          label: "Amine Cracking",
+          backgroundColor: "rgba(0, 128, 128, 0.3)",
+          data: [{% for x in obj.dataAMINE_EXPOSEDY0 %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+        }, {
+          label: "PoF",
+          backgroundColor: "rgba(128, 0, 128, 0.7)",
+          data: [{% for x in obj.dataAMINE_EXPOSEDY1 %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+        },
+        {
+          label: "Risk",
+          backgroundColor: "rgba(128, 0, 0, 1)",
+          data: [{% for x in obj.dataAMINE_EXPOSEDY2 %}
+                            {{ x }},
+                        {% endfor %}
+                        ],
+        }
+      ]
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'The graph shows the dependencies of the parameter Exposure to Anime'
+          }
+        }
+        });
+{#        document.getElementById('{{ m }}').style.border='red 2px solid';#}
+         {% for x in medthod %}
+            document.getElementById('{{ x }}').style.border='red 2px solid';
+         {% endfor %}
+         </script>
+{% endblock %}
+<!----------------- END BLOCK----------------->

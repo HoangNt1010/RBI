@@ -1,0 +1,443 @@
+{% extends 'BaseUI/BaseFacility/baseRiskSummary.html' %}
+
+{% load staticfiles %}
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactor' proposalID %}{% endblock %}
+{% block fcof%}{% url 'fullyConsequence' proposalID %}{% endblock %}
+{% block acof%}{% url 'areaBasedCoF' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrix' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChart' proposalID %}{% endblock %}
+{% block corri %}{% url 'corrision' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'damgeFactor' proposalID%}{% endblock %}
+
+{% block data-content %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+      .card {
+          background: #ffffff;
+      }
+
+    .scheduler-border {
+        border: none;
+        padding: 0 1.4em 1.4em 1.4em;
+        margin: 0 0 1.5em 0;
+        font-size: 1.1em ;
+        text-align: left ;
+        text-decoration-color: #444444;
+    }
+    .row{
+        text-align: left;
+    }
+    .arrow-down {
+        margin-left: 50%;
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-top: 2px solid;
+        border-right: 2px solid;
+        transform: rotate(135deg);
+      }
+    </style>
+    <!--suppress ALL -->
+    <form id="inspectionplan" method="post" class="card" >
+    {% csrf_token %}
+       <div style=" text-align: center"><caption><b style="font-size: 20px; color: #444444;">Alkaline Carbonate Stress Corrosion Cracking Damage Factor</b></caption></div>
+
+                <!-----------BlOCK FULLY QUANTITIVE FCOF AND CATEGORY--------->
+        <fieldset class="scheduler-border">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Assessment General Information</b></legend>
+                    <div class="row">
+                        <div class="col-md-4">Equipment Number</div>
+                        <div class="col-md-6"><input  type="text" size="50px" value="{{ a.EquipmentNumber }}"></div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Component Number</div>
+                        <div class="col-md-6"><input  type="text" size="50px" value="{{ a.ComponentNumber }}"> </div>
+                    </div>
+                    <div class="row">
+                         <div class="col-md-4">Assessment Name</div>
+                        <div class="col-md-6"><input  type="text" size="50px" value="{{ a.Assessment }}"> </div>
+                    </div>
+                </fieldset>
+
+
+        <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Assessment Data Input</b></legend>
+            <div>
+           <a class="arrow-down" data-toggle="collapse" href="#c" aria-expanded="false" >
+              </a></div>
+               <div class="collapse" id="c">
+                    <div class="row">
+                        <div class="col-md-3">Assessment Date</div>
+                        <div class="col-md-3"><input type="text" name="assessmentdate"  id="assessmentdate" placeholder="yyyy-mm-dd" value="{{ a.assessmentDate }}">
+                        <script>
+                            $( "#assessmentdate" ).datepicker({
+                            dateFormat: 'yy-mm-dd'
+                        });
+
+                        </script>
+                        </div>
+                        <div class="col-md-3">Commission Date</div>
+                        <div class="col-md-3"><input  type="text" value="{{a.CommissionDate}}"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">Risk Analysis Period</div>
+                        <div class="col-md-3"><input  type="text" value="36 months"> </div>
+                        <div class="col-md-3">Last Inspection Date</div>
+                        <div class="col-md-3"><input  type="text" name="lastInspection"  id="lastInspection" placeholder="yyyy-mm-dd" value="{{a.CommissionDate}}">
+                        <script>
+                            $( "#lastInspection" ).datepicker({
+                            dateFormat: 'yy-mm-dd'
+                        });
+
+                        </script>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">Highest Inspection Effectiveness</div>
+                        <div class="col-md-3"><input  type="text" value="{{ a.ALKALINE_INSP_EFF }}"></div>
+                        <div class="col-md-3">Number of Inspections</div>
+                        <div class="col-md-3"><input  type="text" value="{{ a.ALKALINE_INSP_NUM }}"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">CO3 Concentration in Water (ppm) </div>
+                        <div class="col-md-3"><input  type="text" value="{{ a.co3 }}"> </div>
+                        <div class="col-md-3">pH of Water</div>
+                        {% if const %}
+                              <div class="col-md-3"><input  data-toggle="tooltip" title="{{ a.ph }}"  style="background-color: green; color: white;" type="text" value="{{ b.ph }}"> </div>
+                        {% else %}
+                              <div class="col-md-3"><input  type="text" value="{{ a.ph }}"></div>
+                        {% endif %}
+                    </div>
+                   <div class="row">
+                        <div class="col-md-3">PWHT </div>
+                       {% if const %}
+                            <div class="col-md-3"><input  data-toggle="tooltip" title="{{ a.PWHT }}"  style="background-color: green; color: white;"  type="text" value="{{ b.PWHT }}"></div>
+                       {% else %}
+                        <div class="col-md-3"><input  type="text" value="{{ a.PWHT }}"></div>
+                       {% endif %}
+                        <div class="col-md-3">Aqueous Phase During Operation</div>
+                        {% if const %}
+                            <div class="col-md-3"><input  data-toggle="tooltip" title="{{ a.AQUEOUS_OPERATOR }}"  style="background-color: green; color: white;"  type="text" value="{{ b.AQUEOUS_OPERATOR }}"> </div>
+
+                        {% else %}
+                            <div class="col-md-3"><input  type="text" value="{{ a.AQUEOUS_OPERATOR }}"> </div>
+                        {% endif %}
+
+                    </div>
+{#tu them vao, ko co trong riskwise#}
+                   <div class="row">
+                        <div class="col-md-3">Carbon or Low Alloy Steel </div>
+                       {% if const %}
+                           <div class="col-md-3"><input data-toggle="tooltip" title="{{ a.CARBON_ALLOY }}"style="background-color: green; color: white;"  type="text" value="{{ b.CARBON_ALLOY }}"></div>
+                        {% else %}
+                           <div class="col-md-3"><input  type="text" value="{{ a.CARBON_ALLOY }}"></div>
+                        {% endif %}
+
+                        <div class="col-md-3">Presence of Cracks</div>
+                       {% if const %}
+                            <div class="col-md-3"><input data-toggle="tooltip" title="{{ a.CRACK_PRESENT }}" style="background-color: green; color: white;" type="text" value="{{ b.CRACK_PRESENT }}"></div>
+                        {% else %}
+                           <div class="col-md-3"><input  type="text" value="{{ a.CRACK_PRESENT }}"></div>
+                        {% endif %}
+
+                    </div>
+               </div>
+            </fieldset>
+            <!-------Khối Intermediate Results------>
+        {% if const %}
+            <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Intermediate Results </b></legend>
+                <div>
+                <a class="arrow-down" data-toggle="collapse" href="#b" aria-expanded="false" >
+              </a></div>
+               <div class="collapse" id="b">
+
+                    <div class="row">
+                        <div class="col-md-6">Susceptibility to Carbonate Cracking <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal1">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                        <div class="col-md-3"><input data-toggle="tooltip" title="{{ a.Susceptibility }}" style="background-color: green; color: white;"  type="text" size="10px" value="{{ b.Susceptibility }}"> </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">Severity Index, SVI <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                        <div class="col-md-3"><input data-toggle="tooltip" title="{{ a.SVI }}"style="background-color: green; color: white;"  type="text" size="10px" value="{{ b.SVI }}"> </div>
+                    </div>
+
+                    <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-1"><input  type="text" style="background-color: #0C5BED; color: white" size="55px"  value="0 months                    36 months                   72 months"></div>
+                    </div>
+                    <div class="row">
+                            <div class="col-md-6">Years Since Last Inspection, age <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal3">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><input data-toggle="tooltip" title="{{ a.age1 }}" style="background-color: green; color: white;" type="text" size="10px" value="{{ b.age1 }}"></div>
+                            <div class="col-md-2"><input data-toggle="tooltip" title="{{ a.age2 }}" style="background-color: green; color: white;" type="text" size="10px" value="{{ b.age2 }}"> </div>
+                            <div class="col-md-2"><input data-toggle="tooltip" title="{{ a.age3 }}" style="background-color: green; color: white;" type="text" size="10px" value="{{ b.age3 }}"></div>
+                    </div>
+                    <div class="row">
+                            <div class="col-md-6">Base Value of Damage Factor <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal4">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><input data-toggle="tooltip" title="{{ a.base1 }}" style="background-color: green; color: white;" type="text" size="10px" value="{{ b.base1 }}"></div>
+                            <div class="col-md-2"><input data-toggle="tooltip" title="{{ a.base2 }}" style="background-color: green; color: white;" type="text" size="10px" value="{{ b.base2 }}"></div>
+                            <div class="col-md-2"><input data-toggle="tooltip" title="{{ a.base3 }}" style="background-color: green; color: white;" type="text" size="10px" value="{{ b.base3 }}"></div>
+                    </div>
+               </div>
+            </fieldset>
+            <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Damage Factor </b></legend>
+                <div>
+                <a class="arrow-down" data-toggle="collapse" href="#a" aria-expanded="false" >
+              </a></div>
+               <div class="collapse" id="a">
+                    <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-1"><input  type="text" style="background-color: #0C5BED; color: #FFFFFF" size="55px"  value="0 months                    36 months                   72 months"></div>
+                    </div>
+                    <div class="row">
+                            <div class="col-md-6">Carbonate Cracking Damage Factor <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal5">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><input  data-toggle="tooltip" title="{{ a.CACBONATE1 }}" style="background-color: green; color: white;" type="text" size="10px" value="{{ b.CACBONATE1 }}"> </div>
+                            <div class="col-md-2"><input  data-toggle="tooltip" title="{{ a.CACBONATE1 }}"style="background-color: green; color: white;"  type="text" size="10px" value="{{ b.CACBONATE2 }}"> </div>
+                            <div class="col-md-2"><input  data-toggle="tooltip" title="{{ a.CACBONATE1 }}" style="background-color: green; color: white;" type="text" size="10px" value="{{ b.CACBONATE3 }} "></div>
+                    </div>
+               </div>
+                <div id="myModal1" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content" >
+                      <div class="modal-body">
+                          <p>The susceptibility for cracking using Figure and Table below: </p>
+                          <br>
+
+                        <img src="{% static '/image/proposal/acscc_susceptibility_figure.JPG' %}" style="width: 100%">
+                          <br>
+                          <p style="text-align: center; font-size: 15px; font-weight: bold">Susceptibility to Cracking – ACSCC </p>
+                          <img src="{% static '/image/proposal/acscc_susceptibility_table.JPG' %} " style="width: 100%">
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div id="myModal2" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+                          <p>Severity Index: <img src="{% static 'image/proposal/anime_severity.JPG' %}"></p>
+                          <br>
+                          <p style="text-align: center; font-size: 15px; font-weight: bold">Severity Index – ACSCC </p>
+                        <img src="{% static '/image/proposal/acscc_severityindex.JPG' %}" style="width: 100%">
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal3" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+                          <p>Age is the component in-service time since the last cracking inspection or service start date</p>
+                          <br>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal4" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+                          <p><img src="{% static 'image/proposal/acscc_basevalueDF.JPG' %}"> is the base value of the Damage Factor for ACSCC.
+                              It is based on the number of, and the highest inspection effectiveness, the severity index and the table below:</p>
+                          <br>
+                          <p style="text-align: center; font-size: 15px; font-weight: bold"> ACSCC Damage Factors </p>
+                          <img src="{% static 'image/proposal/ssc_base_table_DF.JPG' %}" style="width: 100%">
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal5" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+                          <p><img src="{%  static 'image/proposal/acscc_DF.JPG' %}"> is the DF for ACSCC. It can be calculated using this equation below:</p>
+                          <br>
+                          <img src="{% static 'image/proposal/acscc_equation.JPG' %}">
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </fieldset>
+        {% else %}
+        <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Intermediate Results </b></legend>
+                <div>
+                <a class="arrow-down" data-toggle="collapse" href="#b" aria-expanded="false" >
+              </a></div>
+               <div class="collapse" id="b">
+
+                    <div class="row">
+                        <div class="col-md-6">Susceptibility to Carbonate Cracking <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal1">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                        <div class="col-md-3"><input  type="text" size="10px" value="{{ a.Susceptibility }}"> </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">Severity Index, SVI <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                        <div class="col-md-3"><input  type="text" size="10px" value="{{ a.SVI }}"> </div>
+                    </div>
+
+                    <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-1"><input  type="text" style="background-color: #0C5BED; color: white" size="55px"  value="0 months                    36 months                   72 months"> </div>
+                    </div>
+                    <div class="row">
+                            <div class="col-md-6">Years Since Last Inspection, age <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal3">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><input  type="text" size="10px" value="{{ a.age1 }}"> </div>
+                            <div class="col-md-2"><input  type="text" size="10px" value="{{ a.age2 }}"> </div>
+                            <div class="col-md-2"><input  type="text" size="10px" value="{{ a.age3 }}"> </div>
+                    </div>
+                    <div class="row">
+                            <div class="col-md-6">Base Value of Damage Factor <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal4">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><input  type="text" size="10px" value="{{ a.base1 }}"> </div>
+                            <div class="col-md-2"><input  type="text" size="10px" value="{{ a.base2 }}"> </div>
+                            <div class="col-md-2"><input  type="text" size="10px" value="{{ a.base3 }}"> </div>
+                    </div>
+               </div>
+            </fieldset>
+            <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Damage Factor </b></legend>
+                <div>
+                <a class="arrow-down" data-toggle="collapse" href="#a" aria-expanded="false" >
+              </a></div>
+               <div class="collapse" id="a">
+                    <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-1"><input  type="text" style="background-color: #0C5BED; color: #FFFFFF" size="55px"  value="0 months                    36 months                   72 months"> </div>
+                    </div>
+                    <div class="row">
+                            <div class="col-md-6">Carbonate Cracking Damage Factor <button style="border: none; background-color: white; padding: 0px 0px 0px 0px" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal5">
+                                <i class="fa fa-question-circle" style="color:#0C5BED" ></i>
+                            </button></div>
+                            <div class="col-md-2"><input  type="text" size="10px" value="{{ a.CACBONATE1 }}"></div>
+                            <div class="col-md-2"><input  type="text" size="10px" value="{{ a.CACBONATE2 }}"></div>
+                            <div class="col-md-2"><input  type="text" size="10px" value="{{ a.CACBONATE3 }} "></div>
+                    </div>
+               </div>
+                <div id="myModal1" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content" >
+                      <div class="modal-body">
+                          <p>The susceptibility for cracking using Figure and Table below: </p>
+                          <br>
+
+                        <img src="{% static '/image/proposal/acscc_susceptibility_figure.JPG' %}" style="width: 100%">
+                          <br>
+                          <p style="text-align: center; font-size: 15px; font-weight: bold">Susceptibility to Cracking – ACSCC </p>
+                          <img src="{% static '/image/proposal/acscc_susceptibility_table.JPG' %} " style="width: 100%">
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div id="myModal2" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+                          <p>Severity Index: <img src="{% static 'image/proposal/anime_severity.JPG' %}"></p>
+                          <br>
+                          <p style="text-align: center; font-size: 15px; font-weight: bold">Severity Index – ACSCC </p>
+                        <img src="{% static '/image/proposal/acscc_severityindex.JPG' %}" style="width: 100%">
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal3" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+                          <p>Age is the component in-service time since the last cracking inspection or service start date</p>
+                          <br>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal4" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+                          <p><img src="{% static 'image/proposal/acscc_basevalueDF.JPG' %}"> is the base value of the Damage Factor for ACSCC.
+                              It is based on the number of, and the highest inspection effectiveness, the severity index and the table below:</p>
+                          <br>
+                          <p style="text-align: center; font-size: 15px; font-weight: bold"> ACSCC Damage Factors </p>
+                          <img src="{% static 'image/proposal/ssc_base_table_DF.JPG' %}" style="width: 100%">
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="myModal5" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content" >
+                      <div class="modal-body">
+                          <p><img src="{%  static 'image/proposal/acscc_DF.JPG' %}"> is the DF for ACSCC. It can be calculated using this equation below:</p>
+                          <br>
+                          <img src="{% static 'image/proposal/acscc_equation.JPG' %}">
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </fieldset>
+        {% endif %}
+        <input type="submit" name="expertHelp" style="background: blue; float: right;color: white; border:black 2px solid;margin-right:1px;" value="EXPERT HELP">
+        </fieldset>
+    </form>
+
+{% endblock %}

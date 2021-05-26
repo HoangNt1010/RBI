@@ -1,0 +1,277 @@
+{% extends 'BaseUI/BaseFacility/baseRiskSummary.html' %}
+
+{% load staticfiles %}
+
+<!----------------BLOCK MENU--------------->
+
+{% block pof %}{% url 'damgeFactor' proposalID %}{% endblock %}
+{% block fcof %}{% url 'fullyConsequence' proposalID %}{% endblock %}
+{% block acof %}{% url 'areaBasedCoF' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrix' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChart' proposalID %}{% endblock %}
+{% block chartv2 %}{% url 'riskChartv2' proposalID %}{% endblock %}
+{% block corrcontrol %}{% url 'corrosionCotrol' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'proposalDisplay' ass.componentid_id %}{% endblock %}
+<!---------------END BLOCK--------------->
+
+{% block data-content %}
+    <!--suppress ALL -->
+    <form method="post">
+    {% csrf_token %}
+        <div class="input-data">
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border"><b>Area-based CoF</b></legend>
+
+                <!-----------BlOCK FULLY QUANTITIVE FCOF AND CATEGORY--------->
+                <fieldset class="scheduler-border" >
+                    <legend class="scheduler-border"><b>Intermediate Values</b></legend>
+                    <div class="row">
+                        <div class="col-md-4">The hydraulic conductivity for water</div>
+                        <div class="col-md-2">{{ data.hydraulic_water }}</div>                    <!---contain data get from database---->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">The hydraulic conductivity for liquid</div>
+                        <div class="col-md-2">{{ data.hydraulic_fluid }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">The product seepage velocity</div>
+                        <div class="col-md-2">{{ data.product_velocity }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Area Hole Size</div>
+                        <div class="col-md-2">S:{{ data.area_small }}</div>
+                        <div class="col-md-2">M:{{ data.area_medium }}</div>
+                        <div class="col-md-2">L:{{ data.area_large }}</div>
+                        <div class="col-md-2">R:{{ data.area_rupture }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Flow rate</div>
+                        <div class="col-md-2">D1:{{ data.flow_rate_d1 }}</div>
+                        <div class="col-md-2">D2:{{ data.flow_rate_d2 }}</div>
+                        <div class="col-md-2">D3:{{ data.flow_rate_d3 }}</div>
+                        <div class="col-md-2">D4:{{ data.flow_rate_d4 }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">The liquid height above the shell question</div>
+                        <div class="col-md-2">{{ data.liquid_height_shell }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">The value of fluid above the shell question</div>
+                        <div class="col-md-2">{{ data.fluid_above }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Leak Duration</div>
+                        <div class="col-md-2">D1:{{ data.leak_duration_d1 }}</div>
+                        <div class="col-md-2">D2:{{ data.leak_duration_d2 }}</div>
+                        <div class="col-md-2">D3:{{ data.leak_duration_d3 }}</div>
+                        <div class="col-md-2">D4:{{ data.leak_duration_d4 }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Release volume from leakage</div>
+                        <div class="col-md-2">D1:{{ data.release_volume_leak_d1 }}</div>
+                        <div class="col-md-2">D2:{{ data.release_volume_leak_d2 }}</div>
+                        <div class="col-md-2">D3:{{ data.release_volume_leak_d3 }}</div>
+                        <div class="col-md-2">D4:{{ data.release_volume_leak_d4 }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Release volume from rupture</div>
+                        <div class="col-md-2">{{ data.release_volume_leak_d4 }}</div>
+                    </div>
+                </fieldset>
+
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border"><b>Flammable Consequence</b></legend>
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">{{ data.model_fluid }}</legend>
+                    <div class="row">
+                            <div class="col-md-8"><b>Release equations contants</b></div>
+                            <div class="col-md-2"><b>A</b></div>
+                            <div class="col-md-2"><b>B</b></div>
+                    </div>
+                    <div class="row">
+                           <div class="col-md-8">Continuous Release - Auto - Ignition Not Likely  </div>
+                           <div class="col-md-2">{{ data.cainl_cmd_a }}</div>             <!-----contain data get from database---------->
+                           <div class="col-md-2">{{ data.cainl_cmd_b }}</div>
+                    </div>
+                    <div class="row">
+                           <div class="col-md-8">Continuous Release - Auto - Ignition Likely  </div>
+                           <div class="col-md-2">{{ data.cail_cmd_a }}</div>             <!-----contain data get from database---------->
+                           <div class="col-md-2">{{ data.cail_cmd_b }}</div>
+                    </div>
+                    <div class="row">
+                           <div class="col-md-8">Instantaneous Release - Auto - Ignition Not Likely  </div>
+                           <div class="col-md-2">{{ data.cainl_inj_a }}</div>             <!-----contain data get from database---------->
+                           <div class="col-md-2">{{ data.cainl_inj_b }}</div>
+                    </div>
+                    <div class="row">
+                           <div class="col-md-8">Instantaneous Release - Auto - Ignition Likely  </div>
+                           <div class="col-md-2">{{ data.cail_inj_a }}</div>             <!-----contain data get from database---------->
+                           <div class="col-md-2">{{ data.cail_inj_b }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4"><b>Release Hole Size</b> </div>
+                           <div class="col-md-2"><b>Small</b></div>             <!-----contain data get from database---------->
+                           <div class="col-md-2"><b>Medium</b></div>
+                           <div class="col-md-2"><b>Large</b></div>
+                           <div class="col-md-2"><b>Rupture</b></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Release rate (Kg/s)</div>
+                           <div class="col-md-2">{{ data.release_rate_1 }}</div>             <!-----contain data get from database---------->
+                           <div class="col-md-2">{{ data.release_rate_2 }}</div>
+                           <div class="col-md-2">{{ data.release_rate_3 }}</div>
+                           <div class="col-md-2">{{ data.release_rate_4 }}</div>
+                    </div>
+                    <div class="row">
+                           <div class="col-md-4">CONT-CMD-AINL CA, m<sup>2</sup></div>
+                           <div class="col-md-2">D1:{{ data.ca_cmd_ainl_cont_1 }}</div>             <!-----contain data get from database---------->
+                           <div class="col-md-2">D2:{{ data.ca_cmd_ainl_cont_2 }}</div>
+                           <div class="col-md-2">D3:{{ data.ca_cmd_ainl_cont_3 }}</div>
+                           <div class="col-md-2">D4:{{ data.ca_cmd_ainl_cont_4 }}</div>
+                    </div>
+                    <div class="row">
+                           <div class="col-md-4">CONT-CMD-AIL CA, m<sup>2</sup></div>
+                           <div class="col-md-2">D1:{{ data.ca_cmd_ail_cont_1 }}</div>             <!-----contain data get from database---------->
+                           <div class="col-md-2">D2:{{ data.ca_cmd_ail_cont_2 }}</div>
+                           <div class="col-md-2">D3:{{ data.ca_cmd_ail_cont_3 }}</div>
+                           <div class="col-md-2">D4:{{ data.ca_cmd_ail_cont_4 }}</div>
+                    </div>
+                    <div class="row">
+                           <div class="col-md-4">CONT-INJ-AINL CA, m<sup>2</sup></div>
+                           <div class="col-md-2">D1:{{ data.ca_inj_ainl_cont_1 }}</div>             <!-----contain data get from database---------->
+                           <div class="col-md-2">D2:{{ data.ca_inj_ainl_cont_2 }}</div>
+                           <div class="col-md-2">D3:{{ data.ca_inj_ainl_cont_3 }}</div>
+                           <div class="col-md-2">D4:{{ data.ca_inj_ainl_cont_4 }}</div>
+                    </div>
+                    <div class="row">
+                           <div class="col-md-4">CONT-INJ-AIL CA, m<sup>2</sup></div>
+                           <div class="col-md-2">D1:{{ data.ca_inj_ail_cont_1 }}</div>             <!-----contain data get from database---------->
+                           <div class="col-md-2">D2:{{ data.ca_inj_ail_cont_2 }}</div>
+                           <div class="col-md-2">D3:{{ data.ca_inj_ail_cont_3 }}</div>
+                           <div class="col-md-2">D4:{{ data.ca_inj_ail_cont_4 }}</div>
+                    </div>
+                    <div class="row">
+                           <div class="col-md-4">Blended-CMD-AINL CA, m<sup>2</sup></div>
+                           <div class="col-md-2">D1:{{ data.blend_ca_cmd_ainl_cont_1 }}</div>             <!-----contain data get from database---------->
+                           <div class="col-md-2">D2:{{ data.blend_ca_cmd_ainl_cont_2 }}</div>
+                           <div class="col-md-2">D3:{{ data.blend_ca_cmd_ainl_cont_3 }}</div>
+                           <div class="col-md-2">D4:{{ data.blend_ca_cmd_ainl_cont_4 }}</div>
+                    </div>
+                    <div class="row">
+                           <div class="col-md-4">Blended-CMD-AIL CA, m<sup>2</sup></div>
+                           <div class="col-md-2">D1:{{ data.blend_ca_cmd_ail_cont_1 }}</div>             <!-----contain data get from database---------->
+                           <div class="col-md-2">D2:{{ data.blend_ca_cmd_ail_cont_2 }}</div>
+                           <div class="col-md-2">D3:{{ data.blend_ca_cmd_ail_cont_3 }}</div>
+                           <div class="col-md-2">D4:{{ data.blend_ca_cmd_ail_cont_4 }}</div>
+                    </div>
+                    <div class="row">
+                           <div class="col-md-4">Blended-INJ-AINL CA, m<sup>2</sup></div>
+                           <div class="col-md-2">D1:{{ data.blend_ca_inj_ainl_cont_1 }}</div>             <!-----contain data get from database---------->
+                           <div class="col-md-2">D2:{{ data.blend_ca_inj_ainl_cont_2 }}</div>
+                           <div class="col-md-2">D3:{{ data.blend_ca_inj_ainl_cont_3 }}</div>
+                           <div class="col-md-2">D4:{{ data.blend_ca_inj_ainl_cont_4 }}</div>
+                    </div>
+                    <div class="row">
+                           <div class="col-md-4">Blended-INJ-AIL CA, m<sup>2</sup></div>
+                           <div class="col-md-2">D1:{{ data.blend_ca_inj_ail_cont_1 }}</div>             <!-----contain data get from database---------->
+                           <div class="col-md-2">D2:{{ data.blend_ca_inj_ail_cont_2 }}</div>
+                           <div class="col-md-2">D3:{{ data.blend_ca_inj_ail_cont_3 }}</div>
+                           <div class="col-md-2">D4:{{ data.blend_ca_inj_ail_cont_4 }}</div>
+                    </div>
+                    <div class="row">
+                           <div class="col-md-4">AIT Blended-CMD CA, m<sup>2</sup></div>
+                           <div class="col-md-2">D1:{{ data.AIT_cmd_ca_1 }}</div>             <!-----contain data get from database---------->
+                           <div class="col-md-2">D2:{{ data.AIT_cmd_ca_2 }}</div>
+                           <div class="col-md-2">D3:{{ data.AIT_cmd_ca_3 }}</div>
+                           <div class="col-md-2">D4:{{ data.AIT_cmd_ca_4 }}</div>
+                    </div>
+                    <div class="row">
+                           <div class="col-md-4">AIT Blended-INJ CA, m<sup>2</sup></div>
+                           <div class="col-md-2">D1:{{ data.AIT_inj_ca_1 }}</div>             <!-----contain data get from database---------->
+                           <div class="col-md-2">D2:{{ data.AIT_inj_ca_2 }}</div>
+                           <div class="col-md-2">D3:{{ data.AIT_inj_ca_3 }}</div>
+                           <div class="col-md-2">D4:{{ data.AIT_inj_ca_4 }}</div>
+                    </div>
+                    <div class = "row">
+                        <div class="col-md-8">Flammable Component Damage Consequence Area, m<sup>2</sup></div>
+                        <div class="col_md_4">{{ data.CA_Flam_Cmd_shell }}</div>
+                    </div>
+                    <div class = "row">
+                        <div class="col-md-8">Flammable Personnel Injury Consequence Area, m<sup>2</sup></div>
+                        <div class="col_md_4">{{ data.CA_Flam_inj_shell }}</div>
+                    </div>
+                </fieldset>
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><b>Toxic Consequence Area</b></legend>
+                    <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">{{ data.model_fluid }}</legend>
+                     <div class="row">
+                        <div class="col-md-4"><b>Release Hole Size</b></div>
+                        <div class="col-md-2"><b>Small</b></div>
+                        <div class="col-md-2"><b>Medium</b></div>
+                        <div class="col-md-2"><b>Large</b></div>
+                        <div class="col-md-2"><b>Rupture</b></div>
+                    </div>
+                     <div class="row">
+                         <div class="col-md-4">Toxic Leak Duration, seconds</div>
+                         <div class="col-md-2">D1:{{ data.ld_toxic_shell_1 }}</div>
+                         <div class="col-md-2">D2:{{ data.ld_toxic_shell_2 }}</div>
+                         <div class="col-md-2">D3:{{ data.ld_toxic_shell_3 }}</div>
+                         <div class="col-md-2">D4:{{ data.ld_toxic_shell_4 }}</div>
+                     </div>
+                     <div class="row">
+                         <div class="col-md-4">Toxic Release mass rate, kg/s</div>
+                         <div class="col-md-2">D1:{{ data.mass_rate_shell_1 }}</div>
+                         <div class="col-md-2">D2:{{ data.mass_rate_shell_2 }}</div>
+                         <div class="col-md-2">D3:{{ data.mass_rate_shell_3 }}</div>
+                         <div class="col-md-2">D4:{{ data.mass_rate_shell_4 }}</div>
+                     </div>
+                     <div class="row">
+                         <div class="col-md-4">Consant C</div>
+                         <div class="col-md-2">D1:{{ data.Constant_C_1 }}</div>
+                         <div class="col-md-2">D2:{{ data.Constant_C_2 }}</div>
+                         <div class="col-md-2">D3:{{ data.Constant_C_3 }}</div>
+                         <div class="col-md-2">D4:{{ data.Constant_C_4 }}</div>
+                     </div>
+                     <div class="row">
+                         <div class="col-md-4">Consant D</div>
+                         <div class="col-md-2">D1:{{ data.Constant_D_1 }}</div>
+                         <div class="col-md-2">D2:{{ data.Constant_D_2 }}</div>
+                         <div class="col-md-2">D3:{{ data.Constant_D_3 }}</div>
+                         <div class="col-md-2">D4:{{ data.Constant_D_4 }}</div>
+                     </div>
+                     <div class="row">
+                         <div class="col-md-4">Toxic CA, m<sup>2</sup></div>
+                         <div class="col-md-2">D1:{{ data.CA_toxic_shell1 }}</div>
+                         <div class="col-md-2">D2:{{ data.CA_toxic_shell2 }}</div>
+                         <div class="col-md-2">D3:{{ data.CA_toxic_shell3 }}</div>
+                         <div class="col-md-2">D4:{{ data.CA_toxic_shell4 }}</div>
+                     </div>
+                     <div class="row">
+                         <div class="col-md-8">Toxic Personnel Injury Consequence Area, m<sup>2</sup></div>
+                         <div class="col-md-4">{{ data.CA_toxic_fi }}</div>
+                     </div>
+                         </legend>
+                 </fieldset>
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">Consequence Areas</legend>
+                    <div class="row">
+                        <div class="col-md-4">Financial Component Damage Consequence Area</div>
+                        <div class="col-md-2">{{ data.CA_final_Com }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Financial Personnel Injury Consequence Area</div>
+                        <div class="col-md-2">{{ data.CA_final_Per }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Financial Consequence</div>
+                        <div class="col-md-2">{{ data.CA_final }}</div>
+                    </div>
+                </fieldset>
+            </fieldset>
+            </fieldset>
+        </div>
+    </form>
+{% endblock %}
+
+

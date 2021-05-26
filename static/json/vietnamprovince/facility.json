@@ -1,0 +1,80 @@
+cuongluong({
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "place": "Ph\u01b0\u1eddng \u0110\u1ed3ng Xu\u00e2n,Qu\u1eadn Ho\u00e0n Ki\u1ebfm,H\u00e0 N\u1ed9i",
+                "name": "Ho\u00e0n Ki\u1ebfm",
+                "url": "http://127.0.0.1:8000/equipment/display/71/"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    105.8506,
+                    21.0286
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "place": "Ph\u01b0\u1eddng H\u00e0 C\u1ea7u,Qu\u1eadn H\u00e0 \u0110\u00f4ng,H\u00e0 N\u1ed9i",
+                "name": "H\u00e0 \u0110\u00f4ng",
+                "url": "http://127.0.0.1:8000/equipment/display/72/"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    105.7788,
+                    20.9714
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "place": "",
+                "name": "C\u1ea7u Gi\u1ea5y",
+                "url": "http://127.0.0.1:8000/equipment/display/76/"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    108.7922,
+                    15.1206
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "place": "",
+                "name": "Petro VietNam",
+                "url": "http://127.0.0.1:8000/equipment/display/79/"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    105.505,
+                    21.1382
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "place": "",
+                "name": "BSR1",
+                "url": "http://127.0.0.1:8000/equipment/display/80/"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    107.2845,
+                    21.0071
+                ]
+            }
+        }
+    ]
+})

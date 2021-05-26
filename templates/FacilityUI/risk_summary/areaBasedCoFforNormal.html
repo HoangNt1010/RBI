@@ -1,0 +1,766 @@
+{% extends 'BaseUI/BaseFacility/baseRiskSummary.html' %}
+
+{% load staticfiles %}
+
+<!----------------BLOCK MENU--------------->
+
+{% block pof %}{% url 'damgeFactor' proposalID %}{% endblock %}
+{% block fcof%}{% url 'fullyConsequence' proposalID %}{% endblock %}
+{% block acof%}{% url 'areaBasedCoF' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrix' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChart' proposalID %}{% endblock %}
+{% block chartv2 %}{% url 'riskChartv2' proposalID %}{% endblock %}
+{% block corrcontrol %}{% url 'corrosionCotrol' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'proposalDisplay' ass.componentid_id %}{% endblock %}
+<!---------------END BLOCK--------------->
+
+{% block data-content %}
+    <!--suppress ALL -->
+    <form method="post">
+    {% csrf_token %}
+    <div class="title-verifitcation">
+        <h1>AREA BASED COF</h1>
+    </div>
+        <div class="input-data content-full-df">
+
+            <!-----------BlOCK FULLY QUANTITIVE FCOF AND CATEGORY--------->
+            <h3 class="color-white">Fully-Quantitive Financial Consequence of Failure and Category</h3>
+            <hr class="hr-verification"/>
+            <div class="px-100" >
+                <div class="row">
+                    <div class="col-md-6 color-white">Consequence Area, m<sup>2</sup></div>
+                    <div class="col-md-6 text-value">{{ data.CA_total }}</div>                    <!---contain data get from database---->
+                </div>
+                <div class="row">
+                    <div class="col-md-6 color-white">Consequence of Failure Category</div>
+                    <div class="col-md-6 text-value">{{ data.CA_Category }}</div>
+                </div>
+            </div>
+
+            <!-----------BLOCK INFLUENCING INPUT------------>
+            <h3 class="color-white">Influencing Inputs</h3>
+            <hr class="hr-verification"/>
+            <div class="px-100" >
+                <div class="row">
+                    <div class="col-md-3 color-white">API Component Type</div>
+                    <div class="col-md-3 text-value">{{ data.api_comp_type }}</div>                    <!---contain data get from database---->
+                    <div class="col-md-3 color-white">Diameter, mm</div>
+                    <div class="col-md-3 text-value">{{ data.diameter }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 color-white">Liquid Level, %</div>
+                    <div class="col-md-3 text-value">{{ data.liquidlevel }}</div>
+                    <div class="col-md-3 color-white">Component Volume, m<sup>3</sup></div>
+                    <div class="col-md-3 text-value">{{ data.componentvolume }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 color-white">Model Fluid</div>
+                    <div class="col-md-3 text-value">{{ data.model_fluid }}</div>
+                    <div class="col-md-3 color-white">Toxic Fluid</div>
+                    <div class="col-md-3 text-value">{{ data.toxic_fluid }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 color-white">Toxic Fluid Percentage, (%)</div>
+                    <div class="col-md-3 text-value">{{ data.toxic_fluid_percentage }}</div>
+                    <div class="col-md-3 color-white">Phase of Fuild Storage</div>
+                    <div class="col-md-3 text-value">{{ data.phase_fluid_storage }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 color-white">Maximum Operating Temperature, &deg;C</div>
+                    <div class="col-md-3 text-value">{{ data.max_operating_temp }}</div>
+                    <div class="col-md-3 color-white">Maximum Operating Pressure, kPa</div>
+                    <div class="col-md-3 text-value">{{ data.max_operating_pressure }}</div>
+                </div>
+            </div>
+
+            <!------------BLOCK CONSEQUENCE ANALYSIS PROPERTIES--------------->
+            <h3 class="color-white">Consequence Analysis Properties</h3>
+            <hr class="hr-verification"/>
+            <div class="px-100" >
+                <div class="row">
+                    <div class="col-md-3 color-white">Model Fluid Type</div>
+                    <div class="col-md-3 text-value">{{ data.model_fluid_type }}</div>                               <!---contain data get from database---->
+    
+                    <div class="col-md-3 color-white">Toxic Fluid Type</div>
+                    <div class="col-md-3 text-value">{{ data.toxic_fluid_type }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 color-white">Liquid Density, kg/m<sup>3</sup></div>
+                    <div class="col-md-3 text-value">{{ data.liquid_density }}</div>
+        
+                    <div class="col-md-3 color-white">Molecular Weight</div>
+                    <div class="col-md-3 text-value">{{ data.mw }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 color-white">Auto-ignition Temperate, &deg;C</div>
+                    <div class="col-md-3 text-value">{{ data.auto_ignition }}</div>
+        
+                    <div class="col-md-3 color-white">Nominal Boiling Point, &deg;C</div>
+                    <div class="col-md-3 text-value">{{ data.nbp }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 color-white">Ideal Gas Specific Heat Capacity, J(/kg.K)</div>
+                    <div class="col-md-3 text-value">{{ data.ideal_gas }}</div>
+            
+                    <div class="col-md-3 color-white">Ideal Gas Specific Heat Capacity Ratio</div>
+                    <div class="col-md-3 text-value">{{ data.ideal_gas_ratio }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 color-white">Phase of Fluid at Ambient State</div>
+                    <div class="col-md-3 text-value">{{ data.Phase_of_Fluid }}</div>
+            
+                    <div class="col-md-3 color-white">Release Phase</div>
+                    <div class="col-md-3 text-value">{{ data.release_phase_n }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 color-white">Release Magnitude Reduction Factor</div>
+                    <div class="col-md-3 text-value">{{ data.release_magnitude }}</div>
+                
+                    <div class="col-md-3 color-white">Consequence Area Reduction Factor</div>
+                    <div class="col-md-3 text-value">{{data.CA_reduction }}</div>
+                </div>
+            </div>
+
+            <!-----------BLOCK RELEASE HOLES PROPERTIES----------->
+            <h3 class="color-white">Release Holes Properties</h3>
+            <hr class="hr-verification"/>
+               <div class="px-100" >
+                    <div class="row">
+                        <div class="col-md-4 color-white"><b>Release Hole Size</b></div>
+                        <div class="col-md-2 text-value"><b>Small</b></div>
+                        <div class="col-md-2 text-value"><b>Medium</b></div>
+                        <div class="col-md-2 text-value"><b>Large</b></div>
+                        <div class="col-md-2 text-value"><b>Rupture</b></div>
+                    </div>
+                   <div class="row">
+                       <div class="col-md-4 color-white">Release Hole Size Area, mm<sup>2</sup></div>
+                       <div class="col-md-2 text-value">{{ data.an_small }}</div>             <!-----contain data get from database---------->
+                       <div class="col-md-2 text-value">{{ data.an_medium }}</div>
+                       <div class="col-md-2 text-value">{{ data.an_large }}</div>
+                       <div class="col-md-2 text-value">{{ data.an_rupture }}</div>
+                   </div>
+                   <div class="row">
+                       <div class="col-md-4 color-white">Release Rate, kg/s</div>
+                       <div class="col-md-2 text-value">{{ data.wn_small }}</div>             <!-----contain data get from database---------->
+                       <div class="col-md-2 text-value">{{ data.wn_medium }}</div>
+                       <div class="col-md-2 text-value">{{ data.wn_large }}</div>
+                       <div class="col-md-2 text-value">{{ data.wn_rupture }}</div>
+                   </div>
+                   <div class="row">
+                       <div class="col-md-4 color-white">Generic Failure Frequency, failures/year</div>
+                       <div class="col-md-2 text-value">{{ data.gff_n_small }}</div>             <!-----contain data get from database---------->
+                       <div class="col-md-2 text-value">{{ data.gff_n_medium }}</div>
+                       <div class="col-md-2 text-value">{{ data.gff_n_large }}</div>
+                       <div class="col-md-2 text-value">{{ data.gff_n_rupture }}</div>
+                   </div>
+                   <div class="row">
+                       <div class="col-md-4 color-white">Additional Mass, kg</div>
+                       <div class="col-md-2 text-value">{{ data.mass_add_n_small }}</div>             <!-----contain data get from database---------->
+                       <div class="col-md-2 text-value">{{ data.mass_add_n_medium }}</div>
+                       <div class="col-md-2 text-value">{{ data.mass_add_n_large }}</div>
+                       <div class="col-md-2 text-value">{{ data.mass_add_n_rupture }}</div>
+                   </div>
+                   <div class="row">
+                       <div class="col-md-4 color-white">Avaiable Mass, kg</div>
+                       <div class="col-md-2 text-value">{{ data.mass_avail_n_small }}</div>             <!-----contain data get from database---------->
+                       <div class="col-md-2 text-value">{{ data.mass_avail_n_medium }}</div>
+                       <div class="col-md-2 text-value">{{ data.mass_avail_n_large }}</div>
+                       <div class="col-md-2 text-value">{{ data.mass_avail_n_rupture }}</div>
+                   </div>
+                   <div class="row">
+                       <div class="col-md-4 color-white">Time Required Releasing 10,000lbs of Fluid, seconds</div>
+                       <div class="col-md-2 text-value">{{ data.t_n_small }}</div>             <!-----contain data get from database---------->
+                       <div class="col-md-2 text-value">{{ data.t_n_medium }}</div>
+                       <div class="col-md-2 text-value">{{ data.t_n_large }}</div>
+                       <div class="col-md-2 text-value">{{ data.t_n_rupture }}</div>
+                   </div>
+                   <div class="row">
+                       <div class="col-md-4 color-white">Release Type</div>
+                       <div class="col-md-2 text-value">{{ data.releasetype_small }}</div>         <!-----contain data get from database---------->
+                       <div class="col-md-2 text-value">{{ data.releasetype_medium }}</div>
+                       <div class="col-md-2 text-value">{{ data.releasetype_large }}</div>
+                       <div class="col-md-2 text-value">{{ data.releasetype_rupture }}</div>
+                   </div>
+                   <div class="row">
+                       <div class="col-md-4 color-white">Maximum Leak Duration, minutes</div>
+                       <div class="col-md-2 text-value">{{ data.ld_max_n_small }}</div>             <!-----contain data get from database---------->
+                       <div class="col-md-2 text-value">{{ data.ld_max_n_medium }}</div>
+                       <div class="col-md-2 text-value">{{ data.ld_max_n_large }}</div>
+                       <div class="col-md-2 text-value">{{ data.ld_max_n_rupture }}</div>
+                   </div>
+                   <div class="row">
+                       <div class="col-md-4 color-white">Adjusted Discharge Rate, kg/s</div>
+                       <div class="col-md-2 text-value">{{ data.rate_n_small }}</div>             <!-----contain data get from database---------->
+                       <div class="col-md-2 text-value">{{ data.rate_n_medium }}</div>
+                       <div class="col-md-2 text-value">{{ data.rate_n_large }}</div>
+                       <div class="col-md-2 text-value">{{ data.rate_n_rupture }}</div>
+                   </div>
+                   <div class="row">
+                       <div class="col-md-4 color-white">Leak Duration, seconds</div>
+                       <div class="col-md-2 text-value">{{ data.ld_n_small }}</div>             <!-----contain data get from database---------->
+                       <div class="col-md-2 text-value">{{ data.ld_n_medium }}</div>
+                       <div class="col-md-2 text-value">{{ data.ld_n_large }}</div>
+                       <div class="col-md-2 text-value">{{ data.ld_n_rupture }}</div>
+                   </div>
+                   <div class="row">
+                       <div class="col-md-4 color-white">Release Mass, kg</div>
+                       <div class="col-md-2 text-value">{{ data.mass_n_small }}</div>             <!-----contain data get from database---------->
+                       <div class="col-md-2 text-value">{{ data.mass_n_medium }}</div>
+                       <div class="col-md-2 text-value">{{ data.mass_n_large }}</div>
+                       <div class="col-md-2 text-value">{{ data.mass_n_rupture }}</div>
+                   </div>
+               </div>
+            {% if data.ca_flam_cmd != 0 or data.ca_flam_cmd_toxic != 0 %}
+            <h3 class="color-white">Flammable Consequence Area</h3>
+            <hr class="hr-verification"/>
+                <div class="px-100">
+                    {% if data.ca_flam_cmd != 0 %}
+                    <h3 class="color-white">{{ data.model_fluid }}</h3>
+                    <div>
+                        <div class="row">
+                                <div class="col-md-8 color-white"><b>Release equations contants</b></div>
+                                <div class="col-md-2 text-value"><b>A</b></div>
+                                <div class="col-md-2 text-value"><b>B</b></div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-8 color-white">Continuous Release - Auto - Ignition Not Likely - CMD </div>
+                               <div class="col-md-2 text-value">{{ data.cainl_cmd_a }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.cainl_cmd_b }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-8 color-white">Continuous Release - Auto - Ignition Likely - CMD </div>
+                               <div class="col-md-2 text-value">{{ data.cail_cmd_a }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.cail_cmd_b }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-8 color-white">Instantaneous Release - Auto - Ignition Not Likely - CMD </div>
+                               <div class="col-md-2 text-value">{{ data.iainl_cmd_a }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.iainl_cmd_b }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-8 color-white">Instantaneous Release - Auto - Ignition Likely - CMD </div>
+                               <div class="col-md-2 text-value">{{ data.iail_cmd_a }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.iail_cmd_b }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-8 color-white">Continuous Release - Auto - Ignition Not Likely - INJ </div>
+                               <div class="col-md-2 text-value">{{ data.cainl_inj_a }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.cainl_inj_b }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-8 color-white">Continuous Release - Auto - Ignition Likely - INJ </div>
+                               <div class="col-md-2 text-value">{{ data.cail_inj_a }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.cail_inj_b }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-8 color-white">Instantaneous Release - Auto - Ignition Not Likely - INJ </div>
+                               <div class="col-md-2 text-value">{{ data.iainl_inj_a }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.iainl_inj_b }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-8 color-white">Instantaneous Release - Auto - Ignition Likely - INJ </div>
+                               <div class="col-md-2 text-value">{{ data.iail_inj_a }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.iail_inj_b }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 color-white"><b>Release Hole Size</b></div>
+                               <div class="col-md-2 text-value"><b>Small</b></div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value"><b>Medium</b></div>
+                               <div class="col-md-2 text-value"><b>Large</b></div>
+                               <div class="col-md-2 text-value"><b>Rupture</b></div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">Energy efficiency correction factor, minutes </div>
+                               <div class="col-md-2 text-value">{{ data.eneff_n_small }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.eneff_n_medium }}</div>
+                               <div class="col-md-2 text-value">{{ data.eneff_n_large }}</div>
+                               <div class="col-md-2 text-value">{{ data.eneff_n_rupture }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">CONT-CMD-AINL CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.cainl_cmd_cont_small }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.cainl_cmd_cont_medium }}</div>
+                               <div class="col-md-2 text-value">{{ data.cainl_cmd_cont_large }}</div>
+                               <div class="col-md-2 text-value">{{ data.cainl_cmd_cont_rupture }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">CONT-CMD-AIL CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.cail_cmd_cont_small }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.cail_cmd_cont_medium }}</div>
+                               <div class="col-md-2 text-value">{{ data.cail_cmd_cont_large }}</div>
+                               <div class="col-md-2 text-value">{{ data.cail_cmd_cont_rupture }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">INST-CMD-AINL CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.iainl_cmd_cont_small }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.iainl_cmd_cont_medium }}</div>
+                               <div class="col-md-2 text-value">{{ data.iainl_cmd_cont_large }}</div>
+                               <div class="col-md-2 text-value">{{ data.iainl_cmd_cont_rupture }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">INST-CMD-AIL CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.iail_cmd_cont_small }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.iail_cmd_cont_medium }}</div>
+                               <div class="col-md-2 text-value">{{ data.iail_cmd_cont_large }}</div>
+                               <div class="col-md-2 text-value">{{ data.iail_cmd_cont_rupture }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">CONT-INJ-AINL CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.cainl_inj_cont_small }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.cainl_inj_cont_medium }}</div>
+                               <div class="col-md-2 text-value">{{ data.cainl_inj_cont_large }}</div>
+                               <div class="col-md-2 text-value">{{ data.cainl_inj_cont_rupture }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">CONT-INJ-AIL CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.cail_inj_cont_small }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.cail_inj_cont_medium }}</div>
+                               <div class="col-md-2 text-value">{{ data.cail_inj_cont_large }}</div>
+                               <div class="col-md-2 text-value">{{ data.cail_inj_cont_rupture }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">INST-INJ-AINL CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.iainl_inj_cont_small }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.iainl_inj_cont_medium }}</div>
+                               <div class="col-md-2 text-value">{{ data.iainl_inj_cont_large }}</div>
+                               <div class="col-md-2 text-value">{{ data.iainl_inj_cont_rupture }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">INST-INJ-AIL CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.iail_inj_cont_small }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.iail_inj_cont_medium }}</div>
+                               <div class="col-md-2 text-value">{{ data.iail_inj_cont_large }}</div>
+                               <div class="col-md-2 text-value">{{ data.iail_inj_cont_rupture }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">Blending Factor, Fact_IC</div>
+                               <div class="col-md-2 text-value">{{ data.factIC_n_small }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.factIC_n_medium }}</div>
+                               <div class="col-md-2 text-value">{{ data.factIC_n_large }}</div>
+                               <div class="col-md-2 text-value">{{ data.factIC_n_rupture }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">Blended-CMD-AINL CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.blemding_cmd_ainl_small }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.blemding_cmd_ainl_medium }}</div>
+                               <div class="col-md-2 text-value">{{ data.blemding_cmd_ainl_large }}</div>
+                               <div class="col-md-2 text-value">{{ data.blemding_cmd_ainl_rupture }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">Blended-CMD-AIL CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.blemding_cmd_ail_small }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.blemding_cmd_ail_medium }}</div>
+                               <div class="col-md-2 text-value">{{ data.blemding_cmd_ail_large }}</div>
+                               <div class="col-md-2 text-value">{{ data.blemding_cmd_ail_rupture }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">Blended-INJ-AINL CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.blemding_inj_ainl_small }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.blemding_inj_ainl_medium }}</div>
+                               <div class="col-md-2 text-value">{{ data.blemding_inj_ainl_large }}</div>
+                               <div class="col-md-2 text-value">{{ data.blemding_inj_ainl_large }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">Blended-INJ-AIL CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.blemding_inj_ail_small }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.blemding_inj_ail_medium }}</div>
+                               <div class="col-md-2 text-value">{{ data.blemding_inj_ail_large }}</div>
+                               <div class="col-md-2 text-value">{{ data.blemding_inj_ail_large }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">AIT Blended-CMD CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.ALT_cmd_small }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.ALT_cmd_medium }}</div>
+                               <div class="col-md-2 text-value">{{ data.ALT_cmd_large }}</div>
+                               <div class="col-md-2 text-value">{{ data.ALT_cmd_rupture }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">AIT Blended-INJ CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.ALT_inj_small }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.ALT_inj_medium }}</div>
+                               <div class="col-md-2 text-value">{{ data.ALT_inj_large }}</div>
+                               <div class="col-md-2 text-value">{{ data.ALT_inj_rupture }}</div>
+                        </div>
+                        <div class = "row">
+                            <div class="col-md-8 color-white">Flammable Component Damage Consequence Area, m<sup>2</sup></div>
+                            <div class="col-md-2 text-value">{{ data.ca_flam_cmd }}</div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <div class = "row">
+                            <div class="col-md-8 color-white">Flammable Personnel Injury Consequence Area, m<sup>2</sup></div>
+                            <div class="col-md-2 text-value">{{ data.ca_flam_inj }}</div>
+                            <div class="col-md-2"></div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if data.ca_flam_cmd_toxic != 0  %}
+                    <h3 class="color-white">{{ data.toxic_fluid }}</h3>
+                    <div>
+                        <div class="row">
+                                <div class="col-md-8 color-white"><b>Release equations contants</b></div>
+                                <div class="col-md-2 text-value"><b>A</b></div>
+                                <div class="col-md-2 text-value"><b>B</b></div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-8 color-white">Continuous Release - Auto - Ignition Not Likely - CMD </div>
+                               <div class="col-md-2 text-value">{{ data.cainl_cmd_a_toxic }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.cainl_cmd_b_toxic }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-8 color-white">Continuous Release - Auto - Ignition Likely - CMD </div>
+                               <div class="col-md-2 text-value">{{ data.cail_cmd_a_toxic }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.cail_cmd_b_toxic }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-8 color-white">Instantaneous Release - Auto - Ignition Not Likely - CMD </div>
+                               <div class="col-md-2 text-value">{{ data.iainl_cmd_a_toxic }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.iainl_cmd_b_toxic }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-8 color-white">Instantaneous Release - Auto - Ignition Likely - CMD </div>
+                               <div class="col-md-2 text-value">{{ data.iail_cmd_a_toxic }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.iail_cmd_b_toxic }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-8 color-white">Continuous Release - Auto - Ignition Not Likely - INJ </div>
+                               <div class="col-md-2 text-value">{{ data.cainl_inj_a_toxic }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.cainl_inj_b_toxic }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-8 color-white">Continuous Release - Auto - Ignition Likely - INJ </div>
+                               <div class="col-md-2 text-value">{{ data.cail_inj_a_toxic }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.cail_inj_b_toxic }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-8 color-white">Instantaneous Release - Auto - Ignition Not Likely - INJ </div>
+                               <div class="col-md-2 text-value">{{ data.iainl_inj_a_toxic }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.iainl_inj_b_toxic }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-8 color-white">Instantaneous Release - Auto - Ignition Likely - INJ </div>
+                               <div class="col-md-2 text-value">{{ data.iail_inj_a_toxic }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.iail_inj_b_toxic }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 color-white"><b>Release Hole Size</b></div>
+                               <div class="col-md-2 text-value"><b>Small</b></div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value"><b>Medium</b></div>
+                               <div class="col-md-2 text-value"><b>Large</b></div>
+                               <div class="col-md-2 text-value"><b>Rupture</b></div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">Energy efficiency correction factor, minutes </div>
+                               <div class="col-md-2 text-value">{{ data.eneff_n_small }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.eneff_n_medium }}</div>
+                               <div class="col-md-2 text-value">{{ data.eneff_n_large }}</div>
+                               <div class="col-md-2 text-value">{{ data.eneff_n_rupture }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">CONT-CMD-AINL CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.cainl_cmd_cont_small_toxic }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.cainl_cmd_cont_medium_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.cainl_cmd_cont_large_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.cainl_cmd_cont_rupture_toxic }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">CONT-CMD-AIL CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.cail_cmd_cont_small_toxic }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.cail_cmd_cont_medium_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.cail_cmd_cont_large_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.cail_cmd_cont_rupture_toxic }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">INST-CMD-AINL CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.iainl_cmd_cont_small_toxic }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.iainl_cmd_cont_medium_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.iainl_cmd_cont_large_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.iainl_cmd_cont_rupture_toxic }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">INST-CMD-AIL CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.iail_cmd_cont_small_toxic }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.iail_cmd_cont_medium_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.iail_cmd_cont_large_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.iail_cmd_cont_rupture_toxic }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">CONT-INJ-AINL CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.cainl_inj_cont_small_toxic }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.cainl_inj_cont_medium_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.cainl_inj_cont_large_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.cainl_inj_cont_rupture_toxic }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">CONT-INJ-AIL CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.cail_inj_cont_small_toxic }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.cail_inj_cont_medium_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.cail_inj_cont_large_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.cail_inj_cont_rupture_toxic }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">INST-INJ-AINL CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.iainl_inj_cont_small_toxic }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.iainl_inj_cont_medium_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.iainl_inj_cont_large_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.iainl_inj_cont_rupture_toxic }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">INST-INJ-AIL CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.iail_inj_cont_small_toxic }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.iail_inj_cont_medium_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.iail_inj_cont_large_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.iail_inj_cont_rupture_toxic }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">Blending Factor, Fact_IC</div>
+                               <div class="col-md-2 text-value">{{ data.factIC_n_small_toxic }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.factIC_n_medium_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.factIC_n_large_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.factIC_n_rupture_toxic }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">Blended-CMD-AINL CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.blemding_cmd_ainl_small_toxic }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.blemding_cmd_ainl_medium_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.blemding_cmd_ainl_large_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.blemding_cmd_ainl_rupture_toxic }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">Blended-CMD-AIL CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.blemding_cmd_ail_small_toxic }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.blemding_cmd_ail_medium_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.blemding_cmd_ail_large_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.blemding_cmd_ail_rupture_toxic }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">Blended-INJ-AINL CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.blemding_inj_ainl_small_toxic }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.blemding_inj_ainl_medium_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.blemding_inj_ainl_large_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.blemding_inj_ainl_large_toxic }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">Blended-INJ-AIL CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.blemding_inj_ail_small_toxic }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.blemding_inj_ail_medium_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.blemding_inj_ail_large_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.blemding_inj_ail_large_toxic }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">AIT Blended-CMD CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.ALT_cmd_small_toxic }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.ALT_cmd_medium_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.ALT_cmd_large_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.ALT_cmd_rupture_toxic }}</div>
+                        </div>
+                        <div class="row">
+                               <div class="col-md-4 color-white">AIT Blended-INJ CA, m<sup>2</sup></div>
+                               <div class="col-md-2 text-value">{{ data.ALT_inj_small_toxic }}</div>             <!-----contain data get from database---------->
+                               <div class="col-md-2 text-value">{{ data.ALT_inj_medium_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.ALT_inj_large_toxic }}</div>
+                               <div class="col-md-2 text-value">{{ data.ALT_inj_rupture_toxic }}</div>
+                        </div>
+                        <div class = "row">
+                            <div class="col-md-8 color-white">Flammable Component Damage Consequence Area, m<sup>2</sup></div>
+                            <div class="col-md-2 text-value">{{ data.ca_flam_cmd_toxic }}</div>
+                        </div>
+                        <div class = "row">
+                            <div class="col-md-8 color-white">Flammable Personnel Injury Consequence Area, m<sup>2</sup></div>
+                            <div class="col-md-2 text-value">{{ data.ca_flam_inj_toxic }}</div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                </div>
+            {% endif %}
+            {% if data.CA_toxic_inj != 0 or data.CA_toxic_inj2 != 0 %}
+                <h3 class="color-white">Toxic Consequence Area</h3>
+                <div class="px-100">
+                    {% if data.CA_toxic_inj != 0 %}
+                    <h3 class="color-white">{{ data.model_fluid }}</h3>
+                    <div>
+                        <div class="row">
+                            <div class="col-md-4 color-white"><b>Release Hole Size</b></div>
+                            <div class="col-md-2 text-value"><b>Small</b></div>
+                            <div class="col-md-2 text-value"><b>Medium</b></div>
+                            <div class="col-md-2 text-value"><b>Large</b></div>
+                            <div class="col-md-2 text-value"><b>Rupture</b></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 color-white">Toxic Leak Duration, seconds</div>
+                            <div class="col-md-2 text-value">{{ data.ld_tox_small }}</div>
+                            <div class="col-md-2 text-value">{{ data.ld_tox_medium }}</div>
+                            <div class="col-md-2 text-value">{{ data.ld_tox_large }}</div>
+                            <div class="col-md-2 text-value">{{ data.ld_tox_rupture }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 color-white">Consant C</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_C_small }}</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_C_medium }}</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_C_large }}</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_C_rupture }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 color-white">Consant D</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_D_small }}</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_D_medium }}</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_D_large }}</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_D_rupture }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 color-white">Consant E</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_E_small }}</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_E_medium }}</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_E_large }}</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_E_rupture }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 color-white">Consant F</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_F_small }}</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_F_medium }}</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_F_large }}</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_F_rupture }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 color-white">Toxic Release mass rate, kg/s</div>
+                            <div class="col-md-2 text-value">{{ data.rate_tox_small }}</div>
+                            <div class="col-md-2 text-value">{{ data.rate_tox_medium }}</div>
+                            <div class="col-md-2 text-value">{{ data.rate_tox_large }}</div>
+                            <div class="col-md-2 text-value">{{ data.rate_tox_rupture }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 color-white">Toxic Release mass, kg</div>
+                            <div class="col-md-2 text-value">{{ data.mass_tox_small }}</div>
+                            <div class="col-md-2 text-value">{{ data.mass_tox_medium }}</div>
+                            <div class="col-md-2 text-value">{{ data.mass_tox_large }}</div>
+                            <div class="col-md-2 text-value">{{ data.mass_tox_rupture }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 color-white">Toxic CA, m<sup>2</sup></div>
+                            <div class="col-md-2 text-value">{{ data.toxic_ca_small }}</div>
+                            <div class="col-md-2 text-value">{{ data.toxic_ca_medium }}</div>
+                            <div class="col-md-2 text-value">{{ data.toxic_ca_large }}</div>
+                            <div class="col-md-2 text-value">{{ data.toxic_ca_rupture }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 color-white">Toxic Personnel Injury Consequence Area, m<sup>2</sup></div>
+                            <div class="col-md-2 text-value">{{ data.CA_toxic_inj }}</div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if data.CA_toxic_inj2 != 0 %}
+                    <h3 class="color-white">{{ data.toxic_fluid }}</h3>
+                    <div>
+                        <div class="row" style="padding: 10px 0;">
+                            <div class="col-md-4 color-white"><b>Release Hole Size</b></div>
+                            <div class="col-md-2 text-value"><b>Small</b></div>
+                            <div class="col-md-2 text-value"><b>Medium</b></div>
+                            <div class="col-md-2 text-value"><b>Large</b></div>
+                            <div class="col-md-2 text-value"><b>Rupture</b></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 color-white">Toxic Leak Duration, seconds</div>
+                            <div class="col-md-2 text-value">{{ data.ld_tox_small }}</div>
+                            <div class="col-md-2 text-value">{{ data.ld_tox_medium }}</div>
+                            <div class="col-md-2 text-value">{{ data.ld_tox_large }}</div>
+                            <div class="col-md-2 text-value">{{ data.ld_tox_rupture }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 color-white">Consant C</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_C_small2 }}</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_C_medium2 }}</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_C_large2 }}</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_C_rupture2 }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 color-white">Consant D</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_D_small2}}</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_D_medium2 }}</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_D_large2 }}</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_D_rupture2 }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 color-white">Consant E</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_E_small2 }}</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_E_medium2 }}</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_E_large2 }}</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_E_rupture2 }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 color-white">Consant F</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_F_small2 }}</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_F_medium2 }}</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_F_large2 }}</div>
+                            <div class="col-md-2 text-value">{{ data.Cont_F_rupture2 }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 color-white">Toxic Release mass rate, kg/s</div>
+                            <div class="col-md-2 text-value">{{ data.rate_tox_small_toxic }}</div>
+                            <div class="col-md-2 text-value">{{ data.rate_tox_medium_toxic }}</div>
+                            <div class="col-md-2 text-value">{{ data.rate_tox_large_toxic }}</div>
+                            <div class="col-md-2 text-value">{{ data.rate_tox_rupture_toxic }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 color-white">Toxic Release mass, kg</div>
+                            <div class="col-md-2 text-value">{{ data.mass_tox_small_toxic }}</div>
+                            <div class="col-md-2 text-value">{{ data.mass_tox_medium_toxic }}</div>
+                            <div class="col-md-2 text-value">{{ data.mass_tox_large_toxic }}</div>
+                            <div class="col-md-2 text-value">{{ data.mass_tox_rupture_toxic }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 color-white">Toxic CA, m<sup>2</sup></div>
+                            <div class="col-md-2 text-value">{{ data.toxic_ca_small2 }}</div>
+                            <div class="col-md-2 text-value">{{ data.toxic_ca_medium2 }}</div>
+                            <div class="col-md-2 text-value">{{ data.toxic_ca_large2 }}</div>
+                            <div class="col-md-2 text-value">{{ data.toxic_ca_rupture2 }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 color-white">Toxic Personnel Injury Consequence Area, m<sup>2</sup></div>
+                            <div class="col-md-2 text-value">{{ data.CA_toxic_inj2 }}</div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+                {% if data.NoneCA_leck != 0 %}
+                <h3 class="color-white">Non Flammable and Non Toxic Consequence Area</h3>
+                <div class="px-100">
+                    <div class="row">
+                        <div class="col-md-4 color-white">Release Hole Size</div>
+                        <div class="col-md-2 text-value">Small</div>
+                        <div class="col-md-2 text-value">Medium</div>
+                        <div class="col-md-2 text-value">Large</div>
+                        <div class="col-md-2 text-value">Rupture</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 color-white">CONT CA</div>
+                        <div class="col-md-2 text-value">{{ data.NoneCA_cont_Inj_1 }}</div>
+                        <div class="col-md-2 text-value">{{ data.NoneCA_cont_Inj_2 }}</div>
+                        <div class="col-md-2 text-value">{{ data.NoneCA_cont_Inj_3 }}</div>
+                        <div class="col-md-2 text-value">{{ data.NoneCA_cont_Inj_4 }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 color-white">INST CA</div>
+                        <div class="col-md-2 text-value">{{ data.NoneCA_Inst_Inj_1 }}</div>
+                        <div class="col-md-2 text-value">{{ data.NoneCA_Inst_Inj_2 }}</div>
+                        <div class="col-md-2 text-value">{{ data.NoneCA_Inst_Inj_3 }}</div>
+                        <div class="col-md-2 text-value">{{ data.NoneCA_Inst_Inj_4 }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 color-white">Blended CA</div>
+                        <div class="col-md-2 text-value">{{ data.NoneCA_leck_Inj_1 }}</div>
+                        <div class="col-md-2 text-value">{{ data.NoneCA_leck_Inj_2 }}</div>
+                        <div class="col-md-2 text-value">{{ data.NoneCA_leck_Inj_3 }}</div>
+                        <div class="col-md-2 text-value">{{ data.NoneCA_leck_Inj_4 }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 color-white">Non Flammable and Non Toxic Consequence Area,m<sup>2</sup></div>
+                        <div class="col-md-2 text-value">{{ data.NoneCA_leck }}</div>
+                    </div>
+                </div>
+                {% endif %}
+
+                </div>
+        </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,311 @@
+{% extends 'BaseUI/BaseFacility/baseRiskSummary.html' %}
+
+{% load staticfiles %}
+{% block library %}
+    <script src="{% static 'js/notify.min.js' %}"></script>
+{% endblock %}
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactor' proposalID %}{% endblock %}
+{% block fcof%}{% url 'fullyConsequence' proposalID %}{% endblock %}
+{% block acof%}{% url 'areaBasedCoF' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrix' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChart' proposalID %}{% endblock %}
+{% block chartv2 %}{% url 'riskChartv2' proposalID %}{% endblock %}
+{% block corrcontrol %}{% url 'corrosionCotrol' proposalID %}{% endblock %}
+{% block corri %}{% url 'corrision' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'proposalDisplay' assess.componentid_id %}{% endblock %}
+<!---------------END BLOCK--------------->
+
+{% block data-content %}
+    <style>
+      .card {
+          background: #ffffff;
+      }
+
+    .scheduler-border {
+        border: none;
+        padding: 0 1.4em 1.4em 1.4em;
+        margin: 0 0 1.5em 0;
+        font-size: 1.1em ;
+        text-align: left ;
+        text-decoration-color: #444444;
+    }
+    .row{
+        text-align: left;
+    }
+    .arrow-down {
+        margin-left: 50%;
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-top: 2px solid;
+        border-right: 2px solid;
+        transform: rotate(135deg);
+      }
+    </style>
+    <!--suppress ALL -->
+    <form  method="post">
+    {% csrf_token %}
+    <div class="title-verifitcation" >
+        <h1>CORROSION CONTROL WITH INTERNAL CLADDING</h1>
+      </div>
+      
+                <!-----------BlOCK FULLY QUANTITIVE FCOF AND CATEGORY--------->
+        <div>
+            <h3 class="color-white">Assessment General Information</h3>
+            <hr class="hr-verification"/>
+
+                <div class="px-100">
+                    <div class="row mb-5">
+                        <div class="col-md-3 color-white">Equipment Number</div>
+                        <div class="col-md-3"><input class="form-control" type="text" value="{{obj.EquipmentNumber}}" readonly></div>
+                        <div class="col-md-3 color-white">Component Number</div>
+                        <div class="col-md-3"><input class="form-control" name = "ComponentNumber" type="text" value="{{obj.ComponentNumber}}" readonly> </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 color-white">Assessment Name</div>
+                        <div class="col-md-3"><input class="form-control" type="text" value="{{obj.AssessmentName}}" readonly></div>
+                    </div>
+                </div>
+
+
+        <div>
+            <h3 class="color-white">Assessment Data Input</h3>
+            <hr class="hr-verification"/>
+                
+               <div class="px-100">
+                    <div class="row mb-5">
+                        <div class="col-md-3 color-white">Assessment Date</div>
+                        {% if objnew %}
+                        <div class="col-md-3"><input class="form-control" type="text" name="AssesmentDate"  id="AssesmentDateNew" placeholder="yyyy-mm-dd" value="{{objnew.AssesmentDateShow}}">
+                        <script>
+                            $( "#AssesmentDateNew" ).datepicker({
+                            dateFormat: 'yy-mm-dd'
+                        });
+                        </script>
+                        </div>
+                        {% else %}
+                        <div class="col-md-3"><input class="form-control" type="text" name="AssesmentDate"  id="AssesmentDate" placeholder="yyyy-mm-dd" value="{{obj.AssesmentDateShow}}">
+                        <script>
+                            $( "#AssesmentDate" ).datepicker({
+                            dateFormat: 'yy-mm-dd'
+                        });
+                        </script>
+                        </div>
+                        {% endif %}
+                        <div class="col-md-3 color-white">Commission Date</div>
+                        {% if objnew %}
+                        <div class="col-md-3"><input class="form-control"  type="text" name="Commissiondate"  id="CommissiondateNew" placeholder="yyyy-mm-dd" value="{{objnew.CommissiondateShow}}">
+                        <script>
+                            $( "#CommissiondateNew" ).datepicker({
+                            dateFormat: 'yy-mm-dd'
+                        });
+                        </script>
+                        </div>
+                        {% else %}
+                        <div class="col-md-3"><input class="form-control"  type="text" name="Commissiondate"  id="Commissiondate" placeholder="yyyy-mm-dd" value="{{obj.CommissiondateShow}}">
+                        <script>
+                            $( "#Commissiondate" ).datepicker({
+                            dateFormat: 'yy-mm-dd'
+                        });
+                        </script>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="row mb-5">
+                        <div class="col-md-3 color-white">Internal Cladding</div>
+                        {% if objnew %}
+                        <div class="col-md-3"><input class="form-control"  name="InternalCladding" type="text" value="{{objnew.InternalCladding}}" readonly></div>
+                        {% else %}
+                        <div class="col-md-3"><input class="form-control"  name="InternalCladding" type="text" value="{{obj.InternalCladding}}" readonly></div>
+                        {% endif %}
+                        <div class="col-md-3 color-white">Normial Thickness(mm)</div>
+                        {% if objnew %}
+                        <div class="col-md-3"><input class="form-control" min=0 name="NomalThick" type="number" value="{{objnew.NomalThick}}"></div>
+                        {% else %}
+                        <div class="col-md-3"><input class="form-control" min=0 name="NomalThick" type="number" value="{{obj.NomalThick}}"></div>
+                        {% endif %}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 color-white">Cladding Thicknes(mm)</div>
+                        {% if objnew %}
+                        <div class="col-md-3"><input class="form-control" min=0 name="CladdingThickness" type="number" value="{{objnew.CladdingThickness}}"></div>
+                        {% else %}
+                        <div class="col-md-3"><input class="form-control" min=0 name="CladdingThickness" type="number" value="{{obj.CladdingThickness}}"></div>
+                        {% endif %}
+                        <div class="col-md-3 color-white">Cladding Corrosion Rate(mm/yr)</div>
+                        {% if objnew %}
+                        <div class="col-md-3"><input class="form-control" min=0 name="CladdingCorrosionRate" type="number" value="{{objnew.CladdingCorrosionRate}}"></div>
+                        {% else %}
+                        <div class="col-md-3"><input class="form-control" min=0 name="CladdingCorrosionRate" type="number" value="{{obj.CladdingCorrosionRate}}"></div>
+                        {% endif %}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 color-white">Minimum Measured Thickness(mm)</div>
+                        {% if objnew %}
+                        <div class="col-md-3"><input class="form-control" name="CurrentThick" min=0 type="number" value="{{objnew.CurrentThick}}" size="70px"></div>
+                        {% else %}
+                        <div class="col-md-3"><input class="form-control" name="CurrentThick" min=0 type="number" value="{{obj.CurrentThick}}" size="70px"></div>
+                        {% endif %}
+                    </div>
+               </div>
+            </div>
+            <!-------Khối Intermediate Results------>
+            <h3 class="color-white">Results</h3>
+            <hr class="hr-verification"/>
+
+            <div class="px-100 mb-5">
+                    <div class="row">
+                        <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-1"><input  type="text" style="background-color: #0C5BED; color: white" size="54px"  value="0 months                   36 months                   72 months"></div>
+                        </div>
+                        <div class="col-md-6 color-white">Remaining Life of Cladding Material, Age_rc </div>
+                        {% if objnew %}
+                        <div class="col-md-2"><input class="form-control" name="age0" type="text" size="10px" value="{{ objnew.agerc0 }}" disabled></div>
+                        <div class="col-md-2"><input class="form-control" name="age3" type="text" size="10px" value="{{ objnew.agerc3 }}" disabled></div>
+                        <div class="col-md-2"><input class="form-control" name="age6" type="text" size="9px" value="{{ objnew.agerc6 }}" disabled></div>
+                        {% else %}
+                        <div class="col-md-2"><input class="form-control" name="age0" type="text" size="10px" value="{{ obj.agerc0 }}" disabled></div>
+                        <div class="col-md-2"><input class="form-control" name="age3" type="text" size="10px" value="{{ obj.agerc3 }}" disabled></div>
+                        <div class="col-md-2"><input class="form-control" name="age6" type="text" size="9px" value="{{ obj.agerc6 }}" disabled></div>
+                        {% endif %}
+                    </div>
+            </div>
+            <div class="px-100">
+                <div class="row">
+                    <div class="col-md-12" style="text-align: right;">
+                        <button type="submit" name='try' class="btn btn-primary">Try</button>
+                        <button type="submit" name='save' class="btn btn-primary">Save</button>
+                        {% if check %}
+                        <a id="#search" class="btn btn-primary" data-toggle="modal" data-target="#showdata">
+                            <i class="fa fa-pencil"> List of data</i>
+                            <p id="demo"></p>
+                        </a>
+                        {% else %}
+                        <button type="submit" name='list' class="btn btn-primary" disabled>List of data</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="modal" id="showdata" style="margin-top: 10%">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content" style="width: 120%; margin: auto">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                        <span aria-hidden="true" style="font-size: 24px;font-weight: bold;color: #444444;font-family: Calibri;font-weight: bold;">List of data</span>
+                        </div>
+
+                        <!--Body-->
+                            <div style="text-align: center;" class="table-custom">
+                                <table class="table" id="mytable" style="min-width: 900px;">
+                                    <thead >
+                                        <tr>
+                                            <th></th>
+                                            <th width="300px" style="text-align: left">Equipment Number</th>
+                                            <th width="300px" style="text-align: left">Component Number</th>
+                                            <th width="200px" style="text-align: left">Assessment Date</th>
+                                            <th width="200px" style="text-align: left">Comissison Date</th>
+                                            <th width="300px" style="text-align: left">Internal Cladding</th>
+                                            <th width="200px" style="text-align: left">Cladding Thickness(mm)</th>
+                                            <th width="300px" style="text-align: left">Minimum Measured Thickness(mm)</th>
+                                            <th width="200px" style="text-align: left">Normial Thickness(mm)</th>
+                                            <th width="300px" style="text-align: left">Cladding Corrosion Rate(mm/yr)</th>
+                                            <th width="300px" style="text-align: left">Remaining Life(months)</th>
+                                            <!--<th width="200px" style="text-align: left">Facility Risk Target</th>-->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for a in listdata %}
+                                    <tr>
+                                        <td align="left"><input type="checkbox" id="checkbox" name="{{ a.corrosionid }}" class="checkboxClass"></td>
+                                        <td align="left">{{ a.equipmentnumber }}</td>
+                                        <td align="left">{{ a.componentnumber }}</td>
+                                        <td align="left">{{ a.assessmentdate }}</td>
+                                        <td align="left">{{ a.commissiondate }}</td>
+                                        <td align="left">{{ a.internalcladding }}</td>
+                                        <td align="left">{{ a.claddingthickness }}</td>
+                                        <td align="left">{{ a.minimummesuredthickness }}</td>
+                                        <td align="left">{{ a.normialthickness }}</td>
+                                        <td align="left">{{ a.claddingcorrosionrate }}</td>
+                                        <td align="left">{{ a.age0 }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer" style="text-align: right;">
+                            <button type="submit" name="select" id="select" class="btn btn-primary" ><i></i>Select</button>
+                            <button type="submit" name="delete" id="delete" class="btn btn-primary" ><i class="fa fa-trash-o"></i>Delete</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        </div>
+                        <script>
+                            $( document ).ready(function() {
+                              setTimeout(() => {
+                                var isDisabledBtn = 0;
+                                $(".checkboxClass").each(function(){
+                                console.log(this.checked);
+                                  if(this.checked) {
+                                    isDisabledBtn = 1;
+                                  }
+                                })
+                                if(isDisabledBtn == 1){
+                                    $("#select").attr("disabled", false);
+                                    $("#delete").attr("disabled", false);
+                                } else {
+                                    $("#select").attr("disabled", true);
+                                    $("#delete").attr("disabled", true);
+                                }
+                                // $("#checkboxAllNormal").prop("checked", false);
+                              }, 10);
+                            });
+                            $("input[id='checkbox']").change(function (e) {
+                                var isChecked = $(this).prop("checked");
+                                if (isChecked == false) {
+                                    $("#select").attr("disabled", true);
+                                    $("#delete").attr("disabled", true);
+                                }
+                                else {
+                                    $("#select").attr("disabled", false);
+                                    $("#delete").attr("disabled", false);
+                                }
+                            });
+                            $(document).ready(function() {
+                              $("input[type=checkbox]").prop("checked", false);
+                              $("input[type=checkbox]:first").prop("checked", true);
+
+                              $("input[type=checkbox]").click(function(event) {
+                                $("input[type=checkbox]").prop("checked", false);
+                                $(this).prop("checked", true);
+
+                                //event.preventDefault();
+                              });
+                            });
+                            window.onload = function() {
+                              document.querySelectorAll("INPUT[type='checkbox']").forEach(function(rd) {
+                                rd.addEventListener("mousedown", function() {
+                                  if(this.checked) {
+                                    this.onclick=function() {
+                                      this.checked=false
+                                    }
+                                  } else {
+                                    this.onclick=null
+                                  }
+                                })
+                              })
+                            }
+                            var error ='{{ info }}';
+                                if(error!=''){
+                                    $.notify("Deleted successfully", "success");
+                                }
+                    </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}

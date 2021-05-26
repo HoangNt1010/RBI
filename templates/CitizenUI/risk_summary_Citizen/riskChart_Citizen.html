@@ -1,0 +1,90 @@
+{% extends 'BaseUI/BaseCitizen/baseRiskSummary_Citizen.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block library %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <link rel='stylesheet' href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <meta http-equiv="refresh" content="10">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+<!----------------BLOCK MENU--------------->
+{% block pof %}{% url 'damgeFactorCitizen' proposalID %}{% endblock %}
+{% block ca%}{% url 'fullyConsequenceCitizen' proposalID %}{% endblock %}
+{% block matrix %}{% url 'riskMatrixCitizen' proposalID %}{% endblock %}
+{% block chart %}{% url 'riskChartCitizen' proposalID %}{% endblock %}
+{% block backProposal %}{% url 'ListProposalCitizen' faci.facilityid  si.siteid %}{% endblock %}
+<!---------------END BLOCK--------------->
+
+{% block data-content %}
+    <form method="post">
+    {% csrf_token %}
+        <div>
+            <h3>{{ fa }}</h3>
+        </div>
+        <div style="text-align: center">
+            <canvas id="myChart" width="700" height="300" ></canvas>
+            <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+
+            <script>
+                var ctx = document.getElementById("myChart");
+                var myLineChart = new Chart(ctx,{
+                    type: 'line',
+                    data: {
+                        labels: [{% for label in label %}"{{ label }}",{% endfor %}"{{ endLabel }}"],
+                        datasets:[{
+                            label: 'Risk',
+                            backgroundColor: "#0000BB",
+                            borderColor: "#0000BB",
+                            data: [{% for data in data %}{{ data }},{% endfor %}],
+                            fill: false,
+                            lineTension:0.2
+                        },{
+                            label: 'Risk Target',
+                            backgroundColor: "#CC0000",
+                            borderColor: "#CC0000",
+                            data: [{% for data in target %}{{ data }},{% endfor %}],
+                            fill: false}]
+                    },
+                    options: {
+                        responsive: true,
+                        title: {
+                            display: true,
+                            text: 'Risk of Proposal: {{ proposalname }}'
+                        },
+                        tooltips: {
+                            mode: 'index',
+                            intersect: false
+                        },
+                        hover: {
+                            mode: 'nearest',
+                            intersect: true
+                        },
+                        scales: {
+                            xAxes: [{
+                                display: true,
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Years'
+                                }
+                            }],
+                            yAxes: [{
+                                display: true,
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Risk ($/year)'
+                                }
+                            }]
+                        }
+                    }
+                })
+            </script>
+        </div>
+    </form>
+{% endblock %}

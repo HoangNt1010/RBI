@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="5;url={% url 'home' %}">
+    <title>Title</title>
+    {% load staticfiles %}
+    {% load widget_tweaks %}
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>RBI service</title>
+</head>
+<body>
+    <div class="wapper" style="width: 1200px; height: 600px; margin-left: 75px;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="well center-block" style="background: #2e6da4">
+                    <span style="color: white">
+                        <b><h2>Complete verification</h2></b>
+                        Your account is actvated.<br>
+                        You'll be automatically redirected to <a style="color: #afd9ee" href="{% url 'home' %}">HOME</a> in <span id="count">5</span> seconds
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+    window.onload = function(){
+
+    (function(){
+      var counter = 5;
+
+      setInterval(function() {
+        counter--;
+        if (counter >= 0) {
+          span = document.getElementById("count");
+          span.innerHTML = counter;
+        }
+        // Display 'counter' wherever you want to display it.
+        if (counter === 0) {
+        //    alert('this is where it happens');
+            clearInterval(counter);
+        }
+
+      }, 1000);
+
+    })();
+
+    }
+    </script>
+</body>
+</html>

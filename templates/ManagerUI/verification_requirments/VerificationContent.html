@@ -1,0 +1,110 @@
+{% extends 'ManagerUI/verification_requirments/VerificationHome.html' %}
+{% load staticfiles %}
+{% load static %}
+
+{% block listfaci %}{% url 'facilitiesDisplay' siteID %}{% endblock %}
+{% block listveri %}{% url 'VerificationFaci' %} {% endblock %}
+
+{% block library %}
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Verification_requirments{% endblock %}
+
+{% block content %}
+    <form method="post" style="padding-top: 90px;padding-bottom: 90px">
+        {% csrf_token %}
+        {% for veri in veri %}
+            {% for faci in faci %}
+                {% if veri.Is_active %}
+                    <div class="container" style="width: 1000px;background-color: #E0EEEE">
+                {% else %}
+                     <div class="container" style="width: 1000px;background-color: #F08080">
+                {% endif %}
+                    <header>
+                        <h3 style="text-align: center">Inspection Request</h3>
+                        <br>
+                    </header>
+                    <body style="padding-left: 10px">
+                        <div style="padding-left: 30px">
+                            <p>Manager requirments:<a>{{ veri.manager }}</a></p>
+                            <p>DATE:{{ veri.date }}</p>
+                            TO:<br>
+                            <table style="width: 600px;padding-left: 5px">
+                                <tr>
+                                    <td>&emsp;Proposal:</td>
+                                    <td>&emsp;Component:</td>
+                                    <td>&emsp;Equipment:</td>
+                                    <td>&emsp;Facility:</td>
+                                </tr>
+                                <tr>
+                                    <td>&emsp;<a href="{% url 'proposalDisplay' veri.idcom %}" target="_blank">{{ veri.proposal }}</a></td>
+                                    <td>&emsp;<a href="{% url 'componentDisplay' veri.idequip %}" target="_blank">{{ veri.com }}</a></td>
+                                    <td>&emsp;<a href="{% url 'equipmentDisplay' veri.facility %}" target="_blank">{{ veri.eq }}</a></td>
+                                    <td>&emsp;<a>{% if veri.facility == faci.facilityid %}{{ faci.facilityname }}{% endif %}</a></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <br>
+                    <br>
+                    </body>
+                    <footer>
+                        <div style="text-align: right;padding-bottom: 20px">
+                            {% if veri.Is_active %}
+                                <a id="#viewHis" class="btn btn-primary" data-toggle="modal" data-target="#{{veri.id}}"><i class="fa fa-file" aria-hidden="true">&emsp;View History Report</i></a>
+                            {% else %}
+                                <button name="_selectpro" class="btn btn-primary" type="submit" value="{{ veri.id }}" ><i class="fa fa-search" aria-hidden="true" >&emsp;Select Proposal to Report </i></button>
+                            {% endif %}
+                            <button type="submit" name="_delete" class="btn btn-warning" value="{{ veri.id }}" onclick="return confirm('Are you sure you want to delete this request?');" ><i class="fa fa-trash-o">&emsp;Delete Selected</i></button>
+                            <button name="_view" class="btn btn-primary" type="submit" value="{{ veri.link }}" ><i class="fa fa-file">&emsp;View in Proposal </i></button>
+                            {% if veri.Is_active %}
+                                <p style="float: left;padding-left: 30px;color: #000000">Checked</p>
+                            {% else %}
+                                <p style="float: left;padding-left: 30px;color: #000000">Unchecked</p>
+                            {% endif %}
+                        </div>
+                    </footer>
+
+
+
+                     <!-- Modal body -->
+                  {% for his in baocao %}
+                    <div class="modal" id="{{his.id_rep}}" style="margin-top: 5%">
+                    <div class="modal-dialog modal-lg">
+                      <div class="modal-content" style="width: 80%; margin: auto">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                          <span aria-hidden="true" style="font-size: 16px;font-weight: bold;color: #3c763d;font-family: Calibri;font-weight: bold;">This Proposal you reported</span>
+                          <button type="button" class="close" data-dismiss="modal" style="color: white">&times;</button>
+                        </div>
+                        <div class="modal-body" style="width: 100%;margin: auto">
+                            <p style="margin-left:40%;font-size: 20px"><b>The Report</b></p>
+                             <p style="margin-left:65%"><b>DATE:</b>&ensp;{{his.date}}</p>
+                             <p><b>FROM: Facility {{faci.facilityname}}</b></p>
+                             <!--<p style="margin-left:10px"></p>-->
+                             <p><b>TO: Manager {{veri.manager}}</b></p>
+                             <!--<p style="margin-left:10px"></p>-->
+                             <b><u>RBI Assessment</u></b></p>
+                             <p style="padding-left:10px;"><b>Damage Mechanism :</b>{{his.damage_factor}}</p>
+                             <p style="padding-left:10px;"><b>POF Overall</b>&emsp;&emsp;{{his.pof}}</p>
+                             <p style="padding-left:10px;"><b>COF Overall</b>&emsp;&emsp;{{his.cof}}</p>
+                             <p style="padding-left:10px;"><b>Risk Ranking</b>&emsp;&ensp;{{his.risk}}</p>
+                             <b><u>Inspection Planting</u></b></p>
+                             <p style="padding-left:10px;"><b>Last Insp.Date:</b>&emsp;{{his.lastdudate|date:'d-m-Y'}}<b style="padding-left:40%">Next Insp.Date:</b>&emsp;{{his.inspdudate|date:'d-m-Y'}}</p>
+                             <!--<p style="padding-left:10px;"><b>Next Insp.Date</b>&emsp;&emsp;{{a.lastinsp}}</p>-->
+                         </div>
+                          <div class="modal-footer" style="margin: auto; width: 90%">
+                            <button type="button" class="btn btn-success"  style="background-color: #4575B7; border: 1px solid #204d74" data-dismiss="modal">Close</button>
+                         </div>
+                        </div>
+                        </div>
+                        </div>
+                  {% endfor %}
+                        <!-- Modal footer -->
+             </div>
+            </div>
+                <br>
+            {% endfor %}
+        {% endfor %}
+    </form>
+{% endblock %}
